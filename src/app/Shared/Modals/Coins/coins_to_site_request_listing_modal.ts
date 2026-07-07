@@ -21,7 +21,8 @@ export interface Icoins_to_site_request_listing_modal{
     updatedBy: string,
     updatedDate: string,
     totalCount: number,
-    paginationCount: number
+    paginationCount: number,
+    bankId: bigint
 }
 
 
@@ -48,7 +49,8 @@ export class coins_to_site_request_listing_modal implements Icoins_to_site_reque
     updatedBy: string;
     updatedDate: string;
     totalCount: number;
-    paginationCount: number
+    paginationCount: number;
+    bankId: bigint
 
     constructor(coinsRequestId: string = '', userId: bigint= 0 as unknown as bigint, siteId: bigint= 0 as unknown as bigint, accountId: bigint= 0 as unknown as bigint
         , siteName: string = '', siteURL: string = '', coins: bigint = 0 as unknown as bigint
@@ -56,6 +58,7 @@ export class coins_to_site_request_listing_modal implements Icoins_to_site_reque
         , documentDetailId: string = '', fileExtenstion: string = '', sessionUser: bigint = 0 as unknown as bigint
         , createdBy: string = '' , createdDate: string = '', UpdatedBy: string = '', UpdatedDate: string = ''
         , totalCount: number = 0, paginationCount: number = 0, proofDocumentDetailId: string = '', proofFileExtenstion: string = ''
+        , BankId: bigint
     ) {
         this.coinsRequestId = coinsRequestId; 
         this.userId = userId;
@@ -79,6 +82,7 @@ export class coins_to_site_request_listing_modal implements Icoins_to_site_reque
         this.totalCount = totalCount,
         this.paginationCount = paginationCount,
         this.proofDocumentDetailId = proofDocumentDetailId,
-        this.proofFileExtenstion = proofFileExtenstion
+        this.proofFileExtenstion = proofFileExtenstion,
+        this.bankId = BankId
       }
 }

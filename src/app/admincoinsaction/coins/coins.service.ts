@@ -13,6 +13,7 @@ import { AdminDepositeCoinsByRequestIdComponent } from './admin_deposite_coins_b
 import { AdminDepositeCoinsToIdRequestIdComponent } from './admin_deposite_withdraw_coins_ids_by_request_id/admin-deposite-coins-to-id-request-id.component';
 import { AdminWithdrawCoinsToIdRequestIdComponent } from './admin_withdraw_coins_to_id_request_id/admin-withdraw-coins-to-id-request-id.component';
 import { ISiteDetailModal } from 'src/app/Shared/Modals/site-detail-modal';
+import { ViewAdminBankDetailsComponent } from './view_admin_bank_details/view-admin-bank-details.component';
 
 @Injectable({
   providedIn: 'root'
@@ -112,6 +113,15 @@ export class CoinsService {
       }
     }
     this.bsmodalRef = this.bsModalService.show(AdminWithdrawCoinsToIdRequestIdComponent, initalstate);
+  }
+
+  OpenViewAccountDetailsPopup(obj: any){
+    const initalstate: ModalOptions = {
+      initialState:{
+        obj,
+      }
+    }
+    this.bsmodalRef = this.bsModalService.show(ViewAdminBankDetailsComponent, initalstate);
   }
 
   deposit_list(obj: Ideposit_withdraw_coins_request){

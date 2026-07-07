@@ -16,6 +16,7 @@ import { AdminWithdrawCoinsByRequestIdComponent } from './admin_withdraw_coins_b
 import { AdminDepositeCoinsByRequestIdComponent } from './admin_deposite_coins_by_request_id/admin-deposite-coins-by-request-id.component';
 import { AdminWithdrawCoinsToIdRequestIdComponent } from './admin_withdraw_coins_to_id_request_id/admin-withdraw-coins-to-id-request-id.component';
 import { AdminDepositeCoinsToIdRequestIdComponent } from './admin_deposite_withdraw_coins_ids_by_request_id/admin-deposite-coins-to-id-request-id.component';
+import { ViewAdminBankDetailsComponent } from './view_admin_bank_details/view-admin-bank-details.component';
 
 
 
@@ -30,7 +31,8 @@ import { AdminDepositeCoinsToIdRequestIdComponent } from './admin_deposite_withd
     AdminWithdrawCoinsByRequestIdComponent,
     AdminDepositeCoinsByRequestIdComponent,
     AdminWithdrawCoinsToIdRequestIdComponent,
-    AdminDepositeCoinsToIdRequestIdComponent
+    AdminDepositeCoinsToIdRequestIdComponent,
+    ViewAdminBankDetailsComponent
   ],
   imports: [
     CommonModule,

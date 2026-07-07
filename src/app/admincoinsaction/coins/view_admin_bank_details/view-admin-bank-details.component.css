@@ -1,0 +1,53 @@
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    min-width: 150px;
+    flex-shrink: 0;
+}
+
+.detail-label p {
+    font-size: 12px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.detail-value {
+    flex: 1;
+    min-width: 0;
+    word-break: break-all;
+}
+
+.copy-btn {
+    color: #fff;
+    padding: 4px 8px;
+    flex-shrink: 0;
+}
+
+.copy-btn:hover {
+    color: #d4c4f0;
+}
+
+.empty-icon {
+    font-size: 2rem;
+    opacity: 0.7;
+}
+
+@media (max-width: 576px) {
+    .detail-row {
+        flex-wrap: wrap;
+    }
+
+    .detail-label {
+        min-width: 100%;
+    }
+}

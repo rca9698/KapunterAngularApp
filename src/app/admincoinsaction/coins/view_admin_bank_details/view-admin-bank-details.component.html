@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <p class="modal-title">Bank Account Details</p>
+    <div type="button" class="close" aria-label="Close" (click)="bsModalRef.hide()">
+        <i class="bi bi-x-circle-fill"></i>
+    </div>
+</div>
+
+<div class="modal-body">
+    <div *ngIf="fields.length === 0" class="text-center py-4">
+        <i class="bi bi-bank2 empty-icon"></i>
+        <p class="mb-0 mt-2">No account details are available.</p>
+    </div>
+
+    <div *ngIf="fields.length > 0" class="card text-white bg-dark mb-0">
+        <div class="card-body sitebackground p-3">
+            <div class="detail-row" *ngFor="let field of fields">
+                <div class="detail-label">
+                    <p class="mb-0">{{ field.label }}</p>
+                </div>
+                <div class="detail-value">
+                    <p class="mb-0">{{ field.value }}</p>
+                </div>
+                <button
+                    type="button"
+                    class="btn btn-sm copy-btn"
+                    title="Copy {{ field.label }}"
+                    (click)="copyField(field.value)">
+                    <i class="bi bi-clipboard"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer" *ngIf="fields.length > 0">
+    <button type="button" class="btn siteBtnbackground" (click)="copyAll()">
+        <i class="bi bi-copy"></i> Copy All
+    </button>
+</div>

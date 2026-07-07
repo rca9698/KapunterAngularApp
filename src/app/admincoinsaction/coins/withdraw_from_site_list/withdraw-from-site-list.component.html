@@ -22,7 +22,8 @@
             <td><p>{{request.createdDate}}</p></td>
                 <td>
                     <div class="btn-group">
-                    <button (click)="withdrawcoinsfromsitePopup(request)"> <i class="bi bi-person-fill-up"></i></button>
+                        <button (click)="ViewAccountDetails(request)"> <i class="bi bi-eye-fill"></i> </button>
+                        <button (click)="withdrawcoinsfromsitePopup(request)"> <i class="bi bi-person-fill-up"></i></button>
                     <button (click)="deletewithdrawcoinsfromsitePopup(request)"> <i class="bi bi-trash3-fill"></i> </button>
                     </div>
                 </td>

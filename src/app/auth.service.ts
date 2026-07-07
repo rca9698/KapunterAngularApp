@@ -264,6 +264,7 @@ export class AuthService {
 
     return this.apiservice.GetUserById(this.userDetailQuery).subscribe(resp => {
       this.returnType = resp;
+      console.log(resp);
       this.userdetail = this.returnType['returnVal'];
     });
   }
