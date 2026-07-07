@@ -1,0 +1,39 @@
+<div class="modal-content transfer-ids-modal siteColor">
+  <div class="modal-header transfer-ids-header">
+    <div class="transfer-ids-heading">
+      <p class="modal-title" id="transferIdsTitle">Transfer</p>
+      <p class="transfer-ids-sub" *ngIf="contextSite?.siteName as siteLabel">
+        Your IDs — from {{ siteLabel }}
+      </p>
+      <p class="transfer-ids-sub" *ngIf="!contextSite?.siteName">All your IDs</p>
+    </div>
+    <div type="button" class="close transfer-ids-close" (click)="bsModalRef.hide()" aria-label="Close">
+      <i class="bi bi-x-circle-fill"></i>
+    </div>
+  </div>
+  <div class="modal-body transfer-ids-body">
+    <div class="transfer-ids-loading" *ngIf="loading">
+      <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
+      <span>Loading your IDs…</span>
+    </div>
+    <div class="transfer-ids-empty" *ngIf="!loading && ids.length === 0">
+      <i class="bi bi-inbox" aria-hidden="true"></i>
+      <p>No IDs found. Create an ID from a site card first.</p>
+    </div>
+    <ul class="transfer-ids-list" *ngIf="!loading && ids.length > 0" aria-labelledby="transferIdsTitle">
+      <li *ngFor="let id of ids; trackBy: trackById" class="transfer-ids-row">
+        <div class="transfer-ids-logo-wrap">
+          <img
+            [src]="sitePath + id.documentDetailId + id.fileExtenstion"
+            [alt]="id.siteName || 'Site'"
+            loading="lazy"
+          />
+        </div>
+        <div class="transfer-ids-text">
+          <span class="transfer-ids-site">{{ id.siteName }}</span>
+          <span class="transfer-ids-user">{{ id.userName }} · #{{ id.userNumber }}</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

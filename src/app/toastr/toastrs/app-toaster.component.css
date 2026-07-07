@@ -1,0 +1,25 @@
+  .toast {
+    display: flex;
+    align-items: center;
+    padding: 8px 27px;
+    position: fixed;
+    top: 0;
+    right: 20px;
+    z-index: 99999;
+  }
+  
+  .success {
+    background-color: green;
+  }
+
+  .warning {
+    background-color: coral;
+  }
+  
+  .error {
+    background-color: red;
+  }
+
+  .info {
+    background-color: cornflowerblue;
+  }

@@ -1,0 +1,242 @@
+.txn-history-modal {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 140, 40, 0.4);
+  overflow: hidden;
+  background: linear-gradient(165deg, rgba(18, 16, 28, 0.98), rgba(10, 8, 18, 0.99));
+}
+
+.txn-history-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(255, 140, 40, 0.25);
+  padding: 1rem 1.1rem;
+}
+
+.txn-history-heading {
+  min-width: 0;
+  flex: 1;
+}
+
+.txn-history-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.txn-history-logo-wrap,
+.txn-history-logo-fallback {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 149, 31, 0.55);
+  box-shadow: 0 0 14px rgba(255, 130, 0, 0.2);
+}
+
+.txn-history-logo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.txn-history-logo-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffc978;
+  background: rgba(255, 149, 31, 0.14);
+  font-size: 1.35rem;
+}
+
+.txn-history-title-wrap {
+  min-width: 0;
+}
+
+.txn-history-heading .modal-title {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff4e8;
+}
+
+.txn-history-sub {
+  margin: 0.3rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffd6b2;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.txn-history-url {
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  color: #c9b8a8;
+  word-break: break-all;
+}
+
+.txn-history-close {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.85;
+  flex-shrink: 0;
+  color: #ffc978;
+  font-size: 1.35rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.txn-history-close:hover {
+  opacity: 1;
+}
+
+.txn-history-body {
+  padding: 0.75rem 1rem 1.1rem;
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+}
+
+.txn-history-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  color: #e8d8c8;
+  font-size: 0.9rem;
+}
+
+.txn-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.txn-history-card {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 149, 31, 0.28);
+  border-left-width: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.75rem 0.8rem;
+}
+
+.txn-history-card-top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.txn-history-card-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 149, 31, 0.4);
+}
+
+.txn-history-card-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.txn-history-card-logo--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffc978;
+  background: rgba(255, 149, 31, 0.12);
+  font-size: 1rem;
+}
+
+.txn-history-card-meta {
+  min-width: 0;
+}
+
+.txn-history-date {
+  font-size: 0.68rem;
+  color: #a89888;
+  font-weight: 600;
+}
+
+.txn-history-desc {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff4e8;
+  line-height: 1.3;
+}
+
+.txn-history-site {
+  margin: 0.15rem 0 0;
+  font-size: 0.7rem;
+  color: #ffcfab;
+}
+
+.txn-history-amount {
+  font-size: 0.95rem;
+  font-weight: 800;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.txn-history-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.txn-history-status {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.txn-history-id {
+  font-size: 0.65rem;
+  color: #8f8275;
+}
+
+.txn-history-empty {
+  text-align: center;
+  padding: 2rem 0.75rem;
+  color: #a89888;
+}
+
+.txn-history-empty .bi-inbox {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
+}
+
+.txn-history-empty p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 480px) {
+  .txn-history-card-top {
+    grid-template-columns: auto 1fr;
+  }
+
+  .txn-history-amount {
+    grid-column: 1 / -1;
+    justify-self: flex-start;
+  }
+}

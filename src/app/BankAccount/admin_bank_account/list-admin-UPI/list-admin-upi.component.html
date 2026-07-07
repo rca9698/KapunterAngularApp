@@ -1,0 +1,67 @@
+
+ 
+<div class="col-6" style="display: flex;">
+    <i class="bi bi-bank"></i>
+    <p style="margin-left: 10px;">UPI Details</p>
+</div>
+
+<div class="card text-white bg-dark mb-12">
+    <div class="card-header"> 
+    <div style="text-align: end;">
+        <button type="button" class="rounded-3 btn-primary text-nowrap siteBtnbackground" (click)="Add_Admin_Upi_Popup()">
+            <p class="text-uppercase">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bank" viewBox="0 0 16 16">
+                    <path d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.5.5 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89zM3.777 3h8.447L8 1zM2 6v7h1V6zm2 0v7h2.5V6zm3.5 0v7h1V6zm2 0v7H12V6zM13 6v7h1V6zm2-1V4H1v1zm-.39 9H1.39l-.25 1h13.72z"></path>
+                </svg>
+                Add New
+            </p> 
+        </button>
+    </div>
+    </div>
+</div>
+
+
+<div class="card text-white bg-dark mb-12" *ngFor="let bank_detail of Ibank_details">
+    
+    <div class="card-header shadow-sm border-0 bg-dark custom_card-header">
+        <p (click)="Make_Admin_Upi_Default(bank_detail)" *ngIf='!bank_detail.isDefault'>
+            <i class="bi bi-patch-plus-fill" title="Make Default"></i>
+        </p>
+         
+        <p class="mb-0 FontSize text-uppercase" *ngIf='bank_detail.isDefault'>
+            <i class="bi bi-patch-check-fill"  title="Default" style="color: green;"></i>
+        </p>
+
+        <span type="button" aria-expanded="true" data-toggle="collapse" 
+        [attr.data-target]="'#collapse_' + bank_detail.bankAccountDetailID"
+        [attr.aria-controls]="'collapse_'+ bank_detail.bankAccountDetailID">
+            <p>{{ bank_detail.bankName }} <i class="bi bi-arrow-down-up"> </i></p>
+        </span>
+       
+        <p (click)="Delete_Admin_UpiAccount(bank_detail)">
+            <i class="bi bi-trash3-fill" title="Delete Account"> </i>
+        </p>
+
+    </div>
+     
+    <div class="card-body" style="padding: 1rem;">
+        <div class="card-body sitebackground">
+            <div class="credit rounded-3 mt-2 d-flex justify-content-between align-items-center">
+                <div class="d-flex flex-row align-items-center">
+                    <div class="d-flex flex-column ml-3">
+                        <p class="">UPI Name</p>
+                        <p class="">UPI Code</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex flex-column ml-3 bankDetails">
+                        <p class="">{{bank_detail.upiId}}</p>
+                        <p class="">{{bank_detail.accountDisplayName}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+

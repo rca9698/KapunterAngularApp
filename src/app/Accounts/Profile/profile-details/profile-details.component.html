@@ -1,0 +1,32 @@
+<section class="profile-shell">
+  <div class="profile-card">
+    <div class="profile-head">
+      <h2>My Account</h2>
+      <p>Account profile and quick access settings.</p>
+    </div>
+
+    <div class="profile-grid">
+      <div class="profile-item">
+        <span>Mobile Number</span>
+        <strong>{{ authService.userdetail.userNumber || '—' }}</strong>
+      </div>
+      <div class="profile-item">
+        <span>Wallet Balance</span>
+        <strong><i class="bi bi-currency-rupee"></i> {{ authService.userdetail.coins || 0 }}</strong>
+      </div>
+      <div class="profile-item">
+        <span>Account Status</span>
+        <strong>Active</strong>
+      </div>
+      <div class="profile-item">
+        <span>Security</span>
+        <strong>Standard</strong>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button class="btn siteBtnbackground">Edit Profile</button>
+      <button class="btn siteBtnbackground">Change Password</button>
+    </div>
+  </div>
+</section>

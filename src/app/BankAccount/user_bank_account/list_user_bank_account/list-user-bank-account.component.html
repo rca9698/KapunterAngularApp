@@ -1,0 +1,189 @@
+<section class="bank-shell">
+<div class="row col-12 bank-tabs">
+    <div class="col-4 tabSelection rounded-3 text-center active bank-tab" (click)="list_User_Bank_Accounts()">
+        <p class="FontSize text-uppercase">Active Bank</p>
+    </div>
+
+    <div class="col-4 tabSelection rounded-3 text-center bank-tab" (click)="list_User__InActive_Bank_Accounts()">
+        <p class="FontSize text-uppercase">Deleted Bank</p>
+    </div>
+
+    <div class="col-4 tabSelection rounded-3 text-center bank-tab" (click)="list_User__All_Bank_Accounts()">
+        <p class="FontSize text-uppercase">Bank History</p>
+    </div>
+</div>
+
+ 
+<div class="col-6 bank-title">
+    <i class="bi bi-bank"></i>
+    <p style="margin-left: 10px;">Bank Details</p>
+</div>
+
+<div class="card text-white bg-dark mb-12 bank-add-card">
+    <div class="card-header"> 
+    <div style="text-align: end;">
+        <button type="button" class="rounded-3 btn-primary text-nowrap siteBtnbackground bank-add-btn" (click)="AddBankDetailPopup()">
+            <p class="text-uppercase">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bank" viewBox="0 0 16 16">
+                    <path d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.5.5 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89zM3.777 3h8.447L8 1zM2 6v7h1V6zm2 0v7h2.5V6zm3.5 0v7h1V6zm2 0v7H12V6zM13 6v7h1V6zm2-1V4H1v1zm-.39 9H1.39l-.25 1h13.72z"></path>
+                </svg>
+                Add New
+            </p> 
+        </button>
+    </div>
+    </div>
+</div>
+
+
+<div class="card text-white bg-dark mb-12 bank-item-card" *ngFor="let bank_detail of Ibank_details">
+
+    <div class="card-header shadow-sm border-0 bg-dark custom_card-header bank-item-header">
+        <p class="mb-0 FontSize text-uppercase" (click)="MakeBankDetailDefault(bank_detail)" *ngIf='!bank_detail.isDefault && isActive'>
+            <i class="bi bi-patch-plus-fill" title="Make Default"></i>
+        </p>
+
+        <p class="mb-0 FontSize text-uppercase" *ngIf='bank_detail.isDefault'>
+            <i class="bi bi-patch-check-fill"  title="Default" style="color: green;"></i>
+        </p>
+
+        <span class="bank-name" type="button" aria-expanded="true" data-toggle="collapse" 
+        [attr.data-target]="'#collapse_' + bank_detail.bankAccountDetailID"
+        [attr.aria-controls]="'collapse_'+ bank_detail.bankAccountDetailID">
+            <p>{{ bank_detail.bankName }} <i class="bi bi-arrow-down-up"> </i></p>
+        </span>
+        
+        <p (click)="DeleteBankAccountPopup(bank_detail)" *ngIf="isActive">
+            <i class="bi bi-trash3-fill" title="Delete Account"> </i>
+        </p>
+    </div>
+
+    <div class="card-body bank-item-body">
+        <div class="card-body sitebackground bank-item-inner">
+            <div class="credit rounded-3 mt-2 d-flex justify-content-between align-items-center">
+                <div class="d-flex flex-row align-items-center">
+                    <div class="d-flex flex-column ml-3">
+                        <p class="">Bank Name</p>
+                        <p class="">Account Holder Name</p>
+                        <p class="">Account Number</p>
+                        <p class="">IFSC Code</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex flex-column ml-3 bankDetails bank-values">
+                        <p class="">{{bank_detail.bankName}}</p>
+                        <p class="">{{bank_detail.accountHolderName}}</p>
+                        <p class="">{{bank_detail.accountNumber}}</p>
+                        <p class="">{{bank_detail.ifscCode}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+<div class="bank-section-divider"></div>
+<!--
+<div class="col-6 bank-title">
+    <i class="bi bi-phone"></i>
+    <p style="margin-left: 10px;">UPI Details</p>
+</div>
+
+<div class="card text-white bg-dark mb-12 bank-add-card">
+    <div class="card-header">
+    <div style="text-align: end;">
+        <button type="button" class="rounded-3 btn-primary text-nowrap siteBtnbackground bank-add-btn" (click)="AddUserUpiPopup()">
+            <p class="text-uppercase">
+                <i class="bi bi-plus-circle"></i>
+                Add New
+            </p>
+        </button>
+    </div>
+    </div>
+</div>
+
+<div class="card text-white bg-dark mb-12 bank-item-card" *ngFor="let upi_detail of Iuser_upi_details">
+    <div class="card-header shadow-sm border-0 bg-dark custom_card-header bank-item-header">
+        <p class="mb-0 FontSize text-uppercase" (click)="MakeUpiDetailDefault(upi_detail)" *ngIf='!upi_detail.isDefault'>
+            <i class="bi bi-patch-plus-fill" title="Make Default"></i>
+        </p>
+
+        <p class="mb-0 FontSize text-uppercase" *ngIf='upi_detail.isDefault'>
+            <i class="bi bi-patch-check-fill" title="Default" style="color: green;"></i>
+        </p>
+
+        <span class="bank-name">
+            <p>{{ upi_detail.accountDisplayName }}</p>
+        </span>
+
+        <p (click)="DeleteUpiDetailPopup(upi_detail)">
+            <i class="bi bi-trash3-fill" title="Delete UPI"></i>
+        </p>
+    </div>
+
+    <div class="card-body bank-item-body">
+        <div class="card-body sitebackground bank-item-inner">
+            <div class="credit rounded-3 mt-2 d-flex justify-content-between align-items-center">
+                <div class="d-flex flex-column ml-3">
+                    <p class="">UPI Name</p>
+                    <p class="">UPI ID</p>
+                </div>
+                <div class="d-flex flex-column ml-3 bankDetails bank-values">
+                    <p class="">{{ upi_detail.accountDisplayName }}</p>
+                    <p class="">{{ upi_detail.upiId }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bank-section-divider"></div>
+
+<div class="col-6 bank-title">
+    <i class="bi bi-qr-code"></i>
+    <p style="margin-left: 10px;">QR Details</p>
+</div>
+
+<div class="card text-white bg-dark mb-12 bank-add-card">
+    <div class="card-header">
+    <div style="text-align: end;">
+        <button type="button" class="rounded-3 btn-primary text-nowrap siteBtnbackground bank-add-btn" (click)="AddUserQRPopup()">
+            <p class="text-uppercase">
+                <i class="bi bi-plus-circle"></i>
+                Add New
+            </p>
+        </button>
+    </div>
+    </div>
+</div>
+
+<div class="card text-white bg-dark mb-12 bank-item-card" *ngFor="let qr_detail of Iuser_qr_details">
+    <div class="card-header shadow-sm border-0 bg-dark custom_card-header bank-item-header qr-card-header">
+        <div class="header-left">
+            <p class="mb-0 FontSize text-uppercase icon-btn" (click)="MakeQRDetailDefault(qr_detail)" *ngIf='!qr_detail.isDefault'>
+                <i class="bi bi-patch-plus-fill" title="Make Default"></i>
+            </p>
+
+            <p class="mb-0 FontSize text-uppercase default-badge" *ngIf='qr_detail.isDefault'>
+                <i class="bi bi-patch-check-fill" title="Default" style="color: green;"></i>
+            </p>
+
+            <span class="account-name bank-name">
+                <p>{{ qr_detail.accountDisplayName }}</p>
+            </span>
+        </div>
+
+        <p class="icon-btn delete-btn" (click)="DeleteQRDetailPopup(qr_detail)">
+            <i class="bi bi-trash3-fill" title="Delete QR"></i>
+        </p>
+    </div>
+
+    <div class="card-body qr-card-body">
+        <div class="qr-image-container">
+            <img class="qr-image" [src]="qr_detail.qrImageUrl" [alt]="qr_detail.accountDisplayName" />
+        </div>
+    </div>
+</div>
+-->
+</section>
+
+

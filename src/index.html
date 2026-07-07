@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+    (function () {
+      var host = window.location.hostname;
+      var isLocal = host === 'localhost' || host === '127.0.0.1';
+      if (!isLocal && window.location.protocol === 'http:') {
+        window.location.replace(
+          'https://' + window.location.host + window.location.pathname + window.location.search + window.location.hash
+        );
+      }
+    })();
+  </script>
+  <title>KAPunter</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="kapunter-logo.jpeg">
+  <!-- @* <link href="~/css/fonts.css" rel="stylesheet" /> *@ -->
+  <!-- <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet"> -->
+  <!-- @* <script src="~/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"></script> *@ -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> -->
+  <!-- @* <link href="~/css/bootstrap-icons.css" rel="stylesheet" /> *@ -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> -->
+  <!-- @* <link href="~/css/bootstrap.min.css" rel="stylesheet"/> *@ -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>

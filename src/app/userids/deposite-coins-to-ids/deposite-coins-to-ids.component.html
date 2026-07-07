@@ -1,0 +1,27 @@
+<div class="modal-content siteColor">
+    <form (ngSubmit)="SendDepositCoinsToIds()" [formGroup]="DepositCoinsToIdsForm" autocomplete="off">
+        <div class="modal-header">
+            <p class="modal-title">Deposite Coins to ID</p>
+            <div type="button" class="close" (click)="bsModalRef.hide()">
+                <i class="bi bi-x-circle-fill"></i>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="form-group col-12">
+                <div class="d-flex flex-column text-center col-12">
+                    <span class="business">WALLET BALANCE</span>
+                    <span><i class="bi bi-currency-rupee"></i><span>{{this.authservice.userdetail.coins}}</span></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Coins(<i class="bi bi-currency-rupee"></i>)*</label>
+                <input type="text" formControlName="coins"  class="form-control" placeholder="Coins" autocomplete="off">
+                <div class="text-danger" *ngIf="DepositCoinsToIdsForm.get('coins')?.invalid && (submitted || DepositCoinsToIdsForm.get('coins')?.touched || DepositCoinsToIdsForm.get('coins')?.dirty)">
+                <span *ngIf="DepositCoinsToIdsForm.get('coins')?.errors?.['required']"> coins are is required </span> </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn siteBtnbackground">Deposite Coins to Id</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,43 @@
+<div class="list-images-container">
+  <div class="feature-shell">
+    <div class="feature-card">
+      <div class="section-head">
+        <div class="section-title">
+          <h2>Dashboard Images</h2>
+          <p>Manage slider images shown on home dashboard.</p>
+        </div>
+        <div class="action-buttons">
+          <button class="btn siteBtnbackground btn-action" (click)="AddSitesPopup()" title="Upload New Image">
+            <i class="bi bi-cloud-arrow-up"></i>
+            <span>Upload</span>
+          </button>
+          <button class="btn siteBtnbackground btn-action" (click)="downloadQAImage()" title="Download QA Template">
+            <i class="bi bi-download"></i>
+            <span>Download</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="image-grid">
+        <div class="image-item" *ngFor="let image of listImage_details">
+          <div class="image-preview" [style.background-image]="'url(' + dashboardImagesPath + image.documentDetailId + image.fileExtenstion + ')'"
+               [style.background-size]="'cover'"
+               [style.background-position]="'center'">
+          </div>
+          <div class="image-meta">
+            <h4>{{ image.imageName }}</h4>
+            <p>{{ image.imageSize || 'Recommended size: 1280 x 520' }}</p>
+            <div class="actions">
+              <button class="btn btn-sm siteBtnbackground" (click)="setDefault(image.documentDetailId)">
+                <i class="bi bi-star"></i> Set Default
+              </button>
+              <button class="btn btn-sm siteBtnbackground" (click)="deleteImagePopup(image.documentDetailId)">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

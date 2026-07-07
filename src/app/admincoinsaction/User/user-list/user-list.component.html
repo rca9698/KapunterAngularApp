@@ -1,0 +1,60 @@
+
+<div class="col-12 text-center listtypeview">
+    <p class="text-uppercase">User Listing</p>
+</div>
+
+<div class="mt-4">
+<div class="customtable">
+    <!-- Table with hoverable rows -->
+    <table class="table table-hover scrollbar " id="userList">
+        <thead>
+        <tr class="tableHeaderClass">
+            <th scope="col"><p class="">User Number</p></th>
+            <th scope="col"><p class="">Created Date</p></th>
+            <th scope="col"><p class="">Coins (<i class="bi bi-currency-rupee"></i>)</p></th>
+            <th scope="col"><p class="">Action</p></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- @if (Model != null && Model.ReturnList != null)
+            {
+                @foreach (var user in Model.ReturnList)
+                {-->
+                  
+                    <tr *ngFor="let user of usersList">
+                    <th scope="row"><p>{{user.userNumber}}</p></th>
+                    <td><p>{{user.createdDate}}</p></td>
+                    <td><p>{{user.coins}}</p></td>
+                        <td>
+                            <div class="btn-group">
+                            <!--<button (click)="depositeCoinsByUserId(user)"> <i class="bi bi-person-fill-up"></i></button>
+                            <button (click)="withdrawCoinsByUserId(user)"> <i class="bi bi-person-fill-down"></i> </button>
+                            <button (click)="ListCoins(user)"> <i class="bi bi-cash"></i> </button> -->
+                            <button (click)="deleteUser(user)"> <i class="bi bi-person-fill-slash"></i></button>
+                            </div>
+                        </td>
+                    </tr> 
+               <!-- }
+            } -->
+        </tbody>
+    </table>
+</div>
+</div>
+<div class="pagination">
+    <a [class.disabled]="!hasPreviousPage()" 
+       (click)="goToPreviousPage()" 
+       [style.cursor]="hasPreviousPage() ? 'pointer' : 'default'"
+       [style.opacity]="hasPreviousPage() ? '1' : '0.5'"
+       p-id="previous">&laquo;</a>
+    <span *ngFor="let pagination of getCountArray()"> 
+        <a [class.active]="isActivePage(pagination)" 
+           (click)="PaginationNumber(pagination)">
+            {{pagination+1}}
+        </a>
+    </span>
+    <a [class.disabled]="!hasNextPage()" 
+       (click)="goToNextPage()" 
+       [style.cursor]="hasNextPage() ? 'pointer' : 'default'"
+       [style.opacity]="hasNextPage() ? '1' : '0.5'"
+       p-id="next">&raquo;</a>
+  </div>

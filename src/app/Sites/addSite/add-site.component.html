@@ -1,0 +1,47 @@
+
+        <div class="modal-content siteColor">
+            <form (ngSubmit)="AddSite()" [formGroup]="AddSiteFrom">
+                <div class="modal-header">
+                    <p class="modal-title">Site</p>
+                    <div type="button" class="close" (click)="bsModalRef.hide()">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Site Name</label>
+                        <input formControlName="siteName" type="text" class="form-control" placeholder="Site Name" autocomplete="off" [(ngModel)]="site.siteName">
+                        <div class="text-danger" *ngIf="AddSiteFrom.get('siteName')?.invalid && (submitted || AddSiteFrom.get('siteName')?.touched || AddSiteFrom.get('siteName')?.dirty)">
+                         <span *ngIf="AddSiteFrom.get('siteName')?.errors?.['required']"> Site Name is required </span> </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Site URL</label>
+                        <input formControlName="siteURL" type="text" class="form-control siteURL" placeholder="Site URL" autocomplete="off" [(ngModel)]="site.siteURL">
+                        <div class="text-danger" *ngIf="AddSiteFrom.get('siteURL')?.invalid && (submitted || AddSiteFrom.get('siteURL')?.touched || AddSiteFrom.get('siteURL')?.dirty)">
+                        <span *ngIf="AddSiteFrom.get('siteURL')?.errors?.['required']"> Site URL is required </span> </div>
+                    </div>
+                    <div class="form-group">
+                        <div method="post" enctype="multipart/form-data" style="margin-top: 10px">
+                            <div class="form-group col-12 px-0">
+                                <label class="kp-file-upload">
+                                    <span class="kp-file-upload-ui">
+                                        <i class="bi bi-cloud-arrow-up kp-file-upload-icon" aria-hidden="true"></i>
+                                        <span class="kp-file-upload-title">Choose site image</span>
+                                        <span class="kp-file-upload-hint">Full width · tap anywhere · JPG or PNG</span>
+                                        <span class="kp-file-upload-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
+                                    </span>
+                                    <input class="kp-file-upload-input" #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
+                                </label>
+                                <div class="text-danger mt-2" *ngIf="!this.file && (submitted || AddSiteFrom.get('siteURL')?.touched)">
+                                    <span>File is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn siteBtnbackground col-12">Add Site</button>
+                </div>
+            </form>
+        </div>
+    

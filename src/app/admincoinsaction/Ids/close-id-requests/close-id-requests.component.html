@@ -1,0 +1,42 @@
+<section class="feature-shell">
+  <div class="feature-card">
+    <h2>Close ID Requests</h2>
+    <p>Review and process user requests to close existing IDs.</p>
+
+    <div class="request-table-wrap mt-4">
+      <table class="table table-hover">
+        <thead>
+          <tr class="tableHeaderClass">
+            <th>User</th>
+            <th>Site</th>
+            <th>ID Name</th>
+            <th>Requested On</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of requestList">
+            <td>{{ item.userNumber }}</td>
+            <td>{{ item.siteURL || item.siteName }}</td>
+            <td>{{ item.userName }}</td>
+            <td>{{ item.createdDate }}</td>
+            <td>
+              <button type="button" class="btn btn-sm siteBtnbackground" (click)="approveClose(item)">Approve</button>
+            </td>
+          </tr>
+          <tr *ngIf="requestList.length === 0">
+            <td colspan="5" class="text-center">No close requests found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" *ngIf="paginationCount > 1">
+      <a (click)="PaginationNumber(1)">&laquo;</a>
+      <span *ngFor="let pagination of getCountArray()">
+        <a (click)="PaginationNumber(pagination + 1)">{{ pagination + 1 }}</a>
+      </span>
+      <a (click)="PaginationNumber(paginationCount)">&raquo;</a>
+    </div>
+  </div>
+</section>

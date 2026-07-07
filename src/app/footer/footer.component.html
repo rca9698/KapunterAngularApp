@@ -1,0 +1,105 @@
+
+<div class="card mt-0 footer-nav footernavbar sitebackground cursorPointer footer-shell">
+    <div class="footer-tab-row" *ngIf="this.authservice.isbenview()">
+        <div class="footer-tab-cell" (click)="RedirectToHome()">
+                <div class="card sitebackground footer-tab active-tab">
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <i class="bi bi-house-door"></i>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">
+                            <p class="text-uppercase"> Home </p>
+                        </h6>
+                    </div>
+                </div>
+        </div>
+        <div class="footer-tab-cell" (click)="createId()">
+            <div class="card sitebackground footer-tab">
+                <div class="card-body text-center">
+                    <div class="row">
+                        <i class="bi bi-plus-circle"></i>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">
+                        <p class="text-uppercase"> Create </p>
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="footer-tab-cell" (click)="listIds()">
+            <div class="card sitebackground footer-tab">
+                <div class="card-body text-center">
+                    <div class="row">
+                        <i class="bi bi-square"></i>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">
+                        <p class="text-uppercase"> My ID's </p>
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="footer-tab-cell" (click)="viewPassbook()">
+            <div class="card sitebackground footer-tab">
+                <div class="card-body text-center">
+                    <div class="row">
+                        <i class="bi bi-journal-text"></i>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">
+                        <p class="text-uppercase"> Passbook </p>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-tab-row" *ngIf="this.authservice.isadminview()">
+        <div class="footer-tab-cell" (click)="RedirectToHome()">
+                <div class="card sitebackground footer-tab active-tab">
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <i class="bi bi-house-door"></i>
+                        </div>
+                        <h6 class="text-muted font-weight-normal">
+                            <p class="text-uppercase"> Home </p>
+                        </h6>
+                    </div>
+                </div>
+        </div> 
+        <div class="footer-tab-cell" (click)="AddSitesPopup()">
+            <div class="card sitebackground footer-tab">
+                <div class="card-body text-center">
+                    <div class="row">
+                        <i class="bi bi-cart-plus-fill"></i>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">
+                        <p class="text-uppercase"> Create Site </p>
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="footer-tab-cell" routerLink="/site/list-sites">
+            <div class="card sitebackground footer-tab">
+                <div class="card-body text-center">
+                    <div class="row">
+                        <i class="bi bi-square"></i>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">
+                        <p class="text-uppercase"> Sites </p>
+                    </h6>
+                </div>
+            </div>
+        </div>
+        <div class="footer-tab-cell" routerLink="/adminaction/user_list">
+            <div class="card sitebackground footer-tab">
+                <div class="card-body text-center">
+                    <div class="row">
+                        <i class="bi bi-person-vcard"></i>
+                    </div>
+                    <h6 class="text-muted font-weight-normal">
+                        <p class="text-uppercase"> Users </p>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

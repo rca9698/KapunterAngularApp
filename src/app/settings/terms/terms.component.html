@@ -1,0 +1,37 @@
+<div class="terms-container">
+  <div class="feature-card">
+    <h2>📋 Terms & Conditions</h2>
+    <p>Please read and understand our complete terms and conditions before using the KAPunter platform.</p>
+
+    <div class="terms-content">
+      <div class="terms-section" *ngFor="let section of termsSections">
+        <div class="section-header">
+          <div class="section-icon">{{ section.icon }}</div>
+          <h3>{{ section.title }}</h3>
+        </div>
+
+        <div class="section-body">
+          <ul class="terms-list">
+            <li *ngFor="let point of section.content" class="terms-item">
+              {{ point }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acceptance Notice -->
+    <div class="acceptance-notice">
+      <div class="notice-icon">✓</div>
+      <div class="notice-content">
+        <h4>Acceptance of Terms</h4>
+        <p>By using the KAPunter platform, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please refrain from using our services.</p>
+      </div>
+    </div>
+
+    <!-- Last Updated -->
+    <div class="terms-footer">
+      <small>Last Updated: June 2, 2026 | These terms are subject to change without notice</small>
+    </div>
+  </div>
+</div>

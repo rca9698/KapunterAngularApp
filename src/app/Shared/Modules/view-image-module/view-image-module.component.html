@@ -1,0 +1,16 @@
+
+
+<div class="modal-content siteColor">
+    <div class="modal-header">
+        <p class="modal-title">View Image</p>
+        <div type="button" class="close" (click)="bsModalRef.hide()">
+            <i class="bi bi-x-circle-fill"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <img src="{{docPath}}{{obj.proofDocumentDetailId}}{{obj.proofFileExtenstion}}" alt="cricket ipl" class="rounded-3 siteheightwidth100">
+        </div>
+    </div>
+</div>
+

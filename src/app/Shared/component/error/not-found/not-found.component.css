@@ -1,0 +1,42 @@
+.not-found-shell {
+  min-height: calc(100vh - 140px);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.not-found-card {
+  width: min(100%, 620px);
+  text-align: center;
+  border-radius: 22px;
+  padding: 2rem 1.2rem;
+  border: 1px solid rgba(255, 141, 33, 0.35);
+  background: radial-gradient(circle at 20% 0%, rgba(255, 132, 0, 0.2), rgba(20, 17, 27, 0.95) 60%);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35), 0 0 14px rgba(255, 132, 0, 0.15);
+}
+
+.error-code {
+  font-size: clamp(3rem, 11vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1;
+  color: #ffb164;
+  text-shadow: 0 0 16px rgba(255, 138, 0, 0.35);
+}
+
+.not-found-card h1 {
+  margin: 0.7rem 0 0.4rem;
+  color: #fff0de;
+}
+
+.not-found-card p {
+  max-width: 480px;
+  margin: 0 auto 1rem;
+  color: #ffd2aa;
+}
+
+.not-found-btn {
+  min-width: 170px;
+  border-radius: 999px;
+  text-decoration: none;
+  display: inline-block;
+}

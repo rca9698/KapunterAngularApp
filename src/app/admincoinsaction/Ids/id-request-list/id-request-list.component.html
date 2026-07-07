@@ -1,0 +1,49 @@
+
+<div class="col-12 text-center listtypeview">
+    <p class="text-uppercase">ID Requests Listing</p>
+</div>
+
+<div class="mt-4">
+<div class="customtable">
+    <!-- Table with hoverable rows -->
+    <table class="table table-hover scrollbar " id="userList">
+        <thead>
+        <tr class="tableHeaderClass">
+            <th scope="col"><p class="">User Number</p></th>
+            <th scope="col"><p class="">Application</p></th>
+            <th scope="col"><p class="">User Name</p></th>
+            <th scope="col"><p class="">Requested Date</p></th>
+            <th scope="col"><p class="">Action</p></th>
+            </tr>
+        </thead>
+        <tbody> 
+            <tr *ngFor="let ids of idRequestList">
+            <th scope="row"><p>{{ids.userNumber}}</p></th>
+            <td><p>{{ids.siteURL}}</p></td>
+            <td><p>{{ids.userName}}</p></td>
+            <td><p>{{ids.createdDate}}</p></td>
+                <td>
+                    <div class="btn-group">
+                    <button (click)="CreateIDPopup(ids)"> <i class="bi bi-pencil-square"></i></button>
+                    <button (click)="DeleteIDRequest(ids)"> <i class="bi bi-trash-fill"></i> </button>
+                    </div>
+                </td>
+            </tr>  
+        </tbody>
+    </table>
+</div>
+</div>
+<div class="pagination">
+    <a (click)="PaginationNumber(6)" p-id="previous">&laquo;</a>
+    <span *ngFor="let pagination of getCountArray()"> 
+        <a (click)="PaginationNumber(pagination)">
+            {{pagination+1}}
+        </a>
+    </span>
+
+    <!-- <a p-id="3" (click)="PaginationNumber(3)">3</a>
+    <a p-id="4" (click)="PaginationNumber(4)">4</a>
+    <a p-id="5" (click)="PaginationNumber(5)">5</a>
+    <a p-id="6" (click)="PaginationNumber(6)">6</a> -->
+    <a (click)="PaginationNumber(paginationCount)" p-id="next">&raquo;</a>
+  </div>

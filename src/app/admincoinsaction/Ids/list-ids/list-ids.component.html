@@ -1,0 +1,45 @@
+<div class="col-12 text-center listtypeview">
+  <p class="text-uppercase">Created Accounts</p>
+</div>
+
+<div class="mt-4">
+  <div class="customtable">
+    <table class="table table-hover scrollbar" id="createdIdsList">
+      <thead>
+        <tr class="tableHeaderClass">
+          <th scope="col"><p>User Number</p></th>
+          <th scope="col"><p>Application</p></th>
+          <th scope="col"><p>User Name</p></th>
+          <th scope="col"><p>Created Date</p></th>
+          <th scope="col"><p>Action</p></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let id of idList">
+          <th scope="row"><p>{{ id.userNumber }}</p></th>
+          <td><p>{{ id.siteURL || id.siteName }}</p></td>
+          <td><p>{{ id.userName }}</p></td>
+          <td><p>{{ id.createdDate }}</p></td>
+          <td>
+            <div class="btn-group">
+              <button type="button" (click)="DeleteID(id)">
+                <i class="bi bi-trash-fill"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="idList.length === 0">
+          <td colspan="5" class="text-center">No accounts found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pagination" *ngIf="paginationCount > 1">
+  <a (click)="PaginationNumber(1)">&laquo;</a>
+  <span *ngFor="let pagination of getCountArray()">
+    <a (click)="PaginationNumber(pagination + 1)">{{ pagination + 1 }}</a>
+  </span>
+  <a (click)="PaginationNumber(paginationCount)">&raquo;</a>
+</div>

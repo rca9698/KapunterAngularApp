@@ -1,0 +1,95 @@
+pipeline {
+    agent any
+
+   environment {
+        // Define any environment variables you need
+        DOTNET_CLI_HOME = "C:\\Hosting_Path\\Kapunter"
+        // Add more environment variables if needed
+    }
+
+    tools {
+         nodejs 'NodeJs' // Ensure this name matches the configured Node.js installation
+         git 'Default'  // Ensure this name matches the configured Git installation
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Use credentialsId to specify which credentials to use
+                git branch: 'main',
+                    url: 'https://github.com/rca9698/kapunterUI_angular.git',
+                    credentialsId: 'baf98ba6-ca73-48c4-9c70-6f40d62d694e'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Install npm dependencies
+                    sh 'npm install' // Use 'bat' for Windows and 'sh' for Unix-based systems
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'ng build --prod'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    sh 'ng test --watch=false'
+                }
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                script {
+                    // Define the path to your build artifacts
+                    def buildDir = 'dist/kapunterUI_angular'
+
+                    // Copy build artifacts to a publish directory
+                    bat "mkdir publish"
+                    bat "xcopy /E /I /Y ${buildDir} publish"
+
+                    // Optionally, you can also upload the artifacts or deploy them directly
+                    // to a web server, FTP server, or Azure blob storage, etc.
+                    // For example, using Azure CLI to upload to Azure Blob Storage:
+                    // bat "az storage blob upload-batch -d <container-name> -s publish --account-name <storage-account-name>"
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: '348ca27f-56e9-4ced-8f63-d1be78161012', passwordVariable: 'CREDENTIAL_PASSWORD', usernameVariable: 'CREDENTIAL_USERNAME')]) {
+                    powershell '''
+                    
+                    $credentials = New-Object System.Management.Automation.PSCredential($env:CREDENTIAL_USERNAME, (ConvertTo-SecureString $env:CREDENTIAL_PASSWORD -AsPlainText -Force))
+
+                    
+                    New-PSDrive -Name X -PSProvider FileSystem -Root "\\\\20.55.100.73\\Hosting_Path\\Kapunter" -Persist -Credential $credentials
+
+                    
+                    Copy-Item -Path '.\\publish\\*' -Destination 'X:\' -Force
+
+                    
+                    Remove-PSDrive -Name X
+                    '''
+                }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build, test, and publish successful!'
+        }
+    }
+}

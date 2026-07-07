@@ -1,0 +1,51 @@
+<div class="modal-content siteColor">
+    <form (ngSubmit)="withdraw_coins_by_request_id()" [formGroup]="WithdrawCoinsByRequestIDFrom">
+        <div class="modal-header">
+            <p class="modal-title" id="exampleModalLabel">Withdraw</p>
+            <div type="button" class="close"  (click)="bsModalRef.hide()" aria-label="Close">
+                <i class="bi bi-x-circle-fill"></i>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="form-group col-12">
+                <div class="d-flex flex-column text-center col-12">
+                    <span class="business">WALLET BALANCE</span>
+                    <span class=""><i class="bi bi-currency-rupee"></i>{{authservice.userdetail.coins}}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Mobile Number*</label>
+                <input [disabled]="true" type="text" formControlName="userNumber" class="form-control" [(ngModel)]="obj.userNumber" autocomplete="off">
+                <div class="text-danger" *ngIf="WithdrawCoinsByRequestIDFrom.get('userNumber')?.invalid && (submitted || WithdrawCoinsByRequestIDFrom.get('userNumber')?.touched || WithdrawCoinsByRequestIDFrom.get('userNumber')?.dirty)">
+                    <span *ngIf="WithdrawCoinsByRequestIDFrom.get('userNumber')?.errors?.['required']"> Mobile Number is required </span> </div>
+            </div>
+            <div class="form-group">
+                <label>Coins(<i class="bi bi-currency-rupee"></i>)*</label>
+                <input [disabled]="true" type="text" formControlName="coins" class="form-control" placeholder="Coins" [(ngModel)]="obj.coins" autocomplete="off">
+                <div class="text-danger" *ngIf="WithdrawCoinsByRequestIDFrom.get('coins')?.invalid && (submitted || WithdrawCoinsByRequestIDFrom.get('coins')?.touched || WithdrawCoinsByRequestIDFrom.get('coins')?.dirty)">
+                <span *ngIf="WithdrawCoinsByRequestIDFrom.get('coins')?.errors?.['required']"> Coins are required </span> </div>
+            </div>
+            <div class="form-group">
+                <div method="post" enctype="multipart/form-data" style="margin-top: 10px">
+                    <div class="form-group col-12 px-0">
+                        <label class="kp-file-upload">
+                            <span class="kp-file-upload-ui">
+                                <i class="bi bi-cloud-arrow-up kp-file-upload-icon" aria-hidden="true"></i>
+                                <span class="kp-file-upload-title">Choose proof image</span>
+                                <span class="kp-file-upload-hint">Full width · tap anywhere · JPG or PNG</span>
+                                <span class="kp-file-upload-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
+                            </span>
+                            <input class="kp-file-upload-input" #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
+                        </label>
+                        <div class="text-danger mt-2" *ngIf="!this.file && (submitted || WithdrawCoinsByRequestIDFrom.get('coins')?.touched)">
+                            <span>File is required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn siteBtnbackground">Withdraw Coins</button>
+        </div>
+    </form>
+</div>

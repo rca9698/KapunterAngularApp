@@ -1,0 +1,438 @@
+﻿.sitebackground {
+    background-color: #242223 !important;
+}
+
+.modal-dialog .modal-content, .modal-dialog, .card,
+.form-control, .form-control:focus, .form-select {
+    background-color: #242223 !important;
+    color: #FFF !important;
+}
+
+::-webkit-input-placeholder{
+    color: #FFF !important;
+}
+
+table button{
+    background: transparent;
+    border: none;
+}
+
+/* .form-select, .form-control, .form-control:focus {
+    background: #000 !important;
+    color: #FFF !important;
+} */
+
+.modallogosize,
+.modal-brand-logo {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    max-height: 125px;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 12px;
+}
+
+i{
+    color: #FFF;
+}
+
+.modal-header {
+    display: grid;
+    grid-template-columns: 36px 1fr 36px;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 0 none;
+    padding: 0.75rem 1rem;
+    min-height: 48px;
+}
+
+.modal-header .modal-title {
+    grid-column: 2;
+    text-align: center;
+    margin: 0;
+    align-self: center;
+}
+
+.modal-header > .close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    line-height: 1;
+}
+
+.modal-header > .close i {
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+.modal-header > .close:first-child:not(:only-child) {
+    grid-column: 1;
+    justify-self: start;
+}
+
+.modal-header > .close:last-child,
+.modal-header > .close:only-of-type {
+    grid-column: 3;
+    justify-self: end;
+}
+
+.custom_card-header{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 1rem;
+}
+
+/* .dashboard-nav {
+    background-color: #070F1B !important;
+} */
+
+.dashboard-content {
+    /*background-color: #65a765 !important;*/
+    padding: 0px
+}
+
+/* .dashboard-toolbar, .modal-dialog .modal-content, .modal-dialog .card {
+    background-color: #070F1B !important;
+} */
+
+
+    .dashboard-toolbar .menu-toggle {
+        width: 5vw;
+        height: 5vw;
+        /* background: #51087E !important; */
+        border-radius: 50%;
+    }
+
+
+
+
+.modal-header .close i {
+    color: #7752A2;
+}
+
+.idSwitch {
+    padding: 10px;
+}
+
+.dashboard-content .card {
+    background: #000000 !important;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.632);
+}
+
+.modal-dialog {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.siteColor {
+    color: #FFFF !important;
+}
+
+.modal-title {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+}
+
+.modal-footer {
+    border-top: 0 none;
+}
+
+.fv-plugins-message-container {
+    color: red;
+}
+
+.siteheightwidth100 {
+    height: 100% !important;
+    width: 100% !important;
+}
+/*
+.siteBorderRadius {
+    border-radius: 10px 10px 10px 10px !important;
+}
+*/
+.siteImageSize {
+    width: 7vw;
+    height: 7vw;
+    object-fit: cover;
+}
+
+.siteIcon {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    display: block;
+}
+
+.modal-site-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    gap: 0.2rem;
+}
+
+.modal-site-profile > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.modal-site-profile > span .siteIcon,
+.modal-site-profile > span .siteImageSize,
+.modal-body .siteIcon,
+.modal-body .siteImageSize {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+/*.imageSpanCircle {
+    height: 51px;
+    width: 51px;
+    margin-left: 45%;
+}*/
+
+.pSiteNameFontSize {
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.pSiteURLFontSize {
+    font-size: 12px;
+}
+
+.BtnFontSize {
+    font-size: 10px;
+}
+
+.table {
+    color: #FFFF;
+}
+
+.table-hover > tbody > tr:hover {
+    color: #FFFF;
+}
+
+.cursorPointer {
+    cursor: pointer;
+}
+
+.contentAlignType {
+    align-content: center;
+    text-align: center
+}
+
+.customtable {
+    overflow: scroll;
+    height: 500px;
+}
+
+    .customtable thead p {
+        text-transform: uppercase;
+    }
+
+.userlistingCircle {
+    width: 5vw;
+    height: 5vw;
+    font-size: 10px;
+    border-radius: 50%;
+}
+
+.bgclrred {
+    /*background-color: red;*/
+    background: transparent;
+    border: solid red;
+    margin: 4px;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.632);
+}
+
+.bgclrGreen {
+    /*background-color: green*/
+    background: transparent;
+    border: solid green;
+    margin: 4px;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.632);
+}
+
+.backbtnNavDesign {
+    background: #0f1424;
+    height: 23px;
+    width: 100%;
+    margin: 0px 0px 20px 0px;
+    border-radius: 10px 10px 10px 10px;
+    color: #FFFF;
+}
+
+
+#listSites .card, #listPassbookHistory .card {
+    margin-top: 5px;
+}
+
+#listSites .card-body, #listPassbookHistory .card-body {
+    padding: 15px;
+}
+
+.btn-sm {
+    font-size: 5px;
+}
+
+.dashboardSite .card .card-body p, .dashboardSite .card-body p {
+    font-size: 15px
+}
+/* 
+.tempclass {
+    @extend .grid-margin;
+    @extend .stretch-card;
+    @extend .bg-dark-1;
+    @extend .rounded;
+    @extend .text-center;
+} */
+
+
+
+.modalContentBgclr {
+    background: #212529;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.DeleteAdminBankAccount {
+    text-align: right;
+}
+
+.MakeAdminBankDefault {
+    text-align: left;
+}
+
+/*#CreateIDRequestModalBtn, #AddBankDetailModalBtn1, #AddAdminUpiDetailModalBtn {
+    background: transparent;
+    margin: 4px;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.632);
+}*/
+
+.divstyle {
+    margin-bottom: 5px;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.632);
+}
+
+.createIdBtn {
+    padding: 10px;
+    background: transparent;
+    border: solid #070F1B;
+}
+
+.cardDisabled {
+    background: #00000059 !important;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.632);
+    color: #ffffff8c;
+}
+
+    .cardDisabled p {
+        color: #ffffff8c;
+    }
+
+.paymentProof {
+    height: 25vw;
+    width: 25vw;
+    margin-top: 10px;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, 0.632);
+}
+
+.modal-body {
+    padding: 0.5rem;
+}
+
+.RejectedColor {
+    color: red;
+}
+
+.approvedColor {
+    color: green;
+}
+
+.row > * {
+    padding-right: 0px;
+}
+
+.row {
+    margin-right: 0px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .siteImageSize {
+        width: 14vw;
+        height: 14vw;
+    }
+
+    .modal-body .siteIcon,
+    .modal-body .siteImageSize,
+    .modal-site-profile > span,
+    .modal-site-profile > span .siteIcon,
+    .modal-site-profile > span .siteImageSize {
+        width: 56px;
+        height: 56px;
+    }
+
+    .dashboardSite .card .card-body p, .dashboardSite .card-body p {
+        font-size: 6px
+    }
+
+    .p {
+        font-size: 9px
+    }
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (max-width: 750px) {
+    .siteImageSize {
+        width: 14vw;
+        height: 14vw;
+    }
+
+    .modal-body .siteIcon,
+    .modal-body .siteImageSize,
+    .modal-site-profile > span,
+    .modal-site-profile > span .siteIcon,
+    .modal-site-profile > span .siteImageSize {
+        width: 56px;
+        height: 56px;
+    }
+
+    .dashboardSite .card .card-body p, .dashboardSite .card-body p {
+        font-size: 6px
+    }
+
+    .p {
+        font-size: 10px
+    }
+}
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (max-width: 768px) {
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (max-width: 992px) {
+}
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (max-width: 1200px) {
+}

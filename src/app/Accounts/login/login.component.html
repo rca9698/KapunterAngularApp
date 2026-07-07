@@ -1,0 +1,63 @@
+  <div class="modal-header">
+     <div type="button" class="close" *ngIf="backButtonVisibility" (click)="backToMobileNumber()">
+        <i class="bi bi-arrow-left-circle-fill"></i>
+      </div>
+      <p class="modal-title">{{logintype}}</p>
+      <div type="button" class="close" (click)="bsModalRef.hide()">
+        <i class="bi bi-x-circle-fill"></i>
+      </div>
+  </div>
+  <div class="card-header py-4 text-center">
+      <img src="../../../assets/kapunter-logo.jpeg" alt="logo" class="modal-brand-logo">
+  </div>
+
+  <div class="card-body p-4">
+
+      <div class="text-center w-75 m-auto">
+          <p class="text-center pb-0 fw-bold text-uppercase">Welcome to the club!</p>
+      </div>
+      <form (ngSubmit)="SendOtp()" [formGroup]="SendOtpForm" autocomplete="off" *ngIf="showMobileModalForm">
+          <div class="mb-3 form-group">
+              <label for="userNumber" class="form-label">Mobile Number *</label>
+              <input class="form-control" type="number" formControlName="userNumber" placeholder="Mobile Number" autocomplete="off">
+              <div class="text-danger" *ngIf="SendOtpForm.get('userNumber')?.invalid && (submitted || SendOtpForm.get('userNumber')?.touched || SendOtpForm.get('userNumber')?.dirty)">
+              <span *ngIf="SendOtpForm.get('userNumber')?.errors?.['required']"> Mobile Number is required </span> </div>
+          </div>
+
+          <div class="col-12 mb-0 text-center">
+              <button class="col-12 btn siteBtnbackground" type="submit"> Get OTP On SMS </button>
+          </div>
+      </form>
+      <form (ngSubmit)="LoginToApp()" [formGroup]="LoginForm" autocomplete="off" *ngIf="showOtpPasswordModalForm">
+          
+        <div class="mb-3 form-group otpFormGroup" *ngIf="showOtp">
+              <label for="otp" class="form-label">OTP*</label>
+              <div class="input-group input-group-merge">
+                  <input type="text" formControlName="otp" class="form-control" placeholder="Please Enter otp" autocomplete="off">
+                  <!-- <div class="input-group-text sitebackground siteColor viewotp" data-password="false">
+                      <span><i class="bi bi-eye-fill"></i></span>
+                  </div> -->
+              </div>
+              <div class="text-danger" *ngIf="LoginForm.get('otp')?.invalid && (submitted || LoginForm.get('otp')?.touched || LoginForm.get('otp')?.dirty)">
+              <span *ngIf="LoginForm.get('otp')?.errors?.['required']"> Otp is required </span> </div>
+              <span href="#" class="float-end" (click)="LoadPassword()" style="cursor: pointer; color: #3f84fc; text-decoration: none; background-color: transparent;"><small>Use Password</small></span>
+          </div>
+
+          <div class="mb-3 form-group" *ngIf="showPassword">
+              <label for="password" class="form-label">Password*</label>
+              <div class="input-group input-group-merge">
+                  <input type="{{passwordType}}" formControlName="password" class="form-control password" placeholder="Please Enter password" autocomplete="off">
+                  <div class="input-group-text sitebackground siteColor viewPassword" data-password="false" (click)="ViewPassword()">
+                      <span><i class="bi bi-eye-fill"></i></span>
+                  </div>
+              </div>
+              <div class="text-danger" *ngIf="LoginForm.get('password')?.invalid && (submitted || LoginForm.get('password')?.touched || LoginForm.get('password')?.dirty)">
+              <span *ngIf="LoginForm.get('password')?.errors?.['required']"> Password is required </span> </div>
+              <span href="#" class="float-end" (click)="LoadOTP()" style="cursor: pointer; color: #3f84fc; text-decoration: none; background-color: transparent;"><small>Use OTP</small></span>
+          </div>
+
+          <div class="col-12 mb-0 text-center">
+              <button class="col-12 btn siteBtnbackground" type="submit"> Log In </button>
+          </div>
+      </form> 
+  </div>

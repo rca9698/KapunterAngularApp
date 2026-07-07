@@ -1,0 +1,31 @@
+<div class="modal-content siteColor">
+    <form (ngSubmit)="SendWithdrawCoinsUserId()" [formGroup]="WithdrawCoinsUserIdForm" autocomplete="off">
+        <div class="modal-header">
+            <p class="modal-title">Withdraw Coins</p>
+            <div type="button" class="close" (click)="bsModalRef.hide()">
+                <i class="bi bi-x-circle-fill"></i>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="form-group col-12">
+                <div class="d-flex flex-column text-center col-12">
+                    <span class="business">WALLET BALANCE</span>
+                    <span><i class="bi bi-currency-rupee"></i>{{authservice.userdetail.coins}}</span>
+                    </div>
+            </div>
+            <div class="form-group">
+                <label>Mobile Number*</label>
+                <input [disabled]="true" type="text" formControlName="userNumber" class="form-control" [(ngModel)]="obj.userNumber" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>Coins(<i class="bi bi-currency-rupee"></i>)*</label>
+                <input type="text" formControlName="coins" class="form-control" placeholder="Coins" autocomplete="off">
+                <div class="text-danger" *ngIf="WithdrawCoinsUserIdForm.get('coins')?.invalid && (submitted || WithdrawCoinsUserIdForm.get('coins')?.touched || WithdrawCoinsUserIdForm.get('coins')?.dirty)">
+                <span *ngIf="WithdrawCoinsUserIdForm.get('coins')?.errors?.['required']"> coins are is required </span> </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn siteBtnbackground">Withdraw Coins</button>
+        </div>
+    </form>
+</div>

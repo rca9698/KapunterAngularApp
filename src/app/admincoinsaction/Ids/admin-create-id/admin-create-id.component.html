@@ -1,0 +1,43 @@
+
+
+
+<div class="modal-content siteColor">
+    <form (ngSubmit)="AdminCreateId()" [formGroup]="AdminCreateIdForm">
+        <div class="modal-header">
+            <p class="modal-title">CREATE ID</p>
+            <div type="button" class="close" (click)="bsModalRef.hide()">
+                <i class="bi bi-x-circle-fill"></i>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="form-group col-12">
+                <div class="d-flex flex-column text-center col-12 modal-site-profile">
+                    <span>
+                        <img class="siteIcon rounded-circle" src="{{this.sitePath}}{{obj?.documentDetailId}}{{obj?.fileExtenstion}}" />
+                    </span>
+                    <p class="text-uppercase">{{obj?.siteName}}</p>
+                    <p>{{obj?.siteURL}}</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>User Name*</label>
+                <input formControlName="userName" [(ngModel)]="obj.userName" type="text" class="form-control" placeholder="User Name" autocomplete="off">
+                <div class="text-danger" *ngIf="AdminCreateIdForm.get('userName')?.invalid && (submitted || AdminCreateIdForm.get('userName')?.touched || AdminCreateIdForm.get('userName')?.dirty)">
+                 <span *ngIf="AdminCreateIdForm.get('userName')?.errors?.['required']"> User Name is required </span> </div>
+            </div>
+            <div class="form-group">
+                <label>Password*</label>
+                <input formControlName="password" [(ngModel)]="admin_add_id.password" type="text" class="form-control" placeholder="Password" autocomplete="off">
+                <div class="text-danger" *ngIf="AdminCreateIdForm.get('password')?.invalid && (submitted || AdminCreateIdForm.get('password')?.touched || AdminCreateIdForm.get('password')?.dirty)">
+                 <span *ngIf="AdminCreateIdForm.get('password')?.errors?.['required']"> Password is required </span> </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn siteBtnbackground col-12">Create ID</button>
+        </div>
+    </form>
+</div>
+
+
+ 

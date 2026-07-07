@@ -1,0 +1,46 @@
+<header class="dashboard-toolbar sitebackground navbar-shell">
+  <div class="navbar-toolbar-row">
+    <a class="menu-toggle" role="button" tabindex="0" aria-label="Open menu">
+      <i class="bi bi-list"></i>
+    </a>
+
+    <div class="navbar-brand-center">
+      <div class="brand-title" (click)="RedirectToHome()">KAPUNTER</div>
+    </div>
+
+    <nav class="navbar-auth-cluster" aria-label="Account actions">
+      <ng-container *ngIf="!(authservice.isLoggenIn | async)">
+        <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight" tabindex="0" (click)="loginPopup()">
+          Login &nbsp;|&nbsp; Signup
+        </button>
+      </ng-container>
+      <ng-container *ngIf="(authservice.isLoggenIn | async)">
+        <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight" tabindex="0" (click)="goToMyAccount()">My Account</button>
+        <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight nav-pill-logout" tabindex="0" (click)="logout()">Logout</button>
+      </ng-container>
+    </nav>
+  </div>
+
+  <div
+    class="visitor-counter-bar"
+    *ngIf="visitorCountService.stats$ | async as liveStats"
+    aria-live="polite"
+    aria-label="Platform login statistics"
+  >
+    <div class="visitor-counter-bar-glow" aria-hidden="true"></div>
+    <div class="visitor-counter-icon" aria-hidden="true">
+      <i class="bi bi-people-fill"></i>
+      <span class="visitor-live-dot"></span>
+    </div>
+    <div class="visitor-counter-copy">
+      <span class="visitor-counter-label">Total logins</span>
+      <strong class="visitor-counter-value">{{ formatCount(displayTotal) }}</strong>
+    </div>
+    <div class="visitor-counter-trend">
+      <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
+      <span>+{{ formatCount(liveStats.todayVisits) }} today</span>
+      <span class="visitor-counter-sep" aria-hidden="true">·</span>
+      <span class="visitor-counter-week">{{ formatCount(liveStats.weekVisits) }} this week</span>
+    </div>
+  </div>
+</header>

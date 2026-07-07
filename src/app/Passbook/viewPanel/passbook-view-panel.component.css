@@ -1,0 +1,403 @@
+.passbook-shell {
+  width: min(100%, 820px);
+  margin: 0 auto;
+  padding: 0.75rem 0.85rem 6rem;
+  box-sizing: border-box;
+}
+
+.passbook-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 140, 40, 0.45);
+  background: radial-gradient(120% 120% at 85% 0%, rgba(255, 120, 0, 0.2), rgba(12, 10, 20, 0.96));
+  box-shadow: 0 0 20px rgba(255, 130, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.passbook-hero-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 149, 31, 0.18);
+  border: 1px solid rgba(255, 160, 80, 0.35);
+  color: #ffc68f;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.passbook-hero-copy {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.passbook-hero-copy h1 {
+  margin: 0;
+  font-size: clamp(1.1rem, 3.2vw, 1.45rem);
+  font-weight: 800;
+  color: #fff4e8;
+}
+
+.passbook-hero-copy p {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  color: #ffcfa3;
+}
+
+.passbook-hero-stat {
+  text-align: right;
+  margin-left: auto;
+}
+
+.passbook-hero-stat-label {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffcfab;
+}
+
+.passbook-hero-stat strong {
+  font-size: 1.35rem;
+  color: #fff4e8;
+  font-variant-numeric: tabular-nums;
+}
+
+.passbook-loading,
+.passbook-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #c9b8a8;
+}
+
+.passbook-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.passbook-empty .bi-inbox {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 0.65rem;
+  color: #ffb164;
+  opacity: 0.85;
+}
+
+.passbook-empty h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+  color: #fff0de;
+}
+
+.passbook-empty p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.passbook-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.passbook-card {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 136, 26, 0.45);
+  background: linear-gradient(165deg, rgba(22, 19, 32, 0.98), rgba(8, 7, 14, 0.99));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 14px rgba(255, 120, 0, 0.08);
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.passbook-card:hover {
+  border-color: rgba(255, 160, 60, 0.65);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 120, 0, 0.14);
+}
+
+.card-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 0.85rem;
+}
+
+.passbook-image-wrapper,
+.detail-image-wrapper {
+  flex-shrink: 0;
+  width: 58px;
+  height: 58px;
+}
+
+.passbook-image,
+.detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 149, 31, 0.5);
+  box-shadow: 0 0 12px rgba(255, 130, 0, 0.18);
+}
+
+.passbook-image-fallback,
+.detail-image-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 149, 31, 0.45);
+  background: rgba(255, 149, 31, 0.12);
+  color: #ffc978;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.passbook-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-title {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #fff6ed;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-url {
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  color: #ffd6b2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-username {
+  margin: 0.15rem 0 0;
+  font-size: 0.68rem;
+  color: #a89888;
+}
+
+.metadata-section {
+  margin-top: 0.35rem;
+}
+
+.created-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.68rem;
+  color: #8f8275;
+}
+
+.passbook-right {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.coins-amount {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffba70;
+  font-variant-numeric: tabular-nums;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.passbook-chevron {
+  color: rgba(255, 201, 120, 0.7);
+  font-size: 0.95rem;
+}
+
+.detail-back-btn {
+  width: 100%;
+  border: 1px solid rgba(255, 149, 31, 0.4);
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 0.85rem;
+  background: rgba(255, 120, 0, 0.1);
+  color: #ffd6b2;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.detail-back-btn:hover {
+  background: rgba(255, 120, 0, 0.18);
+}
+
+.detail-site-card {
+  text-align: center;
+  padding: 1.25rem 1rem;
+  margin-bottom: 0.85rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 136, 26, 0.45);
+  background: linear-gradient(165deg, rgba(22, 19, 32, 0.98), rgba(8, 7, 14, 0.99));
+}
+
+.detail-image-wrapper {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 0.75rem;
+}
+
+.detail-site-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #fff4e8;
+}
+
+.detail-site-url {
+  margin: 0.25rem 0 0.65rem;
+  font-size: 0.75rem;
+  color: #ffd6b2;
+  word-break: break-all;
+}
+
+.detail-status-pill {
+  display: inline-block;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.detail-desc-card,
+.detail-grid-card {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 149, 31, 0.28);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.detail-desc-label,
+.detail-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffcfab;
+}
+
+.detail-desc-text {
+  margin: 0;
+  color: #fff0de;
+  line-height: 1.55;
+  font-size: 0.9rem;
+}
+
+.nav-item-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 149, 31, 0.25), transparent);
+  margin-bottom: 0.5rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.82rem;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row span {
+  color: #a89888;
+}
+
+.detail-row strong {
+  color: #fff4e8;
+  font-weight: 700;
+  text-align: right;
+}
+
+.detail-proof {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 149, 31, 0.35);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.detail-proof-label {
+  margin: 0;
+  padding: 0.65rem 0.85rem 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffcfab;
+}
+
+.detail-proof img {
+  display: block;
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  padding: 0.65rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+  .passbook-shell {
+    padding: 0.65rem 0.65rem 5rem;
+  }
+
+  .card-inner {
+    flex-wrap: wrap;
+  }
+
+  .passbook-right {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .passbook-chevron {
+    display: none;
+  }
+}

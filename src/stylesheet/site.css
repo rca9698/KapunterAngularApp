@@ -1,0 +1,59 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.table {
+  border-radius: 10px;
+}
+
+.listtypeview {
+  border-width: 10px;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.customtable thead th {
+  position: sticky; /* make the table heads sticky */
+  top: 0px; /* table head will be placed from the top of the table and sticks to it */
+  z-index: 1;
+}
+
+.table>:not(caption)>*>*{
+  background-color: #242223 !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}

@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <p class="modal-title">UPI Detail</p>
+    <div type="button" class="close" (click)="bsModalRef.hide()">
+      <i class="bi bi-x-circle-fill"></i>
+    </div>
+</div>
+<div class="card-header py-4 text-center">
+    <img src="../../../../assets/kapunter-logo.jpeg" class="modallogosize" alt="logo">
+</div>
+
+<div class="card-body p-4">
+    <form (ngSubmit)="Add_User_Upi()" [formGroup]="addUserUpiForm" autocomplete="off">
+        <div class="mb-3 form-group">
+            <label for="UpiName" class="form-label">UPI Name*</label>
+            <input class="form-control" type="text" formControlName="UpiName" placeholder="UPI Name" autocomplete="off" [(ngModel)]="add_user_upi.userName">
+            <div class="text-danger" *ngIf="addUserUpiForm.get('UpiName')?.invalid && (submitted || addUserUpiForm.get('UpiName')?.touched || addUserUpiForm.get('UpiName')?.dirty)">
+            <span *ngIf="addUserUpiForm.get('UpiName')?.errors?.['required']">UPI Name is required</span></div>
+        </div>
+
+        <div class="mb-3 form-group">
+            <label for="UpiId" class="form-label">UPI ID*</label>
+            <input class="form-control" type="text" formControlName="UpiId" placeholder="example@upi" autocomplete="off" [(ngModel)]="add_user_upi.upiId">
+            <div class="text-danger" *ngIf="addUserUpiForm.get('UpiId')?.invalid && (submitted || addUserUpiForm.get('UpiId')?.touched || addUserUpiForm.get('UpiId')?.dirty)">
+            <span *ngIf="addUserUpiForm.get('UpiId')?.errors?.['required']">UPI ID is required</span></div>
+        </div>
+
+        <div class="col-12 mb-0 text-center">
+            <button class="col-12 btn siteBtnbackground" type="submit">Add UPI Detail</button>
+        </div>
+    </form>
+</div>

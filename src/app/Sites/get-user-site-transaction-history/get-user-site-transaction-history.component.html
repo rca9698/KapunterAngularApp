@@ -1,0 +1,62 @@
+<div class="modal-content txn-history-modal siteColor">
+  <div class="modal-header txn-history-header">
+    <div class="txn-history-heading">
+      <div class="txn-history-brand" *ngIf="contextSite">
+        <div class="txn-history-logo-wrap" *ngIf="hasSiteImage(); else siteIconFallback">
+          <img [src]="getSiteImageUrl()" [alt]="contextSite.siteName" loading="lazy" />
+        </div>
+        <ng-template #siteIconFallback>
+          <div class="txn-history-logo-fallback" aria-hidden="true">
+            <i class="bi bi-globe2"></i>
+          </div>
+        </ng-template>
+        <div class="txn-history-title-wrap">
+          <p class="modal-title" id="txnHistoryTitle">Transaction History</p>
+          <p class="txn-history-sub">{{ contextSite.siteName }}</p>
+          <p class="txn-history-url" *ngIf="contextSite.siteURL">{{ contextSite.siteURL }}</p>
+        </div>
+      </div>
+      <p class="modal-title" id="txnHistoryTitleFallback" *ngIf="!contextSite">Transaction History</p>
+    </div>
+    <button type="button" class="close txn-history-close" (click)="close()" aria-label="Close">
+      <i class="bi bi-x-circle-fill"></i>
+    </button>
+  </div>
+
+  <div class="modal-body txn-history-body">
+    <div class="txn-history-loading" *ngIf="loading">
+      <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
+      <span>Loading transactions…</span>
+    </div>
+
+    <div class="txn-history-list" *ngIf="!loading && passbooks.length > 0">
+      <article *ngFor="let txn of passbooks" class="txn-history-card" [style.borderLeftColor]="txn.trxColor || '#ff9100'">
+        <div class="txn-history-card-top">
+          <div class="txn-history-card-logo" *ngIf="hasTxnImage(txn); else txnIconFallback">
+            <img [src]="getTxnImageUrl(txn)" [alt]="getTxnSiteLabel(txn)" loading="lazy" />
+          </div>
+          <ng-template #txnIconFallback>
+            <div class="txn-history-card-logo txn-history-card-logo--fallback" aria-hidden="true">
+              <i class="bi bi-receipt"></i>
+            </div>
+          </ng-template>
+          <div class="txn-history-card-meta">
+            <span class="txn-history-date">{{ txn.createdDate | date: 'MMM dd, yyyy · hh:mm a' }}</span>
+            <p class="txn-history-desc">{{ txn.activityDescription }}</p>
+            <p class="txn-history-site">{{ getTxnSiteLabel(txn) }}</p>
+          </div>
+          <strong class="txn-history-amount" [style.color]="txn.trxColor || '#ffba70'">{{ txn.displayCoins }}</strong>
+        </div>
+        <div class="txn-history-card-foot">
+          <span class="txn-history-status" [style.backgroundColor]="txn.trxColor || '#ff9100'">{{ txn.trxStatus }}</span>
+          <span class="txn-history-id">Ref #{{ txn.passbookHistoryId }}</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="txn-history-empty" *ngIf="!loading && passbooks.length === 0">
+      <i class="bi bi-inbox" aria-hidden="true"></i>
+      <p>No transactions found for this site yet.</p>
+    </div>
+  </div>
+</div>

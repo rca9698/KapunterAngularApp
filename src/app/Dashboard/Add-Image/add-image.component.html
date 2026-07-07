@@ -1,0 +1,40 @@
+
+<div class="modal-content siteColor">
+    <form (ngSubmit)="AddDashboardImage()" [formGroup]="AddImageForm">
+        <div class="modal-header">
+            <p class="modal-title">Site</p>
+            <div type="button" class="close" (click)="bsModalRef.hide()">
+                <i class="bi bi-x-circle-fill"></i>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Display Date</label>
+                <input formControlName="date" type="date" class="form-control" placeholder="Date" autocomplete="off">
+                <div class="text-danger" *ngIf="AddImageForm.get('date')?.invalid && (submitted || AddImageForm.get('date')?.touched || AddImageForm.get('date')?.dirty)">
+                 <span *ngIf="AddImageForm.get('date')?.errors?.['required']"> Date is required </span> </div>
+            </div>
+            <div class="form-group">
+                <div method="post" enctype="multipart/form-data" style="margin-top: 10px">
+                    <div class="form-group col-12 px-0">
+                        <label class="kp-file-upload">
+                            <span class="kp-file-upload-ui">
+                                <i class="bi bi-cloud-arrow-up kp-file-upload-icon" aria-hidden="true"></i>
+                                <span class="kp-file-upload-title">Choose image</span>
+                                <span class="kp-file-upload-hint">Full width · tap anywhere · JPG or PNG</span>
+                                <span class="kp-file-upload-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
+                            </span>
+                            <input class="kp-file-upload-input" #imageInput type="file" formControlName="files" accept="image/*" (change)="processFile(imageInput)">
+                        </label>
+                        <div class="text-danger mt-2" *ngIf="AddImageForm.get('files')?.invalid && (submitted || AddImageForm.get('files')?.touched || AddImageForm.get('files')?.dirty)">
+                            <span *ngIf="AddImageForm.get('files')?.errors?.['required']">Image is required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn siteBtnbackground col-12">Add Image</button>
+        </div>
+    </form>
+</div>

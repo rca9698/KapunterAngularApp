@@ -1,0 +1,72 @@
+<section class="admin-sites-shell">
+  <header class="admin-sites-header">
+    <div class="admin-sites-heading">
+      <h2>Manage sites</h2>
+      <p>View, update, and remove registered platforms</p>
+    </div>
+    <button
+      *ngIf="!loading && sites.length > 0"
+      type="button"
+      class="admin-sites-add-btn"
+      (click)="addSite()"
+    >
+      <i class="bi bi-plus-lg" aria-hidden="true"></i>
+      Add site
+    </button>
+  </header>
+
+  <div class="admin-sites-loading" *ngIf="loading">
+    <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
+    <span>Loading sites…</span>
+  </div>
+
+  <div class="admin-sites-empty" *ngIf="!loading && sites.length === 0">
+    <div class="admin-sites-empty-card">
+      <div class="admin-sites-empty-icon" aria-hidden="true">
+        <i class="bi bi-globe2"></i>
+      </div>
+      <h3>No sites found</h3>
+      <p>
+        There are no registered sites yet. Add a platform to make it available for users.
+      </p>
+      <button type="button" class="admin-sites-empty-btn" (click)="addSite()">
+        <i class="bi bi-plus-circle-fill" aria-hidden="true"></i>
+        Add your first site
+      </button>
+    </div>
+  </div>
+
+  <div class="admin-sites-list" *ngIf="!loading && sites.length > 0">
+    <article class="admin-site-card" *ngFor="let site of sites; trackBy: trackBySiteId">
+      <div class="admin-site-card-main">
+        <div class="admin-site-logo-wrap">
+          <img
+            class="siteImageSize"
+            [src]="sitePath + site.documentDetailId + site.fileExtenstion"
+            [alt]="site.siteName"
+            loading="lazy"
+          />
+        </div>
+        <div class="admin-site-meta">
+          <h3 class="admin-site-name">{{ site.siteName }}</h3>
+          <p class="admin-site-url">{{ site.siteURL }}</p>
+          <p class="admin-site-badge">
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            Registered platform
+          </p>
+        </div>
+      </div>
+
+      <div class="admin-site-actions">
+        <button type="button" class="admin-site-btn admin-site-btn-update" (click)="updateSite(site)">
+          <i class="bi bi-pencil-square" aria-hidden="true"></i>
+          Update
+        </button>
+        <button type="button" class="admin-site-btn admin-site-btn-delete" (click)="deleteSitePopup(site)">
+          <i class="bi bi-trash3" aria-hidden="true"></i>
+          Delete
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

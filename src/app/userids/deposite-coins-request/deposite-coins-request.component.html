@@ -1,0 +1,154 @@
+
+
+<form (ngSubmit)="DepositCoinsRequestAmount()" [formGroup]="depositeCoinRequestFrom" *ngIf="depositecoinsdetails">
+    <div class="modal-header">
+        <p class="modal-title" id="exampleModalLabel">Deposit</p>
+        <div type="button" class="close" (click)="bsModalRef.hide()" aria-label="Close">
+            <i class="bi bi-x-circle-fill"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="form-group col-12 modalContentBgclr">
+            <div class="d-flex flex-column text-center col-12">
+                <span class="business">WALLET BALANCE</span>
+                <span class=""><i class="bi bi-currency-rupee">{{this.authservice.userdetail.coins}}</i></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Deposite Coins(<i class="bi bi-currency-rupee"></i>)*</label>
+            <input type="number" formControlName="coins" class="form-control" placeholder="Enter Coins" autocomplete="off">
+            <div class="text-danger" *ngIf="depositeCoinRequestFrom.get('coins')?.invalid && (submitted || depositeCoinRequestFrom.get('coins')?.touched || depositeCoinRequestFrom.get('coins')?.dirty)">
+                <span *ngIf="depositeCoinRequestFrom.get('coins')?.errors?.['required']"> Coins are required </span> 
+            </div>
+            <span>*Minimum deposite amount is 500 coins</span>
+        </div>
+    </div>
+
+    <div class="modal-footer col-12">
+        <button type="submit" class="btn siteBtnbackground col-12">Deposit Coins</button>
+    </div>
+</form>          
+        
+  <div *ngIf="depositecoinsproofupload">
+    <div class="modal-header" >
+        <div type="button" class="close" *ngIf="backButtonVisibility" (click)="backToAddCoins()">
+            <i class="bi bi-arrow-left-circle-fill"></i>
+          </div>
+        <p class="modal-title" id="exampleModalLabel">Deposit ({{this.depositeCoinRequestFrom.value["coins"]}})</p>
+        <div type="button" class="close" aria-label="Close" (click)="bsModalRef.hide()">
+            <i class="bi bi-x-circle-fill"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="paymentModeListView">
+            <div class="nav-item-divider"></div>
+            <div class="col-12" style="background-color: #191928;">
+                <button type="button" class="btn col-12 siteBtnbackground" (click)="PaymentDataView('QRCodeDetail')">QR Code</button>
+            </div>
+            <div class="nav-item-divider"></div>
+            <div class="col-12" style="background-color: #191928;">
+                <button type="button" class="btn col-12 siteBtnbackground" (click)="PaymentDataView('BankTrDetail')">Bank Transfer</button>
+            </div>
+            <div class="nav-item-divider"></div>
+            <div class="col-12" style="background-color: #191928;">
+                <button type="button" class="btn col-12  siteBtnbackground" (click)="PaymentDataView('PhonePeDetail')">Phone Pe</button>
+            </div> 
+        </div>
+        <div *ngIf="paymentModeTypesDetailListView">
+            <div *ngIf="QRCodeDetail">
+                <div class="d-flex flex-column text-center col-12">
+                    <img class="siteheightwidth100" src="{{qrPath}}{{adminBankDetail.documentDetailId}}{{adminBankDetail.fileExtenstion}}" />
+                    <button type="button" class="btn siteBtnbackground mt-3" (click)="downloadQRCode()" title="Download QR Code">
+                        <i class="bi bi-download"></i> Download QR Code
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="BankTrDetail" class="nav-item-divider"></div>
+            <div *ngIf="BankTrDetail">
+                <div class="d-flex flex-column col-12">
+                    <div class="row col-12">
+                        <div class="col-5"> Bank Name </div>
+                        <div class="col-5"> {{ adminBankDetail.bankName }} </div>
+                        <div class="col-2 CopyToClipboard" [attr.copyData] = adminBankDetail.bankName>
+                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
+                    <div class="row col-12">
+                        <div class="col-5"> Account Holder Name </div>
+                        <div class="col-5"> {{ adminBankDetail.accountHolderName }} </div>
+                        <div class="col-2 CopyToClipboard" [attr.copyData] = adminBankDetail.accountHolderName>
+                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
+                    <div class="row col-12">
+                        <div class="col-5"> Account Number </div>
+                        <div class="col-5"> {{ adminBankDetail.accountNumber }} </div>
+                        <div class="col-2 CopyToClipboard" [attr.copyData] = adminBankDetail.accountNumber>
+                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
+                    <div class="row col-12">
+                        <div class="col-5"> IFSC Code </div>
+                        <div class="col-5"> {{ adminBankDetail.ifscCode }} </div>
+                        <div class="col-2 CopyToClipboard" [attr.copyData] = adminBankDetail.ifscCode>
+                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
+                </div>
+            </div>
+            <div *ngIf="PhonePeDetail" class="nav-item-divider"></div>
+            <div *ngIf="PhonePeDetail">
+                <div class="d-flex flex-column col-12">
+                    <div class="row col-12">
+                        <div class="col-5"> Display Name </div>
+                        <div class="col-5"> UPI Details </div>
+                        <div class="col-2"> Action </div>
+                    </div>
+                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
+                    <div class="row col-12">
+                        <div class="col-5"> {{ adminBankDetail.accountDisplayName }} </div>
+                        <div class="col-5"> {{ adminBankDetail.upiId }} </div>
+                        <div class="col-2" (copy)="adminBankDetail.upiId">
+                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-item-divider"></div>
+            <div class="PaymentModeTypesDetail" method="post" enctype="multipart/form-data" style="margin-top: 10px">
+                <div class="form-group col-12 px-0">
+                    <label class="kp-file-upload">
+                        <span class="kp-file-upload-ui">
+                            <i class="bi bi-cloud-arrow-up kp-file-upload-icon" aria-hidden="true"></i>
+                            <span class="kp-file-upload-title">Choose payment proof</span>
+                            <span class="kp-file-upload-hint">Tap anywhere · JPG or PNG screenshot</span>
+                            <span class="kp-file-upload-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
+                        </span>
+                        <input class="kp-file-upload-input" #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
+                    </label>
+                    <div class="text-danger mt-2" *ngIf="!this.file">
+                        <span>File is required</span>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-item-divider"></div>
+            <div class="modal-footer col-12">
+                <button type="button" class="btn siteBtnbackground col-12" (click)="DepositCoinsRequest()">Submit</button>
+            </div>
+        </div>
+    </div>
+  </div>

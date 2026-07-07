@@ -1,0 +1,41 @@
+<div class="offers-container">
+  <div class="feature-card">
+    <h2>🎁 Exclusive Offers</h2>
+    <p>Discover our amazing offers designed to enhance your gaming experience with better rewards and faster payouts.</p>
+
+    <div class="offers-grid">
+      <div class="offer-card" [ngClass]="'offer-card-' + offer.cardType" *ngFor="let offer of offers">
+        <div class="offer-header">
+          <div class="offer-emoji">{{ offer.emoji }}</div>
+          <h4>{{ offer.title }}</h4>
+        </div>
+
+        <div class="offer-content">
+          <p class="offer-headline">{{ offer.headline }}</p>
+          <p class="offer-description">{{ offer.description }}</p>
+
+          <!-- Benefits Section -->
+          <div class="offer-benefits" *ngIf="offer.benefits && offer.benefits.length > 0">
+            <ul>
+              <li *ngFor="let benefit of offer.benefits">{{ benefit }}</li>
+            </ul>
+          </div>
+
+          <!-- Rules Section -->
+          <div class="offer-rules" *ngIf="offer.rules && offer.rules.length > 0">
+            <h5>📌 Offer Rules:</h5>
+            <div class="rule-item" *ngFor="let rule of offer.rules" [ngClass]="{ 'rule-item-highlight': rule.highlight }">
+              <p class="rule-title">{{ rule.title }}</p>
+              <p class="rule-content">{{ rule.content }}</p>
+            </div>
+          </div>
+
+          <!-- Terms -->
+          <div class="offer-terms" *ngIf="offer.terms">
+            <small>{{ offer.terms }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

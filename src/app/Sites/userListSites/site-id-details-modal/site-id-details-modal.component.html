@@ -1,0 +1,69 @@
+<div class="modal-content site-id-details-modal siteColor">
+  <div class="modal-header site-id-details-header">
+    <div class="site-id-details-heading">
+      <p class="modal-title" id="siteIdDetailsTitle">My ID details</p>
+      <p class="site-id-details-sub" *ngIf="contextSite?.siteName as name">{{ name }}</p>
+    </div>
+    <div type="button" class="close site-id-details-close" (click)="bsModalRef.hide()" aria-label="Close">
+      <i class="bi bi-x-circle-fill"></i>
+    </div>
+  </div>
+  <div class="modal-body site-id-details-body">
+    <div class="site-id-details-loading" *ngIf="loading">
+      <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
+      <span>Loading credentials…</span>
+    </div>
+
+    <div class="site-id-details-empty" *ngIf="!loading && ids.length === 0">
+      <i class="bi bi-person-x" aria-hidden="true"></i>
+      <p>No ID on this platform yet. Use <strong>Create ID</strong> to add one.</p>
+    </div>
+
+    <ul class="site-id-details-list" *ngIf="!loading && ids.length > 0" aria-labelledby="siteIdDetailsTitle">
+      <li *ngFor="let row of ids; trackBy: trackById" class="site-id-details-card">
+        <div class="site-id-details-card-top">
+          <div class="site-id-details-logo-wrap">
+            <img
+              [src]="sitePath + row.documentDetailId + row.fileExtenstion"
+              [alt]="row.siteName || 'Site'"
+              loading="lazy"
+            />
+          </div>
+          <div class="site-id-details-card-meta">
+            <span class="site-id-details-platform">{{ row.siteName }}</span>
+            <span class="site-id-details-number">ID #{{ row.userNumber }}</span>
+          </div>
+        </div>
+
+        <div class="site-id-details-fields">
+          <div class="site-id-details-field">
+            <label>Username</label>
+            <div class="site-id-details-value-row">
+              <span class="site-id-details-value">{{ row.userName || '—' }}</span>
+            </div>
+          </div>
+          <div class="site-id-details-field">
+            <label>Password</label>
+            <div class="site-id-details-secret-row">
+              <input
+                class="site-id-details-input"
+                readonly
+                [type]="isPasswordRevealed(row) ? 'text' : 'password'"
+                [value]="row.password || '—'"
+              />
+              <button
+                type="button"
+                class="site-id-details-reveal"
+                (click)="togglePasswordReveal(row)"
+                [attr.aria-pressed]="isPasswordRevealed(row)"
+                [attr.aria-label]="isPasswordRevealed(row) ? 'Hide password' : 'Show password'"
+              >
+                <i class="bi" [class.bi-eye]="!isPasswordRevealed(row)" [class.bi-eye-slash]="isPasswordRevealed(row)"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

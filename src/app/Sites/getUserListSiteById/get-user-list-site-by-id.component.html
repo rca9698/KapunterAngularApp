@@ -1,0 +1,65 @@
+<section class="sites-page-shell account-sites-section">
+  <!-- Account Header -->
+  <div class="account-header">
+    <div class="account-header-content">
+      <h2>My ID's</h2>
+      <p>Create IDs and manage wallets on trusted platforms</p>
+    </div>
+  </div>
+ 
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner-border text-warning" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <p>Loading sites...</p>
+  </div>
+
+  <!-- Sites Grid -->
+  <article class="site-card" *ngFor="let site of sites">
+    <div class="site-card-row site-card-row-top">
+      <div class="site-card-brand" (click)="openSiteLink(site)">
+        <div class="site-logo-wrap">
+          <img class="siteImageSize" [src]="sitePath + site.documentDetailId + site.fileExtenstion" [alt]="site.siteName" />
+        </div>
+        <div class="site-meta">
+          <h3 class="site-name">{{ site.siteName }}</h3>
+          <p class="site-url">{{ site.siteURL }}</p>
+          <p class="site-trust"><i class="bi bi-shield-check"></i> Trusted &amp; secure · Instant payouts</p>
+        </div>
+      </div>
+      <div class="site-card-status">
+        <span class="site-status-dot"></span>
+        <span>Active</span>
+      </div>
+      <button type="button" class="site-card-chevron" (click)="openSiteLink(site)" aria-label="Open site">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+
+    <div class="site-actions-grid">
+      <button type="button" class="site-action site-action-create" (click)="CreateIDRequest(site)">
+        <i class="bi bi-person-plus-fill"></i><span>Create ID</span>
+      </button>
+      <button type="button" class="site-action site-action-deposit" (click)="openDepositeCoinsRequest(site)">
+        <i class="bi bi-arrow-down-circle"></i><span>Deposit</span>
+      </button>
+      <button type="button" class="site-action site-action-withdraw" (click)="openWithdrawCoinsRequest(site)">
+        <i class="bi bi-arrow-up-circle"></i><span>Withdraw</span>
+      </button>
+      <button type="button" class="site-action site-action-transfer" (click)="openTransferIdsList(site)">
+        <i class="bi bi-arrow-left-right"></i><span>Transfer</span>
+      </button>
+      <button type="button" class="site-action site-action-details" (click)="openSiteIdDetails(site)">
+        <i class="bi bi-person-vcard"></i><span>My ID details</span>
+      </button>
+    <button type="button" class="site-action site-action-link" (click)="openTransactionHistoryDetails(site)">
+        <i class="bi bi-box-arrow-up-right"></i><span>Transaction History</span>
+      </button>
+
+      <!-- <button type="button" class="site-action site-action-link" (click)="openSiteLink(site)">
+        <i class="bi bi-box-arrow-up-right"></i><span>Direct link</span>
+      </button> -->
+    </div>
+  </article>
+</section>

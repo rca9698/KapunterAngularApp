@@ -1,0 +1,6 @@
+.request-table-wrap {
+  border-radius: 14px;
+  overflow: auto;
+  border: 1px solid rgba(255, 149, 31, 0.25);
+  background: rgba(12, 10, 18, 0.78);
+}

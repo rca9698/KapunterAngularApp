@@ -1,0 +1,48 @@
+
+<div class="col-12 text-center listtypeview">
+    <p class="text-uppercase">Withdraw From ID Listing</p>
+</div>
+
+<div class="mt-4">
+<div class="customtable">
+    <!-- Table with hoverable rows -->
+    <table class="table table-hover scrollbar " id="userList">
+        <thead>
+        <tr class="tableHeaderClass">
+            <th scope="col"><p class="">User Number</p></th>
+            <th scope="col"><p class="">Coins</p></th>
+            <th scope="col"><p class="">Request Date</p></th>
+            <th scope="col"><p class="">Action</p></th>
+            </tr>
+        </thead>
+        <tbody> 
+            <tr *ngFor="let request of requestList">
+            <th scope="row"><p>{{request.userNumber}}</p></th>
+            <td><p>{{request.coins}}</p></td>
+            <td><p>{{request.createdDate}}</p></td>
+                <td>
+                    <div class="btn-group">
+                    <button (click)="withdrawcoinsfromsitePopup(request)"> <i class="bi bi-person-fill-up"></i></button>
+                    <button (click)="deletewithdrawcoinsfromsitePopup(request)"> <i class="bi bi-trash3-fill"></i> </button>
+                    </div>
+                </td>
+            </tr> 
+               
+        </tbody>
+    </table>
+</div>
+</div>
+<div class="pagination">
+    <a (click)="PaginationNumber(6)" p-id="previous">&laquo;</a>
+    <span *ngFor="let pagination of getCountArray()"> 
+        <a (click)="PaginationNumber(pagination)">
+            {{pagination+1}}
+        </a>
+    </span>
+
+    <!-- <a p-id="3" (click)="PaginationNumber(3)">3</a>
+    <a p-id="4" (click)="PaginationNumber(4)">4</a>
+    <a p-id="5" (click)="PaginationNumber(5)">5</a>
+    <a p-id="6" (click)="PaginationNumber(6)">6</a> -->
+    <a (click)="PaginationNumber(paginationCount)" p-id="next">&raquo;</a>
+  </div>

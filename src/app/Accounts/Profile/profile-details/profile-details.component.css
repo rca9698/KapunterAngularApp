@@ -1,0 +1,65 @@
+.profile-shell {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0.75rem 0.6rem 6rem;
+}
+
+.profile-card {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 141, 33, 0.34);
+  background: linear-gradient(145deg, rgba(23, 20, 31, 0.95), rgba(12, 10, 18, 0.95));
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+  padding: 1rem;
+}
+
+.profile-head h2 {
+  margin: 0;
+  color: #ffe6ca;
+  font-size: 1.4rem;
+}
+
+.profile-head p {
+  margin-top: 0.3rem;
+  color: #ffd2aa;
+  font-size: 0.84rem;
+}
+
+.profile-grid {
+  margin-top: 0.8rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.profile-item {
+  border: 1px solid rgba(255, 141, 33, 0.25);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.7rem;
+}
+
+.profile-item span {
+  color: #ffd3af;
+  font-size: 0.78rem;
+}
+
+.profile-item strong {
+  color: #fff4e7;
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+  .profile-actions {
+    flex-direction: column;
+  }
+}

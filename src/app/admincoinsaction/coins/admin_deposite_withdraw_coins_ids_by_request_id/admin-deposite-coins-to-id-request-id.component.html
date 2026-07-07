@@ -1,0 +1,29 @@
+<form (ngSubmit)="DepositeCoinsToIds()" [formGroup]="DepositeCoinsToIdsForm" autocomplete="off">
+    <div class="modal-header">
+        <p class="modal-title" id="exampleModalLabel">Deposite Coins To ID</p>
+        <div type="button" class="close" (click)="this.bsModalRef.hide()" aria-label="Close">
+            <i class="bi bi-x-circle-fill"></i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="form-group col-12">
+            <div class="d-flex flex-column text-center col-12 modal-site-profile">
+                <span>
+                    <img class="siteIcon rounded-circle siteImageSize" src="{{sitePath}}{{obj.documentDetailId}}{{obj.fileExtenstion}}" />
+                </span>
+                <p class="text-uppercase">{{obj.siteName}}</p>
+                <p>{{obj.siteURL}}</p>
+                <p>{{obj.userName}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Coins<i class="bi bi-currency-rupee"></i>*</label>
+            <input type="text" formControlName="coins" class="form-control" placeholder="Coins" [(ngModel)]="obj.coins" autocomplete="off">
+            <div class="text-danger" *ngIf="DepositeCoinsToIdsForm.get('coins')?.invalid && (submitted || DepositeCoinsToIdsForm.get('coins')?.touched || DepositeCoinsToIdsForm.get('coins')?.dirty)">
+                <span *ngIf="DepositeCoinsToIdsForm.get('coins')?.errors?.['required']"> coins are is required </span> </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn siteBtnbackground col-12">Deposite Coins To ID</button>
+    </div>
+</form>

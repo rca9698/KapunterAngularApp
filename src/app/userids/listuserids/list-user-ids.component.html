@@ -1,0 +1,59 @@
+<div class="card rounded-3 siteColor" style="margin: 0.5rem;" *ngFor="let site of sites">
+    <div class="card-body">
+        <div class="row Col-12">
+            <div class="col-9">
+                <div class="row col-12">
+                    <div class="col-3 text-center">
+                        <img class="siteImageSize rounded-circle"  src="{{sitePath}}{{site.documentDetailId}}{{site.fileExtenstion}}" />
+                    </div>
+                    <div class="col-9 align-self-center">
+                        <p class="text-uppercase">{{ site.siteName }}</p>
+                        <p class="siteURL">{{ site.siteURL }}</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-3 d-grid gap-2 mx-auto" style="padding:0px">
+                <div class="col-12 row text-center">
+                    <div class="col-4">
+                        <div class="rounded-circle userlistingCircle bgclrGreen contentAlignType" (click)="DepositeCoinsToIDPopup(site)">
+                            D
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="rounded-circle userlistingCircle bgclrred contentAlignType" (click)="WithdrawCoinsFromIDPopup(site)">
+                            W
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown">
+                            <div class="rounded-circle userlistingCircle contentAlignType" data-bs-toggle="dropdown" aria-expanded="false">
+                                ...
+                            </div>
+                            <ul class="dropdown-menu" aria-labelledby="">
+                                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                    <button type="button" class="btn btn-danger">Danger</button>
+                                    <div class="btn-group" role="group">
+                                      <button id="btnGroupDrop4" type="button" class="btn btn-danger dropdown-toggle show" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></button>
+                                      <div class="dropdown-menu show" aria-labelledby="btnGroupDrop4" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 37.3333px, 0px);" data-popper-placement="bottom-start">
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                      </div>
+                                    </div>
+                                  </div>
+<!-- 
+                                <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#DepositeToAccountRequestModal" accountId="@siteDetail.AccountId" siteid="@siteDetail.SiteId" id="DepositeToAccountRequestCoinsBtn">Deposit</a></li>
+                                <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#WithDrawToAccountRequestModal" accountId="@siteDetail.AccountId" siteid="@siteDetail.SiteId" id="withdrawFromAccountRequestCoinsBtn">Withdraw</a></li>
+                                <li><a class="dropdown-item" href="/Passbook/Index?viewType=account_@siteDetail.SiteId">View Transaction</a></li>
+                                <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#ChangeIDPasswordRequestModal" accountId="@siteDetail.AccountId" siteid="@siteDetail.SiteId" id="ChangeIDPasswordRequestBtn">Change Password</a></li>
+                                <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#CloseIDRequestModal" accountId="@siteDetail.AccountId" siteid="@siteDetail.SiteId" id="CloseIDRequestBtn">Close ID</a></li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+        </div>
+    </div>
+</div>
