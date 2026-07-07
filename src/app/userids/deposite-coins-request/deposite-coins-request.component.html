@@ -8,12 +8,12 @@
         </div>
     </div>
     <div class="modal-body">
-        <div class="form-group col-12 modalContentBgclr">
+        <!--<div class="form-group col-12 modalContentBgclr">
             <div class="d-flex flex-column text-center col-12">
                 <span class="business">WALLET BALANCE</span>
                 <span class=""><i class="bi bi-currency-rupee">{{this.authservice.userdetail.coins}}</i></span>
             </div>
-        </div>
+        </div>-->
         <div class="form-group">
             <label>Deposite Coins(<i class="bi bi-currency-rupee"></i>)*</label>
             <input type="number" formControlName="coins" class="form-control" placeholder="Enter Coins" autocomplete="off">
@@ -56,75 +56,80 @@
         </div>
         <div *ngIf="paymentModeTypesDetailListView">
             <div *ngIf="QRCodeDetail">
-                <div class="d-flex flex-column text-center col-12">
-                    <img class="siteheightwidth100" src="{{qrPath}}{{adminBankDetail.documentDetailId}}{{adminBankDetail.fileExtenstion}}" />
+                <div *ngIf="paymentDetailLoading" class="payment-detail-loading">
+                    <i class="bi bi-arrow-repeat"></i> Loading QR code...
+                </div>
+                <div *ngIf="!paymentDetailLoading && qrImageUrl" class="d-flex flex-column text-center col-12 qr-preview-wrap">
+                    <img class="siteheightwidth100 qr-preview" [src]="qrImageUrl" alt="Payment QR Code" />
                     <button type="button" class="btn siteBtnbackground mt-3" (click)="downloadQRCode()" title="Download QR Code">
                         <i class="bi bi-download"></i> Download QR Code
                     </button>
                 </div>
+                <div *ngIf="!paymentDetailLoading && !qrImageUrl" class="payment-detail-loading">
+                    <i class="bi bi-qr-code"></i>
+                    <p class="mb-0 mt-2">QR code not available.</p>
+                </div>
             </div>
             <div *ngIf="BankTrDetail" class="nav-item-divider"></div>
             <div *ngIf="BankTrDetail">
-                <div class="d-flex flex-column col-12">
-                    <div class="row col-12">
-                        <div class="col-5"> Bank Name </div>
-                        <div class="col-5"> {{ adminBankDetail.bankName }} </div>
-                        <div class="col-2 CopyToClipboard" [attr.copyData] = adminBankDetail.bankName>
-                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
-                            </svg>
-                        </div>
+                <div *ngIf="paymentDetailLoading" class="payment-detail-loading">
+                    <i class="bi bi-arrow-repeat"></i> Loading bank details...
+                </div>
+                <div *ngIf="!paymentDetailLoading" class="d-flex flex-column col-12">
+                    <div class="payment-detail-row">
+                        <div class="payment-detail-label">Bank Name</div>
+                        <div class="payment-detail-value">{{ adminBankDetail.bankName }}</div>
+                        <button type="button" class="copy-field-btn" title="Copy Bank Name" (click)="copyToClipboard(adminBankDetail.bankName)">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
                     </div>
-                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
-                    <div class="row col-12">
-                        <div class="col-5"> Account Holder Name </div>
-                        <div class="col-5"> {{ adminBankDetail.accountHolderName }} </div>
-                        <div class="col-2 CopyToClipboard" [attr.copyData] = adminBankDetail.accountHolderName>
-                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
-                            </svg>
-                        </div>
+                    <div class="nav-item-divider-small"></div>
+                    <div class="payment-detail-row">
+                        <div class="payment-detail-label">Account Holder Name</div>
+                        <div class="payment-detail-value">{{ adminBankDetail.accountHolderName }}</div>
+                        <button type="button" class="copy-field-btn" title="Copy Account Holder Name" (click)="copyToClipboard(adminBankDetail.accountHolderName)">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
                     </div>
-                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
-                    <div class="row col-12">
-                        <div class="col-5"> Account Number </div>
-                        <div class="col-5"> {{ adminBankDetail.accountNumber }} </div>
-                        <div class="col-2 CopyToClipboard" [attr.copyData] = adminBankDetail.accountNumber>
-                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
-                            </svg>
-                        </div>
+                    <div class="nav-item-divider-small"></div>
+                    <div class="payment-detail-row">
+                        <div class="payment-detail-label">Account Number</div>
+                        <div class="payment-detail-value">{{ adminBankDetail.accountNumber }}</div>
+                        <button type="button" class="copy-field-btn" title="Copy Account Number" (click)="copyToClipboard(adminBankDetail.accountNumber)">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
                     </div>
-                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
-                    <div class="row col-12">
-                        <div class="col-5"> IFSC Code </div>
-                        <div class="col-5"> {{ adminBankDetail.ifscCode }} </div>
-                        <div class="col-2 CopyToClipboard" [attr.copyData] = adminBankDetail.ifscCode>
-                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
-                            </svg>
-                        </div>
+                    <div class="nav-item-divider-small"></div>
+                    <div class="payment-detail-row">
+                        <div class="payment-detail-label">IFSC Code</div>
+                        <div class="payment-detail-value">{{ adminBankDetail.ifscCode }}</div>
+                        <button type="button" class="copy-field-btn" title="Copy IFSC Code" (click)="copyToClipboard(adminBankDetail.ifscCode)">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
                     </div>
-                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
+                    <div class="nav-item-divider-small"></div>
                 </div>
             </div>
             <div *ngIf="PhonePeDetail" class="nav-item-divider"></div>
             <div *ngIf="PhonePeDetail">
-                <div class="d-flex flex-column col-12">
-                    <div class="row col-12">
-                        <div class="col-5"> Display Name </div>
-                        <div class="col-5"> UPI Details </div>
-                        <div class="col-2"> Action </div>
+                <div *ngIf="paymentDetailLoading" class="payment-detail-loading">
+                    <i class="bi bi-arrow-repeat"></i> Loading UPI details...
+                </div>
+                <div *ngIf="!paymentDetailLoading" class="d-flex flex-column col-12">
+                    <div class="payment-detail-row">
+                        <div class="payment-detail-label">Display Name</div>
+                        <div class="payment-detail-value">{{ adminBankDetail.accountDisplayName }}</div>
+                        <button type="button" class="copy-field-btn" title="Copy Display Name" (click)="copyToClipboard(adminBankDetail.accountDisplayName)">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
                     </div>
-                    <div b-8bhurmbywf="" class="nav-item-divider-small"></div>
-                    <div class="row col-12">
-                        <div class="col-5"> {{ adminBankDetail.accountDisplayName }} </div>
-                        <div class="col-5"> {{ adminBankDetail.upiId }} </div>
-                        <div class="col-2" (copy)="adminBankDetail.upiId">
-                            <svg width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"></path>
-                            </svg>
-                        </div>
+                    <div class="nav-item-divider-small"></div>
+                    <div class="payment-detail-row">
+                        <div class="payment-detail-label">UPI ID</div>
+                        <div class="payment-detail-value">{{ adminBankDetail.upiId }}</div>
+                        <button type="button" class="copy-field-btn" title="Copy UPI ID" (click)="copyToClipboard(adminBankDetail.upiId)">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
                     </div>
                 </div>
             </div>

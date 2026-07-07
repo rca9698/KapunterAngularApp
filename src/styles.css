@@ -1401,9 +1401,64 @@ p, input, label, .viewotp, .viewPassword {
     box-shadow: 0 14px 35px rgba(0, 0, 0, 0.3);
 }
 
-.home-carousel img {
+.home-carousel:not(.home-account-carousel) img {
     min-height: 180px;
     object-fit: cover;
+}
+
+.home-account-carousel {
+    margin-top: 0.25rem;
+    overflow: visible;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.home-account-carousel .carousel-inner {
+    align-items: stretch;
+}
+
+.home-account-carousel .carousel-item {
+    padding: 0.25rem 0.5rem 0.65rem;
+}
+
+.home-account-carousel .carousel-item.active {
+    display: flex;
+    justify-content: center;
+}
+
+.home-account-carousel .home-account-slide {
+    width: 100%;
+    margin: 0;
+}
+
+.home-account-indicators {
+    position: static;
+    margin: 0 0 0.75rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.home-account-indicators [data-bs-target] {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(255, 180, 100, 0.35);
+    opacity: 1;
+    margin: 0;
+}
+
+.home-account-indicators .active {
+    background-color: #ff932d;
+    transform: scale(1.15);
+}
+
+.home-account-carousel .carousel-control-prev,
+.home-account-carousel .carousel-control-next {
+    width: 10%;
+    opacity: 0.85;
 }
 
 /* Only stack on very narrow screens; keeps wallet from becoming a “tall skinny” column */

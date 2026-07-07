@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HomeService } from './home.service';
 import { environment } from 'src/environments/environment';
 import { DashboardImages, IDashboardImages } from '../Shared/Modals/dashboard-images-modal';
@@ -8,27 +8,41 @@ import { ToastrService } from '../toastr/toastr.service';
 import { UserService } from '../admincoinsaction/User/user.service';
 import { AccountsService } from '../Accounts/accounts.service';
 import { ISiteDetailModal } from '../Shared/Modals/site-detail-modal';
+import { SitesService } from '../Sites/sites.service';
+import { UserIdsService } from '../userids/user-ids.service';
+import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { TransferIdsListModalComponent } from '../Sites/userListSites/transfer-ids-list-modal/transfer-ids-list-modal.component';
+import { SiteIdDetailsModalComponent } from '../Sites/userListSites/site-id-details-modal/site-id-details-modal.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   returnType: any; 
   site: ISiteDetailModal = {} as ISiteDetailModal;
   imgPath: string | undefined;
   images:IDashboardImages[] = [new DashboardImages()];
   showslider:boolean | undefined;
+  sites: ISiteDetailModal[] = [];
+  sitePath: string | undefined;
+  sitesLoading = false;
+
+  @ViewChild('accountCarousel') accountCarousel?: ElementRef<HTMLElement>;
+  private accountCarouselInstance?: { dispose: () => void; cycle: () => void };
 
   constructor(private homeService:HomeService, private coinsservice: CoinsService
     , public authservice: AuthService, private toasterService: ToastrService
-    , public userservice: UserService, private accountService: AccountsService){
+    , public userservice: UserService, private accountService: AccountsService
+    , private siteService: SitesService, private userIdsService: UserIdsService
+    , private bsModalService: BsModalService){
     this.imgPath = environment.imagePath.dashboardImages;
+    this.sitePath = environment.imagePath.sitePath;
   }
+
   ngOnInit(): void {
      this.homeService.getDashboradImages().subscribe(resp=>{
-      console.log(resp);
       this.returnType = resp; 
       this.images = this.returnType['returnList'];
       if(this.images.length > 0){
@@ -37,6 +51,105 @@ export class HomeComponent implements OnInit {
      });
 
      this.site = {} as ISiteDetailModal;
+
+     if (this.authservice.token) {
+       this.loadSites();
+     }
+  }
+
+  ngOnDestroy(): void {
+    this.disposeAccountCarousel();
+  }
+
+  trackBySiteId(_index: number, site: ISiteDetailModal): number {
+    return site.siteId;
+  }
+
+  loadSites(): void {
+    this.sitesLoading = true;
+    this.disposeAccountCarousel();
+    this.siteService.GetUserListSiteById(this.authservice.user.userId).subscribe({
+      next: (resp) => {
+        this.returnType = resp;
+        if (this.returnType['returnStatus'] == 1) {
+          this.sites = this.returnType['returnList'] ?? [];
+        } else {
+          this.sites = [];
+          this.toasterService.warning(this.returnType.returnMessage);
+        }
+        this.sitesLoading = false;
+        if (this.sites.length > 1) {
+          setTimeout(() => this.initAccountCarousel(), 50);
+        }
+      },
+      error: () => {
+        this.sites = [];
+        this.sitesLoading = false;
+        this.toasterService.warning('Failed to load account details.');
+      }
+    });
+  }
+
+  private initAccountCarousel(): void {
+    const bootstrapApi = (window as { bootstrap?: { Carousel: new (el: HTMLElement, options?: object) => { dispose: () => void; cycle: () => void } } }).bootstrap;
+    const element = this.accountCarousel?.nativeElement;
+
+    if (!bootstrapApi?.Carousel || !element) {
+      return;
+    }
+
+    this.disposeAccountCarousel();
+    this.accountCarouselInstance = new bootstrapApi.Carousel(element, {
+      interval: 10000,
+      ride: false,
+      wrap: true,
+      touch: true,
+      keyboard: true,
+    });
+    this.accountCarouselInstance.cycle();
+  }
+
+  private disposeAccountCarousel(): void {
+    this.accountCarouselInstance?.dispose();
+    this.accountCarouselInstance = undefined;
+  }
+
+  CreateIDRequest(site: ISiteDetailModal): void {
+    this.userIdsService.OpenAddIDRequestPopup(site);
+  }
+
+  DepositeCoinsToIDPopup(site: ISiteDetailModal): void {
+    this.userIdsService.OpenDepositeCoinsToIDPopup(site);
+  }
+
+  WithdrawCoinsFromIDPopup(site: ISiteDetailModal): void {
+    this.userIdsService.OpenWithdrawCoinsFromIdPopup(site);
+  }
+
+  openTransferIdsList(site: ISiteDetailModal): void {
+    const initialState: ModalOptions = {
+      initialState: { contextSite: site },
+    };
+    this.bsModalService.show(TransferIdsListModalComponent, initialState);
+  }
+
+  openSiteIdDetails(site: ISiteDetailModal): void {
+    const initialState: ModalOptions = {
+      initialState: { contextSite: site },
+    };
+    this.bsModalService.show(SiteIdDetailsModalComponent, initialState);
+  }
+
+  openSiteLink(site: ISiteDetailModal): void {
+    const raw = (site.siteURL || '').trim();
+    if (!raw) {
+      this.toasterService.warning('No URL for this site.');
+      return;
+    }
+    const url = /^https?:\/\//i.test(raw)
+      ? raw.replace(/^http:\/\//i, 'https://')
+      : `https://${raw}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   DepositeToWallet(){
@@ -58,5 +171,4 @@ export class HomeComponent implements OnInit {
   logout(): void {
     this.authservice.logout();
   }
-
 }

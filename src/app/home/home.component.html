@@ -1,69 +1,119 @@
 
 <div class="dashboard-content home-dashboard">
-  <!-- <div class="home-layout-wrap">
-    <div class="home-hero-card">
-      <div class="Wallet-Component-Main-Container">
-        <div class="Wallet-Dep-Wal-With-Container">
-          <div class="Wallet-Dep-Comp" *ngIf="(authservice.isLoggenIn | async) && this.authservice.isbenview()" (click)="DepositeToWallet()">
-            <span>DEPOSIT</span>
-            <img src="../../assets/arrow-up.svg" alt="Up Arrow" />
-          </div>
-          <div class="Wallet-Dep-Comp" *ngIf="!(authservice.isLoggenIn | async) || this.authservice.isadminview()" (click)="ActionToastr()">
-            <span>DEPOSIT</span>
-            <img src="../../assets/arrow-up.svg" alt="Up Arrow" />
-          </div>
-          <div class="Wallet-Bal-Comp">
-            <img src="../../assets/kapunter-logo.jpeg" alt="Logo" />
-            <div class="wallet-balance-tile">
-              <p class="wallet-balance-label">Balance</p>
-              <div class="wallet-balance-amount-row">
-                <i class="bi bi-currency-rupee" aria-hidden="true"></i>
-                <span class="wallet-balance-value">{{ this.authservice.userdetail.coins || 0 }}</span>
+  <div id="DashboardImageSlides" class="carousel slide home-carousel" data-bs-ride="carousel" *ngIf="images.length > 0">
+    <div class="carousel-inner">
+      <div class="carousel-item" [ngClass]="{ active: i === 0 }" data-bs-interval="10000" *ngFor="let image of images; let i = index">
+        <img src="{{ imgPath }}{{ image.documentDetailId }}{{ image.fileExtenstion }}" class="d-block w-100" alt="">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#DashboardImageSlides" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#DashboardImageSlides" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <section class="home-account-section" *ngIf="authservice.isLoggenIn | async">
+    <div class="home-accounts-loading" *ngIf="sitesLoading">
+      <div class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p>Loading your accounts...</p>
+    </div>
+
+    <div
+      #accountCarousel
+      id="DashboardAccountSlides"
+      class="carousel slide home-carousel home-account-carousel"
+      data-bs-interval="10000"
+      data-bs-pause="hover"
+      *ngIf="!sitesLoading && sites.length > 0">
+      <div class="carousel-indicators home-account-indicators" *ngIf="sites.length > 1">
+        <button
+          type="button"
+          *ngFor="let site of sites; let i = index; trackBy: trackBySiteId"
+          data-bs-target="#DashboardAccountSlides"
+          [attr.data-bs-slide-to]="i"
+          [class.active]="i === 0"
+          [attr.aria-current]="i === 0 ? 'true' : null"
+          [attr.aria-label]="'Account ' + (i + 1)">
+        </button>
+      </div>
+
+      <div class="carousel-inner">
+        <div
+          class="carousel-item"
+          [class.active]="i === 0"
+          *ngFor="let site of sites; let i = index; trackBy: trackBySiteId">
+          <article class="site-card home-account-slide">
+            <div class="home-account-card-header">
+              <div class="site-card-brand" (click)="openSiteLink(site)">
+                <div class="home-site-logo-wrap">
+                  <img
+                    class="home-site-logo-img"
+                    [src]="sitePath + site.documentDetailId + site.fileExtenstion"
+                    [alt]="site.siteName"
+                    loading="lazy"
+                    decoding="async" />
+                </div>
+                <div class="site-meta">
+                  <h3 class="site-name">{{ site.siteName }}</h3>
+                  <p class="site-url">{{ site.siteURL }}</p>
+                  <p class="site-id" *ngIf="site.userName">ID: {{ site.userName }}</p>
+                  <p class="site-trust"><i class="bi bi-shield-check"></i> Trusted &amp; secure · Instant payouts</p>
+                </div>
+              </div>
+
+              <div class="home-account-header-aside">
+                <div class="site-card-status">
+                  <span class="site-status-dot"></span>
+                  <span>Active</span>
+                </div>
+                <button type="button" class="site-card-chevron" (click)="openSiteLink(site)" aria-label="Open site">
+                  <i class="bi bi-chevron-right"></i>
+                </button>
               </div>
             </div>
-          </div>
-          <div class="Wallet-With-Comp" *ngIf="(authservice.isLoggenIn | async) && this.authservice.isbenview()" (click)="WithdrawFromWallet()">
-            <span>WITHDRAW</span>
-            <img src="../../assets/arrow-down.svg" alt="Down Arrow" />
-          </div>
-          <div class="Wallet-With-Comp" *ngIf="!(authservice.isLoggenIn | async) || this.authservice.isadminview()" (click)="ActionToastr()">
-            <span>WITHDRAW</span>
-            <img src="../../assets/arrow-down.svg" alt="Down Arrow" />
-          </div>
+
+            <div class="site-actions-grid">
+              <button type="button" class="site-action site-action-create" (click)="CreateIDRequest(site)">
+                <i class="bi bi-person-plus-fill"></i><span>Create ID</span>
+              </button>
+              <button type="button" class="site-action site-action-deposit" (click)="openDepositeCoinsRequest(site)">
+                <i class="bi bi-arrow-down-circle"></i><span>Deposit</span>
+              </button>
+              <button type="button" class="site-action site-action-withdraw" (click)="openWithdrawCoinsRequest(site)">
+                <i class="bi bi-arrow-up-circle"></i><span>Withdraw</span>
+              </button>
+              <button type="button" class="site-action site-action-transfer" (click)="openTransferIdsList(site)">
+                <i class="bi bi-arrow-left-right"></i><span>Transfer</span>
+              </button>
+              <button type="button" class="site-action site-action-details" (click)="openSiteIdDetails(site)">
+                <i class="bi bi-person-vcard"></i><span>My ID details</span>
+              </button>
+            <button type="button" class="site-action site-action-link" (click)="openTransactionHistoryDetails(site)">
+                <i class="bi bi-box-arrow-up-right"></i><span>Transaction History</span>
+              </button>
+        
+              <!-- <button type="button" class="site-action site-action-link" (click)="openSiteLink(site)">
+                <i class="bi bi-box-arrow-up-right"></i><span>Direct link</span>
+              </button> -->
+            </div>
+          </article>
         </div>
-      </div> 
-    </div>
-  </div> -->
-  <div id="DashboardImageSlides" class="carousel slide home-carousel" data-bs-ride="carousel" *ngIf="images.length > 0">
-    <div class="carousel-inner">
-      <div class="carousel-item" [ngClass]="{ active: i === 0 }" data-bs-interval="10000" *ngFor="let image of images; let i = index">
-        <img src="{{ imgPath }}{{ image.documentDetailId }}{{ image.fileExtenstion }}" class="d-block w-100" alt="">
       </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#DashboardImageSlides" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#DashboardImageSlides" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
 
-  <div id="DashboardImageSlides" class="carousel slide home-carousel" data-bs-ride="carousel" *ngIf="images.length > 0">
-    <div class="carousel-inner">
-      <div class="carousel-item" [ngClass]="{ active: i === 0 }" data-bs-interval="10000" *ngFor="let image of images; let i = index">
-        <img src="{{ imgPath }}{{ image.documentDetailId }}{{ image.fileExtenstion }}" class="d-block w-100" alt="">
-      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#DashboardAccountSlides" data-bs-slide="prev" *ngIf="sites.length > 1">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#DashboardAccountSlides" data-bs-slide="next" *ngIf="sites.length > 1">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#DashboardImageSlides" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#DashboardImageSlides" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-
+  </section>
 </div>

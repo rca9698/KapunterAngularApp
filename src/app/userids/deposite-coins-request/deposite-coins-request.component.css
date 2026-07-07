@@ -1,0 +1,62 @@
+.payment-detail-loading {
+    padding: 1.5rem 0;
+    text-align: center;
+    color: #c9c9d4;
+}
+
+.qr-preview-wrap {
+    padding: 0.5rem;
+}
+
+.qr-preview {
+    max-width: 260px;
+    margin: 0 auto;
+    border-radius: 12px;
+    background: #fff;
+    padding: 0.5rem;
+}
+
+.payment-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0;
+}
+
+.payment-detail-label {
+    flex: 0 0 42%;
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+.payment-detail-value {
+    flex: 1;
+    font-weight: 600;
+    word-break: break-all;
+    text-align: right;
+}
+
+.copy-field-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(255, 147, 45, 0.45);
+    border-radius: 10px;
+    background: rgba(255, 147, 45, 0.08);
+    color: #ff932d;
+    padding: 0;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.copy-field-btn:hover {
+    background: rgba(255, 147, 45, 0.2);
+    color: #ffb357;
+    transform: translateY(-1px);
+}
+
+.copy-field-btn i {
+    font-size: 1rem;
+}

@@ -15,4 +15,18 @@ export class ProfileDetailsComponent implements OnInit {
       this.authService.getUserDetails();
     }
   }
+
+  formatJoinDate(date: string | undefined): string {
+    if (!date?.trim()) {
+      return '—';
+    }
+
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      return date;
+    }
+
+    const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+    return `${parsedDate.getDate()}-${months[parsedDate.getMonth()]}-${parsedDate.getFullYear()}`;
+  }
 }

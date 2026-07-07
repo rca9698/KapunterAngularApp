@@ -172,6 +172,14 @@ export class CoinsService {
     return this.apiservice.GetBankUPIDetails();
   }
 
+  get_admin_qr_details(){
+    return this.apiservice.GetAdminQRCode();
+  }
+
+  get_admin_upi_details(){
+    return this.apiservice.GetAdminUpiAccounts();
+  }
+
   withdraw_coins_by_request_id(obj: any){
     return this.apiservice.DeleteCoinsFromWallet(obj);
   }

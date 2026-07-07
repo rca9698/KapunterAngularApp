@@ -50,7 +50,7 @@ export class CreateIdsComponent {
     this.useridsservice.AddIDRequest(this.addIDRequest)?.subscribe({
       next:(response)=>{
         this.bsModalRef.hide();
-        this.router.navigate(['/userids/list-user-ids'])
+        this.router.navigate(['/site/user-list-sites'])
       }}
     ); 
      
