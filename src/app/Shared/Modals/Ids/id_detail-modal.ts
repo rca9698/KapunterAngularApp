@@ -2,6 +2,7 @@ export interface IIDDetailsModal{
     reqId: bigint,
     userId: bigint,
     accountId: bigint,
+    accountID?: bigint,
     userName: string,
     password: string,
     userNumber: bigint,

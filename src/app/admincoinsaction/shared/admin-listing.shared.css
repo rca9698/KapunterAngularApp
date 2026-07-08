@@ -1,0 +1,76 @@
+.admin-list-header {
+  margin-bottom: 0.25rem;
+}
+
+.admin-list-header .list-subtitle {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  margin-bottom: 0;
+}
+
+.admin-list-table .site-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 10rem;
+}
+
+.admin-list-table .site-thumb {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.admin-list-table .site-meta p {
+  margin-bottom: 0;
+  line-height: 1.2;
+}
+
+.admin-list-table .site-meta .site-url {
+  font-size: 0.78rem;
+  opacity: 0.8;
+}
+
+.admin-list-table .id-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.admin-list-table .request-id {
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+
+.admin-list-table .action-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.admin-list-table .action-btn-group button {
+  min-width: 2rem;
+}
+
+.admin-list-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  opacity: 0.85;
+}
+
+.admin-list-empty i {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.admin-list-table .user-sub {
+  font-size: 0.78rem;
+  opacity: 0.8;
+}

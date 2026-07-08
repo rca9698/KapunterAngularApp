@@ -8,6 +8,7 @@ import { DeleteAdminBankAccount } from '../../Modals/BankAccount/delete_admin_ba
 import { AuthService } from 'src/app/auth.service';
 import { DeleteBankAccount } from '../../Modals/BankAccount/delete_bank_account';
 import { BankAccountService } from 'src/app/BankAccount/bank-account.service';
+import { resolveAccountRequestId } from 'src/app/admincoinsaction/shared/id-request.util';
 
 @Component({
   selector: 'app-delete-module',
@@ -18,6 +19,9 @@ export class DeleteModuleComponent {
   deleteType: string = '';
   title: string = ''
   obj: any;
+  deletionReason = '';
+  deletionReasonTouched = false;
+  readonly maxDeletionReasonLength = 200;
 
   returnType: any;
   returnValue: any;
@@ -30,6 +34,18 @@ export class DeleteModuleComponent {
   }
 
 
+
+  get requiresDeletionReason(): boolean {
+    return this.deleteType === 'idrequest';
+  }
+
+  get remainingChars(): number {
+    return this.maxDeletionReasonLength - (this.deletionReason?.length ?? 0);
+  }
+
+  onDeletionReasonInput(): void {
+    this.deletionReasonTouched = true;
+  }
 
   deleteData(){
     switch(this.deleteType){
@@ -64,10 +80,16 @@ export class DeleteModuleComponent {
         this.IDDelete();
         break;
       case 'deposittowallet':
-        this.DeleteCoinsFromWallet();
+        this.DeleteDepositWalletRequest();
         break;
-        case 'deletecoinfromIdRequest':
+      case 'withdrawwalletrequest':
+        this.DeleteWithdrawWalletRequest();
+        break;
+      case 'deletecoinfromIdRequest':
         this.DeleteCoinsRequestToId();
+        break;
+      case 'withdrawfromidrequest':
+        this.DeleteWithdrawFromIdRequest();
         break;
         case 'dashboardImage':
         this.DeleteDashboardImages();
@@ -97,24 +119,59 @@ export class DeleteModuleComponent {
   }
 
   IDRequestDelete(){
-    this.apiservices.DeleteIDRequest(this.obj).subscribe(resp=>{
+    this.deletionReasonTouched = true;
+    const reason = this.deletionReason?.trim() ?? '';
+    if (!reason) {
+      this.toasterService.warning('Please provide a deletion reason.');
+      return;
+    }
+
+    const requestId = resolveAccountRequestId(this.obj as Record<string, unknown>);
+    const payload = {
+      accountrequestId: Number(requestId),
+      sessionUser: this.authService.user.userId,
+      deletionReason: reason.slice(0, this.maxDeletionReasonLength)
+    };
+
+    this.apiservices.DeleteIDRequest(payload).subscribe(resp=>{
       this.returnType = resp;
       this.toastrMessages();
     });
   }
 
-  DeleteCoinsFromWallet(){
-    this.apiservices.DeleteCoinsFromWallet(this.obj).subscribe(resp=>{
+  DeleteDepositWalletRequest(){
+    this.apiservices.DeleteRequestCoins(this.buildCoinDeletePayload()).subscribe(resp=>{
+      this.returnType = resp;
+      this.toastrMessages();
+    });
+  }
+
+  DeleteWithdrawWalletRequest(){
+    this.apiservices.DeleteRequestCoins(this.buildCoinDeletePayload()).subscribe(resp=>{
       this.returnType = resp;
       this.toastrMessages();
     });
   }
 
   DeleteCoinsRequestToId(){
-    this.apiservices.DeleteCoinsRequestToId(this.obj).subscribe(resp=>{
+    this.apiservices.DeleteCoinsRequestToId(this.buildCoinDeletePayload()).subscribe(resp=>{
       this.returnType = resp;
       this.toastrMessages();
     });
+  }
+
+  DeleteWithdrawFromIdRequest(){
+    this.apiservices.DeleteCoinsRequestToId(this.buildCoinDeletePayload()).subscribe(resp=>{
+      this.returnType = resp;
+      this.toastrMessages();
+    });
+  }
+
+  private buildCoinDeletePayload(){
+    return {
+      coinRequestId: this.obj.coinsRequestId,
+      sessionUser: this.authService.user.userId
+    };
   }
 
 

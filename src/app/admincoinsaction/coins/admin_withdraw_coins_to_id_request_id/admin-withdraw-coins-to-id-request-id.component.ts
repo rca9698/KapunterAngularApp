@@ -8,6 +8,7 @@ import { CoinsService } from '../coins.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/common.service';
+import { resolveAccountId } from '../coins-request.util';
 
 @Component({
   selector: 'app-admin-withdraw-coins-to-id-request-id',
@@ -44,10 +45,10 @@ export class AdminWithdrawCoinsToIdRequestIdComponent {
   } 
   this.withdrawobj.userId = this.obj.userId;
   this.withdrawobj.siteId = this.obj.siteId;
-  this.withdrawobj.accountId = this.obj.accountID;
+  this.withdrawobj.accountId = resolveAccountId(this.obj);
   this.withdrawobj.sessionUser = this._sessionUser;
   this.withdrawobj.coins = this.obj.coins;
-  this.withdrawobj.coinType = 1;
+  this.withdrawobj.coinType = this.obj.coinType ?? 1;
   this.withdrawobj.coinsRequestId = this.obj.coinsRequestId;
   console.log(this.withdrawobj);
   this.coinsService.deposite_withdraw_coins_to_ids(this.withdrawobj).subscribe(resp => {

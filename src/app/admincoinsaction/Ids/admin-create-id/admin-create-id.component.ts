@@ -7,6 +7,7 @@ import { IdsService } from '../ids.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { AuthService } from 'src/app/auth.service';
 import { environment } from 'src/environments/environment';
+import { resolveAccountRequestId } from '../../shared/id-request.util';
 
 @Component({
   selector: 'app-admin-create-id',
@@ -42,9 +43,12 @@ export class AdminCreateIdComponent {
     if(this.AdminCreateIdForm.invalid)
       return;
 
-    this.admin_add_id.userName = this.obj.userName;
+    this.admin_add_id.userName = this.AdminCreateIdForm.value.userName ?? this.obj.userName;
+    this.admin_add_id.password = this.AdminCreateIdForm.value.password;
     this.admin_add_id.sessionUser = this._sessionUser;
-    this.admin_add_id.accountRequestId = this.obj.accountRequestID;
+    this.admin_add_id.accountRequestId = BigInt(
+      resolveAccountRequestId(this.obj as Record<string, unknown>) || 0
+    ) as unknown as bigint;
     this.idsservice.AdminAddID(this.admin_add_id).subscribe(resp => {
       console.log(resp);
       this.returnType = resp;

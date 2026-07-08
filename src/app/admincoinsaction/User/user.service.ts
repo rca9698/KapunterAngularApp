@@ -18,4 +18,8 @@ export class UserService implements OnInit {
    userlist(userQuery:any) {
     return this.apiservice.GetUsers(userQuery);
   }
+
+  deletedUserList(userQuery: any) {
+    return this.apiservice.GetUsers({ ...userQuery, isDeleted: 1 });
+  }
 }

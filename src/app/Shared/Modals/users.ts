@@ -2,6 +2,7 @@ export interface Iusers{
     userId: bigint,
     firstName: string,
     lastName: string,
+    fullName?: string,
     userNumber: string,
     emailId: string,
     claims: string,

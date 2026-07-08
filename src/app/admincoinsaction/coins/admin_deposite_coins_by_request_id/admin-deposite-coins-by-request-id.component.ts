@@ -8,6 +8,7 @@ import { CoinsService } from '../coins.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { Iadmin_withdraw_coins_by_request_id, admin_withdraw_coins_by_request_id } from 'src/app/Shared/Modals/Coins/admin_withdraw_coins_by_request_id';
 import { CommonService } from 'src/app/common.service';
+import { serializeForApi } from 'src/app/Shared/Utils/api-serialize.util';
 
 @Component({
   selector: 'app-admin-deposite-coins-by-request-id',
@@ -47,8 +48,8 @@ export class AdminDepositeCoinsByRequestIdComponent {
   this.depositeobj.coins = this.obj.coins;
   this.depositeobj.coinType = 1;
   this.depositeobj.coinsRequestId = this.obj.coinsRequestId;
-  
-  this.coinsService.deposite_coins_by_request_id(this.depositeobj).subscribe(resp => {
+
+  this.coinsService.deposite_coins_by_request_id(serializeForApi(this.depositeobj) as typeof this.depositeobj).subscribe(resp => {
     this.returnType = resp;
     this.commonservice.toastrMessages(this.returnType);
   })

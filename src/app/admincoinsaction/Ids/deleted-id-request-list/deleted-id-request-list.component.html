@@ -1,1 +1,58 @@
-<p>deleted-id-request-list works!</p>
+<div class="col-12 text-center listtypeview admin-list-header">
+  <p class="text-uppercase mb-1">Deleted Account Requests</p>
+  <p class="list-subtitle">Removed or soft-deleted ID creation requests</p>
+</div>
+
+<div class="mt-4">
+  <div class="customtable admin-list-table">
+    <table class="table table-hover scrollbar" id="deletedIdRequestList">
+      <thead>
+        <tr class="tableHeaderClass">
+          <th scope="col"><p>User</p></th>
+          <th scope="col"><p>Application</p></th>
+          <th scope="col"><p>Requested ID</p></th>
+            <th scope="col"><p>Request #</p></th>
+            <th scope="col"><p>Deleted Date</p></th>
+            <th scope="col"><p>Deletion Reason</p></th>
+        </tr>
+      </thead>
+      <tbody>
+            <tr *ngIf="!requestList.length">
+                <td colspan="6" class="admin-list-empty">
+            <i class="bi bi-inbox"></i>
+            <p class="mb-0">No deleted account requests found.</p>
+          </td>
+        </tr>
+        <tr *ngFor="let item of requestList">
+          <th scope="row"><p class="mb-0">{{ item.userNumber }}</p></th>
+          <td>
+            <div class="site-cell">
+              <img
+                *ngIf="item.documentDetailId"
+                class="site-thumb"
+                [src]="sitePath + item.documentDetailId + item.fileExtenstion"
+                [alt]="item.siteName"
+              />
+              <div class="site-meta">
+                <p>{{ item.siteName }}</p>
+                <p class="site-url">{{ item.siteURL }}</p>
+              </div>
+            </div>
+          </td>
+          <td><span class="id-badge">{{ item.userName }}</span></td>
+          <td><span class="request-id">#{{ getRequestId(item) }}</span></td>
+          <td><p class="mb-0">{{ item.createdDate }}</p></td>
+          <td><p class="mb-0 user-sub">{{ item.deletionReason || '—' }}</p></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pagination" *ngIf="paginationCount > 1">
+  <a (click)="PaginationNumber(1)">&laquo;</a>
+  <span *ngFor="let pagination of getCountArray()">
+    <a (click)="PaginationNumber(pagination + 1)">{{ pagination + 1 }}</a>
+  </span>
+  <a (click)="PaginationNumber(paginationCount)">&raquo;</a>
+</div>

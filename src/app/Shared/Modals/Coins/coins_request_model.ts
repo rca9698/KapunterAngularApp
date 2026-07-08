@@ -1,6 +1,8 @@
 export interface Icoins_request_model{
     coinsRequestId: string,
     userId: bigint,
+    bankDetailId?: bigint,
+    bankId?: bigint,
     coins: bigint,
     totalCoins: bigint,
     coinType : number,

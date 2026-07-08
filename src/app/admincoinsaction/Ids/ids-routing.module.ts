@@ -6,14 +6,18 @@ import { CloseIdRequestsComponent } from './close-id-requests/close-id-requests.
 import { ChangePasswordRequestsComponent } from './change-password-requests/change-password-requests.component';
 import { RejectedIdRequestsComponent } from './rejected-id-requests/rejected-id-requests.component';
 import { IdRequestListComponent } from './id-request-list/id-request-list.component';
+import { DeletedIdsListComponent } from './deleted-ids-list/deleted-ids-list.component';
+import { DeletedIdRequestListComponent } from './deleted-id-request-list/deleted-id-request-list.component';
 
 const route: Routes = [
-  {path: 'change-password-requests', component: ChangePasswordRequestsComponent },
-  {path: 'close-id-requests', component: CloseIdRequestsComponent },
-  {path: 'list-id-requests', component: IdRequestListComponent },
-  {path: 'list-ids', component: ListIdsComponent },
-  {path: 'rejected-id-requests', component: RejectedIdRequestsComponent }
-]
+  { path: 'change-password-requests', component: ChangePasswordRequestsComponent },
+  { path: 'close-id-requests', component: CloseIdRequestsComponent },
+  { path: 'list-id-requests', component: IdRequestListComponent },
+  { path: 'list-ids', component: ListIdsComponent },
+  { path: 'rejected-id-requests', component: RejectedIdRequestsComponent },
+  { path: 'deleted-ids-list', component: DeletedIdsListComponent },
+  { path: 'deleted-id-requests', component: DeletedIdRequestListComponent }
+];
 
 @NgModule({
   declarations: [],

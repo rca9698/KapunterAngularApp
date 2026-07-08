@@ -10,6 +10,8 @@ import { ListIdsComponent } from './list-ids/list-ids.component';
 import { CloseIdRequestsComponent } from './close-id-requests/close-id-requests.component';
 import { ChangePasswordRequestsComponent } from './change-password-requests/change-password-requests.component';
 import { RejectedIdRequestsComponent } from './rejected-id-requests/rejected-id-requests.component';
+import { DeletedIdsListComponent } from './deleted-ids-list/deleted-ids-list.component';
+import { DeletedIdRequestListComponent } from './deleted-id-request-list/deleted-id-request-list.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { RejectedIdRequestsComponent } from './rejected-id-requests/rejected-id-
     ListIdsComponent,
     CloseIdRequestsComponent,
     ChangePasswordRequestsComponent,
-    RejectedIdRequestsComponent
+    RejectedIdRequestsComponent,
+    DeletedIdsListComponent,
+    DeletedIdRequestListComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +30,12 @@ import { RejectedIdRequestsComponent } from './rejected-id-requests/rejected-id-
     IdsRoutingModule,
     HttpClientModule,
     ModalModule.forRoot()
+  ],
+  exports: [
+    IdRequestListComponent,
+    DeletedIdRequestListComponent,
+    DeletedIdsListComponent,
+    ListIdsComponent
   ]
 })
 export class IdsModule { }

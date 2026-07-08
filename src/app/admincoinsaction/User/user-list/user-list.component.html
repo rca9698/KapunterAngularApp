@@ -1,60 +1,66 @@
 
-<div class="col-12 text-center listtypeview">
-    <p class="text-uppercase">User Listing</p>
+<div class="col-12 text-center listtypeview admin-list-header">
+    <p class="text-uppercase mb-1">User Listing</p>
+    <p class="list-subtitle">Active registered users and wallet balances</p>
 </div>
 
 <div class="mt-4">
-<div class="customtable">
-    <!-- Table with hoverable rows -->
-    <table class="table table-hover scrollbar " id="userList">
+<div class="customtable admin-list-table">
+    <table class="table table-hover scrollbar" id="userList">
         <thead>
         <tr class="tableHeaderClass">
-            <th scope="col"><p class="">User Number</p></th>
-            <th scope="col"><p class="">Created Date</p></th>
-            <th scope="col"><p class="">Coins (<i class="bi bi-currency-rupee"></i>)</p></th>
-            <th scope="col"><p class="">Action</p></th>
-            </tr>
+            <th scope="col"><p>User Number</p></th>
+            <th scope="col"><p>Name</p></th>
+            <th scope="col"><p>Email</p></th>
+            <th scope="col"><p>Created Date</p></th>
+            <th scope="col"><p>Coins (<i class="bi bi-currency-rupee"></i>)</p></th>
+            <th scope="col"><p>Action</p></th>
+        </tr>
         </thead>
         <tbody>
-            <!-- @if (Model != null && Model.ReturnList != null)
-            {
-                @foreach (var user in Model.ReturnList)
-                {-->
-                  
-                    <tr *ngFor="let user of usersList">
-                    <th scope="row"><p>{{user.userNumber}}</p></th>
-                    <td><p>{{user.createdDate}}</p></td>
-                    <td><p>{{user.coins}}</p></td>
-                        <td>
-                            <div class="btn-group">
-                            <!--<button (click)="depositeCoinsByUserId(user)"> <i class="bi bi-person-fill-up"></i></button>
-                            <button (click)="withdrawCoinsByUserId(user)"> <i class="bi bi-person-fill-down"></i> </button>
-                            <button (click)="ListCoins(user)"> <i class="bi bi-cash"></i> </button> -->
-                            <button (click)="deleteUser(user)"> <i class="bi bi-person-fill-slash"></i></button>
-                            </div>
-                        </td>
-                    </tr> 
-               <!-- }
-            } -->
+            <tr *ngIf="!usersList.length">
+                <td colspan="6" class="admin-list-empty">
+                    <i class="bi bi-inbox"></i>
+                    <p class="mb-0">No users found.</p>
+                </td>
+            </tr>
+            <tr *ngFor="let user of usersList">
+                <th scope="row"><p class="mb-0">{{ user.userNumber }}</p></th>
+                <td><p class="mb-0">{{ getDisplayName(user) }}</p></td>
+                <td><p class="mb-0 user-sub">{{ user.emailId || '—' }}</p></td>
+                <td><p class="mb-0">{{ user.createdDate }}</p></td>
+                <td><p class="mb-0 id-badge"><i class="bi bi-currency-rupee"></i>{{ user.coins }}</p></td>
+                <td>
+                    <div class="action-btn-group btn-group">
+                        <button type="button" title="Deposit coins" (click)="depositeCoinsByUserId(user)">
+                            <i class="bi bi-person-fill-up"></i>
+                        </button>
+                        <button type="button" title="Withdraw coins" (click)="withdrawCoinsByUserId(user)">
+                            <i class="bi bi-person-fill-down"></i>
+                        </button>
+                        <button type="button" title="Delete user" (click)="deleteUser(user)">
+                            <i class="bi bi-person-fill-slash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
 </div>
-<div class="pagination">
-    <a [class.disabled]="!hasPreviousPage()" 
-       (click)="goToPreviousPage()" 
+<div class="pagination" *ngIf="paginationCount > 1">
+    <a [class.disabled]="!hasPreviousPage()"
+       (click)="goToPreviousPage()"
        [style.cursor]="hasPreviousPage() ? 'pointer' : 'default'"
-       [style.opacity]="hasPreviousPage() ? '1' : '0.5'"
-       p-id="previous">&laquo;</a>
-    <span *ngFor="let pagination of getCountArray()"> 
-        <a [class.active]="isActivePage(pagination)" 
+       [style.opacity]="hasPreviousPage() ? '1' : '0.5'">&laquo;</a>
+    <span *ngFor="let pagination of getCountArray()">
+        <a [class.active]="isActivePage(pagination)"
            (click)="PaginationNumber(pagination)">
-            {{pagination+1}}
+            {{ pagination + 1 }}
         </a>
     </span>
-    <a [class.disabled]="!hasNextPage()" 
-       (click)="goToNextPage()" 
+    <a [class.disabled]="!hasNextPage()"
+       (click)="goToNextPage()"
        [style.cursor]="hasNextPage() ? 'pointer' : 'default'"
-       [style.opacity]="hasNextPage() ? '1' : '0.5'"
-       p-id="next">&raquo;</a>
-  </div>
+       [style.opacity]="hasNextPage() ? '1' : '0.5'">&raquo;</a>
+</div>

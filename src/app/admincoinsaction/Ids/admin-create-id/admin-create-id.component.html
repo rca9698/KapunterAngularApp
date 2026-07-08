@@ -17,6 +17,8 @@
                     </span>
                     <p class="text-uppercase">{{obj?.siteName}}</p>
                     <p>{{obj?.siteURL}}</p>
+                    <p *ngIf="obj?.userNumber">User: {{ obj.userNumber }}</p>
+                    <p *ngIf="obj?.userName">Requested ID: {{ obj.userName }}</p>
                 </div>
             </div>
 

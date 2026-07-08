@@ -3,6 +3,8 @@ export interface Icoins_to_site_request_listing_modal{
     userId: bigint,
     siteId: bigint,
     accountId: bigint,
+    accountID?: bigint,
+    accountUserName?: string,
     siteName: string,
     siteURL: string,
     coins: bigint,

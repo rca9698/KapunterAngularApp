@@ -66,4 +66,11 @@ export class IdsService {
     return this.apiservice.AddID(obj);
   }
 
+  deletedIdRequests(obj: any) {
+    return this.apiservice.listIdRequests({ ...obj, isDeleted: 1 });
+  }
+
+  deletedIds(obj: any) {
+    return this.apiservice.GetIDs({ ...obj, isDeleted: 1 });
+  }
 }

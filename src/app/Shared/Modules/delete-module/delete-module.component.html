@@ -1,4 +1,4 @@
- 
+
         <div class="modal-content siteColor">
             <div class="modal-header">
                 <p class="modal-title">Delete</p>
@@ -8,11 +8,33 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <p>Are you sure, want to delete {{title}}?</p>
+                    <p class="mb-3">Are you sure you want to delete {{ title }}?</p>
+
+                    <div *ngIf="requiresDeletionReason" class="deletion-reason-block">
+                        <label for="deletionReason" class="form-label">
+                            Deletion reason <span class="text-danger">*</span>
+                        </label>
+                        <textarea
+                            id="deletionReason"
+                            class="form-control deletion-reason-input"
+                            rows="4"
+                            maxlength="200"
+                            placeholder="Enter why this request is being deleted (required, max 200 characters)"
+                            [(ngModel)]="deletionReason"
+                            (input)="onDeletionReasonInput()"
+                        ></textarea>
+                        <div class="deletion-reason-meta">
+                            <small class="text-danger" *ngIf="deletionReasonTouched && !deletionReason.trim()">
+                                Deletion reason is required.
+                            </small>
+                            <small class="char-count" [class.text-warning]="remainingChars < 20">
+                                {{ remainingChars }} characters remaining
+                            </small>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn siteBtnbackground" (click)="deleteData()">Confirm Delete</button>
             </div>
         </div>
-     

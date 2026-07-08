@@ -1,49 +1,55 @@
 
-<div class="col-12 text-center listtypeview">
-    <p class="text-uppercase">Deposite Listing</p>
+<div class="col-12 text-center listtypeview coins-list-header">
+    <p class="text-uppercase mb-1">Wallet Deposit</p>
+    <p class="list-subtitle">Pending deposits to user wallet</p>
 </div>
 
 <div class="mt-4">
-<div class="customtable">
-    <!-- Table with hoverable rows -->
-    <table class="table table-hover scrollbar " id="userList">
+<div class="customtable coins-list-table">
+    <table class="table table-hover scrollbar" id="walletDepositList">
         <thead>
         <tr class="tableHeaderClass">
-            <th scope="col"><p class="">User Number</p></th>
-            <th scope="col"><p class="">Coins</p></th>
-            <th scope="col"><p class="">Request Date</p></th>
-            <th scope="col"><p class="">Action</p></th>
-            </tr>
+            <th scope="col"><p>User Number</p></th>
+            <th scope="col"><p>User Name</p></th>
+            <th scope="col"><p>Coins</p></th>
+            <th scope="col"><p>Request Date</p></th>
+            <th scope="col"><p>Action</p></th>
+        </tr>
         </thead>
-        <tbody> 
+        <tbody>
+            <tr *ngIf="!requestList?.length">
+                <td colspan="5" class="coins-list-empty">
+                    <i class="bi bi-inbox"></i>
+                    <p class="mb-0">No pending wallet deposit requests.</p>
+                </td>
+            </tr>
             <tr *ngFor="let request of requestList">
-            <th scope="row"><p>{{request.userNumber}}</p></th>
-            <td><p>{{request.coins}}</p></td>
-            <td><p>{{request.createdDate}}</p></td>
+                <th scope="row"><p class="mb-0">{{ request.userNumber }}</p></th>
+                <td><p class="mb-0">{{ request.userName }}</p></td>
+                <td><p class="coins-amount mb-0"><i class="bi bi-currency-rupee"></i>{{ request.coins }}</p></td>
+                <td><p class="mb-0">{{ request.createdDate }}</p></td>
                 <td>
-                    <div class="btn-group">
-                    <button (click)="ViewCoinRequestProof(request)"> <i class="bi bi-eye-fill"></i> </button>
-                    <button (click)="DepositCoinsPopup(request)"> <i class="bi bi-person-fill-up"></i> </button>
-                    <button (click)="DeleteCoinRequestPopup(request)"> <i class="bi bi-trash3-fill"></i> </button>
+                    <div class="action-btn-group btn-group">
+                        <button type="button" title="View payment proof" (click)="ViewCoinRequestProof(request)">
+                            <i class="bi bi-eye-fill"></i>
+                        </button>
+                        <button type="button" title="Approve deposit" (click)="DepositCoinsPopup(request)">
+                            <i class="bi bi-person-fill-up"></i>
+                        </button>
+                        <button type="button" title="Delete request" (click)="DeleteCoinRequestPopup(request)">
+                            <i class="bi bi-trash3-fill"></i>
+                        </button>
                     </div>
                 </td>
-            </tr> 
-               
+            </tr>
         </tbody>
     </table>
 </div>
 </div>
-<div class="pagination">
-    <a (click)="PaginationNumber(6)" p-id="previous">&laquo;</a>
-    <span *ngFor="let pagination of getCountArray()"> 
-        <a (click)="PaginationNumber(pagination)">
-            {{pagination+1}}
-        </a>
+<div class="pagination" *ngIf="paginationCount > 1">
+    <a (click)="PaginationNumber(0)" p-id="previous">&laquo;</a>
+    <span *ngFor="let pagination of getCountArray()">
+        <a (click)="PaginationNumber(pagination)">{{ pagination + 1 }}</a>
     </span>
-
-    <!-- <a p-id="3" (click)="PaginationNumber(3)">3</a>
-    <a p-id="4" (click)="PaginationNumber(4)">4</a>
-    <a p-id="5" (click)="PaginationNumber(5)">5</a>
-    <a p-id="6" (click)="PaginationNumber(6)">6</a> -->
-    <a (click)="PaginationNumber(paginationCount)" p-id="next">&raquo;</a>
-  </div>
+    <a (click)="PaginationNumber(paginationCount - 1)" p-id="next">&raquo;</a>
+</div>

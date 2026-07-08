@@ -1,1 +1,43 @@
-<p>deleted-user-list works!</p>
+<div class="col-12 text-center listtypeview admin-list-header">
+  <p class="text-uppercase mb-1">Deleted Users</p>
+  <p class="list-subtitle">Soft-deleted user accounts</p>
+</div>
+
+<div class="mt-4">
+  <div class="customtable admin-list-table">
+    <table class="table table-hover scrollbar" id="deletedUserList">
+      <thead>
+        <tr class="tableHeaderClass">
+          <th scope="col"><p>User Number</p></th>
+          <th scope="col"><p>Name</p></th>
+          <th scope="col"><p>Email</p></th>
+          <th scope="col"><p>Coins</p></th>
+          <th scope="col"><p>Deleted Date</p></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!usersList.length">
+          <td colspan="5" class="admin-list-empty">
+            <i class="bi bi-inbox"></i>
+            <p class="mb-0">No deleted users found.</p>
+          </td>
+        </tr>
+        <tr *ngFor="let user of usersList">
+          <th scope="row"><p class="mb-0">{{ user.userNumber }}</p></th>
+          <td><p class="mb-0">{{ getDisplayName(user) }}</p></td>
+          <td><p class="mb-0 user-sub">{{ user.emailId || '—' }}</p></td>
+          <td><p class="mb-0"><i class="bi bi-currency-rupee"></i>{{ user.coins }}</p></td>
+          <td><p class="mb-0">{{ user.updatedDate || user.createdDate }}</p></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pagination" *ngIf="paginationCount > 1">
+  <a [class.disabled]="!hasPreviousPage()" (click)="goToPreviousPage()">&laquo;</a>
+  <span *ngFor="let pagination of getCountArray()">
+    <a (click)="PaginationNumber(pagination)">{{ pagination + 1 }}</a>
+  </span>
+  <a [class.disabled]="!hasNextPage()" (click)="goToNextPage()">&raquo;</a>
+</div>

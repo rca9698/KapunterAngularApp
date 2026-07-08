@@ -1,33 +1,41 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { Iusers } from 'src/app/Shared/Modals/users';
-import { ReturnType } from 'src/app/Shared/Modals/Common/ReturnType';
 import { CoinsService } from '../../coins/coins.service';
 import { DeleteService } from 'src/app/Shared/Modules/delete-module/delete.service';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  styleUrls: ['./user-list.component.css', '../../shared/admin-listing.shared.css']
 })
 export class UserListComponent implements OnInit {
-  
-  constructor(private userService: UserService, private coinsService: CoinsService
-    , private deletemodule: DeleteService){ }
+  usersQuery: any;
+  usersList: Iusers[] = [];
+  returnType: any;
+  paginationCount = 1;
+  totalCount = 0;
+  currentPage = 0;
+  private readonly _sessionUser: bigint;
 
-  ngOnInit() {
+  constructor(
+    private userService: UserService,
+    private coinsService: CoinsService,
+    private deletemodule: DeleteService,
+    private authservice: AuthService
+  ) {
+    this._sessionUser = this.authservice.user.userId;
+  }
+
+  ngOnInit(): void {
     this.userlist();
   }
 
-  usersQuery: any ;
-  usersList: Iusers[] | undefined; 
-  returnType:any;
-  paginationCount: number = 1;
-  totalCount: number = 0;
-  currentPage: number = 0;
+  getDisplayName(user: Iusers): string {
+    return user.fullName?.trim() || [user.firstName, user.lastName].filter(Boolean).join(' ').trim() || '—';
+  }
 
-  //function to return list of numbers from 0 to n-1 
   getCountArray(): number[] {
     return Array.from({ length: this.paginationCount }, (_, i) => i);
   }
@@ -44,47 +52,41 @@ export class UserListComponent implements OnInit {
     return this.currentPage > 0;
   }
 
-  fetchUserList(paginationQuery: any){
+  fetchUserList(paginationQuery: any): void {
     this.userService.userlist(paginationQuery).subscribe({
-      next:(response) =>{
-       this.returnType = response;
-       this.usersList = this.returnType['returnList'];
-       this.paginationCount = this.returnType['paginationCount'];
-       this.totalCount = this.returnType['totalCount'];
-       this.currentPage = paginationQuery.pageNumber;
+      next: (response) => {
+        this.returnType = response;
+        this.usersList = this.returnType['returnList'] ?? [];
+        this.paginationCount = this.returnType['paginationCount'] ?? 1;
+        this.totalCount = this.returnType['totalCount'] ?? this.usersList.length;
+        this.currentPage = paginationQuery.pageNumber ?? 0;
       },
-      error:error => {
-        console.log(error);
-      }
+      error: (error) => console.error(error)
     });
   }
 
-  userlist() {
+  userlist(): void {
     this.usersQuery = {
-      SessionUser: 1,
-      pageNumber: 0
+      sessionUser: this._sessionUser,
+      pageNumber: 0,
+      isDeleted: 0
     };
     this.fetchUserList(this.usersQuery);
   }
 
-  depositeCoinsByUserId(user: Iusers){
+  depositeCoinsByUserId(user: Iusers): void {
     this.coinsService.OpenDepositeCoinsByUserIdPopup(user.userNumber);
   }
 
-  withdrawCoinsByUserId(user: Iusers){
+  withdrawCoinsByUserId(user: Iusers): void {
     this.coinsService.OpenWithdrawCoinsUserIdPopup(user.userNumber);
   }
 
-  ListCoins(user: Iusers){
-
-  }
-
-  deleteUser(user: Iusers){
+  deleteUser(user: Iusers): void {
     this.deletemodule.OpenDeletePopup('user', 'User', user);
   }
 
-  PaginationNumber(pageNumber:number) {
-    // Validate page number
+  PaginationNumber(pageNumber: number): void {
     if (pageNumber < 0 || pageNumber >= this.paginationCount) {
       return;
     }
@@ -92,13 +94,13 @@ export class UserListComponent implements OnInit {
     this.fetchUserList(this.usersQuery);
   }
 
-  goToNextPage() {
+  goToNextPage(): void {
     if (this.hasNextPage()) {
       this.PaginationNumber(this.currentPage + 1);
     }
   }
 
-  goToPreviousPage() {
+  goToPreviousPage(): void {
     if (this.hasPreviousPage()) {
       this.PaginationNumber(this.currentPage - 1);
     }

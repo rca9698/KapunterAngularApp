@@ -8,6 +8,7 @@ import { ToastrService } from 'src/app/toastr/toastr.service';
 import { admin_deposite_withdraw_coins_ids_by_request_id, Iadmin_deposite_withdraw_coins_ids_by_request_id } from 'src/app/Shared/Modals/Coins/admin_deposite_withdraw_coins_ids_by_request_id';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/common.service';
+import { resolveAccountId } from '../coins-request.util';
 
 @Component({
   selector: 'app-admin-deposite-coins-to-id-request-id',
@@ -51,8 +52,8 @@ export class AdminDepositeCoinsToIdRequestIdComponent implements OnInit {
   this.depositeobj.siteId = this.obj.siteId;
   this.depositeobj.sessionUser = this._sessionUser;
   this.depositeobj.coins = this.obj.coins;
-  this.depositeobj.accountId = this.obj.accountID;
-  this.depositeobj.coinType = 0;
+  this.depositeobj.accountId = resolveAccountId(this.obj);
+  this.depositeobj.coinType = this.obj.coinType ?? 0;
   this.depositeobj.coinsRequestId = this.obj.coinsRequestId;
   console.log(this.depositeobj);
   this.coinsService.deposite_withdraw_coins_to_ids(this.depositeobj).subscribe(resp => {

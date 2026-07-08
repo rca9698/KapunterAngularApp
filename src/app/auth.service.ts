@@ -4,6 +4,7 @@ import { apiService } from './api.service';
 import { BehaviorSubject, tap } from 'rxjs';
 import { Iusermodal, usermodal } from './Shared/Modals/user-modal';
 import { Iusers, users } from './Shared/Modals/users';
+import { normalizeUserDetail, resolveWalletBalance } from './Shared/utils/user-detail.util';
 import { environment } from 'src/environments/environment';
 import { VisitorCountService } from './visitor-count.service';
 
@@ -17,7 +18,21 @@ export class AuthService {
   private readonly TOKEN_NAME = 'bearer_token';
   user: Iusermodal = new usermodal();
   userDetailQuery: {} | undefined;
-  userdetail: Iusers = new users();
+  private _userdetail: Iusers = new users();
+
+  /** Always non-null — templates must not read profile fields from a nullable object. */
+  get userdetail(): Iusers {
+    return this._userdetail ?? new users();
+  }
+
+  /** Wallet balance safe for any template (sidebar, coin modals, etc.). */
+  get walletBalance(): string | number {
+    return resolveWalletBalance(this._userdetail);
+  }
+
+  get displayUserNumber(): string {
+    return this.userdetail.userNumber?.trim() || '—';
+  }
   /** Last login debug snapshot — inspect in DevTools when login fails. */
   lastLoginDebug: Record<string, unknown> | null = null;
 
@@ -62,6 +77,7 @@ export class AuthService {
       this._isLoggedIn.next(true);
       this.user = this.getUser(token);
       this.visitorCountService.refreshAfterLogin();
+      this.getUserDetails();
 
       const afterSave = this.buildLoginDebugSnapshot(response, token, 'login() after token saved');
       this.lastLoginDebug = afterSave;
@@ -141,6 +157,7 @@ export class AuthService {
     localStorage.removeItem(this.TOKEN_NAME);
     this._isLoggedIn.next(false);
     this.user = new usermodal();
+    this._userdetail = new users();
     location.reload();
   }
 
@@ -252,20 +269,36 @@ export class AuthService {
     return this.isLoggedIn && !this.hasRole('admin');
   }
 
+  setUserDetail(raw: unknown): void {
+    this._userdetail = normalizeUserDetail(raw);
+  }
+
   getUserDetails() {
     if (!this.isLoggedIn || !this.user?.userId) {
       return;
     }
 
     this.userDetailQuery = {
-      SessionUser: this.user.userId,
-      UserId: this.user.userId
+      sessionUser: this.user.userId,
+      userId: this.user.userId
     };
 
-    return this.apiservice.GetUserById(this.userDetailQuery).subscribe(resp => {
-      this.returnType = resp;
-      console.log(resp);
-      this.userdetail = this.returnType['returnVal'];
+    return this.apiservice.GetUserById(this.userDetailQuery).subscribe({
+      next: (resp: any) => {
+        this.returnType = resp;
+        const payload =
+          resp?.returnVal ??
+          resp?.ReturnVal ??
+          resp?.returnList?.[0] ??
+          resp?.ReturnList?.[0];
+        this.setUserDetail(payload);
+      },
+      error: () => {
+        // Keep last known profile; never assign null.
+        if (!this._userdetail) {
+          this._userdetail = new users();
+        }
+      }
     });
   }
 

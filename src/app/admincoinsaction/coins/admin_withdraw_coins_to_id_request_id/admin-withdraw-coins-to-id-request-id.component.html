@@ -13,7 +13,8 @@
                 </span>
                 <p class="text-uppercase">{{obj.siteName}}</p>
                 <p>{{obj.siteURL}}</p>
-                <p>{{obj.userName}}</p>
+                <p *ngIf="obj.userName">User: {{obj.userName}}</p>
+                <p>Account ID: {{ obj.accountUserName || obj.userName || obj.accountId || obj.accountID }}</p>
             </div>
         </div>
         <div class="form-group">

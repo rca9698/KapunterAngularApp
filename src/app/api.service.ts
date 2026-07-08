@@ -256,7 +256,7 @@ export class apiService {
   }
 
   DeleteCoinsRequestToId(obj: any){
-    return this.http.post(`${environment.apiUrl}/api/Coin/UpdateCoinsToAccount`, obj);
+    return this.http.post(`${environment.apiUrl}/api/Coin/DeleteAccountRequestCoins`, obj);
   }
 
   DeleteRequestCoins(obj: any){

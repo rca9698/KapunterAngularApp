@@ -3,11 +3,13 @@ import { AuthService } from 'src/app/auth.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { IID_Request_Modal } from 'src/app/Shared/Modals/Ids/id-request-modal';
 import { IdsService } from '../ids.service';
+import { environment } from 'src/environments/environment';
+import { resolveAccountId } from '../../shared/id-request.util';
 
 @Component({
   selector: 'app-close-id-requests',
   templateUrl: './close-id-requests.component.html',
-  styleUrls: ['./close-id-requests.component.css']
+  styleUrls: ['./close-id-requests.component.css', '../../shared/admin-listing.shared.css']
 })
 export class CloseIdRequestsComponent implements OnInit {
   private readonly _sessionUser: bigint;
@@ -16,6 +18,7 @@ export class CloseIdRequestsComponent implements OnInit {
   returnType: any;
   paginationCount = 1;
   totalCount = 0;
+  sitePath = environment.imagePath.sitePath;
 
   constructor(
     private idsService: IdsService,
@@ -28,10 +31,14 @@ export class CloseIdRequestsComponent implements OnInit {
   ngOnInit(): void {
     this.usersQuery = {
       pageNumber: 1,
-      userId: this._sessionUser,
+      userId: 0,
       sessionUser: this._sessionUser
     };
     this.fetchCloseRequests(this.usersQuery);
+  }
+
+  getAccountId(item: IID_Request_Modal): string {
+    return resolveAccountId(item as unknown as Record<string, unknown>);
   }
 
   fetchCloseRequests(paginationQuery: any): void {
@@ -67,7 +74,7 @@ export class CloseIdRequestsComponent implements OnInit {
 
   PaginationNumber(pageNumber: number): void {
     this.usersQuery.pageNumber = pageNumber;
-    this.usersQuery.userId = this._sessionUser;
+    this.usersQuery.userId = 0;
     this.usersQuery.sessionUser = this._sessionUser;
     this.fetchCloseRequests(this.usersQuery);
   }
