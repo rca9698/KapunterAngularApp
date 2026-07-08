@@ -71,7 +71,10 @@ export class UserListSitesComponent implements OnInit {
 
   openSiteIdDetails(site: ISiteDetailModal): void {
     const initialState: ModalOptions = {
-      initialState: { contextSite: site },
+      initialState: {
+        contextSite: site,
+        filterByAccount: false
+      },
     };
     this.bsModalService.show(SiteIdDetailsModalComponent, initialState);
   }

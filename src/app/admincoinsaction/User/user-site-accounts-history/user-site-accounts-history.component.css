@@ -63,7 +63,7 @@
 
 .site-actions-grid--single {
   grid-template-columns: 1fr;
-  max-width: 220px;
+  max-width: 240px;
 }
 
 .site-action-link--active {
@@ -71,92 +71,251 @@
 }
 
 .site-history-panel {
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 149, 31, 0.25);
+  margin-top: 0.85rem;
+  padding: 0.85rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 149, 31, 0.22);
+  background: rgba(0, 0, 0, 0.22);
+  overflow: visible;
 }
 
-.site-history-loading {
+.site-history-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.site-history-panel-head h4 {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffd6b2;
+}
+
+.site-history-count {
+  font-size: 0.72rem;
+  color: #a89888;
+}
+
+.site-history-loading,
+.txn-detail-loading {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 0;
+  padding: 0.5rem 0;
   color: #c9b8a8;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
 }
 
-.txn-history-list {
+.txn-accordion {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  max-height: 320px;
-  overflow-y: auto;
+  gap: 0.5rem;
+  padding-right: 0.15rem;
 }
 
-.txn-history-card {
-  border-radius: 10px;
-  border: 1px solid rgba(255, 149, 31, 0.28);
-  border-left-width: 4px;
+.txn-accordion-item {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 149, 31, 0.22);
   background: rgba(255, 255, 255, 0.03);
-  padding: 0.65rem 0.75rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.txn-history-card-top {
+.txn-accordion-item--open {
+  border-color: rgba(255, 149, 31, 0.45);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+  overflow: visible;
+}
+
+.txn-accordion-trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  padding: 0.75rem 0.85rem;
+  cursor: pointer;
+}
+
+.txn-accordion-trigger:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.txn-accordion-main {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.65rem;
-}
-
-.txn-history-card-meta {
+  flex-direction: column;
+  gap: 0.28rem;
   min-width: 0;
 }
 
-.txn-history-date {
+.txn-accordion-date {
   font-size: 0.68rem;
-  color: #a89888;
   font-weight: 600;
+  color: #a89888;
 }
 
-.txn-history-desc {
-  margin: 0.2rem 0 0;
-  font-size: 0.8rem;
+.txn-accordion-title {
+  font-size: 0.84rem;
   font-weight: 700;
   color: #fff4e8;
   line-height: 1.3;
 }
 
-.txn-history-amount {
-  font-size: 0.9rem;
-  font-weight: 800;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-.txn-history-card-foot {
+.txn-accordion-meta {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-top: 0.45rem;
-  padding-top: 0.45rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 0.4rem 0.65rem;
+  margin-top: 0.15rem;
 }
 
-.txn-history-status {
+.txn-accordion-status {
   display: inline-block;
-  padding: 0.15rem 0.5rem;
+  padding: 0.12rem 0.45rem;
   border-radius: 999px;
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #fff;
 }
 
-.txn-history-id {
+.txn-accordion-ref {
   font-size: 0.65rem;
   color: #8f8275;
+}
+
+.txn-accordion-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.txn-accordion-amount {
+  font-size: 0.92rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.txn-accordion-chevron {
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 149, 31, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffc978;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.txn-accordion-chevron--open {
+  transform: rotate(180deg);
+  background: rgba(255, 149, 31, 0.12);
+}
+
+.txn-accordion-body {
+  display: block;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.txn-detail-wrap {
+  display: block;
+  padding: 0.85rem;
+  visibility: visible;
+  opacity: 1;
+}
+
+.admin-passbook-detail-desc,
+.admin-passbook-detail-grid {
+  display: block;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 149, 31, 0.35);
+  background: linear-gradient(145deg, rgba(42, 28, 58, 0.95), rgba(24, 18, 36, 0.98));
+  padding: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.admin-passbook-detail-label,
+.admin-passbook-detail-title {
+  display: block;
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffcfab;
+}
+
+.admin-passbook-detail-text {
+  margin: 0;
+  color: #fff0de;
+  line-height: 1.55;
+  font-size: 0.9rem;
+}
+
+.admin-passbook-detail-divider {
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 149, 31, 0.35), transparent);
+  margin-bottom: 0.5rem;
+}
+
+.admin-passbook-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.82rem;
+}
+
+.admin-passbook-detail-row:last-child {
+  border-bottom: none;
+}
+
+.admin-passbook-detail-row span {
+  color: #c9b8a8;
+  flex-shrink: 0;
+}
+
+.admin-passbook-detail-row strong {
+  color: #ffffff;
+  font-weight: 700;
+  text-align: right;
+  word-break: break-word;
+}
+
+.admin-passbook-detail-proof {
+  display: block;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 149, 31, 0.35);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.admin-passbook-detail-proof img {
+  display: block;
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  padding: 0.65rem;
+  box-sizing: border-box;
 }
 
 .txn-history-empty {
@@ -175,4 +334,27 @@
 .txn-history-empty p {
   margin: 0;
   font-size: 0.85rem;
+}
+
+@media (max-width: 520px) {
+  .txn-accordion-trigger {
+    grid-template-columns: 1fr;
+  }
+
+  .txn-accordion-side {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .admin-passbook-detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .admin-passbook-detail-row strong {
+    text-align: left;
+  }
 }

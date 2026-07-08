@@ -140,6 +140,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       initialState: {
         contextSite: site,
         accountId: site.accountId,
+        filterByAccount: true,
         depositType: this.depositType,
       },
     };

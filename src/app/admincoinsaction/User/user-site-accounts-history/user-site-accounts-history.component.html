@@ -24,7 +24,7 @@
     <p class="mb-0">No site accounts found for this user.</p>
   </div>
 
-  <article class="site-card" *ngFor="let site of sites">
+  <article class="site-card" *ngFor="let site of sites; trackBy: trackBySiteKey">
     <div class="site-card-row site-card-row-top">
       <div class="site-card-brand">
         <div class="site-logo-wrap">
@@ -58,34 +58,104 @@
         [class.site-action-link--active]="isHistoryOpen(site)"
         (click)="toggleTransactionHistory(site)"
       >
-        <i class="bi bi-box-arrow-up-right"></i>
+        <i class="bi bi-clock-history"></i>
         <span>Transaction History</span>
       </button>
     </div>
 
     <div class="site-history-panel" *ngIf="isHistoryOpen(site)">
-      <div class="site-history-loading" *ngIf="loadingHistory">
+      <div class="site-history-panel-head">
+        <h4>Transaction History</h4>
+        <span class="site-history-count" *ngIf="!isHistoryLoading(site)">
+          {{ getPassbooksForSite(site).length }} record(s)
+        </span>
+      </div>
+
+      <div class="site-history-loading" *ngIf="isHistoryLoading(site)">
         <div class="spinner-border text-warning spinner-border-sm" role="status" aria-hidden="true"></div>
         <span>Loading transactions…</span>
       </div>
 
-      <div class="txn-history-list" *ngIf="!loadingHistory && passbooks.length > 0">
-        <article *ngFor="let txn of passbooks" class="txn-history-card" [style.borderLeftColor]="txn.trxColor || '#ff9100'">
-          <div class="txn-history-card-top">
-            <div class="txn-history-card-meta">
-              <span class="txn-history-date">{{ txn.createdDate | date: 'MMM dd, yyyy · hh:mm a' }}</span>
-              <p class="txn-history-desc">{{ txn.activityDescription }}</p>
+      <div class="txn-accordion" *ngIf="!isHistoryLoading(site) && getPassbooksForSite(site).length > 0">
+        <div
+          class="txn-accordion-item"
+          *ngFor="let txn of getPassbooksForSite(site); let i = index; trackBy: trackByTxnKey"
+          [class.txn-accordion-item--open]="isTxnExpanded(txn, i)"
+        >
+          <button
+            type="button"
+            class="txn-accordion-trigger"
+            (click)="toggleTxnDetail(txn, i)"
+            [attr.aria-expanded]="isTxnExpanded(txn, i)"
+          >
+            <div class="txn-accordion-main">
+              <span class="txn-accordion-date">{{ txn.createdDate | date: 'MMM dd, yyyy · hh:mm a' }}</span>
+              <span class="txn-accordion-title">{{ getTxnLabel(txn) }}</span>
+              <div class="txn-accordion-meta">
+                <span class="txn-accordion-status" [style.backgroundColor]="txn.trxColor || '#ff9100'">
+                  {{ txn.trxStatus }}
+                </span>
+                <span class="txn-accordion-ref">Ref #{{ txn.passbookHistoryId }}</span>
+              </div>
             </div>
-            <strong class="txn-history-amount" [style.color]="txn.trxColor || '#ffba70'">{{ txn.displayCoins }}</strong>
+            <div class="txn-accordion-side">
+              <strong class="txn-accordion-amount" [style.color]="txn.trxColor || '#ffba70'">
+                {{ getTxnAmount(txn) }}
+              </strong>
+              <span class="txn-accordion-chevron" [class.txn-accordion-chevron--open]="isTxnExpanded(txn, i)">
+                <i class="bi bi-chevron-down"></i>
+              </span>
+            </div>
+          </button>
+
+          <div class="txn-accordion-body" *ngIf="isTxnExpanded(txn, i)">
+            <div class="txn-detail-wrap" *ngIf="resolveTxnDetail(txn, i) as detail">
+              <div class="txn-detail-loading" *ngIf="isTxnLoading(txn, i)">
+                <div class="spinner-border text-warning spinner-border-sm" role="status" aria-hidden="true"></div>
+                <span>Refreshing details…</span>
+              </div>
+
+              <div class="admin-passbook-detail-desc" *ngIf="detail.activityDescription">
+                <p class="admin-passbook-detail-label">Activity</p>
+                <p class="admin-passbook-detail-text">{{ detail.activityDescription }}</p>
+              </div>
+
+              <div class="admin-passbook-detail-grid">
+                <p class="admin-passbook-detail-title">Details</p>
+                <div class="admin-passbook-detail-divider"></div>
+
+                <div class="admin-passbook-detail-row">
+                  <span>Amount</span>
+                  <strong><i class="bi bi-currency-rupee"></i> {{ detail.coins }}</strong>
+                </div>
+                <div class="admin-passbook-detail-row">
+                  <span>Reference No</span>
+                  <strong>{{ detail.passbookHistoryId || '—' }}</strong>
+                </div>
+                <div class="admin-passbook-detail-row">
+                  <span>Request Date</span>
+                  <strong>{{ detail.createdDate || '—' }}</strong>
+                </div>
+                <div class="admin-passbook-detail-row">
+                  <span>Approved On</span>
+                  <strong>{{ detail.approvedDate || '—' }}</strong>
+                </div>
+                <div class="admin-passbook-detail-row" *ngIf="detail.siteUserName || detail.userName">
+                  <span>Site Username</span>
+                  <strong>{{ detail.siteUserName || detail.userName }}</strong>
+                </div>
+              </div>
+
+              <div class="admin-passbook-detail-proof" *ngIf="hasProofImage(detail)">
+                <p class="admin-passbook-detail-label">Payment proof</p>
+                <img [src]="getProofImageUrl(detail)" [alt]="detail.siteName + ' proof'" loading="lazy" />
+              </div>
+            </div>
           </div>
-          <div class="txn-history-card-foot">
-            <span class="txn-history-status" [style.backgroundColor]="txn.trxColor || '#ff9100'">{{ txn.trxStatus }}</span>
-            <span class="txn-history-id">Ref #{{ txn.passbookHistoryId }}</span>
-          </div>
-        </article>
+        </div>
       </div>
 
-      <div class="txn-history-empty" *ngIf="!loadingHistory && !passbooks.length">
+      <div class="txn-history-empty" *ngIf="!isHistoryLoading(site) && !getPassbooksForSite(site).length">
         <i class="bi bi-inbox" aria-hidden="true"></i>
         <p>No transactions found for this account yet.</p>
       </div>

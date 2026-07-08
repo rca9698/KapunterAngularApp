@@ -7,6 +7,7 @@ import { ToastrService } from 'src/app/toastr/toastr.service';
 import { environment } from 'src/environments/environment';
 import { ISiteDetailModal } from 'src/app/Shared/Modals/site-detail-modal';
 import { IIDDetailsModal } from 'src/app/Shared/Modals/Ids/id_detail-modal';
+import { resolveAccountId } from 'src/app/admincoinsaction/shared/id-request.util';
 
 @Component({
   selector: 'app-site-id-details-modal',
@@ -15,6 +16,9 @@ import { IIDDetailsModal } from 'src/app/Shared/Modals/Ids/id_detail-modal';
 })
 export class SiteIdDetailsModalComponent implements OnInit {
   contextSite!: ISiteDetailModal;
+  accountId?: bigint | string | number;
+  /** When true, show only the ID for the selected account (per-account pages). */
+  filterByAccount = false;
 
   sitePath = environment.imagePath.sitePath;
   ids: IIDDetailsModal[] = [];
@@ -49,8 +53,17 @@ export class SiteIdDetailsModalComponent implements OnInit {
         if (this.returnType['returnStatus'] == 1) {
           const all: IIDDetailsModal[] = this.returnType['returnList'] ?? [];
           const sid = this.contextSite.siteId;
-          console.log('Fetched IDs:', sid, all);
           this.ids = all.filter((x) => Number(x.siteId) === Number(sid));
+          if (this.filterByAccount) {
+            const targetAccountId = resolveAccountId({
+              accountId: this.accountId ?? this.contextSite.accountId
+            });
+            if (targetAccountId) {
+              this.ids = this.ids.filter(
+                (x) => resolveAccountId(x as unknown as Record<string, unknown>) === targetAccountId
+              );
+            }
+          }
           this.fetchMissingPasswords();
         } else {
           this.toasterService.warning(this.returnType.returnMessage ?? 'Unable to load IDs');

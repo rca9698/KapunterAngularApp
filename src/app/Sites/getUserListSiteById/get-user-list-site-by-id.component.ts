@@ -142,6 +142,7 @@ export class GetUserListSiteByIdComponent implements OnInit {
       initialState: {
         contextSite: site,
         accountId: site.accountId,
+        filterByAccount: true,
         depositType: this.depositType
       },
     };

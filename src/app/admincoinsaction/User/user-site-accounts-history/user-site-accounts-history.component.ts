@@ -7,6 +7,7 @@ import { PassbookService } from 'src/app/Passbook/passbook.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { AuthService } from 'src/app/auth.service';
 import { environment } from 'src/environments/environment';
+import { resolveAccountId } from 'src/app/admincoinsaction/shared/id-request.util';
 
 @Component({
   selector: 'app-user-site-accounts-history',
@@ -19,13 +20,18 @@ import { environment } from 'src/environments/environment';
 })
 export class UserSiteAccountsHistoryComponent implements OnInit {
   sites: ISiteDetailModal[] = [];
-  expandedSiteId: number | null = null;
-  passbooks: Ipassbook_detail_model[] = [];
+  expandedAccountKey: string | null = null;
+  passbooksByAccount: Record<string, Ipassbook_detail_model[]> = {};
+  loadingHistoryKey: string | null = null;
+
+  expandedTxnKey: string | null = null;
+  txnDetailsByKey: Record<string, Ipassbook_detail_model> = {};
+  loadingTxnKey: string | null = null;
+
   sitePath = environment.imagePath.sitePath;
+  proofPath = environment.imagePath.proofPath;
 
   loadingSites = false;
-  loadingHistory = false;
-
   targetUserId: string | number | null = null;
   displayUserNumber = '';
 
@@ -62,6 +68,11 @@ export class UserSiteAccountsHistoryComponent implements OnInit {
     this.router.navigate(['/adminaction/user_list']);
   }
 
+  getAccountKey(site: ISiteDetailModal): string {
+    const accountId = resolveAccountId(site as unknown as Record<string, unknown>);
+    return accountId ? `${site.siteId}-${accountId}` : `${site.siteId}-${site.userNumber ?? site.userName ?? 'default'}`;
+  }
+
   loadSites(): void {
     if (!this.targetUserId) {
       return;
@@ -69,8 +80,7 @@ export class UserSiteAccountsHistoryComponent implements OnInit {
 
     this.loadingSites = true;
     this.sites = [];
-    this.expandedSiteId = null;
-    this.passbooks = [];
+    this.resetHistoryState();
 
     this.siteService.getUserSitesById(this.targetUserId).subscribe({
       next: (resp: any) => {
@@ -91,17 +101,26 @@ export class UserSiteAccountsHistoryComponent implements OnInit {
   }
 
   toggleTransactionHistory(site: ISiteDetailModal): void {
-    if (this.isHistoryOpen(site)) {
-      this.expandedSiteId = null;
-      this.passbooks = [];
+    const key = this.getAccountKey(site);
+    if (this.expandedAccountKey === key) {
+      this.resetHistoryState();
       return;
     }
-    this.expandedSiteId = site.siteId;
-    this.loadTransactionHistory(site);
+    this.expandedAccountKey = key;
+    this.expandedTxnKey = null;
+    this.loadTransactionHistory(site, key);
   }
 
   isHistoryOpen(site: ISiteDetailModal): boolean {
-    return this.expandedSiteId === site.siteId;
+    return this.expandedAccountKey === this.getAccountKey(site);
+  }
+
+  isHistoryLoading(site: ISiteDetailModal): boolean {
+    return this.loadingHistoryKey === this.getAccountKey(site);
+  }
+
+  getPassbooksForSite(site: ISiteDetailModal): Ipassbook_detail_model[] {
+    return this.passbooksByAccount[this.getAccountKey(site)] ?? [];
   }
 
   hasSiteImage(site: ISiteDetailModal): boolean {
@@ -115,14 +134,24 @@ export class UserSiteAccountsHistoryComponent implements OnInit {
     return `${this.sitePath}${site.documentDetailId}${site.fileExtenstion}`;
   }
 
-  loadTransactionHistory(site: ISiteDetailModal): void {
+  trackBySiteKey = (_index: number, site: ISiteDetailModal): string => this.getAccountKey(site);
+
+  trackByTxnKey = (index: number, txn: Ipassbook_detail_model): string => this.getTxnKey(txn, index);
+
+  getTxnKey(txn: Ipassbook_detail_model, index: number): string {
+    const id = txn.passbookHistoryId?.trim();
+    return id ? `${id}-${index}` : `txn-${index}`;
+  }
+
+  loadTransactionHistory(site: ISiteDetailModal, accountKey: string): void {
     if (!this.targetUserId || !site.siteId) {
-      this.passbooks = [];
+      this.passbooksByAccount[accountKey] = [];
       return;
     }
 
-    this.loadingHistory = true;
-    this.passbooks = [];
+    this.loadingHistoryKey = accountKey;
+    this.passbooksByAccount[accountKey] = [];
+    this.expandedTxnKey = null;
 
     const obj = {
       userId: this.targetUserId,
@@ -133,18 +162,140 @@ export class UserSiteAccountsHistoryComponent implements OnInit {
     this.passbookService.passbookHistorylist(obj).subscribe({
       next: (resp: any) => {
         if (resp['returnStatus'] == 1) {
-          this.passbooks = resp['returnList'] ?? [];
+          const all: Ipassbook_detail_model[] = resp['returnList'] ?? [];
+          this.passbooksByAccount[accountKey] = this.filterPassbooksForAccount(all, site);
         } else {
           this.toasterService.warning(resp.returnMessage ?? 'Unable to load transaction history.');
-          this.passbooks = [];
+          this.passbooksByAccount[accountKey] = [];
         }
-        this.loadingHistory = false;
+        this.loadingHistoryKey = null;
       },
       error: () => {
         this.toasterService.error('Error loading transaction history.');
-        this.passbooks = [];
-        this.loadingHistory = false;
+        this.passbooksByAccount[accountKey] = [];
+        this.loadingHistoryKey = null;
       }
     });
+  }
+
+  private filterPassbooksForAccount(
+    passbooks: Ipassbook_detail_model[],
+    site: ISiteDetailModal
+  ): Ipassbook_detail_model[] {
+    const siteUser = (site.userName || '').trim().toLowerCase();
+    const siteIdNumber = String(site.userNumber || '').trim();
+
+    if (!siteUser && !siteIdNumber) {
+      return passbooks;
+    }
+
+    const filtered = passbooks.filter((txn) => {
+      const txnUser = (txn.siteUserName || txn.userName || '').trim().toLowerCase();
+      if (siteUser && txnUser && txnUser === siteUser) {
+        return true;
+      }
+      return false;
+    });
+
+    return filtered.length ? filtered : passbooks;
+  }
+
+  isTxnExpanded(txn: Ipassbook_detail_model, index: number): boolean {
+    return this.expandedTxnKey === this.getTxnKey(txn, index);
+  }
+
+  isTxnLoading(txn: Ipassbook_detail_model, index: number): boolean {
+    return this.loadingTxnKey === this.getTxnKey(txn, index);
+  }
+
+  resolveTxnDetail(txn: Ipassbook_detail_model, index: number): Ipassbook_detail_model {
+    return this.txnDetailsByKey[this.getTxnKey(txn, index)] ?? txn;
+  }
+
+  toggleTxnDetail(txn: Ipassbook_detail_model, index: number): void {
+    const key = this.getTxnKey(txn, index);
+    if (this.expandedTxnKey === key) {
+      this.expandedTxnKey = null;
+      return;
+    }
+    this.expandedTxnKey = key;
+    this.txnDetailsByKey[key] = { ...txn };
+    this.loadTxnDetail(key, txn.passbookHistoryId, txn);
+  }
+
+  getTxnLabel(txn: Ipassbook_detail_model): string {
+    const activity = txn.activityDescription?.trim();
+    if (activity && activity.toLowerCase() !== txn.trxStatus?.trim().toLowerCase()) {
+      return activity;
+    }
+    return activity || 'Wallet transaction';
+  }
+
+  getTxnAmount(txn: Ipassbook_detail_model): string {
+    if (txn.displayCoins?.trim()) {
+      return txn.displayCoins.trim();
+    }
+    if (txn.coins != null) {
+      return String(txn.coins);
+    }
+    return '—';
+  }
+
+  hasTxnImage(txn: Ipassbook_detail_model): boolean {
+    return !!(txn.documentDetailId && txn.fileExtenstion);
+  }
+
+  getTxnImageUrl(txn: Ipassbook_detail_model): string {
+    if (!this.hasTxnImage(txn)) {
+      return '';
+    }
+    return `${this.sitePath}${txn.documentDetailId}${txn.fileExtenstion}`;
+  }
+
+  hasProofImage(txn: Ipassbook_detail_model): boolean {
+    return !!(txn.proofDocumentDetailID && (txn.proofFileExtenstion || txn.fileExtenstion));
+  }
+
+  getProofImageUrl(txn: Ipassbook_detail_model): string {
+    if (!txn.proofDocumentDetailID) {
+      return '';
+    }
+    const ext = txn.proofFileExtenstion || txn.fileExtenstion || '';
+    return `${this.proofPath}${txn.proofDocumentDetailID}${ext}`;
+  }
+
+  private loadTxnDetail(
+    cacheKey: string,
+    passbookHistoryId: string,
+    fallback: Ipassbook_detail_model
+  ): void {
+    this.loadingTxnKey = cacheKey;
+
+    const obj = {
+      PassbookId: passbookHistoryId,
+      sessionUser: this._sessionUser
+    };
+
+    this.passbookService.passbookHistorybyid(obj).subscribe({
+      next: (resp: any) => {
+        const detail = resp?.['returnVal'] ?? resp?.['ReturnVal'];
+        if (resp?.['returnStatus'] == 1 && detail) {
+          this.txnDetailsByKey[cacheKey] = detail;
+        }
+        this.loadingTxnKey = null;
+      },
+      error: () => {
+        this.loadingTxnKey = null;
+      }
+    });
+  }
+
+  private resetHistoryState(): void {
+    this.expandedAccountKey = null;
+    this.passbooksByAccount = {};
+    this.loadingHistoryKey = null;
+    this.expandedTxnKey = null;
+    this.txnDetailsByKey = {};
+    this.loadingTxnKey = null;
   }
 }
