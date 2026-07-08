@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListAdminBankAccountComponent } from './admin_bank_account/list-admin-bank-account/list-admin-bank-account.component';
 import { AddAdminBankAccountComponent } from './admin_bank_account/add-admin-bank-account/add-admin-bank-account.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountRoutingModule } from '../Accounts/account-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -15,6 +15,9 @@ import { ListAdminUPIComponent } from './admin_bank_account/list-admin-UPI/list-
 import { AddAdminQRComponent } from './admin_bank_account/add-admin-QR/add-admin-qr.component';
 import { AddAdminUPIComponent } from './admin_bank_account/add-Admin-UPI/add-admin-upi.component';
 import { ListAdminQRComponent } from './admin_bank_account/list-admin-QR/list-admin-qr.component';
+import { AdminVendorSitesListComponent } from './admin_bank_account/admin-vendor-sites-list/admin-vendor-sites-list.component';
+import { ViewAdminSitePaymentComponent } from './admin_bank_account/view-admin-site-payment/view-admin-site-payment.component';
+import { AddAdminSitePaymentComponent } from './admin_bank_account/add-admin-site-payment/add-admin-site-payment.component';
 
 
 
@@ -29,10 +32,14 @@ import { ListAdminQRComponent } from './admin_bank_account/list-admin-QR/list-ad
     ListAdminBankAccountComponent,
     ListAdminQRComponent,
     ListAdminUPIComponent,
-    ListUserBankAccountComponent
+    ListUserBankAccountComponent,
+    AdminVendorSitesListComponent,
+    ViewAdminSitePaymentComponent,
+    AddAdminSitePaymentComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     BankAccountRoutingModule,
     HttpClientModule,

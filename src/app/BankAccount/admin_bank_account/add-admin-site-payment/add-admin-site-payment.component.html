@@ -1,0 +1,93 @@
+<div class="modal-header admin-pay-modal-header">
+  <div>
+    <p class="modal-title mb-0">Add account</p>
+    <p class="admin-pay-modal-site" *ngIf="site">{{ site.siteName }}</p>
+  </div>
+  <button type="button" class="admin-pay-modal-close" (click)="bsModalRef.hide()" aria-label="Close">
+    <i class="bi bi-x-lg"></i>
+  </button>
+</div>
+
+<div class="admin-pay-modal-body add-payment-body">
+  <div class="view-payment-loading" *ngIf="loading">
+    <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
+    <span>Checking existing details…</span>
+  </div>
+
+  <div class="view-payment-empty" *ngIf="!loading && !hasAnythingToAdd">
+    <i class="bi bi-check-circle" aria-hidden="true"></i>
+    <h3>All details configured</h3>
+    <p>Bank, UPI, and QR are already set for this site. Use View account to manage them.</p>
+  </div>
+
+  <div class="add-payment-forms" *ngIf="!loading && hasAnythingToAdd">
+    <section class="add-payment-section" *ngIf="canAddBank">
+      <h4><i class="bi bi-bank"></i> Bank account</h4>
+      <form [formGroup]="bankForm">
+        <div class="admin-pay-field">
+          <label>Bank name*</label>
+          <input class="admin-pay-input" type="text" formControlName="BName" placeholder="Bank name">
+          <div class="text-danger" *ngIf="bankForm.get('BName')?.invalid && submitted">Required</div>
+        </div>
+        <div class="admin-pay-field">
+          <label>Account holder*</label>
+          <input class="admin-pay-input" type="text" formControlName="AHName" placeholder="Account holder name">
+          <div class="text-danger" *ngIf="bankForm.get('AHName')?.invalid && submitted">Required</div>
+        </div>
+        <div class="admin-pay-field">
+          <label>Account number*</label>
+          <input class="admin-pay-input" type="text" formControlName="ANumber" placeholder="Account number">
+          <div class="text-danger" *ngIf="bankForm.get('ANumber')?.invalid && submitted">Required</div>
+        </div>
+        <div class="admin-pay-field">
+          <label>IFSC code*</label>
+          <input class="admin-pay-input" type="text" formControlName="IFSCCode" placeholder="IFSC code">
+          <div class="text-danger" *ngIf="bankForm.get('IFSCCode')?.invalid && submitted">Required</div>
+        </div>
+      </form>
+    </section>
+
+    <section class="add-payment-section" *ngIf="canAddUpi">
+      <h4><i class="bi bi-phone"></i> UPI</h4>
+      <form [formGroup]="upiForm">
+        <div class="admin-pay-field">
+          <label>UPI name*</label>
+          <input class="admin-pay-input" type="text" formControlName="UpiName" placeholder="UPI name">
+          <div class="text-danger" *ngIf="upiForm.get('UpiName')?.invalid && submitted">Required</div>
+        </div>
+        <div class="admin-pay-field">
+          <label>UPI ID*</label>
+          <input class="admin-pay-input" type="text" formControlName="UpiId" placeholder="example@upi">
+          <div class="text-danger" *ngIf="upiForm.get('UpiId')?.invalid && submitted">Required</div>
+        </div>
+      </form>
+    </section>
+
+    <section class="add-payment-section" *ngIf="canAddQr">
+      <h4><i class="bi bi-qr-code"></i> QR code</h4>
+      <form [formGroup]="qrForm">
+        <div class="admin-pay-field">
+          <label>QR name*</label>
+          <input class="admin-pay-input" type="text" formControlName="QRName" placeholder="QR name">
+          <div class="text-danger" *ngIf="qrForm.get('QRName')?.invalid && submitted">Required</div>
+        </div>
+        <div class="admin-pay-field">
+          <label class="kp-file-upload">
+            <span class="kp-file-upload-ui">
+              <i class="bi bi-cloud-arrow-up kp-file-upload-icon" aria-hidden="true"></i>
+              <span class="kp-file-upload-title">Choose QR image</span>
+              <span class="kp-file-upload-hint">JPG or PNG</span>
+              <span class="kp-file-upload-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
+            </span>
+            <input class="kp-file-upload-input" type="file" accept="image/*" (change)="processFile($any($event.target))">
+          </label>
+          <div class="text-danger" *ngIf="!qrFile && submitted">File is required</div>
+        </div>
+      </form>
+    </section>
+
+    <button type="button" class="admin-pay-modal-submit" [disabled]="saving" (click)="saveAll()">
+      {{ saving ? 'Saving…' : 'Save payment details' }}
+    </button>
+  </div>
+</div>

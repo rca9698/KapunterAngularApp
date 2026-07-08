@@ -1,0 +1,61 @@
+<div class="modal-header admin-pay-modal-header">
+  <div>
+    <p class="modal-title mb-0">View account</p>
+    <p class="admin-pay-modal-site" *ngIf="site">{{ site.siteName }}</p>
+  </div>
+  <button type="button" class="admin-pay-modal-close" (click)="bsModalRef.hide()" aria-label="Close">
+    <i class="bi bi-x-lg"></i>
+  </button>
+</div>
+
+<div class="admin-pay-modal-body view-payment-body">
+  <div class="view-payment-loading" *ngIf="loading">
+    <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
+    <span>Loading payment details…</span>
+  </div>
+
+  <div class="view-payment-empty" *ngIf="!loading && !hasAnyDetail()">
+    <i class="bi bi-wallet2" aria-hidden="true"></i>
+    <h3>No payment details</h3>
+    <p>No bank, UPI, or QR details configured for this site yet.</p>
+  </div>
+
+  <div class="view-payment-sections" *ngIf="!loading && hasAnyDetail()">
+    <section class="view-payment-card" *ngIf="bankDetail">
+      <div class="view-payment-card-head">
+        <h4><i class="bi bi-bank"></i> Bank account</h4>
+        <button type="button" class="admin-site-btn admin-site-btn-delete" (click)="deleteBank()">
+          <i class="bi bi-trash3"></i> Delete
+        </button>
+      </div>
+      <div class="view-payment-row"><span>Bank</span><strong>{{ bankDetail.bankName }}</strong></div>
+      <div class="view-payment-row"><span>Holder</span><strong>{{ bankDetail.accountHolderName }}</strong></div>
+      <div class="view-payment-row"><span>Account</span><strong>{{ bankDetail.accountNumber }}</strong></div>
+      <div class="view-payment-row"><span>IFSC</span><strong>{{ bankDetail.ifscCode }}</strong></div>
+    </section>
+
+    <section class="view-payment-card" *ngIf="upiDetail">
+      <div class="view-payment-card-head">
+        <h4><i class="bi bi-phone"></i> UPI</h4>
+        <button type="button" class="admin-site-btn admin-site-btn-delete" (click)="deleteUpi()">
+          <i class="bi bi-trash3"></i> Delete
+        </button>
+      </div>
+      <div class="view-payment-row"><span>Name</span><strong>{{ upiDetail.accountDisplayName }}</strong></div>
+      <div class="view-payment-row"><span>UPI ID</span><strong>{{ upiDetail.upiId }}</strong></div>
+    </section>
+
+    <section class="view-payment-card" *ngIf="qrDetail">
+      <div class="view-payment-card-head">
+        <h4><i class="bi bi-qr-code"></i> QR code</h4>
+        <button type="button" class="admin-site-btn admin-site-btn-delete" (click)="deleteQr()">
+          <i class="bi bi-trash3"></i> Delete
+        </button>
+      </div>
+      <div class="view-payment-row"><span>Name</span><strong>{{ qrDetail.accountDisplayName }}</strong></div>
+      <div class="view-payment-qr" *ngIf="qrImageUrl">
+        <img [src]="qrImageUrl" [alt]="qrDetail.accountDisplayName" />
+      </div>
+    </section>
+  </div>
+</div>

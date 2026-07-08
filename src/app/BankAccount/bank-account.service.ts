@@ -12,6 +12,10 @@ import { apiService } from '../api.service';
 import { AddAdminUPIComponent } from './admin_bank_account/add-Admin-UPI/add-admin-upi.component';
 import { AddAdminQRComponent } from './admin_bank_account/add-admin-QR/add-admin-qr.component';
 import { Iadd_user_upi } from '../Shared/Modals/BankAccount/add_user_upi';
+import { AdminVendorSitesListComponent } from './admin_bank_account/admin-vendor-sites-list/admin-vendor-sites-list.component';
+import { ViewAdminSitePaymentComponent } from './admin_bank_account/view-admin-site-payment/view-admin-site-payment.component';
+import { AddAdminSitePaymentComponent } from './admin_bank_account/add-admin-site-payment/add-admin-site-payment.component';
+import { ISiteDetailModal } from '../Shared/Modals/site-detail-modal';
 
 @Injectable({
   providedIn: 'root'
@@ -62,37 +66,61 @@ OpenUserQRPopup() {
   this.bsmodalRef = this.bsModalService.show(AddUserQrComponent);
 }
 
-OpenAddAdminBankAccountPopup(isupdate: boolean, obj: Iadd_admin_bank_account = new add_admin_bank_account()){
+OpenAddAdminBankAccountPopup(isupdate: boolean, obj: Iadd_admin_bank_account = new add_admin_bank_account(), siteName: string = ''){
   const initalstate: ModalOptions = {
+    class: 'modal-dialog-centered admin-pay-modal',
     initialState:{
       isupdate,
-      obj 
+      obj,
+      siteName
     }
   }
   
   this.bsmodalRef = this.bsModalService.show(AddAdminBankAccountComponent, initalstate);
 }
 
-OpenAddAdminUpiPopup(isupdate: boolean, obj: Iadd_admin_bank_account = new add_admin_bank_account()){
+OpenAddAdminUpiPopup(isupdate: boolean, obj: Iadd_admin_bank_account = new add_admin_bank_account(), siteName: string = ''){
   const initalstate: ModalOptions = {
+    class: 'modal-dialog-centered admin-pay-modal',
     initialState:{
       isupdate,
-      obj 
+      obj,
+      siteName
     }
   }
   
   this.bsmodalRef = this.bsModalService.show(AddAdminUPIComponent, initalstate);
 }
 
-OpenAddAdminQRPopup(isupdate: boolean, obj: Iadd_admin_bank_account = new add_admin_bank_account()){
+OpenAddAdminQRPopup(isupdate: boolean, obj: Iadd_admin_bank_account = new add_admin_bank_account(), siteName: string = ''){
   const initalstate: ModalOptions = {
+    class: 'modal-dialog-centered admin-pay-modal',
     initialState:{
       isupdate,
-      obj 
+      obj,
+      siteName
     }
   }
   
   this.bsmodalRef = this.bsModalService.show(AddAdminQRComponent, initalstate);
+}
+
+OpenAddAdminSitePaymentPopup(site: ISiteDetailModal): BsModalRef | undefined {
+  const initalstate: ModalOptions = {
+    class: 'modal-dialog-centered admin-pay-modal admin-pay-modal-wide',
+    initialState: { site }
+  };
+  this.bsmodalRef = this.bsModalService.show(AddAdminSitePaymentComponent, initalstate);
+  return this.bsmodalRef;
+}
+
+OpenViewAdminSitePaymentPopup(site: ISiteDetailModal): BsModalRef | undefined {
+  const initalstate: ModalOptions = {
+    class: 'modal-dialog-centered admin-pay-modal admin-pay-modal-wide',
+    initialState: { site }
+  };
+  this.bsmodalRef = this.bsModalService.show(ViewAdminSitePaymentComponent, initalstate);
+  return this.bsmodalRef;
 }
 
 list_User_Bank_Accounts(obj: any){
@@ -105,20 +133,20 @@ Add_Bank_Account(obj: any){
 
 
 
-list_Admin_Bank_Accounts(){
-  return this.apiService.AdminBankAccounts();
+list_Admin_Bank_Accounts(siteId: number | string){
+  return this.apiService.AdminBankAccounts(siteId);
 }
 
-list_admin_upi_accounts(){
-  return this.apiService.GetAdminUpiAccounts();
+list_admin_upi_accounts(siteId: number | string){
+  return this.apiService.GetAdminUpiAccounts(siteId);
 }
 
 list_User_Upi_Accounts(obj: any){
     return this.apiService.GetUserUpiAccounts(obj);
 }
 
-list_admin_QR_accounts(){
-  return this.apiService.GetAdminQRCode();
+list_admin_QR_accounts(siteId: number | string){
+  return this.apiService.GetAdminQRCode(siteId);
 }
 
 list_User_QR_Accounts(obj: any){
@@ -146,16 +174,16 @@ add_User_qr(obj: any){
   return this.apiService.AddUserQRCode(obj);
 }
 
-list_User_upi_accounts(){
-  return this.apiService.GetAdminUpiAccounts();
+list_User_upi_accounts(siteId: number | string = 0){
+  return this.apiService.GetAdminUpiAccounts(siteId);
 }
 
-list_User_QR_accounts(){
-  return this.apiService.GetAdminQRCode();
+list_User_QR_accounts(siteId: number | string = 0){
+  return this.apiService.GetAdminQRCode(siteId);
 }
 
 Delete_User_Upi(upiId: bigint | number) {
-  return this.apiService.GetAdminQRCode();
+  return this.apiService.GetAdminQRCode(0);
 }
 
 Delete_User_QR(qrId: bigint | number) {

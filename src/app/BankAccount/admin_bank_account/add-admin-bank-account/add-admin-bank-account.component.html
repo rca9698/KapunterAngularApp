@@ -1,49 +1,47 @@
-<div class="modal-header">
-    <p class="modal-title">Admin Bank Account Detail!</p>
-    <div type="button" class="close" (click)="bsModalRef.hide()">
-      <i class="bi bi-x-circle-fill"></i>
-    </div>
+<div class="modal-header admin-pay-modal-header">
+  <div>
+    <p class="modal-title mb-0">Admin bank account</p>
+    <p class="admin-pay-modal-site" *ngIf="siteName">{{ siteName }}</p>
+  </div>
+  <button type="button" class="admin-pay-modal-close" (click)="bsModalRef.hide()" aria-label="Close">
+    <i class="bi bi-x-lg"></i>
+  </button>
 </div>
-<div class="card-header py-4 text-center">
-    <img src="../../../../assets/kapunter-logo.jpeg" class="modallogosize" alt="logo">
-</div>
 
-<div class="card-body p-4">
-
-    <div class="text-center w-75 m-auto">
-        
+<div class="admin-pay-modal-body">
+  <form (ngSubmit)="AddAdminBankAccount()" [formGroup]="addAdminBankAccountForm" autocomplete="off">
+    <div class="admin-pay-field">
+      <label for="BName">Bank name*</label>
+      <input id="BName" class="admin-pay-input" type="text" formControlName="BName" placeholder="Bank name" autocomplete="off">
+      <div class="text-danger" *ngIf="addAdminBankAccountForm.get('BName')?.invalid && (submitted || addAdminBankAccountForm.get('BName')?.touched)">
+        <span *ngIf="addAdminBankAccountForm.get('BName')?.errors?.['required']">Bank name is required</span>
+      </div>
     </div>
-    <form (ngSubmit)="AddAdminBankAccount()" [formGroup]="addAdminBankAccountForm" autocomplete="off">
-        <div class="mb-3 form-group">
-            <label for="BName" class="form-label">Bank Name*</label>
-            <input class="form-control" type="text" formControlName="BName" placeholder="Bank Name" autocomplete="off" [(ngModel)]="add_admin_bank_account.bankName">
-            <div class="text-danger" *ngIf="addAdminBankAccountForm.get('BName')?.invalid && (submitted || addAdminBankAccountForm.get('BName')?.touched || addAdminBankAccountForm.get('BName')?.dirty)">
-            <span *ngIf="addAdminBankAccountForm.get('BName')?.errors?.['required']"> Bank Name is required </span> </div>
-        </div>
 
-        <div class="mb-3 form-group">
-            <label for="AHName" class="form-label">Account Holder Name*</label>
-            <input class="form-control" type="text" formControlName="AHName" placeholder="Account Holder Name" autocomplete="off" [(ngModel)]="add_admin_bank_account.accountHolderName">
-            <div class="text-danger" *ngIf="addAdminBankAccountForm.get('AHName')?.invalid && (submitted || addAdminBankAccountForm.get('AHName')?.touched || addAdminBankAccountForm.get('AHName')?.dirty)">
-            <span *ngIf="addAdminBankAccountForm.get('AHName')?.errors?.['required']"> Account Holder Name is required </span> </div>
-        </div>
+    <div class="admin-pay-field">
+      <label for="AHName">Account holder name*</label>
+      <input id="AHName" class="admin-pay-input" type="text" formControlName="AHName" placeholder="Account holder name" autocomplete="off">
+      <div class="text-danger" *ngIf="addAdminBankAccountForm.get('AHName')?.invalid && (submitted || addAdminBankAccountForm.get('AHName')?.touched)">
+        <span *ngIf="addAdminBankAccountForm.get('AHName')?.errors?.['required']">Account holder name is required</span>
+      </div>
+    </div>
 
-        <div class="mb-3 form-group">
-            <label for="ANumber" class="form-label">Account Number*</label>
-            <input class="form-control" type="text" formControlName="ANumber" placeholder="Account Holder Number" autocomplete="off" [(ngModel)]="add_admin_bank_account.accountNumber">
-            <div class="text-danger" *ngIf="addAdminBankAccountForm.get('ANumber')?.invalid && (submitted || addAdminBankAccountForm.get('ANumber')?.touched || addAdminBankAccountForm.get('ANumber')?.dirty)">
-            <span *ngIf="addAdminBankAccountForm.get('ANumber')?.errors?.['required']"> Account Holder Number is required </span> </div>
-        </div>
+    <div class="admin-pay-field">
+      <label for="ANumber">Account number*</label>
+      <input id="ANumber" class="admin-pay-input" type="text" formControlName="ANumber" placeholder="Account number" autocomplete="off">
+      <div class="text-danger" *ngIf="addAdminBankAccountForm.get('ANumber')?.invalid && (submitted || addAdminBankAccountForm.get('ANumber')?.touched)">
+        <span *ngIf="addAdminBankAccountForm.get('ANumber')?.errors?.['required']">Account number is required</span>
+      </div>
+    </div>
 
-        <div class="mb-3 form-group">
-            <label for="IFSCCode" class="form-label">IFSC Code*</label>
-            <input class="form-control" type="text" formControlName="IFSCCode" placeholder="IFSC Code" autocomplete="off" [(ngModel)]="add_admin_bank_account.ifscCode">
-            <div class="text-danger" *ngIf="addAdminBankAccountForm.get('IFSCCode')?.invalid && (submitted || addAdminBankAccountForm.get('IFSCCode')?.touched || addAdminBankAccountForm.get('IFSCCode')?.dirty)">
-            <span *ngIf="addAdminBankAccountForm.get('IFSCCode')?.errors?.['required']"> IFSC Code is required </span> </div>
-        </div>
+    <div class="admin-pay-field">
+      <label for="IFSCCode">IFSC code*</label>
+      <input id="IFSCCode" class="admin-pay-input" type="text" formControlName="IFSCCode" placeholder="IFSC code" autocomplete="off">
+      <div class="text-danger" *ngIf="addAdminBankAccountForm.get('IFSCCode')?.invalid && (submitted || addAdminBankAccountForm.get('IFSCCode')?.touched)">
+        <span *ngIf="addAdminBankAccountForm.get('IFSCCode')?.errors?.['required']">IFSC code is required</span>
+      </div>
+    </div>
 
-        <div class="col-12 mb-0 text-center">
-            <button class="col-12 btn siteBtnbackground" type="submit"> Add Bank Account </button>
-        </div>
-    </form>
+    <button class="admin-pay-modal-submit" type="submit">Add bank account</button>
+  </form>
 </div>

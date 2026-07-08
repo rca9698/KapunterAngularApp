@@ -165,9 +165,20 @@ export class DepositeCoinsRequestComponent {
     this.fallbackCopy(value);
   }
 
+  private getDepositSiteId(): number | null {
+    const siteId = Number(this.site?.siteId);
+    return siteId > 0 ? siteId : null;
+  }
+
   private loadAdminQrDetail(): void {
+    const siteId = this.getDepositSiteId();
+    if (!siteId) {
+      this.toasterService.warning('Site is required to load QR code.');
+      return;
+    }
+
     this.paymentDetailLoading = true;
-    this.coinsservice.get_admin_qr_details().subscribe({
+    this.coinsservice.get_admin_qr_details(siteId).subscribe({
       next: (response) => {
         this.adminBankDetail = this.extractPaymentDetail(response) ?? new bank_details();
         this.qrImageUrl = this.buildQrImageUrl(this.adminBankDetail);
@@ -185,8 +196,14 @@ export class DepositeCoinsRequestComponent {
   }
 
   private loadAdminBankDetail(): void {
+    const siteId = this.getDepositSiteId();
+    if (!siteId) {
+      this.toasterService.warning('Site is required to load bank details.');
+      return;
+    }
+
     this.paymentDetailLoading = true;
-    this.coinsservice.get_bank_UPI_details().subscribe({
+    this.coinsservice.get_bank_UPI_details(siteId).subscribe({
       next: (response) => {
         this.adminBankDetail = this.extractPaymentDetail(response) ?? new bank_details();
         this.paymentDetailLoading = false;
@@ -203,8 +220,14 @@ export class DepositeCoinsRequestComponent {
   }
 
   private loadAdminUpiDetail(): void {
+    const siteId = this.getDepositSiteId();
+    if (!siteId) {
+      this.toasterService.warning('Site is required to load UPI details.');
+      return;
+    }
+
     this.paymentDetailLoading = true;
-    this.coinsservice.get_admin_upi_details().subscribe({
+    this.coinsservice.get_admin_upi_details(siteId).subscribe({
       next: (response) => {
         this.adminBankDetail = this.extractPaymentDetail(response) ?? new bank_details();
         this.paymentDetailLoading = false;
@@ -234,7 +257,7 @@ export class DepositeCoinsRequestComponent {
       return null;
     }
 
-    return list.find((item) => item.isDefault === '1' || item.isDefault === 'true') ?? list[0];
+    return list.find((item) => item.isDefault === '1' || item.isDefault === 'true' || (item as any).isDefault === true) ?? list[0];
   }
 
   private buildQrImageUrl(detail: Ibank_details): string {

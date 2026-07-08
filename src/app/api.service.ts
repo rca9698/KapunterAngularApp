@@ -297,8 +297,8 @@ export class apiService {
     return this.http.post(`${environment.apiUrl}/api/BankAccount/GetBankAccounts`, obj);
   }
 
-  GetBankUPIDetails(){
-    return this.http.get(`${environment.apiUrl}/api/BankAccount/GetAdminBankAccounts`);
+  GetBankUPIDetails(siteId: number | string){
+    return this.http.get(`${environment.apiUrl}/api/BankAccount/GetAdminBankAccounts?siteId=${siteId}`);
   }
 
   updateBankAccount(obj: any){
@@ -313,8 +313,8 @@ export class apiService {
     return this.http.post(`${environment.apiUrl}/api/BankAccount/DeleteBankAccount`, obj);
   }
 
-  AdminBankAccounts(){
-    return this.http.get(`${environment.apiUrl}/api/BankAccount/GetAdminBankAccounts`);
+  AdminBankAccounts(siteId: number | string){
+    return this.http.get(`${environment.apiUrl}/api/BankAccount/GetAdminBankAccounts?siteId=${siteId}`);
   }
 
   AddUpdateAdminBankAccount(obj: any){
@@ -329,8 +329,8 @@ export class apiService {
     return this.http.get(`${environment.apiUrl}/api/BankAccount/SetDefaultAdminBankAccount/${obj.sessionUser}/${obj.bankDetailID}`);
   }
 
-  GetAdminUpiAccounts(){
-    return this.http.get(`${environment.apiUrl}/api/BankAccount/GetAdminUpiAccount`);
+  GetAdminUpiAccounts(siteId: number | string){
+    return this.http.get(`${environment.apiUrl}/api/BankAccount/GetAdminUpiAccount?siteId=${siteId}`);
   }
 
   GetUserUpiAccounts(obj: any){
@@ -357,8 +357,8 @@ export class apiService {
     return this.http.get(`${environment.apiUrl}/api/BankAccount/SetDefaultAdminUpiAccount/${obj.sessionUser}/${obj.upiId}`)
   }
 
-  GetAdminQRCode(){
-    return this.http.get(`${environment.apiUrl}/api/BankAccount/GetAdminQRCode`)
+  GetAdminQRCode(siteId: number | string){
+    return this.http.get(`${environment.apiUrl}/api/BankAccount/GetAdminQRCode?siteId=${siteId}`)
   }
 
    GetUserQRCode(obj: any){

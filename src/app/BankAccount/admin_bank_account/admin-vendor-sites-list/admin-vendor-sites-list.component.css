@@ -1,0 +1,6 @@
+@import '../../../Sites/listSites/list-sites.component.css';
+
+.admin-site-btn-view {
+  background: linear-gradient(120deg, #5b4d8a, #3d3268);
+  border: 1px solid rgba(180, 160, 255, 0.35);
+}

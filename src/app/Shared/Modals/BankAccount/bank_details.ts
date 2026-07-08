@@ -1,6 +1,7 @@
 export interface Ibank_details{
     bankAccountDetailID: bigint,
     userId: BigInt,
+    siteId: number,
     bankName: string,
     accountHolderName: string,
     accountNumber: string,
@@ -23,6 +24,7 @@ export interface Ibank_details{
 export class bank_details implements Ibank_details{
     bankAccountDetailID: bigint;
     userId: BigInt;
+    siteId: number;
     bankName: string;
     accountHolderName: string;
     accountNumber: string;
@@ -42,6 +44,7 @@ export class bank_details implements Ibank_details{
     paginationCount: number;
 
     constructor(bankAccountDetailID: bigint = 0 as unknown as bigint, userId: BigInt = 0 as unknown as bigint
+        , siteId: number = 0
         , bankName: string = '', accountHolderName: string = '', accountNumber: string = ''
         , ifscCode: string = '', upiId: string = ''
         , qrId: bigint = 0 as unknown as bigint, qrPath: string = ''
@@ -51,6 +54,7 @@ export class bank_details implements Ibank_details{
     ) {
         this.bankAccountDetailID = bankAccountDetailID;
         this.userId = userId;
+        this.siteId = siteId;
         this.bankName = bankName;
         this.accountHolderName = accountHolderName;
         this.accountNumber = accountNumber;
@@ -70,4 +74,3 @@ export class bank_details implements Ibank_details{
         this.paginationCount = paginationCount;
     }
 }
-

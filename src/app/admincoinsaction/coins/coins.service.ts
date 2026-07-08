@@ -168,16 +168,16 @@ export class CoinsService {
     return this.apiservice.GetBankAccountById(bankId);
   }
 
-  get_bank_UPI_details(){
-    return this.apiservice.GetBankUPIDetails();
+  get_bank_UPI_details(siteId: number | string){
+    return this.apiservice.GetBankUPIDetails(siteId);
   }
 
-  get_admin_qr_details(){
-    return this.apiservice.GetAdminQRCode();
+  get_admin_qr_details(siteId: number | string){
+    return this.apiservice.GetAdminQRCode(siteId);
   }
 
-  get_admin_upi_details(){
-    return this.apiservice.GetAdminUpiAccounts();
+  get_admin_upi_details(siteId: number | string){
+    return this.apiservice.GetAdminUpiAccounts(siteId);
   }
 
   withdraw_coins_by_request_id(obj: any){

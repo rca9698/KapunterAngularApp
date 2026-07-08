@@ -1762,3 +1762,16 @@ p, li, label, input, textarea, select, button, .viewotp, .viewPassword {
     z-index: 2;
     font-size: 3rem;
 }
+
+.modal-dialog.admin-pay-modal {
+    max-width: min(100% - 1.5rem, 460px);
+    margin: 1rem auto;
+}
+
+.modal-dialog.admin-pay-modal .modal-content {
+    overflow: hidden;
+}
+
+.modal-dialog.admin-pay-modal.admin-pay-modal-wide {
+    max-width: min(100% - 1.5rem, 520px);
+}

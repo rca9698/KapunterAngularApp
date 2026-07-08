@@ -1,0 +1,108 @@
+@import '../add-admin-bank-account/add-admin-bank-account.component.css';
+@import '../../../Sites/listSites/list-sites.component.css';
+
+.view-payment-body {
+  max-height: min(70vh, 640px);
+  overflow-y: auto;
+}
+
+.view-payment-loading,
+.view-payment-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 180px;
+  text-align: center;
+  color: #e8d8c8;
+}
+
+.view-payment-empty i {
+  font-size: 2rem;
+  color: #ff9a3c;
+}
+
+.view-payment-empty h3 {
+  margin: 0;
+  color: #fff4e8;
+  font-size: 1.05rem;
+}
+
+.view-payment-empty p {
+  margin: 0;
+  color: #ffcfa3;
+  font-size: 0.88rem;
+}
+
+.view-payment-sections {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.view-payment-card {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 136, 26, 0.35);
+  background: linear-gradient(165deg, rgba(22, 19, 32, 0.98), rgba(8, 7, 14, 0.99));
+  padding: 0.9rem 1rem;
+}
+
+.view-payment-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.view-payment-card-head h4 {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #fff4e8;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.view-payment-card-head .admin-site-btn-delete {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.62rem;
+}
+
+.view-payment-row {
+  display: grid;
+  grid-template-columns: minmax(90px, 32%) 1fr;
+  gap: 0.5rem 0.85rem;
+  font-size: 0.86rem;
+  margin-bottom: 0.35rem;
+}
+
+.view-payment-row span {
+  color: #cbb9a8;
+}
+
+.view-payment-row strong {
+  color: #fff4e8;
+  text-align: right;
+  word-break: break-word;
+}
+
+.view-payment-qr {
+  margin-top: 0.65rem;
+  width: min(100%, 180px);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.5rem;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.view-payment-qr img {
+  width: 100%;
+  display: block;
+}

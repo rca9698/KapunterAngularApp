@@ -1,0 +1,57 @@
+<section class="admin-sites-shell">
+  <header class="admin-sites-header">
+    <div class="admin-sites-heading">
+      <h2>Vendor payment accounts</h2>
+      <p>Manage bank, UPI, and QR deposit details per site</p>
+    </div>
+  </header>
+
+  <div class="admin-sites-loading" *ngIf="loading">
+    <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
+    <span>Loading sites…</span>
+  </div>
+
+  <div class="admin-sites-empty" *ngIf="!loading && sites.length === 0">
+    <div class="admin-sites-empty-card">
+      <div class="admin-sites-empty-icon" aria-hidden="true">
+        <i class="bi bi-globe2"></i>
+      </div>
+      <h3>No sites found</h3>
+      <p>Add a site first, then configure vendor payment details for deposits.</p>
+    </div>
+  </div>
+
+  <div class="admin-sites-list" *ngIf="!loading && sites.length > 0">
+    <article class="admin-site-card" *ngFor="let site of sites; trackBy: trackBySiteId">
+      <div class="admin-site-card-main">
+        <div class="admin-site-logo-wrap">
+          <img
+            class="siteImageSize"
+            [src]="sitePath + site.documentDetailId + site.fileExtenstion"
+            [alt]="site.siteName"
+            loading="lazy"
+          />
+        </div>
+        <div class="admin-site-meta">
+          <h3 class="admin-site-name">{{ site.siteName }}</h3>
+          <p class="admin-site-url">{{ site.siteURL }}</p>
+          <p class="admin-site-badge">
+            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+            Registered platform
+          </p>
+        </div>
+      </div>
+
+      <div class="admin-site-actions">
+        <button type="button" class="admin-site-btn admin-site-btn-update" (click)="openAddAccount(site)">
+          <i class="bi bi-plus-lg" aria-hidden="true"></i>
+          Add account
+        </button>
+        <button type="button" class="admin-site-btn admin-site-btn-view" (click)="openViewAccount(site)">
+          <i class="bi bi-eye" aria-hidden="true"></i>
+          View account
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

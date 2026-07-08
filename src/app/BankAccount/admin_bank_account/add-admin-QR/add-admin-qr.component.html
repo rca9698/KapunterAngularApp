@@ -1,40 +1,38 @@
+<div class="modal-header admin-pay-modal-header">
+  <div>
+    <p class="modal-title mb-0">Add admin QR</p>
+    <p class="admin-pay-modal-site" *ngIf="siteName">{{ siteName }}</p>
+  </div>
+  <button type="button" class="admin-pay-modal-close" (click)="bsModalRef.hide()" aria-label="Close">
+    <i class="bi bi-x-lg"></i>
+  </button>
+</div>
 
-<div class="modal-content siteColor">
-    <form (ngSubmit)="AddAdminQR()" [formGroup]="addAdminQrForm">
-        <div class="modal-header">
-            <p class="modal-title">Site</p>
-            <div type="button" class="close" (click)="bsModalRef.hide()">
-                <i class="bi bi-x-circle-fill"></i>
-            </div>
-        </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label>Site Name</label>
-                <input formControlName="QRName" [(ngModel)]="add_admin_qr.userName" type="text" class="form-control" placeholder="QR Name" autocomplete="off">
-                <div class="text-danger" *ngIf="addAdminQrForm.get('QRName')?.invalid && (submitted || addAdminQrForm.get('QRName')?.touched || addAdminQrForm.get('QRName')?.dirty)">
-                 <span *ngIf="addAdminQrForm.get('QRName')?.errors?.['required']"> QR Name is required </span> </div>
-            </div>
-            <div class="form-group">
-                <div method="post" enctype="multipart/form-data" style="margin-top: 10px">
-                    <div class="form-group col-12 px-0">
-                        <label class="kp-file-upload">
-                            <span class="kp-file-upload-ui">
-                                <i class="bi bi-cloud-arrow-up kp-file-upload-icon" aria-hidden="true"></i>
-                                <span class="kp-file-upload-title">Choose QR image</span>
-                                <span class="kp-file-upload-hint">Full width · tap anywhere · JPG or PNG</span>
-                                <span class="kp-file-upload-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
-                            </span>
-                            <input class="kp-file-upload-input" #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
-                        </label>
-                        <div class="text-danger mt-2" *ngIf="!this.file && (submitted || addAdminQrForm.get('QRName')?.touched)">
-                            <span>File is required</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn siteBtnbackground col-12">Add Site</button>
-        </div>
-    </form>
+<div class="admin-pay-modal-body">
+  <form (ngSubmit)="AddAdminQR()" [formGroup]="addAdminQrForm" autocomplete="off">
+    <div class="admin-pay-field">
+      <label for="QRName">QR name*</label>
+      <input id="QRName" class="admin-pay-input" type="text" formControlName="QRName" placeholder="QR name" autocomplete="off">
+      <div class="text-danger" *ngIf="addAdminQrForm.get('QRName')?.invalid && (submitted || addAdminQrForm.get('QRName')?.touched)">
+        <span *ngIf="addAdminQrForm.get('QRName')?.errors?.['required']">QR name is required</span>
+      </div>
+    </div>
+
+    <div class="admin-pay-field">
+      <label class="kp-file-upload">
+        <span class="kp-file-upload-ui">
+          <i class="bi bi-cloud-arrow-up kp-file-upload-icon" aria-hidden="true"></i>
+          <span class="kp-file-upload-title">Choose QR image</span>
+          <span class="kp-file-upload-hint">JPG or PNG</span>
+          <span class="kp-file-upload-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
+        </span>
+        <input class="kp-file-upload-input" #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
+      </label>
+      <div class="text-danger" *ngIf="!file && submitted">
+        <span>File is required</span>
+      </div>
+    </div>
+
+    <button class="admin-pay-modal-submit" type="submit">Add QR</button>
+  </form>
 </div>

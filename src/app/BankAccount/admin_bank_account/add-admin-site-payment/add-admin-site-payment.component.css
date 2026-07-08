@@ -1,0 +1,65 @@
+@import '../add-admin-bank-account/add-admin-bank-account.component.css';
+
+.add-payment-body {
+  max-height: min(75vh, 680px);
+  overflow-y: auto;
+}
+
+.view-payment-loading,
+.view-payment-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 160px;
+  text-align: center;
+  color: #e8d8c8;
+}
+
+.view-payment-empty i {
+  font-size: 2rem;
+  color: #5cf0a8;
+}
+
+.view-payment-empty h3 {
+  margin: 0;
+  color: #fff4e8;
+  font-size: 1.05rem;
+}
+
+.view-payment-empty p {
+  margin: 0;
+  color: #ffcfa3;
+  font-size: 0.88rem;
+  max-width: 320px;
+}
+
+.add-payment-forms {
+  display: grid;
+  gap: 1rem;
+}
+
+.add-payment-section {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 136, 26, 0.28);
+  background: rgba(20, 17, 27, 0.55);
+  padding: 0.85rem 0.95rem 0.5rem;
+}
+
+.add-payment-section h4 {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #fff4e8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.add-payment-section form {
+  display: grid;
+  gap: 0;
+}
