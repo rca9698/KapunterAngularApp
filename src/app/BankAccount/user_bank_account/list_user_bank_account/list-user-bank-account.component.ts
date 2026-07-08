@@ -20,6 +20,8 @@ export class ListUserBankAccountComponent implements OnInit {
   getbankaccount: IGetUserBankAccount = new GetUserBankAccount();
   add_bank_account: Iadd_bank_account = new add_bank_account();
   isActive: boolean = false;
+  activePaymentTab: 'bank' | 'upi' | 'qr' = 'bank';
+  bankFilter: 'active' | 'deleted' | 'history' = 'active';
 
   constructor(private bankaccount: BankAccountService, private authService: AuthService
     , private deleteService: DeleteService, private makedefaultservice: MakeDefaultService 
@@ -33,8 +35,31 @@ export class ListUserBankAccountComponent implements OnInit {
     this.list_User_QR_Accounts();
   }
 
+  setPaymentTab(tab: 'bank' | 'upi' | 'qr'): void {
+    this.activePaymentTab = tab;
+    if (tab === 'bank') {
+      this.list_User_Bank_Accounts();
+    } else if (tab === 'upi') {
+      this.list_User_Upi_Accounts();
+    } else {
+      this.list_User_QR_Accounts();
+    }
+  }
+
+  setBankFilter(filter: 'active' | 'deleted' | 'history'): void {
+    this.bankFilter = filter;
+    if (filter === 'active') {
+      this.list_User_Bank_Accounts();
+    } else if (filter === 'deleted') {
+      this.list_User__InActive_Bank_Accounts();
+    } else {
+      this.list_User__All_Bank_Accounts();
+    }
+  }
+
   list_User_Bank_Accounts(){
     this.isActive = true;
+    this.bankFilter = 'active';
     const bank_details = new GetUserBankAccount(); 
     bank_details.isActive = 1;
     bank_details.sessionUser = this.authService.user.userId;
@@ -53,6 +78,7 @@ export class ListUserBankAccountComponent implements OnInit {
 
   list_User__InActive_Bank_Accounts(){
     this.isActive = false;
+    this.bankFilter = 'deleted';
     const bank_details = new GetUserBankAccount(); 
     bank_details.isActive = 0;
     bank_details.sessionUser = this.authService.user.userId;
@@ -71,6 +97,7 @@ export class ListUserBankAccountComponent implements OnInit {
 
   list_User__All_Bank_Accounts(){
     this.isActive = false;
+    this.bankFilter = 'history';
     const bank_details = new GetUserBankAccount(); 
     bank_details.isActive = 2;
     bank_details.sessionUser = this.authService.user.userId;
@@ -89,14 +116,21 @@ export class ListUserBankAccountComponent implements OnInit {
 
   AddBankDetailPopup() {
     this.bankaccount.OpenUserBankAccountPopup(false, this.add_bank_account);
+    this.refreshAfterModalClose(() => this.list_User_Bank_Accounts());
   }
 
   AddUserUpiPopup() {
     this.bankaccount.OpenUserUpiPopup();
+    this.refreshAfterModalClose(() => this.list_User_Upi_Accounts());
   }
 
   AddUserQRPopup() {
     this.bankaccount.OpenUserQRPopup();
+    this.refreshAfterModalClose(() => this.list_User_QR_Accounts());
+  }
+
+  private refreshAfterModalClose(refresh: () => void): void {
+    this.bankaccount.bsmodalRef?.onHide?.subscribe(() => refresh());
   }
 
   list_User_Upi_Accounts(isActive: number = 1) {

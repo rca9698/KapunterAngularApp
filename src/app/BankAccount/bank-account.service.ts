@@ -47,23 +47,30 @@ export class BankAccountService {
 
   constructor(private bsModalService:BsModalService,private http: HttpClient, private apiService:apiService) { }
 
-OpenUserBankAccountPopup(isupdate: boolean, obj: Iadd_bank_account){
+OpenUserBankAccountPopup(isupdate: boolean, obj: Iadd_bank_account, redirectAfterSave: boolean = true){
   const initalstate: ModalOptions = {
     initialState:{
       isupdate,
-      obj 
+      obj,
+      redirectAfterSave
     }
   }
   
   this.bsmodalRef = this.bsModalService.show(AddUserBankAccountComponent, initalstate);
 }
 
-OpenUserUpiPopup() {
-  this.bsmodalRef = this.bsModalService.show(AddUserUpiComponent);
+OpenUserUpiPopup(redirectAfterSave: boolean = true) {
+  const initalstate: ModalOptions = {
+    initialState: { redirectAfterSave }
+  };
+  this.bsmodalRef = this.bsModalService.show(AddUserUpiComponent, initalstate);
 }
 
-OpenUserQRPopup() {
-  this.bsmodalRef = this.bsModalService.show(AddUserQrComponent);
+OpenUserQRPopup(redirectAfterSave: boolean = true) {
+  const initalstate: ModalOptions = {
+    initialState: { redirectAfterSave }
+  };
+  this.bsmodalRef = this.bsModalService.show(AddUserQrComponent, initalstate);
 }
 
 OpenAddAdminBankAccountPopup(isupdate: boolean, obj: Iadd_admin_bank_account = new add_admin_bank_account(), siteName: string = ''){

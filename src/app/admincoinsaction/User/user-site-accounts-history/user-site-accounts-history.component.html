@@ -1,0 +1,94 @@
+<section class="admin-accounts-page account-sites-section">
+  <div class="admin-accounts-toolbar">
+    <button type="button" class="btn-back" (click)="backToUserList()">
+      <i class="bi bi-arrow-left"></i> Back to users
+    </button>
+    <div class="account-header">
+      <div class="account-header-content">
+        <h2>User Site Accounts</h2>
+        <p *ngIf="displayUserNumber">User #{{ displayUserNumber }} — view IDs and transaction history</p>
+        <p *ngIf="!displayUserNumber">View IDs and transaction history</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="loadingSites">
+    <div class="spinner-border text-warning" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading accounts...</p>
+  </div>
+
+  <div class="admin-list-empty sites-empty" *ngIf="!loadingSites && !sites.length">
+    <i class="bi bi-inbox"></i>
+    <p class="mb-0">No site accounts found for this user.</p>
+  </div>
+
+  <article class="site-card" *ngFor="let site of sites">
+    <div class="site-card-row site-card-row-top">
+      <div class="site-card-brand">
+        <div class="site-logo-wrap">
+          <img
+            class="siteImageSize"
+            [src]="getSiteImageUrl(site)"
+            [alt]="site.siteName"
+            *ngIf="hasSiteImage(site); else siteIconFallback"
+          />
+          <ng-template #siteIconFallback>
+            <span class="site-logo-fallback" aria-hidden="true"><i class="bi bi-globe2"></i></span>
+          </ng-template>
+        </div>
+        <div class="site-meta">
+          <h3 class="site-name">{{ site.siteName }} (User Name: {{ site.userName || '—' }})</h3>
+          <p class="site-url">{{ site.siteURL || '—' }}</p>
+          <p class="site-id-label">ID #{{ site.userNumber || '—' }}</p>
+          <p class="site-trust"><i class="bi bi-shield-check"></i> Trusted &amp; secure · Instant payouts</p>
+        </div>
+      </div>
+      <div class="site-card-status">
+        <span class="site-status-dot"></span>
+        <span>Active</span>
+      </div>
+    </div>
+
+    <div class="site-actions-grid site-actions-grid--single">
+      <button
+        type="button"
+        class="site-action site-action-link"
+        [class.site-action-link--active]="isHistoryOpen(site)"
+        (click)="toggleTransactionHistory(site)"
+      >
+        <i class="bi bi-box-arrow-up-right"></i>
+        <span>Transaction History</span>
+      </button>
+    </div>
+
+    <div class="site-history-panel" *ngIf="isHistoryOpen(site)">
+      <div class="site-history-loading" *ngIf="loadingHistory">
+        <div class="spinner-border text-warning spinner-border-sm" role="status" aria-hidden="true"></div>
+        <span>Loading transactions…</span>
+      </div>
+
+      <div class="txn-history-list" *ngIf="!loadingHistory && passbooks.length > 0">
+        <article *ngFor="let txn of passbooks" class="txn-history-card" [style.borderLeftColor]="txn.trxColor || '#ff9100'">
+          <div class="txn-history-card-top">
+            <div class="txn-history-card-meta">
+              <span class="txn-history-date">{{ txn.createdDate | date: 'MMM dd, yyyy · hh:mm a' }}</span>
+              <p class="txn-history-desc">{{ txn.activityDescription }}</p>
+            </div>
+            <strong class="txn-history-amount" [style.color]="txn.trxColor || '#ffba70'">{{ txn.displayCoins }}</strong>
+          </div>
+          <div class="txn-history-card-foot">
+            <span class="txn-history-status" [style.backgroundColor]="txn.trxColor || '#ff9100'">{{ txn.trxStatus }}</span>
+            <span class="txn-history-id">Ref #{{ txn.passbookHistoryId }}</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="txn-history-empty" *ngIf="!loadingHistory && !passbooks.length">
+        <i class="bi bi-inbox" aria-hidden="true"></i>
+        <p>No transactions found for this account yet.</p>
+      </div>
+    </div>
+  </article>
+</section>

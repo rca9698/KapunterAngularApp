@@ -14,6 +14,7 @@ import { add_user_upi, Iadd_user_upi } from 'src/app/Shared/Modals/BankAccount/a
 })
 export class AddUserUpiComponent {
   submitted = false;
+  redirectAfterSave = true;
   addUserUpiForm: FormGroup;
   add_user_upi: Iadd_user_upi = new add_user_upi();
   returnType: any;
@@ -47,7 +48,9 @@ export class AddUserUpiComponent {
       if (this.returnType['returnStatus'] == 1) {
         this.toasterService.success(this.returnType.returnMessage);
         this.bsModalRef.hide();
-        this.router.navigate(['/bankAccount/list-user-bank-account']);
+        if (this.redirectAfterSave) {
+          this.router.navigate(['/bankAccount/list-user-bank-account']);
+        }
       } else {
         this.toasterService.warning(this.returnType.returnMessage);
       }

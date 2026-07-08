@@ -1,81 +1,63 @@
+<div class="modal-content siteColor withdraw-modal">
+  <form (ngSubmit)="withdrawCoinRequest()" [formGroup]="withdrawCoinRequestFrom">
+    <div class="modal-header">
+      <p class="modal-title">Withdraw Coins</p>
+      <div type="button" class="close" (click)="bsModalRef.hide()" aria-label="Close">
+        <i class="bi bi-x-circle-fill"></i>
+      </div>
+    </div>
 
-        <style>
-            .nav-item-divider {
-                background-color: rgb(20 24 25 / 30%);
-            }
-        </style>
-        <div class="modal-content siteColor">
-            <form (ngSubmit)="withdrawCoinRequest()" [formGroup]="withdrawCoinRequestFrom">
-                <div class="modal-header">
-                    <p class="modal-title" id="exampleModalLabel">Withdraw</p>
-                    <div type="button" class="close"  (click)="bsModalRef.hide()" aria-label="Close">
-                        <i class="bi bi-x-circle-fill"></i>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <!--<div class="form-group col-12 modalContentBgclr">
-                        <div class="d-flex flex-column text-center col-12">
-                            <span class="business">WALLET BALANCE</span>
-                            <span class=""><i class="bi bi-currency-rupee"></i> {{this.authservice.walletBalance}} </span>
-                        </div>
-                    </div>-->
-                    <div class="form-group">
-                        <label>Withdaw Coins(<i class="bi bi-currency-rupee"></i>)*</label>
-                        <input type="number" formControlName="coins" class="form-control" placeholder="Enter Coins" [min]="minWithdrawCoins" autocomplete="off">
-                        <div class="text-danger" *ngIf="withdrawCoinRequestFrom.get('coins')?.invalid && (submitted || withdrawCoinRequestFrom.get('coins')?.touched || withdrawCoinRequestFrom.get('coins')?.dirty)">
-                            <span *ngIf="withdrawCoinRequestFrom.get('coins')?.errors?.['required']"> Coins are required </span>
-                            <span *ngIf="withdrawCoinRequestFrom.get('coins')?.errors?.['min']"> Minimum withdraw amount is {{ minWithdrawCoins }} coins </span>
-                        </div>
-                        <p>*Minimum withdaw amount is {{ minWithdrawCoins }} coins</p>
-                    </div>
-
-                    <div class="nav-item-divider"></div>
-
-                    <div class="container form-group">
-                        <div class="row col-12">
-                            <div class="col col-6">
-                                <p class="text-uppercase">Preffered Bank</p>
-                            </div>
-                            <p class="col col-6">
-                                <select class="form-select form-select-md mb-3" formControlName="bankDropdown" (change)="ChangeWithDrawBank($event)" aria-label="">
-                                    <option *ngFor="let bank of banks" [value]="bank.bankAccountDetailID"> {{ bank.bankName }} </option>
-                                </select>
-                                <span class="text-danger" *ngIf="withdrawCoinRequestFrom.get('bankDropdown')?.invalid && (submitted || withdrawCoinRequestFrom.get('bankDropdown')?.touched || withdrawCoinRequestFrom.get('bankDropdown')?.dirty)">
-                                    <span *ngIf="withdrawCoinRequestFrom.get('bankDropdown')?.errors?.['required']"> Coins are required </span> 
-                                </span>
-                            </p> 
-                        </div>
-                    </div>
-                    <div class="nav-item-divider"></div>
-                    <div>
-                        <div class="d-flex flex-column col-12">
-                            <div class="row col-12">
-                                <p class="col-6"> Bank Name </p>
-                                <p class="col-6" style="text-align: end;"> {{bankdetails.bankName}}</p>
-                            </div>
-                            <div class="nav-item-divider-small"></div>
-                            <div class="row col-12">
-                                <p class="col-6"> Account Holder Name </p>
-                                <p class="col-6" style="text-align: end;"> {{bankdetails.accountHolderName}} </p>
-                            </div>
-                            <div class="nav-item-divider-small"></div>
-                            <div class="row col-12">
-                                <p class="col-6"> Account Number </p>
-                                <p class="col-6" style="text-align: end;"> {{bankdetails.accountNumber}} </p>
-                            </div>
-                            <div class="nav-item-divider-small"></div>
-                            <div class="row col-12">
-                                <p class="col-6"> IFSC Code </p>
-                                <p class="col-6" style="text-align: end;"> {{bankdetails.ifscCode}} </p>
-                            </div>
-                            <div class="nav-item-divider-small"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn col-12 siteBtnbackground">Withdraw Coins</button>
-                </div>
-            </form>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Withdraw Amount (<i class="bi bi-currency-rupee"></i>)*</label>
+        <input type="number" formControlName="coins" class="form-control" placeholder="Enter coins" [min]="minWithdrawCoins" autocomplete="off">
+        <div class="text-danger" *ngIf="withdrawCoinRequestFrom.get('coins')?.invalid && (submitted || withdrawCoinRequestFrom.get('coins')?.touched || withdrawCoinRequestFrom.get('coins')?.dirty)">
+          <span *ngIf="withdrawCoinRequestFrom.get('coins')?.errors?.['required']">Coins are required</span>
+          <span *ngIf="withdrawCoinRequestFrom.get('coins')?.errors?.['min']">Minimum withdraw amount is {{ minWithdrawCoins }} coins</span>
         </div>
-   
+        <p class="field-hint">Minimum withdraw amount is {{ minWithdrawCoins }} coins</p>
+      </div>
 
+      <div class="bank-section">
+        <div class="bank-section-header">
+          <div>
+            <h3><i class="bi bi-bank"></i> Payout Bank Account</h3>
+            <p>Select or add a bank account for withdrawal</p>
+          </div>
+          <button type="button" class="btn-add-bank" (click)="openAddBankAccount()">
+            <i class="bi bi-plus-lg"></i> Add Bank
+          </button>
+        </div>
+
+        <div class="empty-bank-state" *ngIf="banks.length === 0">
+          <i class="bi bi-bank2"></i>
+          <p>No bank account found. Add one to continue.</p>
+          <button type="button" class="btn-add-bank full" (click)="openAddBankAccount()">Add Bank Account</button>
+        </div>
+
+        <div *ngIf="banks.length > 0">
+          <label class="bank-select-label">Preferred Bank*</label>
+          <select class="form-select bank-select" formControlName="bankDropdown" (change)="ChangeWithDrawBank($event)" aria-label="Select bank account">
+            <option *ngFor="let bank of banks" [value]="bank.bankAccountDetailID">
+              {{ bank.bankName }} — {{ bank.accountNumber }}
+            </option>
+          </select>
+          <div class="text-danger" *ngIf="withdrawCoinRequestFrom.get('bankDropdown')?.invalid && (submitted || withdrawCoinRequestFrom.get('bankDropdown')?.touched)">
+            <span *ngIf="withdrawCoinRequestFrom.get('bankDropdown')?.errors?.['required']">Please select a bank account</span>
+          </div>
+
+          <div class="bank-preview-card" *ngIf="bankdetails?.bankName">
+            <div class="preview-row"><span>Bank Name</span><strong>{{ bankdetails.bankName }}</strong></div>
+            <div class="preview-row"><span>Account Holder</span><strong>{{ bankdetails.accountHolderName }}</strong></div>
+            <div class="preview-row"><span>Account Number</span><strong>{{ bankdetails.accountNumber }}</strong></div>
+            <div class="preview-row"><span>IFSC Code</span><strong>{{ bankdetails.ifscCode }}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn col-12 siteBtnbackground">Withdraw Coins</button>
+    </div>
+  </form>
+</div>

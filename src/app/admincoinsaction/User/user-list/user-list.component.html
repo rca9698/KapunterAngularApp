@@ -10,8 +10,6 @@
         <thead>
         <tr class="tableHeaderClass">
             <th scope="col"><p>User Number</p></th>
-            <th scope="col"><p>Name</p></th>
-            <th scope="col"><p>Email</p></th>
             <th scope="col"><p>Created Date</p></th>
             <th scope="col"><p>Coins (<i class="bi bi-currency-rupee"></i>)</p></th>
             <th scope="col"><p>Action</p></th>
@@ -25,19 +23,21 @@
                 </td>
             </tr>
             <tr *ngFor="let user of usersList">
-                <th scope="row"><p class="mb-0">{{ user.userNumber }}</p></th>
-                <td><p class="mb-0">{{ getDisplayName(user) }}</p></td>
-                <td><p class="mb-0 user-sub">{{ user.emailId || '—' }}</p></td>
+                <th scope="row">
+                    <button type="button" class="user-number-link" (click)="viewUserSiteAccounts(user)" title="View site IDs and transaction history">
+                        {{ user.userNumber }}
+                    </button>
+                </th>
                 <td><p class="mb-0">{{ user.createdDate }}</p></td>
                 <td><p class="mb-0 id-badge"><i class="bi bi-currency-rupee"></i>{{ user.coins }}</p></td>
                 <td>
                     <div class="action-btn-group btn-group">
-                        <button type="button" title="Deposit coins" (click)="depositeCoinsByUserId(user)">
+                        <!--<button type="button" title="Deposit coins" (click)="depositeCoinsByUserId(user)">
                             <i class="bi bi-person-fill-up"></i>
                         </button>
                         <button type="button" title="Withdraw coins" (click)="withdrawCoinsByUserId(user)">
                             <i class="bi bi-person-fill-down"></i>
-                        </button>
+                        </button>-->
                         <button type="button" title="Delete user" (click)="deleteUser(user)">
                             <i class="bi bi-person-fill-slash"></i>
                         </button>

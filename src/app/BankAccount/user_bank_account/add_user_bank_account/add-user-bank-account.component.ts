@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/auth.service';
 })
 export class AddUserBankAccountComponent {
   submitted : boolean = false;
+  redirectAfterSave = true;
   add_User_Bank_AccountForm: FormGroup;
   add_user_bank_account: Iadd_bank_account = new add_bank_account();
   returnType: any;
@@ -46,7 +47,9 @@ export class AddUserBankAccountComponent {
         if(this.returnType['returnStatus'] == 1){
           this.toasterService.success(this.returnType.returnMessage);
           this.bsModalRef.hide();
-          this.router.navigate(['/bankAccount/list-user-bank-account']);
+          if (this.redirectAfterSave) {
+            this.router.navigate(['/bankAccount/list-user-bank-account']);
+          }
         } else {
           this.toasterService.warning(this.returnType.returnMessage);
         }

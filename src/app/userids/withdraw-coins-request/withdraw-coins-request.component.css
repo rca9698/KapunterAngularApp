@@ -1,0 +1,132 @@
+.withdraw-modal .field-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  color: #c9b8a8;
+}
+
+.bank-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bank-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.bank-section-header h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff4e8;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.bank-section-header p {
+  margin: 0.25rem 0 0;
+  font-size: 0.78rem;
+  color: #c9b8a8;
+}
+
+.btn-add-bank {
+  border: 1px solid rgba(255, 147, 45, 0.55);
+  border-radius: 10px;
+  background: rgba(255, 120, 0, 0.12);
+  color: #ffc978;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-add-bank.full {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.btn-add-bank:hover {
+  background: rgba(255, 120, 0, 0.22);
+}
+
+.empty-bank-state {
+  text-align: center;
+  padding: 1.25rem 0.75rem;
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 141, 33, 0.35);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.empty-bank-state i {
+  font-size: 1.75rem;
+  color: #ff932d;
+}
+
+.empty-bank-state p {
+  margin: 0.5rem 0 0;
+  color: #c9b8a8;
+  font-size: 0.85rem;
+}
+
+.bank-select-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffd9b7;
+}
+
+.bank-select {
+  margin-bottom: 0.75rem;
+}
+
+.bank-preview-card {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 136, 26, 0.35);
+  background: linear-gradient(165deg, rgba(22, 19, 32, 0.95), rgba(8, 7, 14, 0.98));
+  padding: 0.75rem 0.85rem;
+}
+
+.preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+  font-size: 0.8rem;
+}
+
+.preview-row span {
+  color: #9ca3af;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.preview-row strong {
+  color: #fff4e8;
+  text-align: right;
+  word-break: break-all;
+}
+
+@media (max-width: 520px) {
+  .bank-section-header {
+    flex-direction: column;
+  }
+
+  .btn-add-bank:not(.full) {
+    align-self: flex-start;
+  }
+}

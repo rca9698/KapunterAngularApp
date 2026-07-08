@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { Iusers } from 'src/app/Shared/Modals/users';
 import { CoinsService } from '../../coins/coins.service';
@@ -23,7 +24,8 @@ export class UserListComponent implements OnInit {
     private userService: UserService,
     private coinsService: CoinsService,
     private deletemodule: DeleteService,
-    private authservice: AuthService
+    private authservice: AuthService,
+    private router: Router
   ) {
     this._sessionUser = this.authservice.user.userId;
   }
@@ -84,6 +86,12 @@ export class UserListComponent implements OnInit {
 
   deleteUser(user: Iusers): void {
     this.deletemodule.OpenDeletePopup('user', 'User', user);
+  }
+
+  viewUserSiteAccounts(user: Iusers): void {
+    this.router.navigate(['/adminaction/user_list', user.userId, 'site-accounts'], {
+      queryParams: { userNumber: user.userNumber }
+    });
   }
 
   PaginationNumber(pageNumber: number): void {

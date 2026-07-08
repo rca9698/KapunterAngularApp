@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/auth.service';
 })
 export class AddUserQrComponent {
   submitted = false;
+  redirectAfterSave = true;
   addUserQrForm: FormGroup;
   qrName = '';
   returnType: any;
@@ -58,7 +59,9 @@ export class AddUserQrComponent {
       if (this.returnType['returnStatus'] == 1) {
         this.toasterService.success(this.returnType.returnMessage);
         this.bsModalRef.hide();
-        this.router.navigate(['/bankAccount/list-user-bank-account']);
+        if (this.redirectAfterSave) {
+          this.router.navigate(['/bankAccount/list-user-bank-account']);
+        }
       } else {
         this.toasterService.warning(this.returnType.returnMessage);
       }

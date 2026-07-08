@@ -8,11 +8,13 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { RouterModule } from '@angular/router';
 import { UserListComponent } from './User/user-list/user-list.component';
 import { DeletedUserListComponent } from './User/deleted-user-list/deleted-user-list.component';
+import { UserSiteAccountsHistoryComponent } from './User/user-site-accounts-history/user-site-accounts-history.component';
 
 @NgModule({
   declarations: [
     UserListComponent,
-    DeletedUserListComponent
+    DeletedUserListComponent,
+    UserSiteAccountsHistoryComponent
   ],
   imports: [
     CommonModule,

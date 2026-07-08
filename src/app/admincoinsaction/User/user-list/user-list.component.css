@@ -1,3 +1,18 @@
+.user-number-link {
+  border: none;
+  background: transparent;
+  color: #ffc107;
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.user-number-link:hover {
+  color: #ffdb4d;
+}
+
 .pagination {
   display: inline-block;
 }

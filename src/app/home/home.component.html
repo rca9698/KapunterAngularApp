@@ -17,12 +17,6 @@
   </div>
 
   <section class="home-account-section account-sites-section" *ngIf="authservice.isLoggenIn | async">
-    <div class="account-header" *ngIf="!sitesLoading && sites.length > 0">
-      <div class="account-header-content">
-        <h2>My ID's</h2>
-        <p>Create IDs and manage wallets on trusted platforms</p>
-      </div>
-    </div>
 
     <div class="loading-container" *ngIf="sitesLoading">
       <div class="spinner-border text-warning" role="status">
