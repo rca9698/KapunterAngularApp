@@ -1,6 +1,57 @@
 @import '../../../Sites/listSites/list-sites.component.css';
 
-.admin-site-btn-view {
+.admin-site-payment-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.payment-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #9dd4ff;
+  background: rgba(93, 160, 255, 0.12);
+  border: 1px solid rgba(120, 180, 255, 0.28);
+}
+
+.payment-chip.empty {
+  color: #8a7f74;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.admin-site-btn-manage {
   background: linear-gradient(120deg, #5b4d8a, #3d3268);
   border: 1px solid rgba(180, 160, 255, 0.35);
+  min-width: 160px;
+  justify-content: center;
+  position: relative;
+}
+
+.admin-site-option-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(255, 122, 0, 0.9);
+  margin-left: 0.15rem;
+}
+
+@media (max-width: 560px) {
+  .admin-site-btn-manage {
+    width: 100%;
+  }
 }

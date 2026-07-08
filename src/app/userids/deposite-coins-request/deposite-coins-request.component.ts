@@ -10,8 +10,10 @@ import { environment } from 'src/environments/environment';
 import {
   buildLegacyQrBlobUrl,
   buildQrImageUrlFromDetail,
+  isDefaultPayment,
   normalizeFileExtension,
-  pickFirstPaymentDetail
+  pickFirstPaymentDetail,
+  pickPaymentDetailList
 } from 'src/app/Shared/Utils/qr-image.util';
 
 @Component({
@@ -32,6 +34,9 @@ export class DepositeCoinsRequestComponent {
    returnType: any;
    private readonly _sessionUser: bigint;
    adminBankDetail: Ibank_details = new bank_details();
+   bankOptions: Ibank_details[] = [];
+   upiOptions: Ibank_details[] = [];
+   qrOptions: Ibank_details[] = [];
    qrPath: string | undefined;
    qrImageUrl = '';
    paymentDetailLoading = false;
@@ -137,6 +142,9 @@ export class DepositeCoinsRequestComponent {
     this.BankTrDetail = false;
     this.PhonePeDetail = false;
     this.qrImageUrl = '';
+    this.bankOptions = [];
+    this.upiOptions = [];
+    this.qrOptions = [];
 
     if (type === 'QRCodeDetail') {
       this.QRCodeDetail = true;
@@ -154,6 +162,40 @@ export class DepositeCoinsRequestComponent {
       this.PhonePeDetail = true;
       this.loadAdminUpiDetail();
     }
+  }
+
+  isDefaultOption(value: unknown): boolean {
+    return isDefaultPayment(value);
+  }
+
+  selectBankOption(option: Ibank_details): void {
+    this.adminBankDetail = option;
+  }
+
+  selectUpiOption(option: Ibank_details): void {
+    this.adminBankDetail = option;
+  }
+
+  selectQrOption(option: Ibank_details): void {
+    this.adminBankDetail = option;
+    this.qrImageUrl = buildQrImageUrlFromDetail(this.qrPath, option);
+  }
+
+  isSelectedBank(option: Ibank_details): boolean {
+    return String(option.bankAccountDetailID) === String(this.adminBankDetail.bankAccountDetailID);
+  }
+
+  isSelectedUpi(option: Ibank_details): boolean {
+    return String(option.bankAccountDetailID) === String(this.adminBankDetail.bankAccountDetailID);
+  }
+
+  isSelectedQr(option: Ibank_details): boolean {
+    return String(option.bankAccountDetailID || option.qrId) ===
+      String(this.adminBankDetail.bankAccountDetailID || this.adminBankDetail.qrId);
+  }
+
+  qrPreviewUrl(option: Ibank_details): string {
+    return buildQrImageUrlFromDetail(this.qrPath, option);
   }
 
   copyToClipboard(value: string | undefined): void {
@@ -186,11 +228,12 @@ export class DepositeCoinsRequestComponent {
     this.paymentDetailLoading = true;
     this.coinsservice.get_admin_qr_details(siteId).subscribe({
       next: (response) => {
+        this.qrOptions = pickPaymentDetailList(response);
         this.adminBankDetail = pickFirstPaymentDetail(response) ?? new bank_details();
         this.qrImageUrl = buildQrImageUrlFromDetail(this.qrPath, this.adminBankDetail);
         this.paymentDetailLoading = false;
 
-        if (!this.qrImageUrl) {
+        if (!this.qrOptions.length) {
           this.toasterService.warning('QR code not available.');
         }
       },
@@ -211,10 +254,11 @@ export class DepositeCoinsRequestComponent {
     this.paymentDetailLoading = true;
     this.coinsservice.get_bank_UPI_details(siteId).subscribe({
       next: (response) => {
+        this.bankOptions = pickPaymentDetailList(response);
         this.adminBankDetail = pickFirstPaymentDetail(response) ?? new bank_details();
         this.paymentDetailLoading = false;
 
-        if (!this.adminBankDetail.bankName) {
+        if (!this.bankOptions.length) {
           this.toasterService.warning('Bank details not available.');
         }
       },
@@ -235,10 +279,11 @@ export class DepositeCoinsRequestComponent {
     this.paymentDetailLoading = true;
     this.coinsservice.get_admin_upi_details(siteId).subscribe({
       next: (response) => {
+        this.upiOptions = pickPaymentDetailList(response);
         this.adminBankDetail = pickFirstPaymentDetail(response) ?? new bank_details();
         this.paymentDetailLoading = false;
 
-        if (!this.adminBankDetail.upiId) {
+        if (!this.upiOptions.length) {
           this.toasterService.warning('UPI details not available.');
         }
       },

@@ -86,27 +86,32 @@ export function isApiSuccess(response: any): boolean {
   return Number(response?.returnStatus) === 1;
 }
 
-export function pickFirstPaymentDetail(response: any): any | null {
-  if (!isApiSuccess(response)) {
-    return null;
-  }
+export function isDefaultPayment(value: unknown): boolean {
+  return value === true || value === 1 || value === '1' || value === 'true';
+}
 
-  if (response.returnVal) {
-    return response.returnVal;
+export function pickPaymentDetailList(response: any): any[] {
+  if (!isApiSuccess(response)) {
+    return [];
   }
 
   const list = response.returnList as any[] | undefined;
-  if (!list?.length) {
+  if (list?.length) {
+    return list;
+  }
+
+  if (response.returnVal) {
+    return [response.returnVal];
+  }
+
+  return [];
+}
+
+export function pickFirstPaymentDetail(response: any): any | null {
+  const list = pickPaymentDetailList(response);
+  if (!list.length) {
     return null;
   }
 
-  return (
-    list.find(
-      (item) =>
-        item?.isDefault === true ||
-        item?.isDefault === 1 ||
-        item?.isDefault === '1' ||
-        item?.isDefault === 'true'
-    ) ?? list[0]
-  );
+  return list.find((item) => isDefaultPayment(item?.isDefault)) ?? list[0];
 }

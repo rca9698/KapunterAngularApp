@@ -5,14 +5,19 @@ import { catchError } from 'rxjs/operators';
 import { BankAccountService } from '../../bank-account.service';
 import { ISiteDetailModal } from 'src/app/Shared/Modals/site-detail-modal';
 import { Ibank_details } from 'src/app/Shared/Modals/BankAccount/bank_details';
+import { add_admin_bank_account } from 'src/app/Shared/Modals/BankAccount/add_admin_bank_account';
 import { DeleteService } from 'src/app/Shared/Modules/delete-module/delete.service';
+import { MakeDefaultService } from 'src/app/Shared/Modules/make-default-module/make-default.service';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import {
   buildLegacyQrBlobUrl,
   buildQrImageUrlFromDetail,
-  pickFirstPaymentDetail
+  isDefaultPayment,
+  pickPaymentDetailList
 } from 'src/app/Shared/Utils/qr-image.util';
+
+type PaymentTab = 'bank' | 'upi' | 'qr';
 
 @Component({
   selector: 'app-view-admin-site-payment',
@@ -22,16 +27,20 @@ import {
 export class ViewAdminSitePaymentComponent implements OnInit {
   site!: ISiteDetailModal;
   loading = true;
-  bankDetail: Ibank_details | null = null;
-  upiDetail: Ibank_details | null = null;
-  qrDetail: Ibank_details | null = null;
+  activeTab: PaymentTab = 'bank';
+
+  bankList: Ibank_details[] = [];
+  upiList: Ibank_details[] = [];
+  qrList: Ibank_details[] = [];
+
   qrPath: string | undefined;
-  qrDisplayUrl = '';
+  private qrDisplayUrls: Record<string, string> = {};
 
   constructor(
     public bsModalRef: BsModalRef,
     private bankAccountService: BankAccountService,
     private deleteService: DeleteService,
+    private makeDefaultService: MakeDefaultService,
     private toasterService: ToastrService
   ) {
     this.qrPath = environment.imagePath.QR;
@@ -56,10 +65,10 @@ export class ViewAdminSitePaymentComponent implements OnInit {
       qr: this.bankAccountService.list_admin_QR_accounts(siteId).pipe(catchError(() => of(null)))
     }).subscribe({
       next: ({ bank, upi, qr }) => {
-        this.bankDetail = pickFirstPaymentDetail(bank);
-        this.upiDetail = pickFirstPaymentDetail(upi);
-        this.qrDetail = pickFirstPaymentDetail(qr);
-        this.refreshQrImageUrl();
+        this.bankList = pickPaymentDetailList(bank);
+        this.upiList = pickPaymentDetailList(upi);
+        this.qrList = pickPaymentDetailList(qr);
+        this.qrDisplayUrls = {};
         this.loading = false;
       },
       error: () => {
@@ -69,49 +78,91 @@ export class ViewAdminSitePaymentComponent implements OnInit {
     });
   }
 
-  private refreshQrImageUrl(): void {
-    this.qrDisplayUrl = buildQrImageUrlFromDetail(this.qrPath, this.qrDetail);
+  setTab(tab: PaymentTab): void {
+    this.activeTab = tab;
   }
 
-  onQrImageError(): void {
-    if (!this.qrDetail) {
-      return;
-    }
+  isDefault(value: unknown): boolean {
+    return isDefaultPayment(value);
+  }
 
+  openAddBank(): void {
+    const payload = new add_admin_bank_account();
+    payload.siteId = this.site.siteId;
+    this.bankAccountService.OpenAddAdminBankAccountPopup(false, payload, this.site.siteName);
+    this.bankAccountService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
+  }
+
+  openAddUpi(): void {
+    const payload = new add_admin_bank_account();
+    payload.siteId = this.site.siteId;
+    this.bankAccountService.OpenAddAdminUpiPopup(false, payload, this.site.siteName);
+    this.bankAccountService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
+  }
+
+  openAddQr(): void {
+    const payload = new add_admin_bank_account();
+    payload.siteId = this.site.siteId;
+    this.bankAccountService.OpenAddAdminQRPopup(false, payload, this.site.siteName);
+    this.bankAccountService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
+  }
+
+  makeBankDefault(item: Ibank_details): void {
+    this.makeDefaultService.OpenMakeDefaultPopup('adminbank', 'Bank', item);
+    this.makeDefaultService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
+  }
+
+  makeUpiDefault(item: Ibank_details): void {
+    this.makeDefaultService.OpenMakeDefaultPopup('adminupi', 'UPI', item);
+    this.makeDefaultService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
+  }
+
+  makeQrDefault(item: Ibank_details): void {
+    this.makeDefaultService.OpenMakeDefaultPopup('adminqr', 'QR', item);
+    this.makeDefaultService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
+  }
+
+  deleteBank(item: Ibank_details): void {
+    this.deleteService.OpenDeletePopup('adminbank', 'Bank', item);
+    this.deleteService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
+  }
+
+  deleteUpi(item: Ibank_details): void {
+    this.deleteService.OpenDeletePopup('adminupi', 'UPI', item);
+    this.deleteService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
+  }
+
+  deleteQr(item: Ibank_details): void {
+    this.deleteService.OpenDeletePopup('adminqr', 'QR', item);
+    this.deleteService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
+  }
+
+  qrKey(detail: Ibank_details): string {
+    return String(detail.bankAccountDetailID || detail.qrId || detail.documentDetailId);
+  }
+
+  qrImageUrl(detail: Ibank_details): string {
+    const key = this.qrKey(detail);
+    if (this.qrDisplayUrls[key]) {
+      return this.qrDisplayUrls[key];
+    }
+    return buildQrImageUrlFromDetail(this.qrPath, detail);
+  }
+
+  onQrImageError(detail: Ibank_details): void {
+    const key = this.qrKey(detail);
     const legacyUrl = buildLegacyQrBlobUrl(
       this.qrPath,
-      this.qrDetail.documentDetailId,
-      this.qrDetail.fileExtenstion
+      detail.documentDetailId,
+      detail.fileExtenstion
     );
 
-    if (legacyUrl && this.qrDisplayUrl !== legacyUrl) {
-      this.qrDisplayUrl = legacyUrl;
+    if (legacyUrl && this.qrDisplayUrls[key] !== legacyUrl) {
+      this.qrDisplayUrls[key] = legacyUrl;
     }
   }
 
-  get qrImageUrl(): string {
-    return this.qrDisplayUrl;
-  }
-
-  deleteBank(): void {
-    if (!this.bankDetail) return;
-    this.deleteService.OpenDeletePopup('adminbank', 'Bank', this.bankDetail);
-    this.deleteService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
-  }
-
-  deleteUpi(): void {
-    if (!this.upiDetail) return;
-    this.deleteService.OpenDeletePopup('adminupi', 'UPI', this.upiDetail);
-    this.deleteService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
-  }
-
-  deleteQr(): void {
-    if (!this.qrDetail) return;
-    this.deleteService.OpenDeletePopup('adminqr', 'QR', this.qrDetail);
-    this.deleteService.bsmodalRef?.onHidden?.subscribe(() => this.loadPaymentDetails());
-  }
-
-  hasAnyDetail(): boolean {
-    return !!(this.bankDetail || this.upiDetail || this.qrDetail);
+  totalCount(): number {
+    return this.bankList.length + this.upiList.length + this.qrList.length;
   }
 }

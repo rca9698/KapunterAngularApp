@@ -60,6 +60,22 @@
                 <div *ngIf="paymentDetailLoading" class="payment-detail-loading">
                     <i class="bi bi-arrow-repeat"></i> Loading QR code...
                 </div>
+                <div *ngIf="!paymentDetailLoading && qrOptions.length > 1" class="payment-option-picker">
+                    <p class="payment-option-label">Choose a QR code</p>
+                    <div class="payment-option-list">
+                        <button
+                            type="button"
+                            class="payment-option-card payment-option-card-qr"
+                            *ngFor="let option of qrOptions"
+                            [class.selected]="isSelectedQr(option)"
+                            (click)="selectQrOption(option)"
+                        >
+                            <span class="payment-option-default" *ngIf="isDefaultOption(option.isDefault)">Default</span>
+                            <img [src]="qrPreviewUrl(option)" [alt]="option.accountDisplayName" />
+                            <strong>{{ option.accountDisplayName }}</strong>
+                        </button>
+                    </div>
+                </div>
                 <div *ngIf="!paymentDetailLoading && qrImageUrl" class="d-flex flex-column text-center col-12 qr-preview-wrap">
                     <img class="siteheightwidth100 qr-preview" [src]="qrImageUrl" alt="Payment QR Code" (error)="onQrImageError()" />
                     <button type="button" class="btn siteBtnbackground mt-3" (click)="downloadQRCode()" title="Download QR Code">
@@ -75,6 +91,22 @@
             <div *ngIf="BankTrDetail">
                 <div *ngIf="paymentDetailLoading" class="payment-detail-loading">
                     <i class="bi bi-arrow-repeat"></i> Loading bank details...
+                </div>
+                <div *ngIf="!paymentDetailLoading && bankOptions.length > 1" class="payment-option-picker">
+                    <p class="payment-option-label">Choose a bank account</p>
+                    <div class="payment-option-list">
+                        <button
+                            type="button"
+                            class="payment-option-card"
+                            *ngFor="let option of bankOptions"
+                            [class.selected]="isSelectedBank(option)"
+                            (click)="selectBankOption(option)"
+                        >
+                            <span class="payment-option-default" *ngIf="isDefaultOption(option.isDefault)">Default</span>
+                            <strong>{{ option.bankName }}</strong>
+                            <small>{{ option.accountNumber }}</small>
+                        </button>
+                    </div>
                 </div>
                 <div *ngIf="!paymentDetailLoading" class="d-flex flex-column col-12">
                     <div class="payment-detail-row">
@@ -115,6 +147,22 @@
             <div *ngIf="PhonePeDetail">
                 <div *ngIf="paymentDetailLoading" class="payment-detail-loading">
                     <i class="bi bi-arrow-repeat"></i> Loading UPI details...
+                </div>
+                <div *ngIf="!paymentDetailLoading && upiOptions.length > 1" class="payment-option-picker">
+                    <p class="payment-option-label">Choose a UPI ID</p>
+                    <div class="payment-option-list">
+                        <button
+                            type="button"
+                            class="payment-option-card"
+                            *ngFor="let option of upiOptions"
+                            [class.selected]="isSelectedUpi(option)"
+                            (click)="selectUpiOption(option)"
+                        >
+                            <span class="payment-option-default" *ngIf="isDefaultOption(option.isDefault)">Default</span>
+                            <strong>{{ option.accountDisplayName }}</strong>
+                            <small>{{ option.upiId }}</small>
+                        </button>
+                    </div>
                 </div>
                 <div *ngIf="!paymentDetailLoading" class="d-flex flex-column col-12">
                     <div class="payment-detail-row">

@@ -1775,3 +1775,7 @@ p, li, label, input, textarea, select, button, .viewotp, .viewPassword {
 .modal-dialog.admin-pay-modal.admin-pay-modal-wide {
     max-width: min(100% - 1.5rem, 520px);
 }
+
+.modal-dialog.admin-pay-modal.admin-pay-modal-xl {
+    max-width: min(100% - 1.5rem, 720px);
+}

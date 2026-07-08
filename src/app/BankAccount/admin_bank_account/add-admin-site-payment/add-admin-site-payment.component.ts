@@ -59,19 +59,19 @@ export class AddAdminSitePaymentComponent implements OnInit {
   }
 
   get canAddBank(): boolean {
-    return !this.bankDetail;
+    return true;
   }
 
   get canAddUpi(): boolean {
-    return !this.upiDetail;
+    return true;
   }
 
   get canAddQr(): boolean {
-    return !this.qrDetail;
+    return true;
   }
 
   get hasAnythingToAdd(): boolean {
-    return this.canAddBank || this.canAddUpi || this.canAddQr;
+    return true;
   }
 
   loadExisting(): void {
@@ -114,16 +114,20 @@ export class AddAdminSitePaymentComponent implements OnInit {
   saveAll(): void {
     this.submitted = true;
 
-    const bankValid = !this.canAddBank || this.bankForm.valid;
-    const upiValid = !this.canAddUpi || this.upiForm.valid;
-    const qrValid = !this.canAddQr || (this.qrForm.valid && !!this.qrFile);
+    const wantsBank = this.bankForm.dirty || Object.values(this.bankForm.value).some((v) => !!String(v ?? '').trim());
+    const wantsUpi = this.upiForm.dirty || Object.values(this.upiForm.value).some((v) => !!String(v ?? '').trim());
+    const wantsQr = this.qrForm.dirty || !!this.qrFile;
 
-    if (!bankValid || !upiValid || !qrValid) {
+    const bankValid = !wantsBank || this.bankForm.valid;
+    const upiValid = !wantsUpi || this.upiForm.valid;
+    const qrFormValid = !wantsQr || (this.qrForm.valid && !!this.qrFile);
+
+    if (!bankValid || !upiValid || !qrFormValid) {
       return;
     }
 
-    if (!this.hasAnythingToAdd) {
-      this.toasterService.warning('All payment details already exist for this site.');
+    if (!wantsBank && !wantsUpi && !wantsQr) {
+      this.toasterService.warning('Fill at least one payment section to save.');
       return;
     }
 
@@ -132,7 +136,7 @@ export class AddAdminSitePaymentComponent implements OnInit {
     const siteId = this.site.siteId;
     const requests: ReturnType<BankAccountService['Add_Admin_Bank_Account']>[] = [];
 
-    if (this.canAddBank) {
+    if (wantsBank) {
       requests.push(this.bankAccountService.Add_Admin_Bank_Account({
         siteId,
         bankName: this.bankForm.value.BName,
@@ -146,7 +150,7 @@ export class AddAdminSitePaymentComponent implements OnInit {
       }));
     }
 
-    if (this.canAddUpi) {
+    if (wantsUpi) {
       requests.push(this.bankAccountService.add_update_admin_upi({
         siteId,
         userName: this.upiForm.value.UpiName,
@@ -160,7 +164,7 @@ export class AddAdminSitePaymentComponent implements OnInit {
       }));
     }
 
-    if (this.canAddQr && this.qrFile) {
+    if (wantsQr && this.qrFile) {
       const formParams = new FormData();
       formParams.append('File', this.qrFile);
       formParams.append('userName', this.qrForm.value.QRName);

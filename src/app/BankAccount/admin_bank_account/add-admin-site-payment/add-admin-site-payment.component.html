@@ -14,13 +14,8 @@
     <span>Checking existing details…</span>
   </div>
 
-  <div class="view-payment-empty" *ngIf="!loading && !hasAnythingToAdd">
-    <i class="bi bi-check-circle" aria-hidden="true"></i>
-    <h3>All details configured</h3>
-    <p>Bank, UPI, and QR are already set for this site. Use View account to manage them.</p>
-  </div>
-
-  <div class="add-payment-forms" *ngIf="!loading && hasAnythingToAdd">
+  <div class="add-payment-forms" *ngIf="!loading">
+    <p class="add-payment-hint">Add one or more payment types below. You can add multiple accounts of each type from Manage payments.</p>
     <section class="add-payment-section" *ngIf="canAddBank">
       <h4><i class="bi bi-bank"></i> Bank account</h4>
       <form [formGroup]="bankForm">

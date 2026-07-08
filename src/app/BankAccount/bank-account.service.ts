@@ -116,7 +116,7 @@ OpenAddAdminSitePaymentPopup(site: ISiteDetailModal): BsModalRef | undefined {
 
 OpenViewAdminSitePaymentPopup(site: ISiteDetailModal): BsModalRef | undefined {
   const initalstate: ModalOptions = {
-    class: 'modal-dialog-centered admin-pay-modal admin-pay-modal-wide',
+    class: 'modal-dialog-centered admin-pay-modal admin-pay-modal-xl',
     initialState: { site }
   };
   this.bsmodalRef = this.bsModalService.show(ViewAdminSitePaymentComponent, initalstate);

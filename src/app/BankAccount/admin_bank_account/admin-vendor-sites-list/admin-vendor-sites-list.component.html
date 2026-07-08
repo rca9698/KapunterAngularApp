@@ -2,7 +2,7 @@
   <header class="admin-sites-header">
     <div class="admin-sites-heading">
       <h2>Vendor payment accounts</h2>
-      <p>Manage bank, UPI, and QR deposit details per site</p>
+      <p>Configure multiple bank, UPI, and QR options per site</p>
     </div>
   </header>
 
@@ -35,21 +35,27 @@
         <div class="admin-site-meta">
           <h3 class="admin-site-name">{{ site.siteName }}</h3>
           <p class="admin-site-url">{{ site.siteURL }}</p>
-          <p class="admin-site-badge">
-            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
-            Registered platform
-          </p>
+          <div class="admin-site-payment-chips">
+            <span class="payment-chip" [class.empty]="getSummary(site.siteId).bank === 0">
+              <i class="bi bi-bank"></i> {{ getSummary(site.siteId).bank }} Bank
+            </span>
+            <span class="payment-chip" [class.empty]="getSummary(site.siteId).upi === 0">
+              <i class="bi bi-phone"></i> {{ getSummary(site.siteId).upi }} UPI
+            </span>
+            <span class="payment-chip" [class.empty]="getSummary(site.siteId).qr === 0">
+              <i class="bi bi-qr-code"></i> {{ getSummary(site.siteId).qr }} QR
+            </span>
+          </div>
         </div>
       </div>
 
       <div class="admin-site-actions">
-        <button type="button" class="admin-site-btn admin-site-btn-update" (click)="openAddAccount(site)">
-          <i class="bi bi-plus-lg" aria-hidden="true"></i>
-          Add account
-        </button>
-        <button type="button" class="admin-site-btn admin-site-btn-view" (click)="openViewAccount(site)">
-          <i class="bi bi-eye" aria-hidden="true"></i>
-          View account
+        <button type="button" class="admin-site-btn admin-site-btn-manage" (click)="openManagePayments(site)">
+          <i class="bi bi-sliders" aria-hidden="true"></i>
+          Manage payments
+          <span class="admin-site-option-count" *ngIf="totalOptions(site.siteId) > 0">
+            {{ totalOptions(site.siteId) }}
+          </span>
         </button>
       </div>
     </article>

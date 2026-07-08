@@ -1,61 +1,210 @@
-<div class="modal-header admin-pay-modal-header">
-  <div>
-    <p class="modal-title mb-0">View account</p>
+<div class="modal-header admin-pay-modal-header payment-hub-header">
+  <div class="payment-hub-title-wrap">
+    <p class="modal-title mb-0">Manage payment options</p>
     <p class="admin-pay-modal-site" *ngIf="site">{{ site.siteName }}</p>
+    <p class="payment-hub-subtitle" *ngIf="!loading">
+      {{ totalCount() }} active option{{ totalCount() === 1 ? '' : 's' }} configured
+    </p>
   </div>
   <button type="button" class="admin-pay-modal-close" (click)="bsModalRef.hide()" aria-label="Close">
     <i class="bi bi-x-lg"></i>
   </button>
 </div>
 
-<div class="admin-pay-modal-body view-payment-body">
+<div class="admin-pay-modal-body payment-hub-body">
   <div class="view-payment-loading" *ngIf="loading">
     <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-    <span>Loading payment details…</span>
+    <span>Loading payment options…</span>
   </div>
 
-  <div class="view-payment-empty" *ngIf="!loading && !hasAnyDetail()">
-    <i class="bi bi-wallet2" aria-hidden="true"></i>
-    <h3>No payment details</h3>
-    <p>No bank, UPI, or QR details configured for this site yet.</p>
-  </div>
+  <ng-container *ngIf="!loading">
+    <nav class="payment-hub-tabs" aria-label="Payment type">
+      <button
+        type="button"
+        class="payment-hub-tab"
+        [class.active]="activeTab === 'bank'"
+        (click)="setTab('bank')"
+      >
+        <i class="bi bi-bank"></i>
+        <span>Bank</span>
+        <em>{{ bankList.length }}</em>
+      </button>
+      <button
+        type="button"
+        class="payment-hub-tab"
+        [class.active]="activeTab === 'upi'"
+        (click)="setTab('upi')"
+      >
+        <i class="bi bi-phone"></i>
+        <span>UPI</span>
+        <em>{{ upiList.length }}</em>
+      </button>
+      <button
+        type="button"
+        class="payment-hub-tab"
+        [class.active]="activeTab === 'qr'"
+        (click)="setTab('qr')"
+      >
+        <i class="bi bi-qr-code"></i>
+        <span>QR</span>
+        <em>{{ qrList.length }}</em>
+      </button>
+    </nav>
 
-  <div class="view-payment-sections" *ngIf="!loading && hasAnyDetail()">
-    <section class="view-payment-card" *ngIf="bankDetail">
-      <div class="view-payment-card-head">
-        <h4><i class="bi bi-bank"></i> Bank account</h4>
-        <button type="button" class="admin-site-btn admin-site-btn-delete" (click)="deleteBank()">
-          <i class="bi bi-trash3"></i> Delete
+    <!-- Bank tab -->
+    <section class="payment-hub-panel" *ngIf="activeTab === 'bank'">
+      <div class="payment-hub-panel-head">
+        <div>
+          <h3>Bank accounts</h3>
+          <p>Add multiple accounts; mark one as default for deposits.</p>
+        </div>
+        <button type="button" class="payment-hub-add-btn" (click)="openAddBank()">
+          <i class="bi bi-plus-lg"></i> Add bank
         </button>
       </div>
-      <div class="view-payment-row"><span>Bank</span><strong>{{ bankDetail.bankName }}</strong></div>
-      <div class="view-payment-row"><span>Holder</span><strong>{{ bankDetail.accountHolderName }}</strong></div>
-      <div class="view-payment-row"><span>Account</span><strong>{{ bankDetail.accountNumber }}</strong></div>
-      <div class="view-payment-row"><span>IFSC</span><strong>{{ bankDetail.ifscCode }}</strong></div>
-    </section>
 
-    <section class="view-payment-card" *ngIf="upiDetail">
-      <div class="view-payment-card-head">
-        <h4><i class="bi bi-phone"></i> UPI</h4>
-        <button type="button" class="admin-site-btn admin-site-btn-delete" (click)="deleteUpi()">
-          <i class="bi bi-trash3"></i> Delete
+      <div class="payment-hub-empty" *ngIf="bankList.length === 0">
+        <i class="bi bi-bank"></i>
+        <h4>No bank accounts yet</h4>
+        <p>Add the first bank account for this site.</p>
+        <button type="button" class="payment-hub-add-btn" (click)="openAddBank()">
+          <i class="bi bi-plus-circle"></i> Add bank account
         </button>
       </div>
-      <div class="view-payment-row"><span>Name</span><strong>{{ upiDetail.accountDisplayName }}</strong></div>
-      <div class="view-payment-row"><span>UPI ID</span><strong>{{ upiDetail.upiId }}</strong></div>
+
+      <div class="payment-hub-list" *ngIf="bankList.length > 0">
+        <article class="payment-hub-card" *ngFor="let item of bankList">
+          <div class="payment-hub-card-head">
+            <div class="payment-hub-card-title">
+              <button
+                type="button"
+                class="admin-pay-default-btn"
+                *ngIf="!isDefault(item.isDefault)"
+                (click)="makeBankDefault(item)"
+                title="Set as default"
+              >
+                <i class="bi bi-patch-plus-fill"></i>
+              </button>
+              <span class="admin-pay-default-badge" *ngIf="isDefault(item.isDefault)">
+                <i class="bi bi-patch-check-fill"></i> Default
+              </span>
+              <h4>{{ item.bankName }}</h4>
+            </div>
+            <button type="button" class="admin-pay-delete-btn" (click)="deleteBank(item)" title="Delete">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
+          </div>
+          <div class="payment-hub-card-body">
+            <div class="payment-hub-row"><span>Holder</span><strong>{{ item.accountHolderName }}</strong></div>
+            <div class="payment-hub-row"><span>Account</span><strong>{{ item.accountNumber }}</strong></div>
+            <div class="payment-hub-row"><span>IFSC</span><strong>{{ item.ifscCode }}</strong></div>
+          </div>
+        </article>
+      </div>
     </section>
 
-    <section class="view-payment-card" *ngIf="qrDetail">
-      <div class="view-payment-card-head">
-        <h4><i class="bi bi-qr-code"></i> QR code</h4>
-        <button type="button" class="admin-site-btn admin-site-btn-delete" (click)="deleteQr()">
-          <i class="bi bi-trash3"></i> Delete
+    <!-- UPI tab -->
+    <section class="payment-hub-panel" *ngIf="activeTab === 'upi'">
+      <div class="payment-hub-panel-head">
+        <div>
+          <h3>UPI IDs</h3>
+          <p>PhonePe, GPay, Paytm and other UPI handles for this site.</p>
+        </div>
+        <button type="button" class="payment-hub-add-btn" (click)="openAddUpi()">
+          <i class="bi bi-plus-lg"></i> Add UPI
         </button>
       </div>
-      <div class="view-payment-row"><span>Name</span><strong>{{ qrDetail.accountDisplayName }}</strong></div>
-      <div class="view-payment-qr" *ngIf="qrImageUrl">
-        <img [src]="qrImageUrl" [alt]="qrDetail.accountDisplayName" (error)="onQrImageError()" />
+
+      <div class="payment-hub-empty" *ngIf="upiList.length === 0">
+        <i class="bi bi-phone"></i>
+        <h4>No UPI IDs yet</h4>
+        <p>Add a UPI ID beneficiaries can pay to.</p>
+        <button type="button" class="payment-hub-add-btn" (click)="openAddUpi()">
+          <i class="bi bi-plus-circle"></i> Add UPI
+        </button>
+      </div>
+
+      <div class="payment-hub-list" *ngIf="upiList.length > 0">
+        <article class="payment-hub-card" *ngFor="let item of upiList">
+          <div class="payment-hub-card-head">
+            <div class="payment-hub-card-title">
+              <button
+                type="button"
+                class="admin-pay-default-btn"
+                *ngIf="!isDefault(item.isDefault)"
+                (click)="makeUpiDefault(item)"
+                title="Set as default"
+              >
+                <i class="bi bi-patch-plus-fill"></i>
+              </button>
+              <span class="admin-pay-default-badge" *ngIf="isDefault(item.isDefault)">
+                <i class="bi bi-patch-check-fill"></i> Default
+              </span>
+              <h4>{{ item.accountDisplayName }}</h4>
+            </div>
+            <button type="button" class="admin-pay-delete-btn" (click)="deleteUpi(item)" title="Delete">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
+          </div>
+          <div class="payment-hub-card-body">
+            <div class="payment-hub-row"><span>UPI ID</span><strong>{{ item.upiId }}</strong></div>
+          </div>
+        </article>
       </div>
     </section>
-  </div>
+
+    <!-- QR tab -->
+    <section class="payment-hub-panel" *ngIf="activeTab === 'qr'">
+      <div class="payment-hub-panel-head">
+        <div>
+          <h3>QR codes</h3>
+          <p>Upload multiple QR images; default is shown first to users.</p>
+        </div>
+        <button type="button" class="payment-hub-add-btn" (click)="openAddQr()">
+          <i class="bi bi-plus-lg"></i> Add QR
+        </button>
+      </div>
+
+      <div class="payment-hub-empty" *ngIf="qrList.length === 0">
+        <i class="bi bi-qr-code"></i>
+        <h4>No QR codes yet</h4>
+        <p>Upload a payment QR image for this site.</p>
+        <button type="button" class="payment-hub-add-btn" (click)="openAddQr()">
+          <i class="bi bi-plus-circle"></i> Add QR code
+        </button>
+      </div>
+
+      <div class="payment-hub-list payment-hub-list-qr" *ngIf="qrList.length > 0">
+        <article class="payment-hub-card payment-hub-card-qr" *ngFor="let item of qrList">
+          <div class="payment-hub-card-head">
+            <div class="payment-hub-card-title">
+              <button
+                type="button"
+                class="admin-pay-default-btn"
+                *ngIf="!isDefault(item.isDefault)"
+                (click)="makeQrDefault(item)"
+                title="Set as default"
+              >
+                <i class="bi bi-patch-plus-fill"></i>
+              </button>
+              <span class="admin-pay-default-badge" *ngIf="isDefault(item.isDefault)">
+                <i class="bi bi-patch-check-fill"></i> Default
+              </span>
+              <h4>{{ item.accountDisplayName }}</h4>
+            </div>
+            <button type="button" class="admin-pay-delete-btn" (click)="deleteQr(item)" title="Delete">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
+          </div>
+          <div class="payment-hub-card-body payment-hub-qr-wrap" *ngIf="qrImageUrl(item)">
+            <img
+              [src]="qrImageUrl(item)"
+              [alt]="item.accountDisplayName"
+              (error)="onQrImageError(item)"
+            />
+          </div>
+        </article>
+      </div>
+    </section>
+  </ng-container>
 </div>
