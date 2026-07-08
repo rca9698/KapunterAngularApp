@@ -7,6 +7,12 @@ import { ToastrService } from 'src/app/toastr/toastr.service';
 import { AuthService } from 'src/app/auth.service';
 import { Ibank_details, bank_details } from 'src/app/Shared/Modals/BankAccount/bank_details';
 import { environment } from 'src/environments/environment';
+import {
+  buildLegacyQrBlobUrl,
+  buildQrImageUrlFromDetail,
+  normalizeFileExtension,
+  pickFirstPaymentDetail
+} from 'src/app/Shared/Utils/qr-image.util';
 
 @Component({
   selector: 'app-deposite-coins-request',
@@ -102,7 +108,7 @@ export class DepositeCoinsRequestComponent {
       return;
     }
 
-    const extension = this.normalizeExtension(this.adminBankDetail.fileExtenstion);
+    const extension = normalizeFileExtension(this.adminBankDetail.fileExtenstion);
     const fileName = `qr_code_${this.depositeCoinRequestFrom.value['coins']}.${extension}`;
 
     fetch(this.qrImageUrl)
@@ -180,8 +186,8 @@ export class DepositeCoinsRequestComponent {
     this.paymentDetailLoading = true;
     this.coinsservice.get_admin_qr_details(siteId).subscribe({
       next: (response) => {
-        this.adminBankDetail = this.extractPaymentDetail(response) ?? new bank_details();
-        this.qrImageUrl = this.buildQrImageUrl(this.adminBankDetail);
+        this.adminBankDetail = pickFirstPaymentDetail(response) ?? new bank_details();
+        this.qrImageUrl = buildQrImageUrlFromDetail(this.qrPath, this.adminBankDetail);
         this.paymentDetailLoading = false;
 
         if (!this.qrImageUrl) {
@@ -205,7 +211,7 @@ export class DepositeCoinsRequestComponent {
     this.paymentDetailLoading = true;
     this.coinsservice.get_bank_UPI_details(siteId).subscribe({
       next: (response) => {
-        this.adminBankDetail = this.extractPaymentDetail(response) ?? new bank_details();
+        this.adminBankDetail = pickFirstPaymentDetail(response) ?? new bank_details();
         this.paymentDetailLoading = false;
 
         if (!this.adminBankDetail.bankName) {
@@ -229,7 +235,7 @@ export class DepositeCoinsRequestComponent {
     this.paymentDetailLoading = true;
     this.coinsservice.get_admin_upi_details(siteId).subscribe({
       next: (response) => {
-        this.adminBankDetail = this.extractPaymentDetail(response) ?? new bank_details();
+        this.adminBankDetail = pickFirstPaymentDetail(response) ?? new bank_details();
         this.paymentDetailLoading = false;
 
         if (!this.adminBankDetail.upiId) {
@@ -243,33 +249,16 @@ export class DepositeCoinsRequestComponent {
     });
   }
 
-  private extractPaymentDetail(response: any): Ibank_details | null {
-    if (response?.returnStatus !== 1) {
-      return null;
+  onQrImageError(): void {
+    const legacyUrl = buildLegacyQrBlobUrl(
+      this.qrPath,
+      this.adminBankDetail?.documentDetailId,
+      this.adminBankDetail?.fileExtenstion
+    );
+
+    if (legacyUrl && this.qrImageUrl !== legacyUrl) {
+      this.qrImageUrl = legacyUrl;
     }
-
-    if (response.returnVal) {
-      return response.returnVal;
-    }
-
-    const list = response.returnList as Ibank_details[] | undefined;
-    if (!list?.length) {
-      return null;
-    }
-
-    return list.find((item) => item.isDefault === '1' || item.isDefault === 'true' || (item as any).isDefault === true) ?? list[0];
-  }
-
-  private buildQrImageUrl(detail: Ibank_details): string {
-    if (!detail?.documentDetailId || !detail?.fileExtenstion) {
-      return '';
-    }
-
-    return `${this.qrPath}${detail.documentDetailId}.${this.normalizeExtension(detail.fileExtenstion)}`;
-  }
-
-  private normalizeExtension(extension: string): string {
-    return extension.replace(/^\./, '');
   }
 
   private fallbackCopy(value: string): void {

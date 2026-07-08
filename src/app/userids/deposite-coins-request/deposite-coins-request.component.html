@@ -61,7 +61,7 @@
                     <i class="bi bi-arrow-repeat"></i> Loading QR code...
                 </div>
                 <div *ngIf="!paymentDetailLoading && qrImageUrl" class="d-flex flex-column text-center col-12 qr-preview-wrap">
-                    <img class="siteheightwidth100 qr-preview" [src]="qrImageUrl" alt="Payment QR Code" />
+                    <img class="siteheightwidth100 qr-preview" [src]="qrImageUrl" alt="Payment QR Code" (error)="onQrImageError()" />
                     <button type="button" class="btn siteBtnbackground mt-3" (click)="downloadQRCode()" title="Download QR Code">
                         <i class="bi bi-download"></i> Download QR Code
                     </button>

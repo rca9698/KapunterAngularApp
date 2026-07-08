@@ -85,7 +85,7 @@
       <div class="admin-pay-card-body">
         <div class="admin-pay-qr">
           <img
-            [src]="qrPath + bank_detail.documentDetailId + '.' + bank_detail.fileExtenstion"
+            [src]="qrImageUrl(bank_detail)"
             [alt]="bank_detail.accountDisplayName"
           />
         </div>

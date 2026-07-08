@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { SitesService } from 'src/app/Sites/sites.service';
 import { ISiteDetailModal } from 'src/app/Shared/Modals/site-detail-modal';
 import { ToastrService } from 'src/app/toastr/toastr.service';
+import { buildQrImageUrlFromDetail } from 'src/app/Shared/Utils/qr-image.util';
 
 @Component({
   selector: 'app-list-admin-qr',
@@ -120,5 +121,9 @@ export class ListAdminQRComponent implements OnInit {
         this.toasterService.error('Unable to load QR codes.');
       }
     });
+  }
+
+  qrImageUrl(detail: Ibank_details): string {
+    return buildQrImageUrlFromDetail(this.qrPath, detail);
   }
 }

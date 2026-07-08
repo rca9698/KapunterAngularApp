@@ -8,6 +8,11 @@ import { Ibank_details } from 'src/app/Shared/Modals/BankAccount/bank_details';
 import { DeleteService } from 'src/app/Shared/Modules/delete-module/delete.service';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'src/app/toastr/toastr.service';
+import {
+  buildLegacyQrBlobUrl,
+  buildQrImageUrlFromDetail,
+  pickFirstPaymentDetail
+} from 'src/app/Shared/Utils/qr-image.util';
 
 @Component({
   selector: 'app-view-admin-site-payment',
@@ -21,6 +26,7 @@ export class ViewAdminSitePaymentComponent implements OnInit {
   upiDetail: Ibank_details | null = null;
   qrDetail: Ibank_details | null = null;
   qrPath: string | undefined;
+  qrDisplayUrl = '';
 
   constructor(
     public bsModalRef: BsModalRef,
@@ -50,9 +56,10 @@ export class ViewAdminSitePaymentComponent implements OnInit {
       qr: this.bankAccountService.list_admin_QR_accounts(siteId).pipe(catchError(() => of(null)))
     }).subscribe({
       next: ({ bank, upi, qr }) => {
-        this.bankDetail = this.pickFirst(bank);
-        this.upiDetail = this.pickFirst(upi);
-        this.qrDetail = this.pickFirst(qr);
+        this.bankDetail = pickFirstPaymentDetail(bank);
+        this.upiDetail = pickFirstPaymentDetail(upi);
+        this.qrDetail = pickFirstPaymentDetail(qr);
+        this.refreshQrImageUrl();
         this.loading = false;
       },
       error: () => {
@@ -62,23 +69,28 @@ export class ViewAdminSitePaymentComponent implements OnInit {
     });
   }
 
-  private pickFirst(response: any): Ibank_details | null {
-    if (response?.returnStatus !== 1) {
-      return null;
+  private refreshQrImageUrl(): void {
+    this.qrDisplayUrl = buildQrImageUrlFromDetail(this.qrPath, this.qrDetail);
+  }
+
+  onQrImageError(): void {
+    if (!this.qrDetail) {
+      return;
     }
-    if (response.returnVal) {
-      return response.returnVal;
+
+    const legacyUrl = buildLegacyQrBlobUrl(
+      this.qrPath,
+      this.qrDetail.documentDetailId,
+      this.qrDetail.fileExtenstion
+    );
+
+    if (legacyUrl && this.qrDisplayUrl !== legacyUrl) {
+      this.qrDisplayUrl = legacyUrl;
     }
-    const list = response.returnList as Ibank_details[] | undefined;
-    return list?.length ? list[0] : null;
   }
 
   get qrImageUrl(): string {
-    if (!this.qrDetail?.documentDetailId || !this.qrDetail?.fileExtenstion) {
-      return '';
-    }
-    const ext = this.qrDetail.fileExtenstion.replace(/^\./, '');
-    return `${this.qrPath}${this.qrDetail.documentDetailId}.${ext}`;
+    return this.qrDisplayUrl;
   }
 
   deleteBank(): void {

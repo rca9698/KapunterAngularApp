@@ -54,7 +54,7 @@
       </div>
       <div class="view-payment-row"><span>Name</span><strong>{{ qrDetail.accountDisplayName }}</strong></div>
       <div class="view-payment-qr" *ngIf="qrImageUrl">
-        <img [src]="qrImageUrl" [alt]="qrDetail.accountDisplayName" />
+        <img [src]="qrImageUrl" [alt]="qrDetail.accountDisplayName" (error)="onQrImageError()" />
       </div>
     </section>
   </div>
