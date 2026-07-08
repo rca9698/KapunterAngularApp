@@ -17,6 +17,8 @@ import { CommonService } from 'src/app/common.service';
 })
 export class WithdrawCoinsRequestComponent {
 
+  readonly minWithdrawCoins = 1000;
+
   banks: Ibank_details[] = [];
   _sessionUser: bigint;
    withdrawCoinRequestFrom: FormGroup;
@@ -35,7 +37,7 @@ export class WithdrawCoinsRequestComponent {
         , 1);
       this.GetBankAccounts(bankobj);
       this.withdrawCoinRequestFrom = this.formBuilder.group({
-        coins: ['', [Validators.required]],
+        coins: ['', [Validators.required, Validators.min(this.minWithdrawCoins)]],
         bankDropdown: ['', [Validators.required]]
        },
      )

@@ -13,6 +13,7 @@ import { UserIdsService } from '../userids/user-ids.service';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { TransferIdsListModalComponent } from '../Sites/userListSites/transfer-ids-list-modal/transfer-ids-list-modal.component';
 import { SiteIdDetailsModalComponent } from '../Sites/userListSites/site-id-details-modal/site-id-details-modal.component';
+import { GetUserSiteTransactionHistoryComponent } from '../Sites/get-user-site-transaction-history/get-user-site-transaction-history.component';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   sites: ISiteDetailModal[] = [];
   sitePath: string | undefined;
   sitesLoading = false;
+  depositType: 'site' | 'wallet' = 'wallet';
 
   @ViewChild('accountCarousel') accountCarousel?: ElementRef<HTMLElement>;
   private accountCarouselInstance?: { dispose: () => void; cycle: () => void };
@@ -118,12 +120,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.userIdsService.OpenAddIDRequestPopup(site);
   }
 
-  DepositeCoinsToIDPopup(site: ISiteDetailModal): void {
-    this.userIdsService.OpenDepositeCoinsToIDPopup(site);
+  openDepositeCoinsRequest(site: ISiteDetailModal): void {
+    this.coinsservice.OpenDepositeCoinsRequestPopup('Deposite', site);
   }
 
-  WithdrawCoinsFromIDPopup(site: ISiteDetailModal): void {
-    this.userIdsService.OpenWithdrawCoinsFromIdPopup(site);
+  openWithdrawCoinsRequest(site: ISiteDetailModal): void {
+    this.coinsservice.OpenWithdrawCoinsRequestPopup('Withdraw', site);
   }
 
   openTransferIdsList(site: ISiteDetailModal): void {
@@ -135,9 +137,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   openSiteIdDetails(site: ISiteDetailModal): void {
     const initialState: ModalOptions = {
-      initialState: { contextSite: site },
+      initialState: {
+        contextSite: site,
+        accountId: site.accountId,
+        depositType: this.depositType,
+      },
     };
     this.bsModalService.show(SiteIdDetailsModalComponent, initialState);
+  }
+
+  openTransactionHistoryDetails(site: ISiteDetailModal): void {
+    const initialState: ModalOptions = {
+      initialState: {
+        contextSite: site,
+        accountId: site.accountId,
+      },
+    };
+    this.bsModalService.show(GetUserSiteTransactionHistoryComponent, initialState);
   }
 
   openSiteLink(site: ISiteDetailModal): void {

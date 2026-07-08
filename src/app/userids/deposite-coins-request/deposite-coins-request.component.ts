@@ -15,6 +15,8 @@ import { environment } from 'src/environments/environment';
 })
 export class DepositeCoinsRequestComponent {
 
+  readonly minDepositCoins = 500;
+
   title: string | undefined;
   site: any;
   depositeCoinRequestFrom: FormGroup;
@@ -42,7 +44,7 @@ export class DepositeCoinsRequestComponent {
     private router:Router, private coinsservice: CoinsService, 
     private toasterService: ToastrService, public authservice: AuthService) {
       this.depositeCoinRequestFrom = this.formBuilder.group({
-        coins: ['', [Validators.required]]
+        coins: ['', [Validators.required, Validators.min(this.minDepositCoins)]]
        },
      )
      this._sessionUser = this.authservice.user.userId;

@@ -16,11 +16,12 @@
         </div>-->
         <div class="form-group">
             <label>Deposite Coins(<i class="bi bi-currency-rupee"></i>)*</label>
-            <input type="number" formControlName="coins" class="form-control" placeholder="Enter Coins" autocomplete="off">
+            <input type="number" formControlName="coins" class="form-control" placeholder="Enter Coins" [min]="minDepositCoins" autocomplete="off">
             <div class="text-danger" *ngIf="depositeCoinRequestFrom.get('coins')?.invalid && (submitted || depositeCoinRequestFrom.get('coins')?.touched || depositeCoinRequestFrom.get('coins')?.dirty)">
-                <span *ngIf="depositeCoinRequestFrom.get('coins')?.errors?.['required']"> Coins are required </span> 
+                <span *ngIf="depositeCoinRequestFrom.get('coins')?.errors?.['required']"> Coins are required </span>
+                <span *ngIf="depositeCoinRequestFrom.get('coins')?.errors?.['min']"> Minimum deposit amount is {{ minDepositCoins }} coins </span>
             </div>
-            <span>*Minimum deposite amount is 500 coins</span>
+            <span>*Minimum deposite amount is {{ minDepositCoins }} coins</span>
         </div>
     </div>
 
