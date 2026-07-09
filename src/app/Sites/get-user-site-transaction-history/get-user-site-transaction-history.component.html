@@ -2,14 +2,17 @@
   <div class="modal-header txn-history-header">
     <div class="txn-history-heading">
       <div class="txn-history-brand" *ngIf="contextSite">
-        <div class="site-logo-wrap" *ngIf="hasSiteImage(); else siteIconFallback">
-          <img class="siteImageSize" [src]="getSiteImageUrl()" [alt]="contextSite.siteName" loading="lazy" decoding="async" />
+        <div class="site-logo-frame" [class.site-logo-frame-empty]="!hasSiteImage()">
+          <img
+            *ngIf="hasSiteImage()"
+            class="site-logo-img"
+            [src]="getSiteImageUrl()"
+            [alt]="contextSite.siteName"
+            loading="lazy"
+            decoding="async"
+          />
+          <i *ngIf="!hasSiteImage()" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
         </div>
-        <ng-template #siteIconFallback>
-          <div class="site-logo-wrap site-logo-wrap--empty" aria-hidden="true">
-            <i class="bi bi-globe2"></i>
-          </div>
-        </ng-template>
         <div class="txn-history-title-wrap">
           <p class="modal-title" id="txnHistoryTitle">Transaction History</p>
           <p class="txn-history-sub">{{ contextSite.siteName }}</p>
@@ -33,12 +36,12 @@
     <div class="txn-history-list" *ngIf="!loading && passbooks.length > 0">
       <article *ngFor="let txn of passbooks" class="txn-history-card" [style.borderLeftColor]="txn.trxColor || '#ff9100'">
         <div class="txn-history-card-top">
-          <div class="txn-history-card-logo" *ngIf="hasTxnImage(txn); else txnIconFallback">
-            <img [src]="getTxnImageUrl(txn)" [alt]="getTxnSiteLabel(txn)" loading="lazy" />
+          <div class="site-logo-frame" *ngIf="hasTxnImage(txn); else txnIconFallback">
+            <img class="site-logo-img" [src]="getTxnImageUrl(txn)" [alt]="getTxnSiteLabel(txn)" loading="lazy" decoding="async" />
           </div>
           <ng-template #txnIconFallback>
-            <div class="txn-history-card-logo txn-history-card-logo--fallback" aria-hidden="true">
-              <i class="bi bi-receipt"></i>
+            <div class="site-logo-frame site-logo-frame-empty" aria-hidden="true">
+              <i class="bi bi-receipt site-logo-fallback"></i>
             </div>
           </ng-template>
           <div class="txn-history-card-meta">

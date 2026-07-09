@@ -17,8 +17,15 @@
         <div class="approve-transfer-card">
           <p class="approve-transfer-label">From</p>
           <div class="approve-transfer-row">
-            <div class="site-logo-frame" *ngIf="siteLogoUrl(request.sourceDocumentDetailId, request.sourceFileExtenstion) as srcLogo">
-              <img loading="lazy" decoding="async" class="site-logo-img" [src]="srcLogo" [alt]="request.sourceSiteName" />
+            <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(request.sourceDocumentDetailId, request.sourceFileExtenstion)">
+              <img
+                *ngIf="siteLogoUrl(request.sourceDocumentDetailId, request.sourceFileExtenstion) as srcLogo"
+                loading="lazy"
+                decoding="async"
+                class="site-logo-img"
+                [src]="srcLogo"
+                [alt]="request.sourceSiteName"
+              />
             </div>
             <div>
               <strong>{{ request.sourceSiteName }}</strong>
@@ -35,8 +42,15 @@
         <div class="approve-transfer-card">
           <p class="approve-transfer-label">To</p>
           <div class="approve-transfer-row">
-            <div class="site-logo-frame" *ngIf="siteLogoUrl(request.targetDocumentDetailId, request.targetFileExtenstion) as tgtLogo">
-              <img loading="lazy" decoding="async" class="site-logo-img" [src]="tgtLogo" [alt]="request.targetSiteName" />
+            <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(request.targetDocumentDetailId, request.targetFileExtenstion)">
+              <img
+                *ngIf="siteLogoUrl(request.targetDocumentDetailId, request.targetFileExtenstion) as tgtLogo"
+                loading="lazy"
+                decoding="async"
+                class="site-logo-img"
+                [src]="tgtLogo"
+                [alt]="request.targetSiteName"
+              />
             </div>
             <div>
               <strong>{{ request.targetSiteName }}</strong>

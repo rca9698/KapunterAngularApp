@@ -149,22 +149,6 @@
   min-width: 0;
 }
 
-.site-logo-wrap {
-  width: 56px;
-  min-width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 149, 31, 0.55);
-  box-shadow: 0 0 14px rgba(255, 130, 0, 0.25);
-  overflow: hidden;
-}
-
-.siteImageSize {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .site-meta {
   min-width: 0;
 }

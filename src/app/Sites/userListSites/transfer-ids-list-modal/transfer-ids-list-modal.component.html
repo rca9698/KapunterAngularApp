@@ -25,21 +25,18 @@
         <section class="transfer-panel transfer-panel-source" aria-label="Source account">
           <p class="transfer-panel-label">From</p>
           <div class="transfer-account-card transfer-account-card-source">
-            <div class="site-logo-wrap" *ngIf="siteLogoUrl(sourceAccount?.documentDetailId, sourceAccount?.fileExtenstion) as logoUrl; else sourceLogoFallback">
+            <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(sourceAccount?.documentDetailId, sourceAccount?.fileExtenstion)">
               <img
+                *ngIf="siteLogoUrl(sourceAccount?.documentDetailId, sourceAccount?.fileExtenstion) as logoUrl"
                 loading="lazy"
                 decoding="async"
-                class="siteImageSize"
+                class="site-logo-img"
                 [src]="logoUrl"
                 [alt]="sourceAccount?.siteName || 'Site'"
                 (error)="onLogoError($event)"
               />
+              <i *ngIf="!siteLogoUrl(sourceAccount?.documentDetailId, sourceAccount?.fileExtenstion)" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
             </div>
-            <ng-template #sourceLogoFallback>
-              <div class="site-logo-wrap site-logo-wrap--empty">
-                <i class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
-              </div>
-            </ng-template>
             <div class="transfer-ids-text">
               <span class="transfer-ids-site">{{ sourceAccount?.siteName }}</span>
               <span class="transfer-ids-user">{{ sourceAccount?.userName }} · ID #{{ sourceAccount?.accountId }}</span>
@@ -73,21 +70,18 @@
               tabindex="0"
               (keyup.enter)="selectDestination(account)"
             >
-              <div class="site-logo-wrap" *ngIf="siteLogoUrl(account.documentDetailId, account.fileExtenstion) as logoUrl; else destLogoFallback">
+              <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(account.documentDetailId, account.fileExtenstion)">
                 <img
+                  *ngIf="siteLogoUrl(account.documentDetailId, account.fileExtenstion) as logoUrl"
                   loading="lazy"
                   decoding="async"
-                  class="siteImageSize"
+                  class="site-logo-img"
                   [src]="logoUrl"
                   [alt]="account.siteName || 'Site'"
                   (error)="onLogoError($event)"
                 />
+                <i *ngIf="!siteLogoUrl(account.documentDetailId, account.fileExtenstion)" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
               </div>
-              <ng-template #destLogoFallback>
-                <div class="site-logo-wrap site-logo-wrap--empty">
-                  <i class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
-                </div>
-              </ng-template>
               <div class="transfer-ids-text">
                 <span class="transfer-ids-site">{{ account.siteName }}</span>
                 <span class="transfer-ids-user">{{ account.userName }} · ID #{{ account.accountId }}</span>

@@ -28,8 +28,9 @@
             <td>{{ item.userNumber }}</td>
             <td>
               <div class="site-cell">
-                <div class="site-logo-frame" *ngIf="siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion) as srcLogo">
+                <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion)">
                   <img
+                    *ngIf="siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion) as srcLogo"
                     loading="lazy"
                     decoding="async"
                     class="site-logo-img"
@@ -49,8 +50,9 @@
             </td>
             <td>
               <div class="site-cell">
-                <div class="site-logo-frame" *ngIf="siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion) as tgtLogo">
+                <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion)">
                   <img
+                    *ngIf="siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion) as tgtLogo"
                     loading="lazy"
                     decoding="async"
                     class="site-logo-img"
