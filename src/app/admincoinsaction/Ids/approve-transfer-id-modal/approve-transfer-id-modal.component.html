@@ -1,0 +1,66 @@
+<div class="modal-content siteColor approve-transfer-modal">
+  <form (ngSubmit)="submitApproval()" [formGroup]="approveForm" autocomplete="off">
+    <div class="modal-header">
+      <p class="modal-title">Approve Transfer</p>
+      <button type="button" class="close modal-chrome-btn modal-chrome-btn-close" (click)="bsModalRef.hide()" aria-label="Close">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <p class="approve-transfer-note">
+        Enter the amount transferred from the source account ID to the destination account ID.
+        This records the approval only; coin movement is handled outside the app.
+      </p>
+
+      <div class="approve-transfer-flow">
+        <div class="approve-transfer-card">
+          <p class="approve-transfer-label">From</p>
+          <div class="approve-transfer-row">
+            <div class="site-logo-frame" *ngIf="siteLogoUrl(request.sourceDocumentDetailId, request.sourceFileExtenstion) as srcLogo">
+              <img loading="lazy" decoding="async" class="site-logo-img" [src]="srcLogo" [alt]="request.sourceSiteName" />
+            </div>
+            <div>
+              <strong>{{ request.sourceSiteName }}</strong>
+              <span>{{ sourceUserName }} · ID #{{ sourceAccountId }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="approve-transfer-arrow">
+          <i class="bi bi-currency-rupee"></i>
+          <i class="bi bi-arrow-down"></i>
+        </div>
+
+        <div class="approve-transfer-card">
+          <p class="approve-transfer-label">To</p>
+          <div class="approve-transfer-row">
+            <div class="site-logo-frame" *ngIf="siteLogoUrl(request.targetDocumentDetailId, request.targetFileExtenstion) as tgtLogo">
+              <img loading="lazy" decoding="async" class="site-logo-img" [src]="tgtLogo" [alt]="request.targetSiteName" />
+            </div>
+            <div>
+              <strong>{{ request.targetSiteName }}</strong>
+              <span>{{ targetUserName }} · ID #{{ targetAccountId }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <label>Transfer amount (<i class="bi bi-currency-rupee"></i>)*</label>
+        <input type="number" class="form-control" formControlName="transferAmount" min="0.01" step="0.01" placeholder="Enter amount" />
+        <div class="text-danger" *ngIf="approveForm.get('transferAmount')?.invalid && (submitted || approveForm.get('transferAmount')?.touched)">
+          <span *ngIf="approveForm.get('transferAmount')?.errors?.['required']">Amount is required</span>
+          <span *ngIf="approveForm.get('transferAmount')?.errors?.['min']">Amount must be greater than zero</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn siteBtnbackground" [disabled]="saving">
+        <span *ngIf="!saving">Approve Transfer</span>
+        <span *ngIf="saving">Approving…</span>
+      </button>
+    </div>
+  </form>
+</div>

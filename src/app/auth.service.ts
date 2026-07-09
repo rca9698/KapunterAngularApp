@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { login } from './Shared/Modals/login';
 import { apiService } from './api.service';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Iusermodal, usermodal } from './Shared/Modals/user-modal';
 import { Iusers, users } from './Shared/Modals/users';
 import { normalizeUserDetail, resolveWalletBalance } from './Shared/utils/user-detail.util';
@@ -77,7 +77,7 @@ export class AuthService {
       this._isLoggedIn.next(true);
       this.user = this.getUser(token);
       this.visitorCountService.refreshAfterLogin();
-      this.getUserDetails();
+      this.getUserDetails()?.subscribe();
 
       const afterSave = this.buildLoginDebugSnapshot(response, token, 'login() after token saved');
       this.lastLoginDebug = afterSave;
@@ -273,9 +273,9 @@ export class AuthService {
     this._userdetail = normalizeUserDetail(raw);
   }
 
-  getUserDetails() {
+  getUserDetails(): Observable<any> | null {
     if (!this.isLoggedIn || !this.user?.userId) {
-      return;
+      return null;
     }
 
     this.userDetailQuery = {
@@ -283,23 +283,25 @@ export class AuthService {
       userId: this.user.userId
     };
 
-    return this.apiservice.GetUserById(this.userDetailQuery).subscribe({
-      next: (resp: any) => {
+    return this.apiservice.GetUserById(this.userDetailQuery).pipe(
+      tap((resp: any) => {
         this.returnType = resp;
+        const status = resp?.returnStatus ?? resp?.ReturnStatus;
+        if (status != null && status !== 1) {
+          return;
+        }
+
         const payload =
           resp?.returnVal ??
           resp?.ReturnVal ??
           resp?.returnList?.[0] ??
           resp?.ReturnList?.[0];
-        this.setUserDetail(payload);
-      },
-      error: () => {
-        // Keep last known profile; never assign null.
-        if (!this._userdetail) {
-          this._userdetail = new users();
+
+        if (payload) {
+          this.setUserDetail(payload);
         }
-      }
-    });
+      })
+    );
   }
 
 }

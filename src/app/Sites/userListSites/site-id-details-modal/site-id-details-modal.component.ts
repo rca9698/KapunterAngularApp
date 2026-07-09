@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { ISiteDetailModal } from 'src/app/Shared/Modals/site-detail-modal';
 import { IIDDetailsModal } from 'src/app/Shared/Modals/Ids/id_detail-modal';
 import { resolveAccountId } from 'src/app/admincoinsaction/shared/id-request.util';
+import { buildSiteLogoUrl } from 'src/app/Shared/Utils/site-image.util';
 
 @Component({
   selector: 'app-site-id-details-modal',
@@ -128,5 +129,16 @@ export class SiteIdDetailsModalComponent implements OnInit {
         this.loading = false;
       },
     });
+  }
+
+  siteLogoUrl(documentDetailId?: string, fileExtenstion?: string): string | null {
+    return buildSiteLogoUrl(this.sitePath, documentDetailId, fileExtenstion);
+  }
+
+  onLogoError(event: Event): void {
+    const img = event.target as HTMLImageElement | null;
+    if (img) {
+      img.style.visibility = 'hidden';
+    }
   }
 }

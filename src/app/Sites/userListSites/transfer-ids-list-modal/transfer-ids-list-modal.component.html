@@ -1,39 +1,114 @@
 <div class="modal-content transfer-ids-modal siteColor">
   <div class="modal-header transfer-ids-header">
     <div class="transfer-ids-heading">
-      <p class="modal-title" id="transferIdsTitle">Transfer</p>
-      <p class="transfer-ids-sub" *ngIf="contextSite?.siteName as siteLabel">
-        Your IDs — from {{ siteLabel }}
-      </p>
-      <p class="transfer-ids-sub" *ngIf="!contextSite?.siteName">All your IDs</p>
+      <p class="modal-title" id="transferIdsTitle">Transfer Between Accounts</p>
+      <p class="transfer-ids-sub">Select a destination account with a valid ID</p>
     </div>
-    <div type="button" class="close transfer-ids-close" (click)="bsModalRef.hide()" aria-label="Close">
-      <i class="bi bi-x-circle-fill"></i>
-    </div>
+    <button type="button" class="close modal-chrome-btn modal-chrome-btn-close" (click)="bsModalRef.hide()" aria-label="Close">
+      <i class="bi bi-x-lg" aria-hidden="true"></i>
+    </button>
   </div>
+
   <div class="modal-body transfer-ids-body">
     <div class="transfer-ids-loading" *ngIf="loading">
       <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-      <span>Loading your IDs…</span>
+      <span>Loading your accounts…</span>
     </div>
-    <div class="transfer-ids-empty" *ngIf="!loading && ids.length === 0">
-      <i class="bi bi-inbox" aria-hidden="true"></i>
-      <p>No IDs found. Create an ID from a site card first.</p>
-    </div>
-    <ul class="transfer-ids-list" *ngIf="!loading && ids.length > 0" aria-labelledby="transferIdsTitle">
-      <li *ngFor="let id of ids; trackBy: trackById" class="transfer-ids-row">
-        <div class="transfer-ids-logo-wrap">
-          <img
-            [src]="sitePath + id.documentDetailId + id.fileExtenstion"
-            [alt]="id.siteName || 'Site'"
-            loading="lazy"
-          />
+
+    <ng-container *ngIf="!loading">
+      <div class="transfer-ids-empty" *ngIf="!hasSourceAccount">
+        <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+        <p>This site has no valid account ID. Create an ID first before transferring.</p>
+      </div>
+
+      <ng-container *ngIf="hasSourceAccount">
+        <section class="transfer-panel transfer-panel-source" aria-label="Source account">
+          <p class="transfer-panel-label">From</p>
+          <div class="transfer-account-card transfer-account-card-source">
+            <div class="site-logo-wrap" *ngIf="siteLogoUrl(sourceAccount?.documentDetailId, sourceAccount?.fileExtenstion) as logoUrl; else sourceLogoFallback">
+              <img
+                loading="lazy"
+                decoding="async"
+                class="siteImageSize"
+                [src]="logoUrl"
+                [alt]="sourceAccount?.siteName || 'Site'"
+                (error)="onLogoError($event)"
+              />
+            </div>
+            <ng-template #sourceLogoFallback>
+              <div class="site-logo-wrap site-logo-wrap--empty">
+                <i class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
+              </div>
+            </ng-template>
+            <div class="transfer-ids-text">
+              <span class="transfer-ids-site">{{ sourceAccount?.siteName }}</span>
+              <span class="transfer-ids-user">{{ sourceAccount?.userName }} · ID #{{ sourceAccount?.accountId }}</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="transfer-flow-indicator" aria-hidden="true">
+          <span class="transfer-rupee"><i class="bi bi-currency-rupee"></i></span>
+          <span class="transfer-arrow"><i class="bi bi-arrow-down-circle-fill"></i></span>
         </div>
-        <div class="transfer-ids-text">
-          <span class="transfer-ids-site">{{ id.siteName }}</span>
-          <span class="transfer-ids-user">{{ id.userName }} · #{{ id.userNumber }}</span>
-        </div>
-      </li>
-    </ul>
+
+        <section class="transfer-panel transfer-panel-target" aria-label="Destination accounts">
+          <p class="transfer-panel-label">
+            To
+            <span class="transfer-panel-count" *ngIf="hasDestinations"> — {{ destinationAccounts.length }} account(s)</span>
+          </p>
+
+          <div class="transfer-ids-empty" *ngIf="!hasDestinations">
+            <i class="bi bi-inbox" aria-hidden="true"></i>
+            <p>You need at least one other account with a valid ID to transfer.</p>
+          </div>
+
+          <ul class="transfer-ids-list" *ngIf="hasDestinations">
+            <li
+              *ngFor="let account of destinationAccounts; trackBy: trackByAccountKey"
+              class="transfer-ids-row transfer-ids-row-selectable"
+              [class.transfer-ids-row-selected]="isSelectedDestination(account)"
+              (click)="selectDestination(account)"
+              role="button"
+              tabindex="0"
+              (keyup.enter)="selectDestination(account)"
+            >
+              <div class="site-logo-wrap" *ngIf="siteLogoUrl(account.documentDetailId, account.fileExtenstion) as logoUrl; else destLogoFallback">
+                <img
+                  loading="lazy"
+                  decoding="async"
+                  class="siteImageSize"
+                  [src]="logoUrl"
+                  [alt]="account.siteName || 'Site'"
+                  (error)="onLogoError($event)"
+                />
+              </div>
+              <ng-template #destLogoFallback>
+                <div class="site-logo-wrap site-logo-wrap--empty">
+                  <i class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
+                </div>
+              </ng-template>
+              <div class="transfer-ids-text">
+                <span class="transfer-ids-site">{{ account.siteName }}</span>
+                <span class="transfer-ids-user">{{ account.userName }} · ID #{{ account.accountId }}</span>
+              </div>
+              <i class="bi bi-check-circle-fill transfer-check" *ngIf="isSelectedDestination(account)"></i>
+            </li>
+          </ul>
+        </section>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <div class="modal-footer transfer-ids-footer" *ngIf="!loading && hasSourceAccount && hasDestinations">
+    <button
+      type="button"
+      class="btn siteBtnbackground"
+      [disabled]="!selectedDestination || submitting"
+      (click)="submitTransferRequest()"
+    >
+      <span *ngIf="!submitting">Request Transfer</span>
+      <span *ngIf="submitting">Submitting…</span>
+    </button>
   </div>
 </div>

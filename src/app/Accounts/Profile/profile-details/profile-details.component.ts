@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { finalize } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
+import { ToastrService } from 'src/app/toastr/toastr.service';
+import { ChangePasswordModalComponent } from '../change-password-modal/change-password-modal.component';
 
 @Component({
   selector: 'app-profile-details',
@@ -7,13 +11,54 @@ import { AuthService } from 'src/app/auth.service';
   styleUrls: ['./profile-details.component.css']
 })
 export class ProfileDetailsComponent implements OnInit {
+  loading = false;
+  loadError = '';
 
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private toasterService: ToastrService,
+    private bsModalService: BsModalService
+  ) {}
 
   ngOnInit(): void {
-    if (this.authService.token) {
-      this.authService.getUserDetails();
+    this.loadProfile();
+  }
+
+  loadProfile(): void {
+    if (!this.authService.token) {
+      return;
     }
+
+    const request$ = this.authService.getUserDetails();
+    if (!request$) {
+      this.loadError = 'Unable to load profile. Please sign in again.';
+      return;
+    }
+
+    this.loading = true;
+    this.loadError = '';
+
+    request$.pipe(finalize(() => {
+      this.loading = false;
+    })).subscribe({
+      next: () => {
+        const status = this.authService.returnType?.returnStatus ?? this.authService.returnType?.ReturnStatus;
+        if (status != null && status !== 1) {
+          this.loadError = this.authService.returnType?.returnMessage ?? 'Unable to load profile data.';
+          this.toasterService.warning(this.loadError);
+        }
+      },
+      error: () => {
+        this.loadError = 'Unable to load profile data.';
+        this.toasterService.warning(this.loadError);
+      }
+    });
+  }
+
+  openChangePasswordModal(): void {
+    this.bsModalService.show(ChangePasswordModalComponent, {
+      class: 'modal-dialog-centered'
+    });
   }
 
   formatJoinDate(date: string | undefined): string {

@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.authService.getUserDetails();
+    this.authService.getUserDetails()?.subscribe();
     this.visitorCountService.loadStats();
     this.visitorCountService.startAutoRefresh(60000);
   }

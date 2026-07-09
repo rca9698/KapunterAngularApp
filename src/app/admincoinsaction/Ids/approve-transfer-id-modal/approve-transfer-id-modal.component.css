@@ -1,0 +1,55 @@
+.approve-transfer-modal .approve-transfer-note {
+  margin: 0 0 1rem;
+  font-size: 0.86rem;
+  color: #c9b8a8;
+  line-height: 1.45;
+}
+
+.approve-transfer-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.approve-transfer-card {
+  border: 1px solid rgba(255, 160, 80, 0.28);
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.approve-transfer-label {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #c9a888;
+}
+
+.approve-transfer-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.approve-transfer-row strong {
+  display: block;
+  color: #fff4e8;
+  font-size: 0.92rem;
+}
+
+.approve-transfer-row span {
+  display: block;
+  color: #b8a898;
+  font-size: 0.78rem;
+}
+
+.approve-transfer-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ffb347;
+  font-size: 1.2rem;
+  line-height: 1;
+  gap: 0.15rem;
+}

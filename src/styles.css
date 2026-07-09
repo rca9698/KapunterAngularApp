@@ -738,10 +738,49 @@ body {
 }
 
 .modal .close {
-    width: 30px;
-    border: none;
-    background: transparent;
-    font-size: 25px;
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 149, 31, 0.42);
+    background: rgba(255, 140, 40, 0.14);
+    color: #ffd7a8;
+    font-size: 1.25rem;
+    line-height: 1;
+    opacity: 1;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    flex-shrink: 0;
+}
+
+.modal .close:hover,
+.modal .close:focus-visible {
+    background: rgba(255, 140, 40, 0.28);
+    border-color: rgba(255, 180, 100, 0.7);
+    color: #fff4e8;
+    transform: scale(1.04);
+    outline: none;
+}
+
+.modal-chrome-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+}
+
+.modal-chrome-btn-close {
+    margin-left: auto;
+}
+
+.modal-chrome-btn-back {
+    margin-right: 0.35rem;
 }
 
 #BankTrDetail, #PhonePeDetail {
@@ -1042,6 +1081,16 @@ p, input, label, .viewotp, .viewPassword {
 
 .modal-header {
     border-bottom-color: rgba(255, 149, 31, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 1rem 1.1rem;
+}
+
+.modal-header .modal-title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
 }
 
 .modal-footer {
@@ -1057,7 +1106,7 @@ p, input, label, .viewotp, .viewPassword {
 
 .modal .close,
 .modal .btn-close {
-    color: #ffc995;
+    color: #ffd7a8;
     opacity: 1;
 }
 

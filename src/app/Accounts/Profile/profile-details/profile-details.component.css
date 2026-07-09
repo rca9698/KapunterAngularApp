@@ -55,6 +55,20 @@
   margin-top: 0.85rem;
 }
 
+.profile-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1rem 0;
+  color: #ffd3af;
+  font-size: 0.9rem;
+}
+
+.profile-error {
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+}
+
 @media (max-width: 768px) {
   .profile-grid {
     grid-template-columns: 1fr;

@@ -1,19 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AccountRoutingModule } from './account-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CoinsModule } from '../admincoinsaction/coins/coins.module';
 import { ProfileDetailsComponent } from './Profile/profile-details/profile-details.component';
+import { ChangePasswordModalComponent } from './Profile/change-password-modal/change-password-modal.component';
 
 @NgModule({
   declarations: [
-    ProfileDetailsComponent
+    ProfileDetailsComponent,
+    ChangePasswordModalComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     AccountRoutingModule,
     HttpClientModule,
     CoinsModule,

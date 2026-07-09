@@ -2,17 +2,18 @@
   <div class="modal-header txn-history-header">
     <div class="txn-history-heading">
       <div class="txn-history-brand" *ngIf="contextSite">
-        <div class="txn-history-logo-wrap" *ngIf="hasSiteImage(); else siteIconFallback">
-          <img [src]="getSiteImageUrl()" [alt]="contextSite.siteName" loading="lazy" />
+        <div class="site-logo-wrap" *ngIf="hasSiteImage(); else siteIconFallback">
+          <img class="siteImageSize" [src]="getSiteImageUrl()" [alt]="contextSite.siteName" loading="lazy" decoding="async" />
         </div>
         <ng-template #siteIconFallback>
-          <div class="txn-history-logo-fallback" aria-hidden="true">
+          <div class="site-logo-wrap site-logo-wrap--empty" aria-hidden="true">
             <i class="bi bi-globe2"></i>
           </div>
         </ng-template>
         <div class="txn-history-title-wrap">
           <p class="modal-title" id="txnHistoryTitle">Transaction History</p>
           <p class="txn-history-sub">{{ contextSite.siteName }}</p>
+          <p class="txn-history-account" *ngIf="getAccountLabel()">{{ getAccountLabel() }}</p>
           <p class="txn-history-url" *ngIf="contextSite.siteURL">{{ contextSite.siteURL }}</p>
         </div>
       </div>
@@ -41,7 +42,7 @@
             </div>
           </ng-template>
           <div class="txn-history-card-meta">
-            <span class="txn-history-date">{{ txn.createdDate | date: 'MMM dd, yyyy · hh:mm a' }}</span>
+            <span class="txn-history-date">{{ txn.createdDate }}</span>
             <p class="txn-history-desc">{{ txn.activityDescription }}</p>
             <p class="txn-history-site">{{ getTxnSiteLabel(txn) }}</p>
           </div>
@@ -56,7 +57,7 @@
 
     <div class="txn-history-empty" *ngIf="!loading && passbooks.length === 0">
       <i class="bi bi-inbox" aria-hidden="true"></i>
-      <p>No transactions found for this site yet.</p>
+      <p>No transactions found for this account yet.</p>
     </div>
   </div>
 </div>

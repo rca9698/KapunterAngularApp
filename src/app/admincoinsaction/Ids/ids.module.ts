@@ -12,6 +12,9 @@ import { ChangePasswordRequestsComponent } from './change-password-requests/chan
 import { RejectedIdRequestsComponent } from './rejected-id-requests/rejected-id-requests.component';
 import { DeletedIdsListComponent } from './deleted-ids-list/deleted-ids-list.component';
 import { DeletedIdRequestListComponent } from './deleted-id-request-list/deleted-id-request-list.component';
+import { TransferIdRequestsComponent } from './transfer-id-requests/transfer-id-requests.component';
+import { TransferIdHistoryComponent } from './transfer-id-history/transfer-id-history.component';
+import { ApproveTransferIdModalComponent } from './approve-transfer-id-modal/approve-transfer-id-modal.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { DeletedIdRequestListComponent } from './deleted-id-request-list/deleted
     ChangePasswordRequestsComponent,
     RejectedIdRequestsComponent,
     DeletedIdsListComponent,
-    DeletedIdRequestListComponent
+    DeletedIdRequestListComponent,
+    TransferIdRequestsComponent,
+    TransferIdHistoryComponent,
+    ApproveTransferIdModalComponent
   ],
   imports: [
     CommonModule,

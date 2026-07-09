@@ -73,4 +73,20 @@ export class IdsService {
   deletedIds(obj: any) {
     return this.apiservice.GetIDs({ ...obj, isDeleted: 1 });
   }
+
+  addTransferIDRequest(obj: any) {
+    return this.apiservice.AddTransferIDRequest(obj);
+  }
+
+  listTransferIDRequests(obj: any) {
+    return this.apiservice.ListTransferIDRequests(obj);
+  }
+
+  listTransferIDHistory(obj: any) {
+    return this.apiservice.ListTransferIDHistory(obj);
+  }
+
+  confirmTransferIDRequest(obj: any) {
+    return this.apiservice.ConfirmTransferIDRequest(obj);
+  }
 }

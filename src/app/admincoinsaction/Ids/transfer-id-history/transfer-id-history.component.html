@@ -1,0 +1,64 @@
+<section class="feature-shell">
+  <div class="feature-card">
+    <div class="admin-list-header text-center mb-3">
+      <h2 class="mb-1">Transfer ID History</h2>
+      <p class="list-subtitle">Completed transfers with recorded amounts</p>
+    </div>
+
+    <div class="request-table-wrap mt-4 admin-list-table">
+      <table class="table table-hover">
+        <thead>
+          <tr class="tableHeaderClass">
+            <th>User</th>
+            <th>From Account</th>
+            <th></th>
+            <th>To Account</th>
+            <th>Amount</th>
+            <th>Approved On</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!historyList.length">
+            <td colspan="6" class="admin-list-empty">
+              <i class="bi bi-inbox"></i>
+              <p class="mb-0">No completed transfers found.</p>
+            </td>
+          </tr>
+          <tr *ngFor="let item of historyList; trackBy: trackByReqId">
+            <td>{{ item.userNumber }}</td>
+            <td>
+              <div class="site-cell">
+                <div class="site-logo-wrap" *ngIf="siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion) as srcLogo">
+                  <img loading="lazy" decoding="async" class="siteImageSize" [src]="srcLogo" [alt]="item.sourceSiteName" />
+                </div>
+                <div class="site-meta">
+                  <p>{{ item.sourceSiteName }}</p>
+                  <p class="site-url">{{ sourceUserName(item) }} · ID #{{ sourceAccountId(item) }}</p>
+                </div>
+              </div>
+            </td>
+            <td class="transfer-table-arrow text-center">
+              <i class="bi bi-currency-rupee"></i>
+              <i class="bi bi-arrow-right"></i>
+            </td>
+            <td>
+              <div class="site-cell">
+                <div class="site-logo-wrap" *ngIf="siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion) as tgtLogo">
+                  <img loading="lazy" decoding="async" class="siteImageSize" [src]="tgtLogo" [alt]="item.targetSiteName" />
+                </div>
+                <div class="site-meta">
+                  <p>{{ item.targetSiteName }}</p>
+                  <p class="site-url">{{ targetUserName(item) }} · ID #{{ targetAccountId(item) }}</p>
+                </div>
+              </div>
+            </td>
+            <td class="transfer-amount-cell">
+              <i class="bi bi-currency-rupee"></i>{{ transferAmount(item) }}
+            </td>
+            <td>{{ approvedDate(item) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

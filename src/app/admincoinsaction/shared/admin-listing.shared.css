@@ -15,6 +15,14 @@
   min-width: 10rem;
 }
 
+.admin-list-table .site-cell .site-logo-frame {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 10px;
+}
+
 .admin-list-table .site-thumb {
   width: 2rem;
   height: 2rem;

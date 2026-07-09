@@ -7,6 +7,10 @@ import { AuthService } from 'src/app/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { PassbookService } from 'src/app/Passbook/passbook.service';
 import { Ipassbook_detail_model } from 'src/app/Shared/Modals/passbook_detail_model';
+import {
+  filterPassbooksForSiteAccount,
+  passbookFilterFromSite,
+} from 'src/app/Shared/Utils/passbook-account.util';
 
 @Component({
   selector: 'app-get-user-site-transaction-history',
@@ -16,6 +20,7 @@ import { Ipassbook_detail_model } from 'src/app/Shared/Modals/passbook_detail_mo
 export class GetUserSiteTransactionHistoryComponent implements OnInit {
 
   contextSite?: ISiteDetailModal;
+  accountId?: bigint | number;
   sitePath = environment.imagePath.sitePath;
   loading = false;
   userId: string | number | null = null;
@@ -76,6 +81,15 @@ export class GetUserSiteTransactionHistoryComponent implements OnInit {
     return this.contextSite?.siteName ?? '';
   }
 
+  getAccountLabel(): string {
+    const site = this.contextSite;
+    if (!site) {
+      return '';
+    }
+    const parts = [site.userName, site.userNumber ? `ID #${site.userNumber}` : ''].filter(Boolean);
+    return parts.join(' · ');
+  }
+
   getTxnSiteLabel(txn: Ipassbook_detail_model): string {
     return txn.siteName || this.getSiteDisplayName();
   }
@@ -90,14 +104,15 @@ export class GetUserSiteTransactionHistoryComponent implements OnInit {
 
     const obj = {
       userId: this._sessionUser,
-      siteId: this.contextSite.siteId,
+      siteId: Number(this.contextSite.siteId),
       sessionUser: this._sessionUser
     };
 
     this.passbookservice.passbookHistorylist(obj).subscribe({
       next: (resp: any) => {
         if (resp['returnStatus'] == 1) {
-          this.passbooks = resp['returnList'] ?? [];
+          const all: Ipassbook_detail_model[] = resp['returnList'] ?? [];
+          this.passbooks = filterPassbooksForSiteAccount(all, passbookFilterFromSite(this.contextSite!));
         } else {
           this.toasterService.warning(resp.returnMessage);
           this.passbooks = [];

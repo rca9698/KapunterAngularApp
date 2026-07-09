@@ -25,6 +25,39 @@
   gap: 0.75rem;
 }
 
+.txn-history-brand .site-logo-wrap {
+  width: 56px;
+  min-width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 149, 31, 0.55);
+  box-shadow: 0 0 14px rgba(255, 130, 0, 0.25);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.txn-history-brand .siteImageSize {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.txn-history-brand .site-logo-wrap--empty {
+  color: #ffb347;
+  font-size: 1.35rem;
+  background: rgba(255, 140, 40, 0.1);
+}
+
+.txn-history-account {
+  margin: 0.2rem 0 0;
+  font-size: 0.75rem;
+  color: #ffd27a;
+  font-weight: 600;
+}
+
 .txn-history-logo-wrap,
 .txn-history-logo-fallback {
   width: 52px;

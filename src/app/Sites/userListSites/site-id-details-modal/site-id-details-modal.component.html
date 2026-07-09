@@ -4,9 +4,9 @@
       <p class="modal-title" id="siteIdDetailsTitle">My ID details</p>
       <p class="site-id-details-sub" *ngIf="contextSite?.siteName as name">{{ name }}</p>
     </div>
-    <div type="button" class="close site-id-details-close" (click)="bsModalRef.hide()" aria-label="Close">
-      <i class="bi bi-x-circle-fill"></i>
-    </div>
+    <button type="button" class="close modal-chrome-btn modal-chrome-btn-close site-id-details-close" (click)="bsModalRef.hide()" aria-label="Close">
+      <i class="bi bi-x-lg" aria-hidden="true"></i>
+    </button>
   </div>
   <div class="modal-body site-id-details-body">
     <div class="site-id-details-loading" *ngIf="loading">
@@ -22,12 +22,17 @@
     <ul class="site-id-details-list" *ngIf="!loading && ids.length > 0" aria-labelledby="siteIdDetailsTitle">
       <li *ngFor="let row of ids; trackBy: trackById" class="site-id-details-card">
         <div class="site-id-details-card-top">
-          <div class="site-id-details-logo-wrap">
+          <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(row.documentDetailId, row.fileExtenstion)">
             <img
-              [src]="sitePath + row.documentDetailId + row.fileExtenstion"
+              *ngIf="siteLogoUrl(row.documentDetailId, row.fileExtenstion) as logoUrl"
+              class="site-logo-img"
+              [src]="logoUrl"
               [alt]="row.siteName || 'Site'"
               loading="lazy"
+              decoding="async"
+              (error)="onLogoError($event)"
             />
+            <i *ngIf="!siteLogoUrl(row.documentDetailId, row.fileExtenstion)" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
           </div>
           <div class="site-id-details-card-meta">
             <span class="site-id-details-platform">{{ row.siteName }}</span>

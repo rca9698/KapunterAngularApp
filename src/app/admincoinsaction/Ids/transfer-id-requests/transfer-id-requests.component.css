@@ -1,0 +1,8 @@
+.transfer-table-arrow {
+  color: #ffb347;
+  white-space: nowrap;
+}
+
+.transfer-table-arrow .bi-currency-rupee {
+  margin-right: 0.15rem;
+}

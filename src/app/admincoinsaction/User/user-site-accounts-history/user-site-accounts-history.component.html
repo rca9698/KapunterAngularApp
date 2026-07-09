@@ -89,7 +89,7 @@
             [attr.aria-expanded]="isTxnExpanded(txn, i)"
           >
             <div class="txn-accordion-main">
-              <span class="txn-accordion-date">{{ txn.createdDate | date: 'MMM dd, yyyy · hh:mm a' }}</span>
+              <span class="txn-accordion-date">{{ txn.createdDate }}</span>
               <span class="txn-accordion-title">{{ getTxnLabel(txn) }}</span>
               <div class="txn-accordion-meta">
                 <span class="txn-accordion-status" [style.backgroundColor]="txn.trxColor || '#ff9100'">

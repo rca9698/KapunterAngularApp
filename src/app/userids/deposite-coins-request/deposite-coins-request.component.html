@@ -32,12 +32,12 @@
         
   <div *ngIf="depositecoinsproofupload">
     <div class="modal-header" >
-        <div type="button" class="close" *ngIf="backButtonVisibility" (click)="backToAddCoins()">
-            <i class="bi bi-arrow-left-circle-fill"></i>
+        <div type="button" class="close modal-chrome-btn modal-chrome-btn-back" *ngIf="backButtonVisibility" (click)="backToAddCoins()" aria-label="Back">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
           </div>
         <p class="modal-title" id="exampleModalLabel">Deposit ({{this.depositeCoinRequestFrom.value["coins"]}})</p>
-        <div type="button" class="close" aria-label="Close" (click)="bsModalRef.hide()">
-            <i class="bi bi-x-circle-fill"></i>
+        <div type="button" class="close modal-chrome-btn modal-chrome-btn-close" aria-label="Close" (click)="bsModalRef.hide()">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
         </div>
     </div>
     <div class="modal-body">

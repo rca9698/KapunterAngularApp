@@ -8,6 +8,10 @@ import { ToastrService } from 'src/app/toastr/toastr.service';
 import { AuthService } from 'src/app/auth.service';
 import { environment } from 'src/environments/environment';
 import { resolveAccountId } from 'src/app/admincoinsaction/shared/id-request.util';
+import {
+  filterPassbooksForSiteAccount,
+  passbookFilterFromSite,
+} from 'src/app/Shared/Utils/passbook-account.util';
 
 @Component({
   selector: 'app-user-site-accounts-history',
@@ -155,7 +159,7 @@ export class UserSiteAccountsHistoryComponent implements OnInit {
 
     const obj = {
       userId: this.targetUserId,
-      siteId: site.siteId,
+      siteId: Number(site.siteId),
       sessionUser: this._sessionUser
     };
 
@@ -163,7 +167,10 @@ export class UserSiteAccountsHistoryComponent implements OnInit {
       next: (resp: any) => {
         if (resp['returnStatus'] == 1) {
           const all: Ipassbook_detail_model[] = resp['returnList'] ?? [];
-          this.passbooksByAccount[accountKey] = this.filterPassbooksForAccount(all, site);
+          this.passbooksByAccount[accountKey] = filterPassbooksForSiteAccount(
+            all,
+            passbookFilterFromSite(site)
+          );
         } else {
           this.toasterService.warning(resp.returnMessage ?? 'Unable to load transaction history.');
           this.passbooksByAccount[accountKey] = [];
@@ -176,28 +183,6 @@ export class UserSiteAccountsHistoryComponent implements OnInit {
         this.loadingHistoryKey = null;
       }
     });
-  }
-
-  private filterPassbooksForAccount(
-    passbooks: Ipassbook_detail_model[],
-    site: ISiteDetailModal
-  ): Ipassbook_detail_model[] {
-    const siteUser = (site.userName || '').trim().toLowerCase();
-    const siteIdNumber = String(site.userNumber || '').trim();
-
-    if (!siteUser && !siteIdNumber) {
-      return passbooks;
-    }
-
-    const filtered = passbooks.filter((txn) => {
-      const txnUser = (txn.siteUserName || txn.userName || '').trim().toLowerCase();
-      if (siteUser && txnUser && txnUser === siteUser) {
-        return true;
-      }
-      return false;
-    });
-
-    return filtered.length ? filtered : passbooks;
   }
 
   isTxnExpanded(txn: Ipassbook_detail_model, index: number): boolean {

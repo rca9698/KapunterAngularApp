@@ -5,28 +5,37 @@
       <p>Account profile and quick access settings.</p>
     </div>
 
-    <div class="profile-grid">
+    <div class="profile-loading" *ngIf="loading">
+      <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
+      <span>Loading profile…</span>
+    </div>
+
+    <div class="profile-error text-warning" *ngIf="!loading && loadError">
+      {{ loadError }}
+      <button type="button" class="btn btn-link btn-sm" (click)="loadProfile()">Retry</button>
+    </div>
+
+    <div class="profile-grid" *ngIf="!loading">
       <div class="profile-item">
         <span>Mobile Number</span>
         <strong>{{ authService.displayUserNumber }}</strong>
       </div>
       <div class="profile-item">
-        <span> Date of joining</span>
+        <span>Full Name</span>
+        <strong>{{ authService.userdetail.firstName || authService.userdetail.lastName ? (authService.userdetail.firstName + ' ' + authService.userdetail.lastName).trim() : '—' }}</strong>
+      </div>
+      <div class="profile-item">
+        <span>Date of joining</span>
         <strong><i class="bi bi-calendar-date"></i> {{ formatJoinDate(authService.userdetail.createdDate) }}</strong>
       </div>
       <div class="profile-item">
-        <span>Account Status</span>
-        <strong>Active</strong>
-      </div>
-      <div class="profile-item">
-        <span>Security</span>
-        <strong>Standard</strong>
+        <span>Wallet Balance</span>
+        <strong><i class="bi bi-currency-rupee"></i>{{ authService.walletBalance }}</strong>
       </div>
     </div>
 
-    <div class="profile-actions">
-      <button class="btn siteBtnbackground">Edit Profile</button>
-      <button class="btn siteBtnbackground">Change Password</button>
+    <div class="profile-actions" *ngIf="!loading">
+      <button type="button" class="btn siteBtnbackground" (click)="openChangePasswordModal()">Change Password</button>
     </div>
   </div>
 </section>

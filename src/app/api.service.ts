@@ -160,6 +160,22 @@ export class apiService {
   ConfirmCloseID(obj: any){
     return this.http.post(`${environment.apiUrl}/api/Account/ConfirmCloseID`,obj);
   }
+
+  AddTransferIDRequest(obj: any){
+    return this.http.post(`${environment.apiUrl}/api/Account/AddTransferIDRequest`, obj);
+  }
+
+  ListTransferIDRequests(obj: any){
+    return this.http.post(`${environment.apiUrl}/api/Account/ListTransferIDRequests`, obj);
+  }
+
+  ListTransferIDHistory(obj: any){
+    return this.http.post(`${environment.apiUrl}/api/Account/ListTransferIDHistory`, obj);
+  }
+
+  ConfirmTransferIDRequest(obj: any){
+    return this.http.post(`${environment.apiUrl}/api/Account/ConfirmTransferIDRequest`, obj);
+  }
   
   //  IDs Related APIs end
 
