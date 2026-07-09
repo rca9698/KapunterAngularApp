@@ -1,15 +1,19 @@
 ﻿.sitebackground {
-    background-color: #242223 !important;
+    background: var(--kp-surface-gradient) !important;
 }
 
-.modal-dialog .modal-content, .modal-dialog, .card,
+.modal-dialog .modal-content, .modal-dialog, .card {
+    background-color: var(--kp-surface) !important;
+    color: var(--kp-text) !important;
+}
+
 .form-control, .form-control:focus, .form-select {
-    background-color: #242223 !important;
-    color: #FFF !important;
+    background-color: var(--kp-input-bg) !important;
+    color: var(--kp-input-text) !important;
 }
 
 ::-webkit-input-placeholder{
-    color: #FFF !important;
+    color: var(--kp-muted) !important;
 }
 
 table button{
@@ -35,7 +39,7 @@ table button{
 }
 
 i{
-    color: #FFF;
+    color: var(--kp-icon);
 }
 
 .modal-header {
@@ -288,6 +292,26 @@ i{
 
 .table-hover > tbody > tr:hover {
     color: #FFFF;
+}
+
+[data-kp-theme="light"] .table {
+    color: var(--kp-table-text);
+}
+
+[data-kp-theme="light"] .table-hover > tbody > tr:hover {
+    color: var(--kp-text);
+}
+
+[data-kp-theme="light"] .backbtnNavDesign {
+    background: #ffffff !important;
+    color: var(--kp-text) !important;
+    border: 1px solid var(--kp-border);
+}
+
+[data-kp-theme="light"] .modalContentBgclr {
+    background: #ffffff !important;
+    border: 1px solid var(--kp-border);
+    color: var(--kp-text) !important;
 }
 
 .cursorPointer {

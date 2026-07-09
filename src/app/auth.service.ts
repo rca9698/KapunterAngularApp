@@ -7,6 +7,7 @@ import { Iusers, users } from './Shared/Modals/users';
 import { normalizeUserDetail, resolveWalletBalance } from './Shared/utils/user-detail.util';
 import { environment } from 'src/environments/environment';
 import { VisitorCountService } from './visitor-count.service';
+import { ThemeService } from './theme.service';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +49,11 @@ export class AuthService {
     return this._isLoggedIn.value;
   }
 
-  constructor(private apiservice: apiService, private visitorCountService: VisitorCountService) {
+  constructor(
+    private apiservice: apiService,
+    private visitorCountService: VisitorCountService,
+    private themeService: ThemeService
+  ) {
     this.restoreSession();
   }
 
@@ -57,6 +62,7 @@ export class AuthService {
     const loggedIn = !!token;
     this._isLoggedIn.next(loggedIn);
     this.user = this.getUser(token ?? '');
+    this.themeService.setUserContext(loggedIn ? this.user.userId : null);
   }
 
   login(obj: login) {
@@ -76,6 +82,7 @@ export class AuthService {
       localStorage.setItem(this.TOKEN_NAME, token);
       this._isLoggedIn.next(true);
       this.user = this.getUser(token);
+      this.themeService.setUserContext(this.user.userId);
       this.visitorCountService.refreshAfterLogin();
       this.getUserDetails()?.subscribe();
 
@@ -155,6 +162,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem(this.TOKEN_NAME);
+    this.themeService.setUserContext(null);
     this._isLoggedIn.next(false);
     this.user = new usermodal();
     this._userdetail = new users();
@@ -299,6 +307,7 @@ export class AuthService {
 
         if (payload) {
           this.setUserDetail(payload);
+          this.themeService.applyUserPreference(this.userdetail.themePreference);
         }
       })
     );

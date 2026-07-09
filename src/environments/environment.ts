@@ -15,7 +15,7 @@ export const environment = {
 
     whatsapp: {
         enabled: true,
-        phoneNumber: '919740517052',
+        phoneNumber: '91',
         defaultMessage: 'Hi, I need help with Kapunter'
     }
 };

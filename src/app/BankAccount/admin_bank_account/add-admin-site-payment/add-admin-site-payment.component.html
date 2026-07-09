@@ -10,8 +10,7 @@
 
 <div class="admin-pay-modal-body add-payment-body">
   <div class="view-payment-loading" *ngIf="loading">
-    <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-    <span>Checking existing details…</span>
+    <app-kapunter-loader message="Checking existing details…"></app-kapunter-loader>
   </div>
 
   <div class="add-payment-forms" *ngIf="!loading">

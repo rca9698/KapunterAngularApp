@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoinsModule } from '../admincoinsaction/coins/coins.module';
 import { ProfileDetailsComponent } from './Profile/profile-details/profile-details.component';
 import { ChangePasswordModalComponent } from './Profile/change-password-modal/change-password-modal.component';
+import { LoaderModule } from '../Shared/loader/loader.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ChangePasswordModalComponent } from './Profile/change-password-modal/ch
     AccountRoutingModule,
     HttpClientModule,
     CoinsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    LoaderModule
   ],
   exports: [
     ReactiveFormsModule

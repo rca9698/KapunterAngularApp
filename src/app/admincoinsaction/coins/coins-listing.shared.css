@@ -1,11 +1,7 @@
+/* Layout helpers — colors in global admin-theme.css */
+
 .coins-list-header {
   margin-bottom: 0.25rem;
-}
-
-.coins-list-header .list-subtitle {
-  font-size: 0.85rem;
-  opacity: 0.75;
-  margin-bottom: 0;
 }
 
 .coins-list-table .site-cell {
@@ -16,35 +12,23 @@
 }
 
 .coins-list-table .site-thumb {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 10px;
+  object-fit: contain;
+  object-position: center;
   flex-shrink: 0;
+  border: 1px solid var(--kp-border);
 }
 
 .coins-list-table .site-meta p {
   margin-bottom: 0;
-  line-height: 1.2;
-}
-
-.coins-list-table .site-meta .site-url {
-  font-size: 0.78rem;
-  opacity: 0.8;
-}
-
-.coins-list-table .account-id-badge {
-  display: inline-block;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  background: rgba(255, 193, 7, 0.15);
-  color: #ffc107;
+  line-height: 1.35;
 }
 
 .coins-list-table .coins-amount {
-  font-weight: 600;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .coins-list-table .action-btn-group {
@@ -55,16 +39,4 @@
 
 .coins-list-table .action-btn-group button {
   min-width: 2rem;
-}
-
-.coins-list-empty {
-  text-align: center;
-  padding: 2.5rem 1rem;
-  opacity: 0.85;
-}
-
-.coins-list-empty i {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 0.5rem;
 }

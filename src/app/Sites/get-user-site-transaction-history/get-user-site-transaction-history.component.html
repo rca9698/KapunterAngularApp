@@ -29,8 +29,7 @@
 
   <div class="modal-body txn-history-body">
     <div class="txn-history-loading" *ngIf="loading">
-      <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-      <span>Loading transactions…</span>
+      <app-kapunter-loader message="Loading transactions…"></app-kapunter-loader>
     </div>
 
     <div class="txn-history-list" *ngIf="!loading && passbooks.length > 0">

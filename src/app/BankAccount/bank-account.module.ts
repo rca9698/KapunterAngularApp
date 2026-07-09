@@ -18,6 +18,7 @@ import { ListAdminQRComponent } from './admin_bank_account/list-admin-QR/list-ad
 import { AdminVendorSitesListComponent } from './admin_bank_account/admin-vendor-sites-list/admin-vendor-sites-list.component';
 import { ViewAdminSitePaymentComponent } from './admin_bank_account/view-admin-site-payment/view-admin-site-payment.component';
 import { AddAdminSitePaymentComponent } from './admin_bank_account/add-admin-site-payment/add-admin-site-payment.component';
+import { LoaderModule } from '../Shared/loader/loader.module';
 
 
 
@@ -43,7 +44,8 @@ import { AddAdminSitePaymentComponent } from './admin_bank_account/add-admin-sit
     ReactiveFormsModule,
     BankAccountRoutingModule,
     HttpClientModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    LoaderModule
   ],
   exports:[
     ReactiveFormsModule

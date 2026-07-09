@@ -13,8 +13,7 @@
 
 <div class="admin-pay-modal-body payment-hub-body">
   <div class="view-payment-loading" *ngIf="loading">
-    <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-    <span>Loading payment options…</span>
+    <app-kapunter-loader message="Loading payment options…"></app-kapunter-loader>
   </div>
 
   <ng-container *ngIf="!loading">

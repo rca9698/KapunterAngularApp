@@ -1,0 +1,102 @@
+.kapunter-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+
+.kapunter-loader--inline {
+  flex-direction: row;
+  gap: 0.75rem;
+  padding: 1rem;
+  text-align: left;
+}
+
+.kapunter-loader--overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: rgba(8, 6, 14, 0.72);
+  backdrop-filter: blur(2px);
+  border-radius: inherit;
+}
+
+.kapunter-loader-visual {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kapunter-loader--sm .kapunter-loader-visual {
+  width: 44px;
+  height: 44px;
+}
+
+.kapunter-loader--lg .kapunter-loader-visual {
+  width: 80px;
+  height: 80px;
+}
+
+.kapunter-loader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: #ff9a2e;
+  border-right-color: rgba(255, 154, 46, 0.35);
+  animation: kapunter-loader-spin 0.9s linear infinite;
+}
+
+.kapunter-loader-ring--delay {
+  inset: 6px;
+  border-top-color: #ffd27a;
+  animation-duration: 1.2s;
+  animation-direction: reverse;
+}
+
+.kapunter-loader--sm .kapunter-loader-ring--delay {
+  inset: 4px;
+}
+
+.kapunter-loader-logo {
+  width: 58%;
+  height: 58%;
+  object-fit: contain;
+  border-radius: 10px;
+  animation: kapunter-loader-pulse 1.4s ease-in-out infinite;
+}
+
+.kapunter-loader-message {
+  margin: 0;
+  color: #f2e6d8;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+}
+
+.kapunter-loader--sm .kapunter-loader-message {
+  font-size: 0.78rem;
+}
+
+@keyframes kapunter-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes kapunter-loader-pulse {
+  0%,
+  100% {
+    opacity: 0.82;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

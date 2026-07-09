@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,10 +18,10 @@ import { AppToasterComponent } from './toastr/toastrs/app-toaster.component';
 import { FormsModule } from '@angular/forms';
 import { AddImageComponent } from './Dashboard/Add-Image/add-image.component';
 import { AuthInterceptorProvider } from './auth-interceptor.service';
+import { LoaderInterceptorProvider } from './Shared/loader/loader.interceptor';
+import { LoaderModule } from './Shared/loader/loader.module';
 import { DeleteModuleComponent } from './Shared/Modules/delete-module/delete-module.component';
 import { MakeDefaultModuleComponent } from './Shared/Modules/make-default-module/make-default-module.component';
-import { UserIdsModule } from './userids/user-ids.module';
-import { CoinsModule } from './admincoinsaction/coins/coins.module';
 import { ViewImageModuleComponent } from './Shared/Modules/view-image-module/view-image-module.component';
 import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsapp-float.component';
 
@@ -43,15 +44,15 @@ import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsa
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AccountsModule,
     SitesModule,
-    UserIdsModule,
-    CoinsModule,
+    LoaderModule,
     FormsModule
   ],
-  providers: [AuthInterceptorProvider],
+  providers: [AuthInterceptorProvider, LoaderInterceptorProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

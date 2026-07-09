@@ -13,10 +13,7 @@
   </div>
 
   <div class="loading-container" *ngIf="loadingSites">
-    <div class="spinner-border text-warning" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p>Loading accounts...</p>
+    <app-kapunter-loader message="Loading accounts…"></app-kapunter-loader>
   </div>
 
   <div class="admin-list-empty sites-empty" *ngIf="!loadingSites && !sites.length">
@@ -72,8 +69,7 @@
       </div>
 
       <div class="site-history-loading" *ngIf="isHistoryLoading(site)">
-        <div class="spinner-border text-warning spinner-border-sm" role="status" aria-hidden="true"></div>
-        <span>Loading transactions…</span>
+        <app-kapunter-loader size="sm" message="Loading transactions…"></app-kapunter-loader>
       </div>
 
       <div class="txn-accordion" *ngIf="!isHistoryLoading(site) && getPassbooksForSite(site).length > 0">
@@ -111,8 +107,7 @@
           <div class="txn-accordion-body" *ngIf="isTxnExpanded(txn, i)">
             <div class="txn-detail-wrap" *ngIf="resolveTxnDetail(txn, i) as detail">
               <div class="txn-detail-loading" *ngIf="isTxnLoading(txn, i)">
-                <div class="spinner-border text-warning spinner-border-sm" role="status" aria-hidden="true"></div>
-                <span>Refreshing details…</span>
+                <app-kapunter-loader size="sm" [inline]="true" message="Refreshing details…"></app-kapunter-loader>
               </div>
 
               <div class="admin-passbook-detail-desc" *ngIf="detail.activityDescription">

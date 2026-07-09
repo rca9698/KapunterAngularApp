@@ -32,6 +32,7 @@ export function normalizeUserDetail(raw: unknown): Iusers {
     String(pick('createdDate', 'CreatedDate') ?? ''),
     String(pick('updatedBy', 'UpdatedBy') ?? ''),
     String(pick('updatedDate', 'UpdatedDate') ?? ''),
+    String(pick('themePreference', 'ThemePreference') ?? 'dark'),
     Number(pick('totalCount', 'TotalCount') ?? 0),
     Number(pick('paginationCount', 'PaginationCount') ?? 0)
   );

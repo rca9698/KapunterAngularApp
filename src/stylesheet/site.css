@@ -23,18 +23,18 @@ body {
 
 .listtypeview {
   border-width: 10px;
-    border: 1px solid black;
-    padding: 5px;
-    border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .customtable thead th {
-  position: sticky; /* make the table heads sticky */
-  top: 0px; /* table head will be placed from the top of the table and sticks to it */
+  position: sticky;
+  top: 0px;
   z-index: 1;
 }
 
-.table>:not(caption)>*>*{
+.table > :not(caption) > * > * {
   background-color: #242223 !important;
 }
 
@@ -43,17 +43,35 @@ body {
   height: 5px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #f1f1f1;
 }
 
-/* Handle on hover */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
+}
+
+/* Light theme only — do not alter dark table styling */
+[data-kp-theme="light"] .listtypeview {
+  border: 1px solid var(--kp-border);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+[data-kp-theme="light"] .table > :not(caption) > * > * {
+  background-color: transparent !important;
+  color: var(--kp-text) !important;
+  border-color: var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .table thead .tableHeaderClass th,
+[data-kp-theme="light"] .table thead th.tableHeaderClass,
+[data-kp-theme="light"] .tableHeaderClass th {
+  background: var(--kp-table-header-bg) !important;
+  color: var(--kp-text) !important;
 }

@@ -732,11 +732,6 @@ body {
         color: red;
     }
 
-.tableHeaderClass {
-    background-color: #01010a;
-    color: white;
-}
-
 .modal .close {
     width: 2.75rem;
     height: 2.75rem;
@@ -885,38 +880,36 @@ input::-webkit-inner-spin-button {
 @media only screen and (max-width: 768px) {
 }
 
-/* Large devices (laptops/desktops, 992px and up) */
+/* Large devices (laptops/desktops) — keep readable type on smaller viewports */
 @media only screen and (max-width: 992px) {
     p {
-        /*margin-top: 0;*/
         margin-bottom: 0;
-        font-size: 9px;
+        font-size: clamp(0.8125rem, 2.2vw, 0.94rem);
         margin-top: 5px;
-        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        line-height: 1.45;
     }
 
         p .FontSize {
-            font-size: 20px;
+            font-size: clamp(1rem, 3vw, 1.25rem);
         }
 }
 
-/* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (max-width: 1200px) {
     p {
-        /*margin-top: 0;*/
         margin-bottom: 0;
-        font-size: 9px;
+        font-size: clamp(0.8125rem, 2vw, 0.94rem);
         margin-top: 5px;
-        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        line-height: 1.45;
     }
 
         p .FontSize {
-            font-size: 20px;
+            font-size: clamp(1rem, 2.8vw, 1.2rem);
         }
 }
 
-/* ---------- Neon dark theme refresh ---------- */
-:root {
+/* ---------- Kapunter theme tokens (dark default) ---------- */
+:root,
+[data-kp-theme="dark"] {
     /* Layout: fixed toolbar + footer; sidebar fills the gap between them */
     --kp-toolbar-height: 118px;
     /* Taller reserve so bottom tab bar + safe area never clips sidebar footer */
@@ -929,13 +922,69 @@ input::-webkit-inner-spin-button {
     --kp-accent: #ff8a00;
     --kp-accent-2: #ff6300;
     --kp-border: rgba(255, 141, 33, 0.34);
+    --kp-surface-gradient: linear-gradient(145deg, rgba(23, 20, 31, 0.95), rgba(13, 11, 19, 0.95));
+    --kp-card-gradient: linear-gradient(145deg, rgba(24, 21, 33, 0.95), rgba(13, 11, 19, 0.95));
+    --kp-navbar-bg: rgba(8, 8, 12, 0.92);
+    --kp-footer-bg: rgba(7, 7, 10, 0.95);
+    --kp-sidebar-bg: linear-gradient(165deg, rgba(20, 18, 27, 0.98), rgba(9, 8, 14, 0.98));
+    --kp-sidebar-beneficiary-bg: linear-gradient(180deg, #141218 0%, #0e0c11 100%);
+    --kp-table-header-bg: linear-gradient(120deg, #2a1c3f, #1a1329);
+    --kp-table-text: #ffe8d0;
+    --kp-modal-gradient: linear-gradient(145deg, #1a1524, #0f0c16);
+    --kp-input-bg: rgba(255, 255, 255, 0.97);
+    --kp-input-text: #1a1410;
+    --kp-icon: #ffffff;
+    --kp-shadow: rgba(0, 0, 0, 0.35);
+    --kp-wallet-bg: linear-gradient(145deg, #1c1a22, #120f16);
+    --kp-wallet-center-bg: #1b171f;
+    --kp-body-bg-image: radial-gradient(circle at top, rgba(255, 112, 0, 0.16), transparent 42%), url("../src/assets/applicationBg.jpg");
+    --kp-elevation-card: 0 2px 10px rgba(0, 0, 0, 0.32);
+    --kp-elevation-card-hover: 0 6px 22px rgba(0, 0, 0, 0.4);
+    --kp-focus-ring: 0 0 0 3px rgba(255, 138, 0, 0.38);
+    --kp-scrollbar-thumb: rgba(255, 141, 33, 0.45);
+    --kp-scrollbar-track: rgba(255, 255, 255, 0.06);
+}
+
+[data-kp-theme="light"] {
+    --kp-bg: #e4eaf0;
+    --kp-surface: #ffffff;
+    --kp-surface-2: #f3f6f9;
+    --kp-text: #1a2332;
+    --kp-muted: #5a6b7d;
+    --kp-accent: #b85c00;
+    --kp-accent-2: #9a4d00;
+    --kp-border: #c5d0dc;
+    --kp-border-subtle: #dce3ea;
+    --kp-surface-gradient: linear-gradient(180deg, #ffffff 0%, #f4f7fa 100%);
+    --kp-card-gradient: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    --kp-navbar-bg: rgba(255, 255, 255, 0.96);
+    --kp-footer-bg: rgba(248, 250, 252, 0.98);
+    --kp-sidebar-bg: linear-gradient(180deg, #ffffff 0%, #eef2f6 100%);
+    --kp-sidebar-beneficiary-bg: linear-gradient(180deg, #ffffff 0%, #eef2f6 100%);
+    --kp-table-header-bg: linear-gradient(180deg, #eef2f6 0%, #e4eaf0 100%);
+    --kp-table-text: #1a2332;
+    --kp-modal-gradient: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    --kp-input-bg: #ffffff;
+    --kp-input-text: #1a2332;
+    --kp-icon: #334155;
+    --kp-shadow: rgba(15, 23, 42, 0.08);
+    --kp-wallet-bg: linear-gradient(180deg, #ffffff 0%, #eef2f6 100%);
+    --kp-wallet-center-bg: #e8edf2;
+    --kp-body-bg-image: linear-gradient(180deg, #edf1f5 0%, #dde4eb 100%);
+    --kp-elevation-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 2px 8px rgba(15, 23, 42, 0.06);
+    --kp-elevation-card-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 8px 20px rgba(15, 23, 42, 0.1);
+    --kp-focus-ring: 0 0 0 3px rgba(184, 92, 0, 0.22);
+    --kp-scrollbar-thumb: #b8c4d0;
+    --kp-scrollbar-track: #e8edf2;
 }
 
 body {
-    background-image: radial-gradient(circle at top, rgba(255, 112, 0, 0.16), transparent 42%), url("../src/assets/applicationBg.jpg");
+    background-image: var(--kp-body-bg-image);
     background-color: var(--kp-bg);
+    background-attachment: fixed;
     color: var(--kp-text);
     padding-bottom: env(safe-area-inset-bottom, 0px);
+    line-height: 1.5;
 }
 
 p, input, label, .viewotp, .viewPassword {
@@ -948,7 +997,7 @@ p, input, label, .viewotp, .viewPassword {
 
 .sitebackground,
 .siteColor {
-    background: linear-gradient(145deg, rgba(23, 20, 31, 0.95), rgba(13, 11, 19, 0.95));
+    background: var(--kp-surface-gradient);
     color: var(--kp-text);
 }
 
@@ -967,7 +1016,7 @@ p, input, label, .viewotp, .viewPassword {
 .card {
     border-radius: 16px;
     border: 1px solid var(--kp-border);
-    background: linear-gradient(145deg, rgba(24, 21, 33, 0.95), rgba(13, 11, 19, 0.95));
+    background: var(--kp-card-gradient);
 }
 
 .card-body {
@@ -977,13 +1026,13 @@ p, input, label, .viewotp, .viewPassword {
 .listtypeview p {
     font-size: 1rem;
     letter-spacing: 0.08em;
-    color: #ffd5ad;
+    color: var(--kp-muted);
 }
 
 .customtable {
     border-radius: 16px;
     border: 1px solid var(--kp-border);
-    background: rgba(12, 10, 18, 0.88);
+    background: var(--kp-surface);
     overflow: hidden;
 }
 
@@ -992,15 +1041,15 @@ p, input, label, .viewotp, .viewPassword {
 }
 
 .tableHeaderClass {
-    background: linear-gradient(120deg, #2a1c3f, #1a1329);
-    color: #ffe6d0;
+    background: var(--kp-table-header-bg);
+    color: var(--kp-text);
 }
 
 .table td,
 .table th {
-    border-color: rgba(255, 151, 42, 0.17);
+    border-color: var(--kp-border);
     background: transparent;
-    color: #ffe8d0;
+    color: var(--kp-table-text);
     vertical-align: middle;
 }
 
@@ -1073,10 +1122,10 @@ p, input, label, .viewotp, .viewPassword {
 }
 
 .modal-content {
-    background: linear-gradient(145deg, #1a1524, #0f0c16);
-    border: 1px solid rgba(255, 149, 31, 0.42);
+    background: var(--kp-modal-gradient);
+    border: 1px solid var(--kp-border);
     border-radius: 18px;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 141, 33, 0.2);
+    box-shadow: 0 20px 45px var(--kp-shadow), 0 0 18px rgba(255, 141, 33, 0.12);
 }
 
 .modal-header {
@@ -1099,14 +1148,14 @@ p, input, label, .viewotp, .viewPassword {
 }
 
 .modal-title {
-    color: #ffe3c3;
+    color: var(--kp-text);
     font-size: 1rem;
     font-weight: 700;
 }
 
 .modal .close,
 .modal .btn-close {
-    color: #ffd7a8;
+    color: var(--kp-muted);
     opacity: 1;
 }
 
@@ -1119,8 +1168,9 @@ p, input, label, .viewotp, .viewPassword {
 
 .form-control,
 .form-select {
-    background: rgba(255, 255, 255, 0.97);
-    border: 1px solid rgba(255, 149, 31, 0.35);
+    background: var(--kp-input-bg);
+    color: var(--kp-input-text);
+    border: 1px solid var(--kp-border);
 }
 
 .form-control:focus,
@@ -1153,10 +1203,10 @@ p, input, label, .viewotp, .viewPassword {
 }
 
 .Wallet-Dep-Wal-With-Container {
-    background: linear-gradient(145deg, #1c1a22, #120f16);
+    background: var(--kp-wallet-bg);
     border-radius: 18px;
     font-size: 0.72rem;
-    color: #fff7ef;
+    color: var(--kp-text);
     margin: 0 auto;
     width: 100%;
     max-width: min(520px, 100%);
@@ -1222,7 +1272,7 @@ p, input, label, .viewotp, .viewPassword {
 }
 
 .Wallet-Bal-Comp {
-    background-color: #1b171f;
+    background-color: var(--kp-wallet-center-bg);
     border-radius: 14px;
     padding: 0;
     min-width: 0;
@@ -1390,7 +1440,7 @@ p, input, label, .viewotp, .viewPassword {
 }
 
 .wallet-balance-label {
-    color: #ffcca1;
+    color: var(--kp-muted);
     font-size: 0.8rem;
     font-weight: 600;
     margin: 0;
@@ -1428,7 +1478,7 @@ p, input, label, .viewotp, .viewPassword {
 .wallet-balance-value {
     margin: 0;
     padding: 0;
-    color: #ffe3c4;
+    color: var(--kp-text);
     font-size: 1em;
     font-weight: 800;
     line-height: 1.15;
@@ -1697,10 +1747,10 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: "Segoe UI", "Trebuchet MS", Arial, sans-serif;
-    letter-spacing: 0.01em;
-    line-height: 1.25;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
     margin-bottom: 0.45rem;
-    color: #fff0de;
+    color: var(--kp-text);
 }
 
 h1 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 800; }
@@ -1712,8 +1762,8 @@ h6 { font-size: 0.92rem; font-weight: 650; }
 
 p, li, label, input, textarea, select, button, .viewotp, .viewPassword {
     font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-size: clamp(0.8rem, 1.5vw, 0.94rem);
-    line-height: 1.42;
+    font-size: clamp(0.8125rem, 1.6vw, 0.9375rem);
+    line-height: 1.5;
 }
 
 .dashboard-nav-item,
@@ -1827,4 +1877,210 @@ p, li, label, input, textarea, select, button, .viewotp, .viewPassword {
 
 .modal-dialog.admin-pay-modal.admin-pay-modal-xl {
     max-width: min(100% - 1.5rem, 720px);
+}
+
+.loading-container,
+.loading-panel,
+.admin-sites-loading,
+.admin-pay-loading,
+.view-payment-loading,
+.passbook-loading,
+.profile-loading,
+.site-id-details-loading,
+.transfer-ids-loading,
+.txn-history-loading,
+.site-history-loading,
+.txn-detail-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    padding: 1.25rem 1rem;
+}
+
+/* ---------- Light theme component refinements ---------- */
+[data-kp-theme="light"] .customtable {
+    background: #ffffff;
+}
+
+[data-kp-theme="light"] .btn-group button {
+    background: var(--kp-surface-2);
+    color: var(--kp-text);
+    border-color: var(--kp-border);
+}
+
+[data-kp-theme="light"] .pagination a {
+    color: var(--kp-text) !important;
+    background: var(--kp-surface);
+    border-color: var(--kp-border);
+}
+
+[data-kp-theme="light"] .pagination a.disabled {
+    background: var(--kp-surface-2);
+}
+
+[data-kp-theme="light"] .visitor-counter-bar {
+    background: linear-gradient(120deg, rgba(184, 98, 0, 0.08), rgba(220, 214, 204, 0.95));
+    border-color: var(--kp-border);
+}
+
+[data-kp-theme="light"] .visitor-counter-label,
+[data-kp-theme="light"] .visitor-counter-value,
+[data-kp-theme="light"] .visitor-counter-trend {
+    color: var(--kp-text);
+}
+
+[data-kp-theme="light"] .visitor-counter-icon {
+    color: var(--kp-accent);
+    background: rgba(184, 98, 0, 0.1);
+    border-color: var(--kp-border);
+}
+
+[data-kp-theme="light"] .brand-title {
+    text-shadow: none;
+}
+
+[data-kp-theme="light"] .Wallet-Dep-Wal-With-Container {
+    background: var(--kp-card-gradient);
+    color: var(--kp-text);
+    box-shadow: 0 10px 30px var(--kp-shadow), 0 0 12px rgba(184, 98, 0, 0.06);
+}
+
+[data-kp-theme="light"] .Wallet-Bal-Comp {
+    background-color: var(--kp-surface-2);
+}
+
+[data-kp-theme="light"] .menu-toggle,
+[data-kp-theme="light"] .theme-toggle-btn {
+    background: var(--kp-surface);
+    color: var(--kp-accent);
+}
+
+[data-kp-theme="light"] .toast {
+    background: var(--kp-surface);
+    color: var(--kp-text);
+}
+
+/* ---------- Light theme: sidebar, nav, home, transactions ---------- */
+[data-kp-theme="light"] .sidebar-ben-wordmark,
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-text,
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link-secondary,
+[data-kp-theme="light"] .sidebar-ben-heading,
+[data-kp-theme="light"] .sidebar-ben-badge,
+[data-kp-theme="light"] .dashboard-nav-item,
+[data-kp-theme="light"] .dashboard-nav-dropdown-item,
+[data-kp-theme="light"] .dashboard-nav-dropdown-toggle {
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link,
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link-secondary {
+    background: var(--kp-surface) !important;
+    border-color: var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link i,
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link-secondary i {
+    color: var(--kp-muted) !important;
+    background: var(--kp-surface-2) !important;
+    border-color: var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link:hover,
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link-secondary:hover {
+    background: var(--kp-surface-2) !important;
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .sidebar-ben-header,
+[data-kp-theme="light"] .sidebar-member-divider,
+[data-kp-theme="light"] .Burger-Menu-footer-container {
+    border-color: var(--kp-border) !important;
+    background: transparent !important;
+}
+
+[data-kp-theme="light"] .Burger-Menu-footer-container button {
+    background-color: var(--kp-surface) !important;
+    border-color: var(--kp-border) !important;
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .sidebar-ben-close {
+    background: var(--kp-surface) !important;
+    border-color: var(--kp-border) !important;
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .dashboard-nav-item:hover,
+[data-kp-theme="light"] .dashboard-nav-dropdown.show,
+[data-kp-theme="light"] .dashboard-nav-dropdown-item:hover {
+    background: var(--kp-surface-2) !important;
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .active,
+[data-kp-theme="light"] .dashboard-nav-item.active {
+    background-color: var(--kp-surface-2) !important;
+    color: var(--kp-text) !important;
+    box-shadow: none !important;
+}
+
+[data-kp-theme="light"] .home-hero-card,
+[data-kp-theme="light"] .site-card,
+[data-kp-theme="light"] .txn-history-modal,
+[data-kp-theme="light"] .txn-history-card {
+    background: var(--kp-card-gradient) !important;
+    border-color: var(--kp-border) !important;
+    box-shadow: 0 4px 16px var(--kp-shadow) !important;
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .home-hero-card *,
+[data-kp-theme="light"] .site-card .site-name,
+[data-kp-theme="light"] .site-card .site-url,
+[data-kp-theme="light"] .account-header-content h2,
+[data-kp-theme="light"] .account-header-content p,
+[data-kp-theme="light"] .txn-history-heading .modal-title,
+[data-kp-theme="light"] .txn-history-sub,
+[data-kp-theme="light"] .txn-history-account,
+[data-kp-theme="light"] .txn-history-desc,
+[data-kp-theme="light"] .txn-history-site,
+[data-kp-theme="light"] .txn-history-date,
+[data-kp-theme="light"] .txn-history-id,
+[data-kp-theme="light"] .txn-history-empty,
+[data-kp-theme="light"] .txn-history-loading {
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .txn-history-url,
+[data-kp-theme="light"] .site-url {
+    color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .txn-history-card-foot {
+    border-top-color: var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .visitor-counter-bar {
+    background: var(--kp-surface) !important;
+}
+
+[data-kp-theme="light"] .visitor-counter-label,
+[data-kp-theme="light"] .visitor-counter-value,
+[data-kp-theme="light"] .visitor-counter-trend,
+[data-kp-theme="light"] .visitor-counter-icon {
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .wallet-balance-label,
+[data-kp-theme="light"] .wallet-balance-value,
+[data-kp-theme="light"] .wallet-bal-content > p,
+[data-kp-theme="light"] .wallet-bal-value p {
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .bg-dark,
+[data-kp-theme="light"] .bg-dark-1 {
+    background-color: var(--kp-surface-2) !important;
+    color: var(--kp-text) !important;
 }

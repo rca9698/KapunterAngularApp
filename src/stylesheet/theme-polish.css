@@ -1,0 +1,294 @@
+/* Kapunter — professional UI polish (light theme visual changes; dark unchanged) */
+
+html {
+    color-scheme: dark;
+}
+
+html[data-kp-theme="light"] {
+    color-scheme: light;
+}
+
+html[data-kp-theme="dark"] {
+    color-scheme: dark;
+}
+
+/* Smooth, restrained theme transitions */
+body,
+.dashboard-toolbar,
+.sidebar-shell,
+.footer-shell,
+.card,
+.passbook-card,
+.site-card,
+.txn-history-card,
+.modal-content,
+.visitor-counter-bar,
+.Wallet-Dep-Wal-With-Container {
+    transition:
+        background-color 0.22s ease,
+        color 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+/* Readable content layout */
+.dashboard-content {
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dashboard-content > * {
+    max-width: 100%;
+}
+
+/* Card elevation & interaction — light only */
+[data-kp-theme="light"] .card,
+[data-kp-theme="light"] .passbook-card,
+[data-kp-theme="light"] .site-card,
+[data-kp-theme="light"] .txn-history-card,
+[data-kp-theme="light"] .customtable {
+    box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .passbook-card:hover,
+[data-kp-theme="light"] .site-card:hover,
+[data-kp-theme="light"] .txn-history-card:hover {
+    box-shadow: var(--kp-elevation-card-hover);
+}
+
+/* Focus accessibility */
+button:focus-visible,
+a:focus-visible,
+.menu-toggle:focus-visible,
+.theme-toggle-btn:focus-visible,
+.footer-tab:focus-visible,
+.passbook-card:focus-visible {
+    outline: none;
+    box-shadow: var(--kp-focus-ring);
+}
+
+/* Selection */
+::selection {
+    background: rgba(255, 138, 0, 0.28);
+    color: var(--kp-text);
+}
+
+[data-kp-theme="light"] ::selection {
+    background: rgba(184, 92, 0, 0.22);
+}
+
+/* Scrollbars */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--kp-scrollbar-thumb) var(--kp-scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--kp-scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--kp-scrollbar-thumb);
+    border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: var(--kp-accent);
+}
+
+/* Content hierarchy helpers */
+.kp-page-title {
+    margin: 0 0 0.35rem;
+    font-size: clamp(1.15rem, 2.8vw, 1.5rem);
+    font-weight: 700;
+    color: var(--kp-text);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+}
+
+.kp-page-subtitle {
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+    color: var(--kp-muted);
+    line-height: 1.5;
+}
+
+.kp-meta-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--kp-muted);
+    line-height: 1.3;
+}
+
+.kp-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Passbook & list cards — content must not clip */
+.passbook-card .activity-title,
+.passbook-card .site-url,
+.txn-history-desc {
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.passbook-card .site-url,
+.passbook-card .site-username {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: normal;
+}
+
+/* Footer active state — light only */
+[data-kp-theme="light"] .footer-tab.active-tab {
+    border-color: var(--kp-accent) !important;
+    box-shadow: var(--kp-elevation-card-hover) !important;
+    background: #ffffff !important;
+}
+
+[data-kp-theme="light"] .footer-tab.active-tab i,
+[data-kp-theme="light"] .footer-tab.active-tab p {
+    color: var(--kp-accent) !important;
+}
+
+/* Tables in light mode */
+[data-kp-theme="light"] .customtable {
+    background: var(--kp-surface);
+}
+
+/* Wallet strip polish — light only */
+[data-kp-theme="light"] .Wallet-Dep-Wal-With-Container {
+    box-shadow: var(--kp-elevation-card);
+}
+
+/* Sidebar active link — clearer affordance */
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link.sidebar-member-link-active {
+    background: #ffffff !important;
+    border-color: var(--kp-accent) !important;
+    box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link.sidebar-member-link-active .sidebar-member-text {
+    color: var(--kp-text) !important;
+    font-weight: 600;
+}
+
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link.sidebar-member-link-active i {
+    color: var(--kp-accent) !important;
+    background: rgba(184, 92, 0, 0.1) !important;
+    border-color: rgba(184, 92, 0, 0.25) !important;
+}
+
+/* Passbook — light theme readability */
+[data-kp-theme="light"] .passbook-hero {
+    border-color: var(--kp-border) !important;
+    background: var(--kp-card-gradient) !important;
+    box-shadow: var(--kp-elevation-card) !important;
+}
+
+[data-kp-theme="light"] .passbook-hero-copy h1 {
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .passbook-hero-copy p,
+[data-kp-theme="light"] .passbook-hero-stat-label {
+    color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .passbook-hero-stat strong {
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .passbook-hero-icon {
+    background: var(--kp-surface-2) !important;
+    border-color: var(--kp-border) !important;
+    color: var(--kp-accent) !important;
+}
+
+[data-kp-theme="light"] .passbook-card,
+[data-kp-theme="light"] .detail-site-card,
+[data-kp-theme="light"] .detail-desc-card,
+[data-kp-theme="light"] .detail-grid-card {
+    border-color: var(--kp-border) !important;
+    background: var(--kp-card-gradient) !important;
+}
+
+[data-kp-theme="light"] .activity-title,
+[data-kp-theme="light"] .detail-site-name,
+[data-kp-theme="light"] .detail-desc-text,
+[data-kp-theme="light"] .detail-row strong,
+[data-kp-theme="light"] .passbook-empty h2 {
+    color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .site-url,
+[data-kp-theme="light"] .detail-site-url,
+[data-kp-theme="light"] .created-date,
+[data-kp-theme="light"] .site-username,
+[data-kp-theme="light"] .detail-row span,
+[data-kp-theme="light"] .passbook-loading,
+[data-kp-theme="light"] .passbook-empty,
+[data-kp-theme="light"] .passbook-empty p,
+[data-kp-theme="light"] .detail-desc-label,
+[data-kp-theme="light"] .detail-title {
+    color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .coins-amount {
+    color: var(--kp-accent) !important;
+}
+
+/* Navbar visitor strip — light only */
+[data-kp-theme="light"] .visitor-counter-bar {
+    box-shadow: var(--kp-elevation-card);
+}
+
+/* Form fields — light only */
+[data-kp-theme="light"] .form-control,
+[data-kp-theme="light"] .form-select {
+    border-radius: 10px;
+    min-height: 42px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+[data-kp-theme="light"] .form-control:focus,
+[data-kp-theme="light"] .form-select:focus {
+    border-color: var(--kp-accent) !important;
+    box-shadow: 0 0 0 3px rgba(184, 92, 0, 0.15) !important;
+}
+
+/* Buttons — light only */
+[data-kp-theme="light"] .siteBtnbackground,
+[data-kp-theme="light"] .btn-primary {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+[data-kp-theme="light"] .siteBtnbackground:active,
+[data-kp-theme="light"] .btn-primary:active {
+    transform: translateY(1px);
+}
+
+[data-kp-theme="light"] .passbook-card .status-badge,
+[data-kp-theme="light"] .txn-history-status {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+[data-kp-theme="light"] .home-hero-card {
+    background: var(--kp-card-gradient) !important;
+}

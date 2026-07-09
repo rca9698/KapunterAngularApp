@@ -6,8 +6,7 @@
     </div>
 
     <div class="profile-loading" *ngIf="loading">
-      <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-      <span>Loading profile…</span>
+      <app-kapunter-loader message="Loading profile…"></app-kapunter-loader>
     </div>
 
     <div class="profile-error text-warning" *ngIf="!loading && loadError">
@@ -35,6 +34,27 @@
     </div>
 
     <div class="profile-actions" *ngIf="!loading">
+      <div class="profile-appearance">
+        <span class="profile-appearance-label">Appearance</span>
+        <div class="profile-theme-options" role="group" aria-label="Theme preference">
+          <button
+            type="button"
+            class="profile-theme-btn"
+            [class.active]="themeService.current === 'dark'"
+            (click)="setTheme('dark')"
+          >
+            <i class="bi bi-moon-stars-fill"></i> Dark
+          </button>
+          <button
+            type="button"
+            class="profile-theme-btn"
+            [class.active]="themeService.current === 'light'"
+            (click)="setTheme('light')"
+          >
+            <i class="bi bi-sun-fill"></i> Light
+          </button>
+        </div>
+      </div>
       <button type="button" class="btn siteBtnbackground" (click)="openChangePasswordModal()">Change Password</button>
     </div>
   </div>

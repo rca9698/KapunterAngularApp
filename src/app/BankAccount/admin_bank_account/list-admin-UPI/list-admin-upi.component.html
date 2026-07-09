@@ -30,8 +30,7 @@
   </div>
 
   <div class="admin-pay-loading" *ngIf="loadingPayments">
-    <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-    <span>Loading UPI details…</span>
+    <app-kapunter-loader message="Loading UPI details…"></app-kapunter-loader>
   </div>
 
   <div class="admin-pay-empty" *ngIf="!loadingPayments && !selectedSiteId">

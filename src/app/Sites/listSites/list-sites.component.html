@@ -16,8 +16,7 @@
   </header>
 
   <div class="admin-sites-loading" *ngIf="loading">
-    <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-    <span>Loading sites…</span>
+    <app-kapunter-loader message="Loading sites…"></app-kapunter-loader>
   </div>
 
   <div class="admin-sites-empty" *ngIf="!loading && sites.length === 0">

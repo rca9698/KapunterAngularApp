@@ -13,10 +13,9 @@
     </div>
   </header>
 
-  <div class="passbook-loading" *ngIf="loading">
-    <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-    <span>Loading transactions…</span>
-  </div>
+    <div class="passbook-loading" *ngIf="loading">
+      <app-kapunter-loader message="Loading transaction history…"></app-kapunter-loader>
+    </div>
 
   <div class="passbook-list" *ngIf="!loading && isListPassbookHistory && passbooks.length > 0">
     <article

@@ -1,0 +1,8 @@
+<div class="global-loader-backdrop" *ngIf="loaderService.loading$ | async" aria-hidden="false">
+  <div class="global-loader-panel" role="alert" aria-live="assertive" aria-busy="true">
+    <app-kapunter-loader
+      size="lg"
+      [message]="(loaderService.message$ | async) || 'Loading…'"
+    ></app-kapunter-loader>
+  </div>
+</div>

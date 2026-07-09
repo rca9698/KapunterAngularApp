@@ -1,0 +1,286 @@
+/* Kapunter — Admin bank / UPI / QR payment UI (light theme only) */
+
+[data-kp-theme="light"] .admin-pay-shell {
+  width: min(100%, 920px);
+  margin: 0 auto;
+  padding: 0.85rem 1rem 2.5rem;
+  box-sizing: border-box;
+}
+
+[data-kp-theme="light"] .admin-pay-heading h2 {
+  color: var(--kp-text);
+  font-weight: 700;
+}
+
+[data-kp-theme="light"] .admin-pay-heading p {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .admin-pay-site-bar {
+  border: 1px solid var(--kp-border);
+  background: #ffffff;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .admin-pay-site-bar label {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .admin-pay-site-select {
+  border: 1px solid var(--kp-border);
+  background: var(--kp-input-bg);
+  color: var(--kp-input-text);
+}
+
+[data-kp-theme="light"] .admin-pay-empty-card {
+  border: 1px solid var(--kp-border);
+  background: #ffffff;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .admin-pay-empty-icon {
+  background: var(--kp-surface-2);
+  color: var(--kp-accent);
+  border: 1px solid var(--kp-border);
+}
+
+[data-kp-theme="light"] .admin-pay-empty-card h3 {
+  color: var(--kp-text);
+}
+
+[data-kp-theme="light"] .admin-pay-empty-card p {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .admin-pay-card {
+  border: 1px solid var(--kp-border);
+  background: #ffffff;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .admin-pay-card:hover {
+  box-shadow: var(--kp-elevation-card-hover);
+  border-color: var(--kp-accent);
+}
+
+[data-kp-theme="light"] .admin-pay-card-header {
+  border-bottom: 1px solid var(--kp-border);
+  background: var(--kp-surface-2);
+}
+
+[data-kp-theme="light"] .admin-pay-card-title h3 {
+  color: var(--kp-text);
+}
+
+[data-kp-theme="light"] .admin-pay-default-btn,
+[data-kp-theme="light"] .admin-pay-delete-btn {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .admin-pay-delete-btn {
+  color: #b91c1c;
+}
+
+[data-kp-theme="light"] .admin-pay-row span {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .admin-pay-row strong {
+  color: var(--kp-text);
+}
+
+/* Modals */
+[data-kp-theme="light"] .admin-pay-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--kp-border);
+  background: #ffffff;
+}
+
+[data-kp-theme="light"] .admin-pay-modal-header.payment-hub-header {
+  flex-wrap: nowrap;
+}
+
+[data-kp-theme="light"] .payment-hub-title-wrap {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+[data-kp-theme="light"] .admin-pay-modal-header .modal-title {
+  color: var(--kp-text);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+}
+
+[data-kp-theme="light"] .admin-pay-modal-site,
+[data-kp-theme="light"] .payment-hub-subtitle {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .admin-pay-modal-close {
+  border: 1px solid var(--kp-border);
+  border-radius: 999px;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: var(--kp-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+[data-kp-theme="light"] .admin-pay-modal-close:hover {
+  border-color: var(--kp-accent);
+  color: var(--kp-accent);
+}
+
+[data-kp-theme="light"] .admin-pay-modal-body {
+  background: var(--kp-surface);
+}
+
+[data-kp-theme="light"] .admin-pay-field label {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .admin-pay-field .admin-pay-input {
+  border: 1px solid var(--kp-border);
+  background: var(--kp-input-bg);
+  color: var(--kp-input-text);
+}
+
+[data-kp-theme="light"] .admin-pay-field .admin-pay-input:focus {
+  border-color: var(--kp-accent);
+  box-shadow: var(--kp-focus-ring);
+}
+
+[data-kp-theme="light"] .admin-pay-modal .kp-file-upload-ui {
+  border-color: var(--kp-border);
+  background: var(--kp-surface-2);
+}
+
+[data-kp-theme="light"] .admin-pay-modal .kp-file-upload-icon {
+  color: var(--kp-accent);
+}
+
+[data-kp-theme="light"] .admin-pay-modal .kp-file-upload-title {
+  color: var(--kp-text);
+}
+
+[data-kp-theme="light"] .admin-pay-modal .kp-file-upload-hint,
+[data-kp-theme="light"] .admin-pay-modal .kp-file-upload-name {
+  color: var(--kp-muted);
+}
+
+/* Payment hub modal */
+[data-kp-theme="light"] .payment-hub-tabs {
+  background: var(--kp-surface-2);
+  border: 1px solid var(--kp-border);
+}
+
+[data-kp-theme="light"] .payment-hub-tab {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .payment-hub-tab.active {
+  color: var(--kp-text);
+  border-color: var(--kp-accent);
+  background: #ffffff;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .payment-hub-panel-head h3 {
+  color: var(--kp-text);
+  font-weight: 700;
+}
+
+[data-kp-theme="light"] .payment-hub-panel-head p {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .payment-hub-empty {
+  border: 1px dashed var(--kp-border);
+  background: var(--kp-surface-2);
+}
+
+[data-kp-theme="light"] .payment-hub-empty i {
+  color: var(--kp-accent);
+}
+
+[data-kp-theme="light"] .payment-hub-empty h4 {
+  color: var(--kp-text);
+}
+
+[data-kp-theme="light"] .payment-hub-empty p {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .payment-hub-card {
+  border: 1px solid var(--kp-border);
+  background: #ffffff;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .payment-hub-card-head {
+  border-bottom: 1px solid var(--kp-border);
+  background: var(--kp-surface-2);
+}
+
+[data-kp-theme="light"] .payment-hub-card-title h4 {
+  color: var(--kp-text);
+}
+
+[data-kp-theme="light"] .payment-hub-row span {
+  color: var(--kp-muted);
+}
+
+[data-kp-theme="light"] .payment-hub-row strong {
+  color: var(--kp-text);
+}
+
+[data-kp-theme="light"] .payment-hub-qr-wrap img {
+  border: 1px solid var(--kp-border);
+}
+
+@media (max-width: 560px) {
+  [data-kp-theme="light"] .admin-pay-shell {
+    padding: 0.65rem 0.65rem 2rem;
+  }
+
+  [data-kp-theme="light"] .admin-pay-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  [data-kp-theme="light"] .payment-hub-panel-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  [data-kp-theme="light"] .payment-hub-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  [data-kp-theme="light"] .payment-hub-row {
+    grid-template-columns: 1fr;
+  }
+
+  [data-kp-theme="light"] .payment-hub-row strong {
+    text-align: left;
+  }
+
+  [data-kp-theme="light"] .payment-hub-list-qr {
+    grid-template-columns: 1fr;
+  }
+}

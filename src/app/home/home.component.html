@@ -19,10 +19,7 @@
   <section class="home-account-section account-sites-section" *ngIf="authservice.isLoggenIn | async">
 
     <div class="loading-container" *ngIf="sitesLoading">
-      <div class="spinner-border text-warning" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <p>Loading sites...</p>
+      <app-kapunter-loader message="Loading sites…"></app-kapunter-loader>
     </div>
 
     <div

@@ -247,3 +247,37 @@
     justify-self: flex-start;
   }
 }
+
+:host-context([data-kp-theme="light"]) .txn-history-modal,
+:host-context([data-kp-theme="light"]) .txn-history-card {
+  background: var(--kp-card-gradient) !important;
+  border-color: var(--kp-border) !important;
+  box-shadow: 0 4px 16px var(--kp-shadow) !important;
+}
+
+:host-context([data-kp-theme="light"]) .txn-history-heading .modal-title,
+:host-context([data-kp-theme="light"]) .txn-history-sub,
+:host-context([data-kp-theme="light"]) .txn-history-account,
+:host-context([data-kp-theme="light"]) .txn-history-desc,
+:host-context([data-kp-theme="light"]) .txn-history-loading {
+  color: var(--kp-text) !important;
+}
+
+:host-context([data-kp-theme="light"]) .txn-history-url,
+:host-context([data-kp-theme="light"]) .txn-history-site,
+:host-context([data-kp-theme="light"]) .txn-history-date,
+:host-context([data-kp-theme="light"]) .txn-history-id,
+:host-context([data-kp-theme="light"]) .txn-history-empty {
+  color: var(--kp-muted) !important;
+}
+
+:host-context([data-kp-theme="light"]) .txn-history-card-foot {
+  border-top-color: var(--kp-border) !important;
+}
+
+:host-context([data-kp-theme="light"]) .txn-history-close,
+:host-context([data-kp-theme="light"]) .txn-history-logo-fallback,
+:host-context([data-kp-theme="light"]) .txn-history-card-logo--fallback {
+  color: var(--kp-accent) !important;
+  background: var(--kp-surface-2) !important;
+}

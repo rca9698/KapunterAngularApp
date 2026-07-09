@@ -3,6 +3,7 @@ import { AccountsService } from '../Accounts/accounts.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { VisitorCountService } from '../visitor-count.service';
+import { ThemeService } from '../theme.service';
 import { Subscription } from 'rxjs';
 import { VisitorStats } from '../Shared/Modals/visitor-stats';
 
@@ -21,7 +22,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private accountService: AccountsService,
     public authservice: AuthService,
     private router: Router,
-    public visitorCountService: VisitorCountService
+    public visitorCountService: VisitorCountService,
+    public themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +54,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.authservice.logout();
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggle();
   }
 
   formatCount(value: number): string {

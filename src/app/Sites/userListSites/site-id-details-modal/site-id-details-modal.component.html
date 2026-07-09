@@ -10,8 +10,7 @@
   </div>
   <div class="modal-body site-id-details-body">
     <div class="site-id-details-loading" *ngIf="loading">
-      <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-      <span>Loading credentials…</span>
+      <app-kapunter-loader message="Loading credentials…"></app-kapunter-loader>
     </div>
 
     <div class="site-id-details-empty" *ngIf="!loading && ids.length === 0">

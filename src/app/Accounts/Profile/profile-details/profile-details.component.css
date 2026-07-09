@@ -6,21 +6,21 @@
 
 .profile-card {
   border-radius: 20px;
-  border: 1px solid rgba(255, 141, 33, 0.34);
-  background: linear-gradient(145deg, rgba(23, 20, 31, 0.95), rgba(12, 10, 18, 0.95));
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--kp-border);
+  background: var(--kp-card-gradient);
+  box-shadow: 0 14px 32px var(--kp-shadow);
   padding: 1rem;
 }
 
 .profile-head h2 {
   margin: 0;
-  color: #ffe6ca;
+  color: var(--kp-text);
   font-size: 1.4rem;
 }
 
 .profile-head p {
   margin-top: 0.3rem;
-  color: #ffd2aa;
+  color: var(--kp-muted);
   font-size: 0.84rem;
 }
 
@@ -32,27 +32,65 @@
 }
 
 .profile-item {
-  border: 1px solid rgba(255, 141, 33, 0.25);
+  border: 1px solid var(--kp-border);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--kp-surface-2);
   padding: 0.7rem;
 }
 
 .profile-item span {
-  color: #ffd3af;
+  color: var(--kp-muted);
   font-size: 0.78rem;
 }
 
 .profile-item strong {
-  color: #fff4e7;
+  color: var(--kp-text);
   display: block;
   margin-top: 0.2rem;
 }
 
 .profile-actions {
   display: flex;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 0.75rem;
   margin-top: 0.85rem;
+}
+
+.profile-appearance {
+  border: 1px solid var(--kp-border);
+  border-radius: 12px;
+  background: var(--kp-surface-2);
+  padding: 0.75rem;
+}
+
+.profile-appearance-label {
+  display: block;
+  color: var(--kp-muted);
+  font-size: 0.78rem;
+  margin-bottom: 0.45rem;
+}
+
+.profile-theme-options {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.profile-theme-btn {
+  flex: 1;
+  border-radius: 10px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  color: var(--kp-text);
+  padding: 0.5rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.profile-theme-btn.active {
+  border-color: var(--kp-accent);
+  color: var(--kp-accent);
+  box-shadow: 0 0 0 1px rgba(255, 138, 0, 0.2);
 }
 
 .profile-loading {
@@ -60,7 +98,7 @@
   align-items: center;
   gap: 0.65rem;
   padding: 1rem 0;
-  color: #ffd3af;
+  color: var(--kp-muted);
   font-size: 0.9rem;
 }
 

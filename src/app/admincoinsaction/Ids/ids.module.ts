@@ -15,6 +15,7 @@ import { DeletedIdRequestListComponent } from './deleted-id-request-list/deleted
 import { TransferIdRequestsComponent } from './transfer-id-requests/transfer-id-requests.component';
 import { TransferIdHistoryComponent } from './transfer-id-history/transfer-id-history.component';
 import { ApproveTransferIdModalComponent } from './approve-transfer-id-modal/approve-transfer-id-modal.component';
+import { LoaderModule } from 'src/app/Shared/loader/loader.module';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ApproveTransferIdModalComponent } from './approve-transfer-id-modal/app
     ReactiveFormsModule,
     IdsRoutingModule,
     HttpClientModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    LoaderModule
   ],
   exports: [
     IdRequestListComponent,

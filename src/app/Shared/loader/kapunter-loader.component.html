@@ -1,0 +1,17 @@
+<div
+  class="kapunter-loader"
+  [class.kapunter-loader--sm]="size === 'sm'"
+  [class.kapunter-loader--lg]="size === 'lg'"
+  [class.kapunter-loader--inline]="inline"
+  [class.kapunter-loader--overlay]="overlay"
+  role="status"
+  aria-live="polite"
+  aria-busy="true"
+>
+  <div class="kapunter-loader-visual" aria-hidden="true">
+    <span class="kapunter-loader-ring"></span>
+    <span class="kapunter-loader-ring kapunter-loader-ring--delay"></span>
+    <img src="assets/kapunter-logo.jpeg" alt="" class="kapunter-loader-logo" />
+  </div>
+  <p class="kapunter-loader-message" *ngIf="showMessage && message">{{ message }}</p>
+</div>

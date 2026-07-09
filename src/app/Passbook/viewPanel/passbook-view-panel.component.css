@@ -1,7 +1,7 @@
 .passbook-shell {
   width: min(100%, 820px);
   margin: 0 auto;
-  padding: 0.75rem 0.85rem 6rem;
+  padding: 0.85rem 1rem 6rem;
   box-sizing: border-box;
 }
 
@@ -9,13 +9,13 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem 1rem;
-  padding: 1rem 1.1rem;
-  margin-bottom: 1rem;
+  gap: 0.85rem 1.1rem;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1.1rem;
   border-radius: 18px;
-  border: 1px solid rgba(255, 140, 40, 0.45);
-  background: radial-gradient(120% 120% at 85% 0%, rgba(255, 120, 0, 0.2), rgba(12, 10, 20, 0.96));
-  box-shadow: 0 0 20px rgba(255, 130, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--kp-border);
+  background: var(--kp-card-gradient);
+  box-shadow: var(--kp-elevation-card);
 }
 
 .passbook-hero-icon {
@@ -25,9 +25,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 149, 31, 0.18);
-  border: 1px solid rgba(255, 160, 80, 0.35);
-  color: #ffc68f;
+  background: var(--kp-surface-2);
+  border: 1px solid var(--kp-border);
+  color: var(--kp-accent);
   font-size: 1.35rem;
   flex-shrink: 0;
 }
@@ -40,14 +40,16 @@
 .passbook-hero-copy h1 {
   margin: 0;
   font-size: clamp(1.1rem, 3.2vw, 1.45rem);
-  font-weight: 800;
-  color: #fff4e8;
+  font-weight: 700;
+  color: var(--kp-text);
+  letter-spacing: -0.02em;
 }
 
 .passbook-hero-copy p {
-  margin: 0.25rem 0 0;
-  font-size: 0.82rem;
-  color: #ffcfa3;
+  margin: 0.3rem 0 0;
+  font-size: 0.875rem;
+  color: var(--kp-muted);
+  line-height: 1.45;
 }
 
 .passbook-hero-stat {
@@ -112,24 +114,24 @@
 
 .passbook-card {
   border-radius: 16px;
-  border: 1px solid rgba(255, 136, 26, 0.45);
-  background: linear-gradient(165deg, rgba(22, 19, 32, 0.98), rgba(8, 7, 14, 0.99));
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 14px rgba(255, 120, 0, 0.08);
+  border: 1px solid var(--kp-border);
+  background: var(--kp-card-gradient);
+  box-shadow: var(--kp-elevation-card);
   cursor: pointer;
-  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .passbook-card:hover {
-  border-color: rgba(255, 160, 60, 0.65);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 120, 0, 0.14);
+  border-color: var(--kp-accent);
+  transform: translateY(-1px);
+  box-shadow: var(--kp-elevation-card-hover);
 }
 
 .card-inner {
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 0.9rem 0.85rem;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1rem 0.95rem;
 }
 
 .passbook-image-wrapper,
@@ -170,29 +172,34 @@
 
 .activity-title {
   margin: 0;
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: #fff6ed;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--kp-text);
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .site-url {
-  margin: 0.2rem 0 0;
-  font-size: 0.72rem;
-  color: #ffd6b2;
-  white-space: nowrap;
+  margin: 0.3rem 0 0;
+  font-size: 0.75rem;
+  color: var(--kp-muted);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-all;
 }
 
 .site-username {
-  margin: 0.15rem 0 0;
-  font-size: 0.68rem;
-  color: #a89888;
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  color: var(--kp-muted);
+  line-height: 1.35;
 }
 
 .metadata-section {
@@ -217,10 +224,11 @@
 
 .coins-amount {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  color: #ffba70;
+  color: var(--kp-accent);
   font-variant-numeric: tabular-nums;
+  line-height: 1.2;
 }
 
 .status-badge {
@@ -400,4 +408,65 @@
   .passbook-chevron {
     display: none;
   }
+}
+
+:host-context([data-kp-theme="light"]) .passbook-hero,
+:host-context([data-kp-theme="light"]) .passbook-card,
+:host-context([data-kp-theme="light"]) .detail-site-card,
+:host-context([data-kp-theme="light"]) .detail-desc-card,
+:host-context([data-kp-theme="light"]) .detail-grid-card {
+  background: var(--kp-card-gradient) !important;
+  border-color: var(--kp-border) !important;
+  box-shadow: 0 4px 16px var(--kp-shadow) !important;
+}
+
+:host-context([data-kp-theme="light"]) .passbook-hero-copy h1,
+:host-context([data-kp-theme="light"]) .passbook-hero-stat strong,
+:host-context([data-kp-theme="light"]) .activity-title,
+:host-context([data-kp-theme="light"]) .detail-site-name,
+:host-context([data-kp-theme="light"]) .detail-desc-text,
+:host-context([data-kp-theme="light"]) .detail-row strong,
+:host-context([data-kp-theme="light"]) .passbook-empty h2 {
+  color: var(--kp-text) !important;
+}
+
+:host-context([data-kp-theme="light"]) .passbook-hero-copy p,
+:host-context([data-kp-theme="light"]) .passbook-hero-stat-label,
+:host-context([data-kp-theme="light"]) .site-url,
+:host-context([data-kp-theme="light"]) .detail-site-url,
+:host-context([data-kp-theme="light"]) .detail-desc-label,
+:host-context([data-kp-theme="light"]) .detail-title,
+:host-context([data-kp-theme="light"]) .detail-proof-label,
+:host-context([data-kp-theme="light"]) .passbook-loading,
+:host-context([data-kp-theme="light"]) .passbook-empty,
+:host-context([data-kp-theme="light"]) .passbook-empty p {
+  color: var(--kp-muted) !important;
+}
+
+:host-context([data-kp-theme="light"]) .site-username,
+:host-context([data-kp-theme="light"]) .created-date,
+:host-context([data-kp-theme="light"]) .detail-row span {
+  color: var(--kp-muted) !important;
+}
+
+:host-context([data-kp-theme="light"]) .coins-amount {
+  color: var(--kp-accent) !important;
+}
+
+:host-context([data-kp-theme="light"]) .passbook-hero-icon,
+:host-context([data-kp-theme="light"]) .passbook-image-fallback,
+:host-context([data-kp-theme="light"]) .detail-image-fallback {
+  background: var(--kp-surface-2) !important;
+  border-color: var(--kp-border) !important;
+  color: var(--kp-accent) !important;
+}
+
+:host-context([data-kp-theme="light"]) .detail-back-btn {
+  background: var(--kp-surface) !important;
+  border-color: var(--kp-border) !important;
+  color: var(--kp-text) !important;
+}
+
+:host-context([data-kp-theme="light"]) .detail-row {
+  border-bottom-color: var(--kp-border) !important;
 }

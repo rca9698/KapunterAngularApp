@@ -85,6 +85,10 @@ export class apiService {
   ChangePassword(obj: any){
     return this.http.post(`${environment.apiUrl}/api/Profile/ChangePassword`, obj);
   }
+
+  saveThemePreference(obj: { userId: number | bigint; themePreference: string }) {
+    return this.http.post(`${environment.apiUrl}/api/Profile/SaveThemePreference`, obj);
+  }
   // Profile Related APIs End
 
   //PassbookHistory Related APIs Start

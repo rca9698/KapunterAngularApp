@@ -14,6 +14,7 @@ export interface Iusers{
     createdDate: string,
     updatedBy: string,
     updatedDate: string,
+    themePreference?: string,
     totalCount: number,
     paginationCount: number
 }
@@ -33,12 +34,13 @@ export class users{
     createdDate: string;
     updatedBy: string;
     updatedDate: string;
+    themePreference: string;
     totalCount: number;
     paginationCount: number;
 
     constructor(userId: bigint = 0 as unknown as bigint, firstName: string='', lastName: string='', userNumber: string = ''
         , emailId: string='', claims: string='', coins: string='', password: string='', otp: string='', sessionUser: bigint = 0 as unknown as bigint
-        , createdBy: string='', createdDate: string='', updatedBy: string='', updatedDate: string = '', totalCount: number = 0
+        , createdBy: string='', createdDate: string='', updatedBy: string='', updatedDate: string = '', themePreference: string = 'dark', totalCount: number = 0
         , paginationCount: number=0
     ){
         this.userId = userId;
@@ -55,6 +57,7 @@ export class users{
         this.createdDate = createdDate;
         this.updatedBy = updatedBy;
         this.updatedDate = updatedDate;
+        this.themePreference = themePreference;
         this.totalCount = totalCount;
         this.paginationCount = paginationCount;
     }

@@ -33,7 +33,11 @@
               "src/styles.css",
               "src/stylesheet/CommonSite.css",
               "src/stylesheet/Dashboard.css",
-              "src/stylesheet/site.css"
+              "src/stylesheet/site.css",
+              "src/stylesheet/theme-polish.css",
+              "src/stylesheet/admin-bank-payment.shared.css",
+              "src/stylesheet/admin-theme.css",
+              "src/stylesheet/light-theme-professional.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",

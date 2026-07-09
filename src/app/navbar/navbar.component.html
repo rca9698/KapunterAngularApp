@@ -1,8 +1,19 @@
 <header class="dashboard-toolbar sitebackground navbar-shell">
   <div class="navbar-toolbar-row">
-    <a class="menu-toggle" role="button" tabindex="0" aria-label="Open menu">
-      <i class="bi bi-list"></i>
-    </a>
+    <div class="navbar-leading-actions">
+      <a class="menu-toggle" role="button" tabindex="0" aria-label="Open menu">
+        <i class="bi bi-list"></i>
+      </a>
+      <button
+        type="button"
+        class="theme-toggle-btn"
+        (click)="toggleTheme()"
+        [attr.aria-label]="themeService.current === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+        [attr.title]="themeService.current === 'dark' ? 'Light mode' : 'Dark mode'"
+      >
+        <i class="bi" [ngClass]="themeService.current === 'dark' ? 'bi-sun-fill' : 'bi-moon-stars-fill'"></i>
+      </button>
+    </div>
 
     <div class="navbar-brand-center">
       <div class="brand-title" (click)="RedirectToHome()">KAPUNTER</div>

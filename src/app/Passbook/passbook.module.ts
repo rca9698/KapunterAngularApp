@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PassbookRoutingModule } from './passbook-routing.module';
+import { LoaderModule } from '../Shared/loader/loader.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { PassbookRoutingModule } from './passbook-routing.module';
     ReactiveFormsModule,
     PassbookRoutingModule,
     HttpClientModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    LoaderModule
   ]
 })
 export class PassbookModule { }

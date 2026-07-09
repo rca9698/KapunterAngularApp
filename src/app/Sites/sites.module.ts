@@ -11,6 +11,7 @@ import { GetUserListSiteByIdComponent } from './getUserListSiteById/get-user-lis
 import { SitesRoutingModule } from './sites-routing.module';
 import { UserListSitesComponent } from './userListSites/user-list-sites.component';
 import { WalletRequestModalsModule } from '../userids/wallet-request-modals.module';
+import { LoaderModule } from '../Shared/loader/loader.module';
 import { TransferIdsListModalComponent } from './userListSites/transfer-ids-list-modal/transfer-ids-list-modal.component';
 import { SiteIdDetailsModalComponent } from './userListSites/site-id-details-modal/site-id-details-modal.component';
 import { GetUserSiteTransactionHistoryComponent } from './get-user-site-transaction-history/get-user-site-transaction-history.component';
@@ -35,7 +36,8 @@ import { GetUserSiteTransactionHistoryComponent } from './get-user-site-transact
     SitesRoutingModule,
     HttpClientModule,
     ModalModule.forRoot(),
-    WalletRequestModalsModule
+    WalletRequestModalsModule,
+    LoaderModule
   ],
   exports:[
     ReactiveFormsModule

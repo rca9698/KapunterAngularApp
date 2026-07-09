@@ -1,0 +1,676 @@
+/* Kapunter — professional light theme surfaces (dark theme untouched) */
+
+/* ---------- Core surfaces & typography ---------- */
+[data-kp-theme="light"] .card,
+[data-kp-theme="light"] .customtable,
+[data-kp-theme="light"] .listtypeview {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-text) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .card-body,
+[data-kp-theme="light"] .card-body p,
+[data-kp-theme="light"] .listtypeview p {
+  color: var(--kp-text);
+}
+
+[data-kp-theme="light"] .sitebackground,
+[data-kp-theme="light"] .siteColor {
+  background: var(--kp-surface-gradient) !important;
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .detail-item {
+  border: 1px solid var(--kp-border) !important;
+  background: #ffffff !important;
+}
+
+[data-kp-theme="light"] .detail-item span {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .detail-item strong {
+  color: var(--kp-text) !important;
+}
+
+/* ---------- Modals ---------- */
+[data-kp-theme="light"] .modal-content {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .modal-header {
+  border-bottom: 1px solid var(--kp-border-subtle, var(--kp-border)) !important;
+  background: #ffffff;
+}
+
+[data-kp-theme="light"] .modal-footer {
+  border-top: 1px solid var(--kp-border-subtle, var(--kp-border)) !important;
+  background: var(--kp-surface-2);
+}
+
+[data-kp-theme="light"] .modal-title,
+[data-kp-theme="light"] .modal-body,
+[data-kp-theme="light"] .modal-body p,
+[data-kp-theme="light"] .modal-body label {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .modal .close,
+[data-kp-theme="light"] .modal .btn-close {
+  color: var(--kp-muted) !important;
+  opacity: 1;
+}
+
+[data-kp-theme="light"] .modalContentBgclr {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border);
+  color: var(--kp-text) !important;
+}
+
+/* ---------- Bootstrap dark utility overrides ---------- */
+[data-kp-theme="light"] .bg-dark,
+[data-kp-theme="light"] .bg-dark-1 {
+  background-color: #ffffff !important;
+  color: var(--kp-text) !important;
+  border: 1px solid var(--kp-border);
+}
+
+[data-kp-theme="light"] .card.text-white.bg-dark,
+[data-kp-theme="light"] .card.bg-dark {
+  background: #ffffff !important;
+  color: var(--kp-text) !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .card.text-white.bg-dark .card-body,
+[data-kp-theme="light"] .card.text-white.bg-dark .card-body * {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .text-white:not(.btn):not(.badge):not(.siteBtnbackground):not(.btn-primary):not(.admin-pay-add-btn):not(.payment-hub-add-btn):not(.admin-pay-modal-submit) {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .backbtnNavDesign {
+  background: #ffffff !important;
+  color: var(--kp-text) !important;
+  border: 1px solid var(--kp-border);
+}
+
+/* ---------- Forms & inputs ---------- */
+[data-kp-theme="light"] .form-control,
+[data-kp-theme="light"] .form-select,
+[data-kp-theme="light"] input:not([type="checkbox"]):not([type="radio"]),
+[data-kp-theme="light"] textarea,
+[data-kp-theme="light"] select {
+  background: #ffffff !important;
+  color: var(--kp-input-text) !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .form-control:focus,
+[data-kp-theme="light"] .form-select:focus {
+  border-color: var(--kp-accent) !important;
+  box-shadow: var(--kp-focus-ring) !important;
+}
+
+[data-kp-theme="light"] .form-control::placeholder {
+  color: #94a3b8;
+}
+
+/* ---------- Admin bank / UPI / QR pages ---------- */
+[data-kp-theme="light"] .admin-pay-heading h2 {
+  color: var(--kp-text) !important;
+  font-weight: 700;
+}
+
+[data-kp-theme="light"] .admin-pay-heading p {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-site-bar {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .admin-pay-site-bar label {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-site-select {
+  background: #ffffff !important;
+  color: var(--kp-text) !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-loading {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-empty-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-empty-icon {
+  background: var(--kp-surface-2) !important;
+  border: 1px solid var(--kp-border);
+  color: var(--kp-accent) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-empty-card h3 {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-empty-card p {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .admin-pay-card-header {
+  background: var(--kp-surface-2) !important;
+  border-bottom: 1px solid var(--kp-border-subtle, var(--kp-border)) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-card-title h3 {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-default-btn {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-row span {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-row strong {
+  color: var(--kp-text) !important;
+}
+
+/* Payment hub modal (Manage payment options) */
+[data-kp-theme="light"] .payment-hub-tabs {
+  background: var(--kp-surface-2) !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-tab {
+  color: var(--kp-muted) !important;
+  border: 1px solid transparent;
+}
+
+[data-kp-theme="light"] .payment-hub-tab.active {
+  color: var(--kp-text) !important;
+  background: #ffffff !important;
+  border-color: var(--kp-accent) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .payment-hub-panel-head h3 {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-panel-head p {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-empty {
+  background: var(--kp-surface-2) !important;
+  border: 1px dashed var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-empty h4 {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-empty p {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .payment-hub-card-head {
+  background: var(--kp-surface-2) !important;
+  border-bottom: 1px solid var(--kp-border-subtle, var(--kp-border)) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-card-title h4 {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-row span {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-row strong {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .payment-hub-subtitle,
+[data-kp-theme="light"] .admin-pay-modal-site {
+  color: var(--kp-muted) !important;
+}
+
+/* Add/edit payment modals */
+[data-kp-theme="light"] .admin-pay-modal-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-modal-header .modal-title {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-modal-body {
+  background: #ffffff !important;
+}
+
+[data-kp-theme="light"] .admin-pay-field label {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-field .admin-pay-input {
+  background: #ffffff !important;
+  color: var(--kp-text) !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-modal .kp-file-upload-ui {
+  background: var(--kp-surface-2) !important;
+  border: 1px dashed var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-modal .kp-file-upload-title {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .admin-pay-modal .kp-file-upload-hint,
+[data-kp-theme="light"] .admin-pay-modal .kp-file-upload-name {
+  color: var(--kp-muted) !important;
+}
+
+/* ---------- ID request pages ---------- */
+[data-kp-theme="light"] .request-table-wrap {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .feature-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .feature-card h2 {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .feature-card > p,
+[data-kp-theme="light"] .feature-card .list-subtitle {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .feature-tile {
+  background: var(--kp-surface-2) !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .feature-tile h4 {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .feature-tile p {
+  color: var(--kp-muted) !important;
+}
+
+/* ---------- User bank account page ---------- */
+[data-kp-theme="light"] .bank-page-header {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .bank-page-header h2 {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .bank-page-header p {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .payment-tab {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .payment-tab.active {
+  background: var(--kp-surface-2) !important;
+  border-color: var(--kp-accent) !important;
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .bank-card,
+[data-kp-theme="light"] .bank-detail-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .bank-card h3,
+[data-kp-theme="light"] .bank-detail-card h3,
+[data-kp-theme="light"] .bank-card-title {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .bank-card p,
+[data-kp-theme="light"] .bank-detail-row span {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .bank-detail-row strong {
+  color: var(--kp-text) !important;
+}
+
+/* ---------- Site modals & cards ---------- */
+[data-kp-theme="light"] .txn-history-modal {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .txn-history-header {
+  border-bottom: 1px solid var(--kp-border) !important;
+  background: #ffffff;
+}
+
+[data-kp-theme="light"] .txn-history-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .txn-history-account {
+  color: var(--kp-accent) !important;
+}
+
+[data-kp-theme="light"] .txn-history-logo-wrap,
+[data-kp-theme="light"] .txn-history-logo-fallback {
+  border: 1px solid var(--kp-border) !important;
+  background: var(--kp-surface-2) !important;
+  box-shadow: none !important;
+}
+
+[data-kp-theme="light"] .txn-history-logo-fallback {
+  color: var(--kp-accent) !important;
+}
+
+[data-kp-theme="light"] .site-id-details-modal,
+[data-kp-theme="light"] .transfer-ids-modal {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+/* ---------- Admin list headers & tables ---------- */
+[data-kp-theme="light"] .admin-list-header,
+[data-kp-theme="light"] .coins-list-header {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .admin-list-header .text-uppercase,
+[data-kp-theme="light"] .coins-list-header .text-uppercase {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .admin-list-header .list-subtitle,
+[data-kp-theme="light"] .coins-list-header .list-subtitle {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .customtable.admin-list-table,
+[data-kp-theme="light"] .customtable.coins-list-table {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .customtable .table tbody tr:nth-child(even) {
+  background: #f6f8fb !important;
+}
+
+[data-kp-theme="light"] .customtable .table tbody tr:hover {
+  background: #eef3f8 !important;
+}
+
+/* ---------- Wallet & navbar ---------- */
+[data-kp-theme="light"] .Wallet-Dep-Wal-With-Container {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-text) !important;
+  box-shadow: var(--kp-elevation-card) !important;
+}
+
+[data-kp-theme="light"] .Wallet-Bal-Comp {
+  background-color: var(--kp-surface-2) !important;
+  border: 1px solid var(--kp-border-subtle, var(--kp-border));
+}
+
+[data-kp-theme="light"] .visitor-counter-bar {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .toast {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-text) !important;
+}
+
+/* ---------- Sidebar polish ---------- */
+[data-kp-theme="light"] .sidebar-profile-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link.sidebar-member-link-active {
+  background: #ffffff !important;
+  border-color: var(--kp-accent) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .sidebar-member-social .icons {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .Burger-Menu-footer-container.sidebar-member-footer {
+  background: transparent !important;
+  border-top: 1px solid var(--kp-border) !important;
+}
+
+/* ---------- Passbook ---------- */
+[data-kp-theme="light"] .passbook-hero,
+[data-kp-theme="light"] .passbook-card,
+[data-kp-theme="light"] .detail-site-card,
+[data-kp-theme="light"] .detail-desc-card,
+[data-kp-theme="light"] .detail-grid-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card) !important;
+}
+
+[data-kp-theme="light"] .passbook-hero-stat-label,
+[data-kp-theme="light"] .passbook-hero-stat strong {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .passbook-hero-copy p {
+  color: var(--kp-muted) !important;
+}
+
+/* ---------- Home / site cards ---------- */
+[data-kp-theme="light"] .home-hero-card,
+[data-kp-theme="light"] .site-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .site-card .site-name {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .site-card .site-url {
+  color: var(--kp-muted) !important;
+}
+
+/* ---------- Pagination ---------- */
+[data-kp-theme="light"] .pagination a {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .pagination a:hover:not(.active):not(.disabled) {
+  background: var(--kp-surface-2) !important;
+  border-color: var(--kp-accent) !important;
+}
+
+[data-kp-theme="light"] .pagination a.active {
+  background: var(--kp-accent) !important;
+  border-color: var(--kp-accent) !important;
+  color: #ffffff !important;
+}
+
+/* ---------- Sites list page ---------- */
+[data-kp-theme="light"] .sites-balance-hero {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card);
+}
+
+[data-kp-theme="light"] .sites-balance-icon-wrap {
+  background: var(--kp-surface-2) !important;
+  border: 1px solid var(--kp-border);
+  color: var(--kp-accent) !important;
+}
+
+[data-kp-theme="light"] .sites-balance-title {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .sites-balance-amount {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .sites-page-header h2 {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .sites-page-header p {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  box-shadow: var(--kp-elevation-card) !important;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-name {
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-url {
+  color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-trust {
+  color: #2563eb !important;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-card-status {
+  background: #ecfdf3 !important;
+  border: 1px solid #86efac !important;
+  color: #166534 !important;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-status-dot {
+  background: #22c55e !important;
+  box-shadow: none;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-card-chevron {
+  background: var(--kp-surface-2) !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-accent) !important;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-card-chevron:hover {
+  background: #ffffff !important;
+  border-color: var(--kp-accent) !important;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-action {
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-text) !important;
+  box-shadow: var(--kp-elevation-card) !important;
+}
+
+[data-kp-theme="light"] .sites-page-shell .site-action i {
+  background: var(--kp-surface-2) !important;
+  color: var(--kp-accent) !important;
+}
+
+[data-kp-theme="light"] .sites-pill-withdraw {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-text) !important;
+}
+
+/* ---------- Admin vendor sites & accounts ---------- */
+[data-kp-theme="light"] .admin-vendor-site-card,
+[data-kp-theme="light"] .vendor-site-row {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-text) !important;
+}
+
+[data-kp-theme="light"] .site-history-panel,
+[data-kp-theme="light"] .txn-accordion-item {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .txn-accordion-body {
+  background: var(--kp-surface-2) !important;
+  border-top: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .admin-passbook-detail-desc,
+[data-kp-theme="light"] .admin-passbook-detail-grid {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+}
+
+[data-kp-theme="light"] .approve-transfer-card {
+  background: #ffffff !important;
+  border: 1px solid var(--kp-border) !important;
+}

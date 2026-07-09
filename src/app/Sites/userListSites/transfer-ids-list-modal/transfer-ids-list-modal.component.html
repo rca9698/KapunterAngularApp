@@ -11,8 +11,7 @@
 
   <div class="modal-body transfer-ids-body">
     <div class="transfer-ids-loading" *ngIf="loading">
-      <div class="spinner-border text-warning" role="status" aria-hidden="true"></div>
-      <span>Loading your accounts…</span>
+      <app-kapunter-loader message="Loading your accounts…"></app-kapunter-loader>
     </div>
 
     <ng-container *ngIf="!loading">

@@ -12,6 +12,7 @@ import { DepositeToSiteListComponent } from './deposite_to_site_list/deposite-to
 import { WithdrawFromSiteListComponent } from './withdraw_from_site_list/withdraw-from-site-list.component';
 import { CoinsRoutingModule } from './coins-routing.module';
 import { WalletRequestModalsModule } from '../../userids/wallet-request-modals.module';
+import { LoaderModule } from '../../Shared/loader/loader.module';
 import { AdminWithdrawCoinsByRequestIdComponent } from './admin_withdraw_coins_by_request_id/admin-withdraw-coins-by-request-id.component';
 import { AdminDepositeCoinsByRequestIdComponent } from './admin_deposite_coins_by_request_id/admin-deposite-coins-by-request-id.component';
 import { AdminWithdrawCoinsToIdRequestIdComponent } from './admin_withdraw_coins_to_id_request_id/admin-withdraw-coins-to-id-request-id.component';
@@ -41,7 +42,8 @@ import { ViewAdminBankDetailsComponent } from './view_admin_bank_details/view-ad
     CoinsRoutingModule,
     HttpClientModule,
     ModalModule.forRoot(),
-    WalletRequestModalsModule
+    WalletRequestModalsModule,
+    LoaderModule
   ],
   exports:[
     ReactiveFormsModule

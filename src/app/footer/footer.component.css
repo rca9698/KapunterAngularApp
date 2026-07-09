@@ -1,7 +1,7 @@
 .footer-shell {
-  background: rgba(7, 7, 10, 0.95);
-  border-top: 1px solid rgba(255, 149, 31, 0.42);
-  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.3);
+  background: var(--kp-footer-bg);
+  border-top: 1px solid var(--kp-border);
+  box-shadow: 0 -8px 20px var(--kp-shadow);
 }
 
 .footer-tab-row {
@@ -33,31 +33,32 @@
 .footer-tab {
   border-radius: 14px;
   margin: 0.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: linear-gradient(145deg, rgba(33, 28, 41, 0.9), rgba(20, 17, 25, 0.9));
+  border: 1px solid var(--kp-border);
+  background: var(--kp-card-gradient);
   transition: all 0.2s ease;
 }
 
 .footer-tab:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 149, 31, 0.68);
+  transform: translateY(-1px);
+  border-color: var(--kp-accent);
+  box-shadow: var(--kp-elevation-card);
 }
 
 .active-tab {
-  border-color: rgba(255, 149, 31, 0.85);
-  box-shadow: 0 0 14px rgba(255, 149, 31, 0.28);
+  border-color: var(--kp-accent);
+  box-shadow: var(--kp-elevation-card-hover);
 }
 
 .footer-tab i {
-  color: #ffc68f;
+  color: var(--kp-accent);
   font-size: 1.1rem;
 }
 
 .footer-tab p {
-  color: #ffe7cf;
-  font-weight: 700;
-  font-size: 0.66rem;
-  line-height: 1.15;
+  color: var(--kp-text);
+  font-weight: 600;
+  font-size: 0.68rem;
+  line-height: 1.2;
   margin: 0;
   padding: 0 1px;
 }

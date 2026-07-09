@@ -45,10 +45,10 @@
 .site-card {
   margin: 0;
   border-radius: 18px;
-  border: 1px solid rgba(255, 136, 26, 0.5);
-  background: linear-gradient(165deg, rgba(22, 19, 32, 0.98), rgba(8, 7, 14, 0.99));
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 120, 0, 0.12);
-  padding: 0.85rem 0.75rem 1rem;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-card-gradient);
+  box-shadow: var(--kp-elevation-card);
+  padding: 0.95rem 0.85rem 1.05rem;
   box-sizing: border-box;
 }
 
@@ -74,18 +74,22 @@
 .site-name {
   margin: 0;
   font-size: 0.95rem;
-  font-weight: 800;
-  color: #fff6ed;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  line-height: 1.2;
+  font-weight: 700;
+  color: var(--kp-text);
+  letter-spacing: 0.02em;
+  line-height: 1.3;
 }
 
 .site-url {
-  margin: 0.2rem 0 0;
-  color: #ffd6b2;
-  font-size: 0.72rem;
+  margin: 0.25rem 0 0;
+  color: var(--kp-muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
   word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .site-trust {
@@ -232,4 +236,28 @@
   .site-actions-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+:host-context([data-kp-theme="light"]) .site-card,
+:host-context([data-kp-theme="light"]) .account-header {
+  background: var(--kp-card-gradient) !important;
+  border-color: var(--kp-border) !important;
+  box-shadow: 0 4px 16px var(--kp-shadow) !important;
+}
+
+:host-context([data-kp-theme="light"]) .site-name,
+:host-context([data-kp-theme="light"]) .account-header-content h2,
+:host-context([data-kp-theme="light"]) .loading-container {
+  color: var(--kp-text) !important;
+}
+
+:host-context([data-kp-theme="light"]) .site-url,
+:host-context([data-kp-theme="light"]) .account-header-content p {
+  color: var(--kp-muted) !important;
+}
+
+:host-context([data-kp-theme="light"]) .site-card-chevron {
+  background: var(--kp-surface-2) !important;
+  border-color: var(--kp-border) !important;
+  color: var(--kp-accent) !important;
 }

@@ -9,10 +9,7 @@
  
   <!-- Loading State -->
   <div class="loading-container" *ngIf="loading">
-    <div class="spinner-border text-warning" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-    <p>Loading sites...</p>
+    <app-kapunter-loader message="Loading sites…"></app-kapunter-loader>
   </div>
 
   <!-- Sites Grid -->
