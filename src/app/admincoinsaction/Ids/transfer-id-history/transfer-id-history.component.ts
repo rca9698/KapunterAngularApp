@@ -9,7 +9,7 @@ import { buildSiteLogoUrl } from 'src/app/Shared/Utils/site-image.util';
 @Component({
   selector: 'app-transfer-id-history',
   templateUrl: './transfer-id-history.component.html',
-  styleUrls: ['./transfer-id-history.component.css', '../../shared/admin-listing.shared.css']
+  styleUrls: ['../shared/transfer-id-listing.shared.css']
 })
 export class TransferIdHistoryComponent implements OnInit {
   private readonly _sessionUser: any;

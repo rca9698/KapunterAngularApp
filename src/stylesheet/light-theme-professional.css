@@ -865,3 +865,114 @@
 [data-kp-theme="light"] .site-utr {
   color: #1a6bb5 !important;
 }
+
+/* ---------- Light theme: replace pale yellow / cream text ----------
+   Dark-theme yellows (#ffb347, #ffd27a, #fff4e8, etc.) wash out on white.
+   Force readable burnt-amber / dark text instead. */
+[data-kp-theme="light"] .transfer-arrow,
+[data-kp-theme="light"] .transfer-arrow-amount,
+[data-kp-theme="light"] .transfer-user-chip i,
+[data-kp-theme="light"] .transfer-rupee,
+[data-kp-theme="light"] .transfer-flow-indicator,
+[data-kp-theme="light"] .transfer-amount-prefix,
+[data-kp-theme="light"] .kp-offer-block-header h2,
+[data-kp-theme="light"] .offer-header h4,
+[data-kp-theme="light"] .section-header h3,
+[data-kp-theme="light"] .offer-rules h5,
+[data-kp-theme="light"] .rule-title,
+[data-kp-theme="light"] .section-title,
+[data-kp-theme="light"] .feature-tile h4,
+[data-kp-theme="light"] .coins-amount,
+[data-kp-theme="light"] .sidebar-ben-heading,
+[data-kp-theme="light"] .dashboard-nav-item i,
+[data-kp-theme="light"] .text-warning {
+  color: var(--kp-yellow-text, #8f3d00) !important;
+}
+
+[data-kp-theme="light"] .modal-title,
+[data-kp-theme="light"] .admin-sites-heading h2,
+[data-kp-theme="light"] .passbook-hero-copy h1,
+[data-kp-theme="light"] .detail-site-name,
+[data-kp-theme="light"] .activity-title,
+[data-kp-theme="light"] .visitor-counter-value {
+  color: #1a2332 !important;
+}
+
+[data-kp-theme="light"] .visitor-counter-label {
+  color: #4a5568 !important;
+}
+
+[data-kp-theme="light"] .transfer-endpoint-from .transfer-endpoint-label,
+[data-kp-theme="light"] .transfer-panel-source .transfer-panel-label {
+  color: #9a3412 !important;
+}
+
+[data-kp-theme="light"] .transfer-endpoint-to .transfer-endpoint-label,
+[data-kp-theme="light"] .transfer-panel-target .transfer-panel-label {
+  color: #166534 !important;
+}
+
+[data-kp-theme="light"] .transfer-meta-chip,
+[data-kp-theme="light"] .transfer-ids-sub,
+[data-kp-theme="light"] .transfer-ids-user,
+[data-kp-theme="light"] .transfer-amount-hint,
+[data-kp-theme="light"] .site-url,
+[data-kp-theme="light"] .admin-site-url,
+[data-kp-theme="light"] .list-subtitle,
+[data-kp-theme="light"] .kp-content-lead,
+[data-kp-theme="light"] .change-password-hint {
+  color: #4a5568 !important;
+}
+
+[data-kp-theme="light"] .transfer-user-chip,
+[data-kp-theme="light"] .transfer-ids-site,
+[data-kp-theme="light"] .transfer-endpoint .site-meta p,
+[data-kp-theme="light"] .admin-site-name,
+[data-kp-theme="light"] .kp-content-card h1,
+[data-kp-theme="light"] .feature-card h2,
+[data-kp-theme="light"] .offer-headline,
+[data-kp-theme="light"] .detail-desc-text,
+[data-kp-theme="light"] .passbook-hero-copy h1 {
+  color: #1a2332 !important;
+}
+
+[data-kp-theme="light"] .offer-header,
+[data-kp-theme="light"] .section-header,
+[data-kp-theme="light"] .kp-offer-block-header {
+  background: #fff1e0 !important;
+  border-bottom-color: rgba(143, 61, 0, 0.18) !important;
+}
+
+[data-kp-theme="light"] .transfer-amount-badge {
+  background: linear-gradient(120deg, #c2410c, #9a3412) !important;
+  border-color: rgba(154, 52, 18, 0.35) !important;
+  color: #ffffff !important;
+}
+
+[data-kp-theme="light"] .siteBtnbackground,
+[data-kp-theme="light"] .btn.siteBtnbackground {
+  background: linear-gradient(120deg, #c2410c, #9a3412) !important;
+  border-color: rgba(154, 52, 18, 0.4) !important;
+  color: #ffffff !important;
+}
+
+[data-kp-theme="light"] .status-badge,
+[data-kp-theme="light"] .detail-status-pill {
+  color: #ffffff !important;
+}
+
+/* Soft peach panels stay, but text inside must be dark */
+[data-kp-theme="light"] .offer-content,
+[data-kp-theme="light"] .kp-offer-block-body,
+[data-kp-theme="light"] .kp-offer-block-body .desc,
+[data-kp-theme="light"] .kp-offer-block-body li,
+[data-kp-theme="light"] .offer-description,
+[data-kp-theme="light"] .offer-benefits li {
+  color: #2d3748 !important;
+}
+
+[data-kp-theme="light"] .kp-rule-box strong,
+[data-kp-theme="light"] .rule-item-highlight p,
+[data-kp-theme="light"] .rule-item-highlight .rule-title {
+  color: #9a3412 !important;
+}

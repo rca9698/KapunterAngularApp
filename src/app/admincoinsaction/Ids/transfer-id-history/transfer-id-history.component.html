@@ -1,78 +1,80 @@
-<section class="feature-shell">
-  <div class="feature-card">
-    <div class="admin-list-header text-center mb-3">
-      <h2 class="mb-1">Transfer ID History</h2>
-      <p class="list-subtitle">Completed transfers with recorded amounts</p>
-    </div>
+<section class="transfer-list-shell">
+  <header class="transfer-list-header">
+    <h2>Transfer ID History</h2>
+    <p>Completed transfers with recorded amounts</p>
+  </header>
 
-    <div class="request-table-wrap mt-4 admin-list-table">
-      <table class="table table-hover">
-        <thead>
-          <tr class="tableHeaderClass">
-            <th>User</th>
-            <th>From Account</th>
-            <th></th>
-            <th>To Account</th>
-            <th>Amount</th>
-            <th>Approved On</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngIf="!historyList.length">
-            <td colspan="6" class="admin-list-empty">
-              <i class="bi bi-inbox"></i>
-              <p class="mb-0">No completed transfers found.</p>
-            </td>
-          </tr>
-          <tr *ngFor="let item of historyList; trackBy: trackByReqId">
-            <td data-label="User">{{ item.userNumber }}</td>
-            <td data-label="From">
-              <div class="site-cell">
-                <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion)">
-                  <img
-                    *ngIf="siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion) as srcLogo"
-                    loading="lazy"
-                    decoding="async"
-                    class="site-logo-img"
-                    [src]="srcLogo"
-                    [alt]="item.sourceSiteName"
-                  />
-                </div>
-                <div class="site-meta">
-                  <p>{{ item.sourceSiteName }}</p>
-                  <p class="site-url">{{ sourceUserName(item) }} · ID #{{ sourceAccountId(item) }}</p>
-                </div>
-              </div>
-            </td>
-            <td class="transfer-table-arrow text-center" data-label="">
-              <i class="bi bi-currency-rupee"></i>
-              <i class="bi bi-arrow-right"></i>
-            </td>
-            <td data-label="To">
-              <div class="site-cell">
-                <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion)">
-                  <img
-                    *ngIf="siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion) as tgtLogo"
-                    loading="lazy"
-                    decoding="async"
-                    class="site-logo-img"
-                    [src]="tgtLogo"
-                    [alt]="item.targetSiteName"
-                  />
-                </div>
-                <div class="site-meta">
-                  <p>{{ item.targetSiteName }}</p>
-                  <p class="site-url">{{ targetUserName(item) }} · ID #{{ targetAccountId(item) }}</p>
-                </div>
-              </div>
-            </td>
-            <td class="transfer-amount-cell" data-label="Amount">
-              <i class="bi bi-currency-rupee"></i>{{ transferAmount(item) }}
-            </td>
-            <td data-label="Approved">{{ approvedDate(item) }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="transfer-empty" *ngIf="!historyList.length">
+    <i class="bi bi-inbox" aria-hidden="true"></i>
+    <p class="mb-0">No completed transfers found.</p>
+  </div>
+
+  <div class="transfer-list-stack" *ngIf="historyList.length">
+    <article class="transfer-card" *ngFor="let item of historyList; trackBy: trackByReqId">
+      <div class="transfer-card-top">
+        <span class="transfer-user-chip">
+          <i class="bi bi-person-fill" aria-hidden="true"></i>
+          {{ item.userNumber }}
+        </span>
+        <span class="transfer-meta-chip">
+          <i class="bi bi-check2-circle" aria-hidden="true"></i>
+          Approved {{ approvedDate(item) }}
+        </span>
+      </div>
+
+      <div class="transfer-route">
+        <div class="transfer-endpoint transfer-endpoint-from">
+          <span class="transfer-endpoint-label">From</span>
+          <div class="site-cell">
+            <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion)">
+              <img
+                *ngIf="siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion) as srcLogo"
+                loading="lazy"
+                decoding="async"
+                class="site-logo-img"
+                [src]="srcLogo"
+                [alt]="item.sourceSiteName"
+              />
+            </div>
+            <div class="site-meta">
+              <p>{{ item.sourceSiteName }}</p>
+              <p class="site-url">{{ sourceUserName(item) }} · ID #{{ sourceAccountId(item) }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="transfer-arrow" aria-hidden="true">
+          <span class="transfer-arrow-amount"><i class="bi bi-currency-rupee"></i>{{ transferAmount(item) }}</span>
+          <i class="bi bi-arrow-right"></i>
+        </div>
+
+        <div class="transfer-endpoint transfer-endpoint-to">
+          <span class="transfer-endpoint-label">To</span>
+          <div class="site-cell">
+            <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion)">
+              <img
+                *ngIf="siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion) as tgtLogo"
+                loading="lazy"
+                decoding="async"
+                class="site-logo-img"
+                [src]="tgtLogo"
+                [alt]="item.targetSiteName"
+              />
+            </div>
+            <div class="site-meta">
+              <p>{{ item.targetSiteName }}</p>
+              <p class="site-url">{{ targetUserName(item) }} · ID #{{ targetAccountId(item) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="transfer-card-footer">
+        <span class="transfer-amount-badge transfer-amount-badge--done">
+          <i class="bi bi-currency-rupee"></i>{{ transferAmount(item) }}
+        </span>
+        <span class="transfer-meta-chip">Transfer completed</span>
+      </div>
+    </article>
   </div>
 </section>

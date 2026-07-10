@@ -92,7 +92,15 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #c9a888;
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.transfer-panel-source .transfer-panel-label {
+  color: #ff8a65;
+}
+
+.transfer-panel-target .transfer-panel-label {
+  color: #6dd96d;
 }
 
 .transfer-account-card {
@@ -102,7 +110,12 @@
   padding: 0.75rem 0.85rem;
   border-radius: 12px;
   background: rgba(255, 140, 40, 0.08);
-  border: 1px solid rgba(255, 160, 80, 0.35);
+  border: 1.5px solid rgba(255, 160, 80, 0.45);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.transfer-account-card-source {
+  border-color: rgba(255, 138, 101, 0.55);
 }
 
 .transfer-flow-indicator {
@@ -144,10 +157,10 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.65rem 0.7rem;
+  padding: 0.7rem 0.75rem;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 160, 80, 0.15);
+  border: 1.5px solid rgba(255, 160, 80, 0.22);
 }
 
 .transfer-ids-row-disabled {
@@ -276,12 +289,32 @@
 :host-context([data-kp-theme="light"]) .transfer-account-card,
 :host-context([data-kp-theme="light"]) .transfer-ids-row,
 :host-context([data-kp-theme="light"]) .transfer-amount-panel {
-  background: var(--kp-surface-2);
-  border-color: var(--kp-border);
+  background: #fafafa;
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 :host-context([data-kp-theme="light"]) .transfer-ids-row-selected {
-  border-color: var(--kp-accent);
-  background: #fff8f0;
+  border-color: #ea580c;
+  background: #fff7ed;
+}
+
+:host-context([data-kp-theme="light"]) .transfer-panel-source .transfer-panel-label {
+  color: #c2410c;
+}
+
+:host-context([data-kp-theme="light"]) .transfer-panel-target .transfer-panel-label {
+  color: #15803d;
+}
+
+:host-context([data-kp-theme="light"]) .transfer-ids-sub,
+:host-context([data-kp-theme="light"]) .transfer-ids-user,
+:host-context([data-kp-theme="light"]) .transfer-amount-hint {
+  color: #5c5c5c;
+}
+
+:host-context([data-kp-theme="light"]) .transfer-ids-heading .modal-title,
+:host-context([data-kp-theme="light"]) .transfer-ids-site {
+  color: #1a1a1a;
 }
 

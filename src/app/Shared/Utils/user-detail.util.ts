@@ -17,7 +17,16 @@ export function normalizeUserDetail(raw: unknown): Iusers {
     return undefined;
   };
 
-  return new users(
+  const password = String(pick('password', 'Password') ?? '');
+  const hasPasswordRaw = pick('hasPassword', 'HasPassword');
+  const hasPassword =
+    hasPasswordRaw === true ||
+    hasPasswordRaw === 1 ||
+    hasPasswordRaw === '1' ||
+    hasPasswordRaw === 'true' ||
+    (!!password && password.trim().length > 0);
+
+  const detail = new users(
     (pick('userId', 'UserId') ?? 0) as bigint,
     String(pick('firstName', 'FirstName') ?? ''),
     String(pick('lastName', 'LastName') ?? ''),
@@ -25,7 +34,7 @@ export function normalizeUserDetail(raw: unknown): Iusers {
     String(pick('emailId', 'EmailId') ?? ''),
     String(pick('claims', 'Claims') ?? ''),
     String(pick('coins', 'Coins') ?? ''),
-    String(pick('password', 'Password') ?? ''),
+    '', // never keep password in client state
     String(pick('otp', 'OTP', 'Otp') ?? ''),
     (pick('sessionUser', 'SessionUser') ?? 0) as bigint,
     String(pick('createdBy', 'CreatedBy') ?? ''),
@@ -34,8 +43,11 @@ export function normalizeUserDetail(raw: unknown): Iusers {
     String(pick('updatedDate', 'UpdatedDate') ?? ''),
     String(pick('themePreference', 'ThemePreference') ?? 'dark'),
     Number(pick('totalCount', 'TotalCount') ?? 0),
-    Number(pick('paginationCount', 'PaginationCount') ?? 0)
+    Number(pick('paginationCount', 'PaginationCount') ?? 0),
+    hasPassword
   );
+
+  return detail;
 }
 
 /** Safe wallet balance for templates — never throws on null/undefined detail. */

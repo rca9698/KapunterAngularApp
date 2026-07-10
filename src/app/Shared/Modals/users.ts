@@ -8,6 +8,8 @@ export interface Iusers{
     claims: string,
     coins: string,
     password: string,
+    /** True when account already has a login password. */
+    hasPassword?: boolean,
     otp: string,
     sessionUser: bigint,
     createdBy: string,
@@ -28,6 +30,7 @@ export class users{
     claims: string;
     coins: string;
     password: string;
+    hasPassword: boolean;
     otp: string;
     sessionUser: bigint;
     createdBy: string;
@@ -41,7 +44,7 @@ export class users{
     constructor(userId: bigint = 0 as unknown as bigint, firstName: string='', lastName: string='', userNumber: string = ''
         , emailId: string='', claims: string='', coins: string='', password: string='', otp: string='', sessionUser: bigint = 0 as unknown as bigint
         , createdBy: string='', createdDate: string='', updatedBy: string='', updatedDate: string = '', themePreference: string = 'dark', totalCount: number = 0
-        , paginationCount: number=0
+        , paginationCount: number=0, hasPassword: boolean = false
     ){
         this.userId = userId;
         this.firstName = firstName;
@@ -51,6 +54,7 @@ export class users{
         this.claims = claims;
         this.coins = coins;
         this.password = password;
+        this.hasPassword = hasPassword;
         this.otp = otp;
         this.sessionUser = sessionUser;
         this.createdBy = createdBy;

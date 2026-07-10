@@ -47,7 +47,9 @@
           </button>
         </div>
       </div>
-      <button type="button" class="btn siteBtnbackground" (click)="openChangePasswordModal()">Change Password</button>
+      <button type="button" class="btn siteBtnbackground" (click)="openChangePasswordModal()">
+        {{ authService.userdetail?.hasPassword ? 'Change Password' : 'Set Password' }}
+      </button>
     </div>
   </div>
 </section>

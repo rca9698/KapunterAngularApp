@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { apiService } from 'src/app/api.service';
@@ -11,13 +11,15 @@ import { serializeForApi } from 'src/app/Shared/Utils/api-serialize.util';
   templateUrl: './change-password-modal.component.html',
   styleUrls: ['./change-password-modal.component.css']
 })
-export class ChangePasswordModalComponent {
+export class ChangePasswordModalComponent implements OnInit {
   changePasswordForm: FormGroup;
   submitted = false;
   showCurrentPassword = false;
   showNewPassword = false;
   showConfirmPassword = false;
   saving = false;
+  /** When true, current password is required (account already has a password). */
+  hasPassword = false;
 
   constructor(
     public bsModalRef: BsModalRef,
@@ -27,10 +29,33 @@ export class ChangePasswordModalComponent {
     private toasterService: ToastrService
   ) {
     this.changePasswordForm = this.formBuilder.group({
-      currentPassword: ['', [Validators.required]],
+      currentPassword: [''],
       changePassword: ['', [Validators.required, Validators.minLength(4)]],
       confirmPassword: ['', [Validators.required]]
     });
+  }
+
+  ngOnInit(): void {
+    this.hasPassword = !!this.authService.userdetail?.hasPassword;
+    const currentCtrl = this.changePasswordForm.get('currentPassword');
+    if (this.hasPassword) {
+      currentCtrl?.setValidators([Validators.required]);
+    } else {
+      currentCtrl?.clearValidators();
+      currentCtrl?.setValue('');
+    }
+    currentCtrl?.updateValueAndValidity();
+  }
+
+  get modalTitle(): string {
+    return this.hasPassword ? 'Change Password' : 'Set Password';
+  }
+
+  get submitLabel(): string {
+    if (this.saving) {
+      return 'Saving…';
+    }
+    return this.hasPassword ? 'Update Password' : 'Set Password';
   }
 
   toggleCurrentPassword(): void {
@@ -62,7 +87,7 @@ export class ChangePasswordModalComponent {
     const payload = serializeForApi({
       userId: this.authService.user.userId,
       mobileNumber: this.authService.userdetail.userNumber,
-      currentPassword,
+      currentPassword: this.hasPassword ? (currentPassword ?? '') : '',
       changePassword,
       confirmPassword
     });
@@ -72,6 +97,9 @@ export class ChangePasswordModalComponent {
         this.saving = false;
         if (response?.returnStatus === 1) {
           this.toasterService.success(response?.returnMessage ?? 'Password updated');
+          if (this.authService.userdetail) {
+            this.authService.userdetail.hasPassword = true;
+          }
           this.bsModalRef.hide();
         } else {
           this.toasterService.warning(response?.returnMessage ?? 'Unable to update password');

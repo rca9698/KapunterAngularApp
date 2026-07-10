@@ -58,8 +58,10 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   openChangePasswordModal(): void {
+    const hasPassword = !!this.authService.userdetail?.hasPassword;
     this.bsModalService.show(ChangePasswordModalComponent, {
-      class: 'modal-dialog-centered'
+      class: 'modal-dialog-centered',
+      initialState: { hasPassword }
     });
   }
 

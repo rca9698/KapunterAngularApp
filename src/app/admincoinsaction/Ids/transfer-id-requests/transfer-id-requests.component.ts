@@ -11,7 +11,7 @@ import { buildSiteLogoUrl } from 'src/app/Shared/Utils/site-image.util';
 @Component({
   selector: 'app-transfer-id-requests',
   templateUrl: './transfer-id-requests.component.html',
-  styleUrls: ['./transfer-id-requests.component.css', '../../shared/admin-listing.shared.css']
+  styleUrls: ['../shared/transfer-id-listing.shared.css']
 })
 export class TransferIdRequestsComponent implements OnInit {
   private readonly _sessionUser: any;

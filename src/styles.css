@@ -951,9 +951,13 @@ input::-webkit-inner-spin-button {
     --kp-surface: #ffffff;
     --kp-surface-2: #f3f6f9;
     --kp-text: #1a2332;
-    --kp-muted: #5a6b7d;
-    --kp-accent: #b85c00;
-    --kp-accent-2: #9a4d00;
+    --kp-muted: #4a5568;
+    /* Darker amber — pale yellows are unreadable on white */
+    --kp-accent: #8f3d00;
+    --kp-accent-2: #6f2f00;
+    --kp-accent-soft: #9a3412;
+    --kp-yellow-text: #8f3d00;
+    --kp-yellow-icon: #a34400;
     --kp-border: #c5d0dc;
     --kp-border-subtle: #dce3ea;
     --kp-surface-gradient: linear-gradient(180deg, #ffffff 0%, #f4f7fa 100%);
@@ -974,7 +978,7 @@ input::-webkit-inner-spin-button {
     --kp-body-bg-image: linear-gradient(180deg, #edf1f5 0%, #dde4eb 100%);
     --kp-elevation-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 2px 8px rgba(15, 23, 42, 0.06);
     --kp-elevation-card-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 8px 20px rgba(15, 23, 42, 0.1);
-    --kp-focus-ring: 0 0 0 3px rgba(184, 92, 0, 0.22);
+    --kp-focus-ring: 0 0 0 3px rgba(143, 61, 0, 0.28);
     --kp-scrollbar-thumb: #b8c4d0;
     --kp-scrollbar-track: #e8edf2;
 }
