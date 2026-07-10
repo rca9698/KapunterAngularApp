@@ -1,0 +1,162 @@
+<section class="refer-shell">
+  <div class="refer-card">
+    <div class="refer-head">
+      <div>
+        <h2>Refer &amp; Earn</h2>
+        <p>Invite friends with your link. When they complete their first login, you earn ₹{{ rewardAmount }}.</p>
+      </div>
+      <button
+        type="button"
+        class="refer-config-toggle"
+        *ngIf="isAdmin"
+        (click)="toggleConfig()"
+      >
+        <i class="bi bi-sliders"></i> Reward
+      </button>
+    </div>
+
+    <div class="refer-loading" *ngIf="loading">
+      <app-kapunter-loader message="Loading referral activity…"></app-kapunter-loader>
+    </div>
+
+    <ng-container *ngIf="!loading">
+      <div class="refer-config-panel" *ngIf="isAdmin && showConfig">
+        <label for="rewardConfig">Referral reward amount (₹)</label>
+        <div class="refer-config-row">
+          <input
+            id="rewardConfig"
+            type="number"
+            class="form-control"
+            [(ngModel)]="configRewardAmount"
+            min="1"
+            step="1"
+          />
+          <button type="button" class="btn siteBtnbackground" [disabled]="savingConfig" (click)="saveRewardConfig()">
+            {{ savingConfig ? 'Saving…' : 'Save' }}
+          </button>
+        </div>
+        <p class="refer-config-hint">This amount is used for all future successful referral logins.</p>
+      </div>
+
+      <ol class="refer-steps" aria-label="How referral activity works">
+        <li>
+          <span class="refer-step-num">1</span>
+          <div>
+            <strong>Share your invite link</strong>
+            <p>Send the prepared message or link to a friend (WhatsApp, SMS, etc.).</p>
+          </div>
+        </li>
+        <li>
+          <span class="refer-step-num">2</span>
+          <div>
+            <strong>Friend opens the link</strong>
+            <p>Kapunter opens with your invite code ready and asks them to log in.</p>
+          </div>
+        </li>
+        <li>
+          <span class="refer-step-num">3</span>
+          <div>
+            <strong>First login completes</strong>
+            <p>After OTP/password login, you receive ₹{{ rewardAmount }} in your wallet automatically.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="refer-stats">
+        <div class="refer-stat">
+          <span>Successful referrals</span>
+          <strong>{{ totalReferrals }}</strong>
+        </div>
+        <div class="refer-stat">
+          <span>Total earned</span>
+          <strong><i class="bi bi-currency-rupee"></i>{{ totalEarned }}</strong>
+        </div>
+        <div class="refer-stat">
+          <span>Reward per referral</span>
+          <strong><i class="bi bi-currency-rupee"></i>{{ rewardAmount }}</strong>
+        </div>
+      </div>
+
+      <div class="refer-code-box">
+        <div class="refer-code-row">
+          <div>
+            <span class="refer-label">Your referral code</span>
+            <strong class="refer-code">{{ referralCode || '—' }}</strong>
+          </div>
+          <button type="button" class="btn refer-secondary-btn" (click)="copyCode()" [disabled]="!referralCode">
+            <i class="bi" [class.bi-check2]="copiedField === 'code'" [class.bi-clipboard]="copiedField !== 'code'"></i>
+            {{ copiedField === 'code' ? 'Copied' : 'Copy code' }}
+          </button>
+        </div>
+
+        <span class="refer-label">Working invite link</span>
+        <div class="refer-link-row">
+          <p class="refer-link">{{ shareLink }}</p>
+          <button type="button" class="btn refer-secondary-btn" (click)="copyLink()" [disabled]="!referralCode">
+            <i class="bi" [class.bi-check2]="copiedField === 'link'" [class.bi-link-45deg]="copiedField !== 'link'"></i>
+            {{ copiedField === 'link' ? 'Copied' : 'Copy link' }}
+          </button>
+        </div>
+
+        <span class="refer-label">Prepared share message</span>
+        <pre class="refer-message-preview">{{ shareMessage }}</pre>
+
+        <div class="refer-actions">
+          <button type="button" class="btn siteBtnbackground" (click)="openShareConfirm()" [disabled]="!referralCode || sharing">
+            <i class="bi bi-share"></i> Share invite
+          </button>
+          <button type="button" class="btn refer-whatsapp-btn" (click)="shareWhatsApp()" [disabled]="!referralCode">
+            <i class="bi bi-whatsapp"></i> WhatsApp
+          </button>
+          <button type="button" class="btn refer-secondary-btn" (click)="copyMessage()" [disabled]="!referralCode">
+            <i class="bi bi-clipboard"></i> Copy message
+          </button>
+        </div>
+      </div>
+
+      <div class="refer-notice">
+        <i class="bi bi-info-circle"></i>
+        <div>
+          <strong>Before you share</strong>
+          <p>
+            Your friend must open <em>your</em> invite link, then complete login with mobile OTP or password.
+            Reward ₹{{ rewardAmount }} is credited only on their first successful referral login.
+            Self-referrals are not allowed.
+          </p>
+        </div>
+      </div>
+
+      <div class="refer-list-wrap">
+        <h3>Referral activity</h3>
+        <div class="refer-empty" *ngIf="!referrals.length">
+          <i class="bi bi-people"></i>
+          <p>No successful referrals yet. Share your prepared invite to start earning.</p>
+        </div>
+        <ul class="refer-list" *ngIf="referrals.length">
+          <li *ngFor="let row of referrals">
+            <div>
+              <strong>{{ row.referredUserNumber }}</strong>
+              <span>First login · {{ row.createdDate }}</span>
+            </div>
+            <em>+₹{{ row.rewardAmount }}</em>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="refer-confirm-backdrop" *ngIf="showShareConfirm" (click)="cancelShare()">
+    <div class="refer-confirm-card" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
+      <h3>Ready to share?</h3>
+      <p>
+        This sends your working invite link. When your friend opens it and completes first login,
+        you receive <strong>₹{{ rewardAmount }}</strong>.
+      </p>
+      <pre class="refer-message-preview refer-message-preview--modal">{{ shareMessage }}</pre>
+      <div class="refer-confirm-actions">
+        <button type="button" class="btn refer-secondary-btn" (click)="cancelShare()">Cancel</button>
+        <button type="button" class="btn siteBtnbackground" (click)="confirmShare()">Continue &amp; share</button>
+      </div>
+    </div>
+  </div>
+</section>

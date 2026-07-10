@@ -89,6 +89,24 @@
             </li>
           </ul>
         </section>
+
+        <section class="transfer-amount-panel" *ngIf="hasDestinations" aria-label="Transfer amount">
+          <label class="transfer-panel-label" for="transferAmountInput">Amount to transfer *</label>
+          <div class="transfer-amount-input-wrap">
+            <span class="transfer-amount-prefix"><i class="bi bi-currency-rupee"></i></span>
+            <input
+              id="transferAmountInput"
+              type="number"
+              class="form-control transfer-amount-input"
+              [(ngModel)]="transferAmount"
+              min="0.01"
+              step="0.01"
+              placeholder="Enter amount"
+              inputmode="decimal"
+            />
+          </div>
+          <p class="transfer-amount-hint">Admin will approve this requested amount.</p>
+        </section>
       </ng-container>
     </ng-container>
   </div>
@@ -97,7 +115,7 @@
     <button
       type="button"
       class="btn siteBtnbackground"
-      [disabled]="!selectedDestination || submitting"
+      [disabled]="!selectedDestination || !transferAmount || transferAmount <= 0 || submitting"
       (click)="submitTransferRequest()"
     >
       <span *ngIf="!submitting">Request Transfer</span>

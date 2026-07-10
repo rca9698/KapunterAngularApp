@@ -8,6 +8,8 @@ import { normalizeUserDetail, resolveWalletBalance } from './Shared/utils/user-d
 import { environment } from 'src/environments/environment';
 import { VisitorCountService } from './visitor-count.service';
 import { ThemeService } from './theme.service';
+import { ReferralService } from './Accounts/Profile/refer-earn/referral.service';
+import { ToastrService } from './toastr/toastr.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +54,9 @@ export class AuthService {
   constructor(
     private apiservice: apiService,
     private visitorCountService: VisitorCountService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private referralService: ReferralService,
+    private toasterService: ToastrService
   ) {
     this.restoreSession();
   }
@@ -85,6 +89,7 @@ export class AuthService {
       this.themeService.setUserContext(this.user.userId);
       this.visitorCountService.refreshAfterLogin();
       this.getUserDetails()?.subscribe();
+      this.tryClaimPendingReferral();
 
       const afterSave = this.buildLoginDebugSnapshot(response, token, 'login() after token saved');
       this.lastLoginDebug = afterSave;
@@ -92,13 +97,62 @@ export class AuthService {
     }));
   }
 
-  /** API contract (swagger LoginCommand): userNumber, otp, password (camelCase). */
+  /** Capture referral code from URL (?ref=CODE) for first-login reward. */
+  captureReferralFromUrl(): void {
+    this.referralService.captureFromUrl();
+    this.referralService.refreshBannerVisibility(this.isLoggedIn);
+  }
+
+  private tryClaimPendingReferral(): void {
+    const code = this.referralService.pendingCode;
+    if (!code || !this.user?.userId) {
+      return;
+    }
+
+    this.apiservice.claimReferral({
+      referredUserId: this.user.userId,
+      referralCode: code,
+    }).subscribe({
+      next: (resp: any) => {
+        const status = resp?.returnStatus ?? resp?.ReturnStatus;
+        const message = resp?.returnMessage ?? resp?.ReturnMessage ?? '';
+        if (status === 1) {
+          this.referralService.clearPending();
+          this.getUserDetails()?.subscribe();
+          this.toasterService.success(message || 'Referral applied successfully.');
+        } else if (String(message).toLowerCase().includes('already')
+          || String(message).toLowerCase().includes('own referral')) {
+          this.referralService.clearPending();
+          if (String(message).toLowerCase().includes('own referral')) {
+            this.toasterService.warning(message);
+          }
+        } else if (message) {
+          this.toasterService.warning(message);
+        }
+      },
+      error: () => { /* ignore claim errors on login */ },
+    });
+  }
+
+  /** API contract: exactly one of otp or password must be non-empty. */
   private buildLoginRequestBody(obj: login): { userNumber: string; otp: string; password: string } {
-    const hasPassword = !!(obj.Password && String(obj.Password).trim());
+    const userNumber = String(obj.UserNumber ?? '').trim();
+    const otp = String(obj.OTP ?? '').trim();
+    const password = String(obj.Password ?? '').trim();
+    const hasPassword = !!password;
+    const hasOtp = !!otp;
+
+    if (hasPassword && !hasOtp) {
+      return { userNumber, otp: '', password };
+    }
+    if (hasOtp && !hasPassword) {
+      return { userNumber, otp, password: '' };
+    }
+    // Neither or both — send cleared unused field; API/SP will reject.
     return {
-      userNumber: String(obj.UserNumber ?? '').trim(),
-      otp: hasPassword ? '' : String(obj.OTP ?? '').trim(),
-      password: hasPassword ? String(obj.Password).trim() : String(obj.Password ?? '').trim(),
+      userNumber,
+      otp: hasPassword ? '' : otp,
+      password: hasPassword ? password : '',
     };
   }
 

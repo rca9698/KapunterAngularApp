@@ -14,6 +14,8 @@ import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { TransferIdsListModalComponent } from '../Sites/userListSites/transfer-ids-list-modal/transfer-ids-list-modal.component';
 import { SiteIdDetailsModalComponent } from '../Sites/userListSites/site-id-details-modal/site-id-details-modal.component';
 import { GetUserSiteTransactionHistoryComponent } from '../Sites/get-user-site-transaction-history/get-user-site-transaction-history.component';
+import { ReferralService } from '../Accounts/Profile/refer-earn/referral.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -30,6 +32,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   sitePath: string | undefined;
   sitesLoading = false;
   depositType: 'site' | 'wallet' = 'wallet';
+  showReferralBanner = false;
+  referralCode = '';
+  referralReward = 200;
+  private referralSubs: Subscription[] = [];
 
   @ViewChild('accountCarousel') accountCarousel?: ElementRef<HTMLElement>;
   private accountCarouselInstance?: { dispose: () => void; cycle: () => void };
@@ -38,12 +44,30 @@ export class HomeComponent implements OnInit, OnDestroy {
     , public authservice: AuthService, private toasterService: ToastrService
     , public userservice: UserService, private accountService: AccountsService
     , private siteService: SitesService, private userIdsService: UserIdsService
-    , private bsModalService: BsModalService){
+    , private bsModalService: BsModalService
+    , private referralService: ReferralService){
     this.imgPath = environment.imagePath.dashboardImages;
     this.sitePath = environment.imagePath.sitePath;
   }
 
   ngOnInit(): void {
+    this.referralSubs.push(
+      this.referralService.showInviteBanner$.subscribe((show) => {
+        this.showReferralBanner = show && !this.authservice.isLoggedIn;
+      }),
+      this.referralService.pendingCode$.subscribe((code) => {
+        this.referralCode = code || '';
+      }),
+      this.referralService.rewardAmount$.subscribe((amount) => {
+        this.referralReward = amount;
+      }),
+      this.authservice.isLoggenIn.subscribe((loggedIn) => {
+        this.referralService.refreshBannerVisibility(!!loggedIn);
+        this.showReferralBanner = this.referralService.showInviteBanner && !loggedIn;
+      })
+    );
+    this.referralService.refreshBannerVisibility(this.authservice.isLoggedIn);
+
      this.homeService.getDashboradImages().subscribe(resp=>{
       this.returnType = resp; 
       this.images = this.returnType['returnList'];
@@ -60,7 +84,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.referralSubs.forEach((s) => s.unsubscribe());
     this.disposeAccountCarousel();
+  }
+
+  openInviteLogin(): void {
+    this.accountService.OpenLoginPopup(true, 'Login to claim invite');
+  }
+
+  dismissReferralBanner(): void {
+    this.referralService.dismissBanner();
+    this.showReferralBanner = false;
   }
 
   trackBySiteId(_index: number, site: ISiteDetailModal): number {

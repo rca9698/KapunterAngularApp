@@ -1,41 +1,24 @@
-<div class="offers-container">
-  <div class="feature-card">
-    <h2>🎁 Exclusive Offers</h2>
-    <p>Discover our amazing offers designed to enhance your gaming experience with better rewards and faster payouts.</p>
+<section class="kp-content-shell">
+  <div class="kp-content-card">
+    <h1>Exclusive offers</h1>
+    <p class="kp-content-lead">Offers designed for faster payouts and better rewards.</p>
 
-    <div class="offers-grid">
-      <div class="offer-card" [ngClass]="'offer-card-' + offer.cardType" *ngFor="let offer of offers">
-        <div class="offer-header">
-          <div class="offer-emoji">{{ offer.emoji }}</div>
-          <h4>{{ offer.title }}</h4>
-        </div>
-
-        <div class="offer-content">
-          <p class="offer-headline">{{ offer.headline }}</p>
-          <p class="offer-description">{{ offer.description }}</p>
-
-          <!-- Benefits Section -->
-          <div class="offer-benefits" *ngIf="offer.benefits && offer.benefits.length > 0">
-            <ul>
-              <li *ngFor="let benefit of offer.benefits">{{ benefit }}</li>
-            </ul>
-          </div>
-
-          <!-- Rules Section -->
-          <div class="offer-rules" *ngIf="offer.rules && offer.rules.length > 0">
-            <h5>📌 Offer Rules:</h5>
-            <div class="rule-item" *ngFor="let rule of offer.rules" [ngClass]="{ 'rule-item-highlight': rule.highlight }">
-              <p class="rule-title">{{ rule.title }}</p>
-              <p class="rule-content">{{ rule.content }}</p>
-            </div>
-          </div>
-
-          <!-- Terms -->
-          <div class="offer-terms" *ngIf="offer.terms">
-            <small>{{ offer.terms }}</small>
-          </div>
-        </div>
+    <article class="kp-offer-block" [ngClass]="'kp-offer-accent-' + offer.cardType" *ngFor="let offer of offers">
+      <div class="kp-offer-block-header">
+        <h2>{{ offer.emoji }} {{ offer.title }}</h2>
       </div>
-    </div>
+      <div class="kp-offer-block-body">
+        <p class="headline">{{ offer.headline }}</p>
+        <p class="desc">{{ offer.description }}</p>
+        <ul *ngIf="offer.benefits?.length">
+          <li *ngFor="let benefit of offer.benefits">{{ benefit }}</li>
+        </ul>
+        <div class="kp-rule-box" *ngFor="let rule of offer.rules || []">
+          <strong>{{ rule.title }}</strong>
+          <p>{{ rule.content }}</p>
+        </div>
+        <p class="kp-terms-note" *ngIf="offer.terms">{{ offer.terms }}</p>
+      </div>
+    </article>
   </div>
-</div>
+</section>

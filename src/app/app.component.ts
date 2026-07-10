@@ -9,6 +9,7 @@ import { AccountsService } from './Accounts/accounts.service';
 import { UserService } from './admincoinsaction/User/user.service';
 import { VisitorCountService } from './visitor-count.service';
 import { LoaderService } from './Shared/loader/loader.service';
+import { ReferralService } from './Accounts/Profile/refer-earn/referral.service';
 
 @Component({
   selector: 'app-root',
@@ -26,11 +27,19 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private siteService: SitesService, private dashboardService:DashboardService
     , public authService: AuthService, public accountService: AccountsService
     , private userservice: UserService, public visitorCountService: VisitorCountService
-    , private router: Router, private loaderService: LoaderService) {
+    , private router: Router, private loaderService: LoaderService
+    , private referralService: ReferralService) {
       this._sessionUser = authService.user.userId;
   }
 
   ngOnInit(): void {
+    this.authService.captureReferralFromUrl();
+    this.referralService.loadRewardAmount();
+
+    if (this.referralService.pendingCode && !this.authService.isLoggedIn) {
+      setTimeout(() => this.accountService.OpenLoginPopup(true, 'Login to claim invite'), 500);
+    }
+
     this.routerSub = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.loaderService.setRouteLoading(true);
@@ -40,12 +49,16 @@ export class AppComponent implements OnInit, OnDestroy {
         event instanceof NavigationError
       ) {
         this.loaderService.setRouteLoading(false);
+        if (event instanceof NavigationEnd) {
+          this.authService.captureReferralFromUrl();
+        }
       }
     });
 
     this.authService.getUserDetails()?.subscribe();
-    this.visitorCountService.loadStats();
-    this.visitorCountService.startAutoRefresh(60000);
+    this.visitorCountService.loadStats(false, 0);
+    // 3 minutes — enough for a live feel without heavy polling
+    this.visitorCountService.startAutoRefresh(180000);
   }
 
   ngOnDestroy(): void {

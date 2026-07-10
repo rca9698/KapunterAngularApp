@@ -202,6 +202,14 @@
   line-height: 1.35;
 }
 
+.site-utr {
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #9dd4ff;
+  letter-spacing: 0.02em;
+}
+
 .metadata-section {
   margin-top: 0.35rem;
 }
@@ -447,6 +455,10 @@
 :host-context([data-kp-theme="light"]) .created-date,
 :host-context([data-kp-theme="light"]) .detail-row span {
   color: var(--kp-muted) !important;
+}
+
+:host-context([data-kp-theme="light"]) .site-utr {
+  color: #1a6bb5 !important;
 }
 
 :host-context([data-kp-theme="light"]) .coins-amount {

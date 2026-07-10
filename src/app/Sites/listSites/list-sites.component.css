@@ -272,3 +272,67 @@
     justify-content: center;
   }
 }
+
+/* ---------- Light theme (dark theme unchanged) ---------- */
+:host-context([data-kp-theme="light"]) .admin-sites-heading h2 {
+  color: #1a1a1a;
+}
+
+:host-context([data-kp-theme="light"]) .admin-sites-heading p,
+:host-context([data-kp-theme="light"]) .admin-sites-loading {
+  color: #5c5c5c;
+}
+
+:host-context([data-kp-theme="light"]) .admin-sites-empty-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+:host-context([data-kp-theme="light"]) .admin-sites-empty-icon {
+  color: #c45a00;
+  background: rgba(255, 122, 0, 0.1);
+  border-color: rgba(255, 122, 0, 0.28);
+  box-shadow: none;
+}
+
+:host-context([data-kp-theme="light"]) .admin-sites-empty-card h3 {
+  color: #1a1a1a;
+}
+
+:host-context([data-kp-theme="light"]) .admin-sites-empty-card p {
+  color: #5c5c5c;
+}
+
+:host-context([data-kp-theme="light"]) .admin-site-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+:host-context([data-kp-theme="light"]) .admin-site-card:hover {
+  border-color: rgba(255, 122, 0, 0.45);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+}
+
+:host-context([data-kp-theme="light"]) .admin-site-logo-wrap {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: none;
+  background: #f7f7f7;
+}
+
+:host-context([data-kp-theme="light"]) .admin-site-name {
+  color: #1a1a1a;
+}
+
+:host-context([data-kp-theme="light"]) .admin-site-url {
+  color: #5c5c5c;
+}
+
+:host-context([data-kp-theme="light"]) .admin-site-badge {
+  color: #2f6fed;
+}
+
+:host-context([data-kp-theme="light"]) .admin-site-badge .bi-check-circle-fill {
+  color: #1a9d5c;
+}

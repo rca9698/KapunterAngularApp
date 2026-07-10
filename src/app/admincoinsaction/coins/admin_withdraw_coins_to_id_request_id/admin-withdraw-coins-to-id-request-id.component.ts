@@ -31,7 +31,8 @@ export class AdminWithdrawCoinsToIdRequestIdComponent {
     , private coinsService: CoinsService, private toasterService: ToastrService
     , private commonservice: CommonService){
       this.withdrawCoinsfromidsFrom = this.formBuilder.group({
-        coins: ['', [Validators.required]]
+        coins: ['', [Validators.required]],
+        utr: ['', [Validators.required, Validators.minLength(6)]]
        },
      )
      this.sitePath = environment.imagePath.sitePath;
@@ -50,6 +51,7 @@ export class AdminWithdrawCoinsToIdRequestIdComponent {
   this.withdrawobj.coins = this.obj.coins;
   this.withdrawobj.coinType = this.obj.coinType ?? 1;
   this.withdrawobj.coinsRequestId = this.obj.coinsRequestId;
+  this.withdrawobj.utr = (this.withdrawCoinsfromidsFrom.get('utr')?.value || '').toString().trim();
   console.log(this.withdrawobj);
   this.coinsService.deposite_withdraw_coins_to_ids(this.withdrawobj).subscribe(resp => {
     this.returnType = resp;

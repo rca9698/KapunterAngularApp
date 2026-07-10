@@ -67,8 +67,6 @@
                             <a routerLink="/ids/list-id-requests" class="dashboard-nav-dropdown-item "> <i class="bi bi-people"></i> Account Requests </a>
                             <a routerLink="/ids/close-id-requests" class="dashboard-nav-dropdown-item "> <i class="bi bi-people"></i> Close Account Requests </a>
                             <a routerLink="/ids/change-password-requests" routerLinkActive="router-link-active"  class="dashboard-nav-dropdown-item "> <i class="bi bi-people"></i> Change Password Requests </a>
-                            <a routerLink="/ids/transfer-id-requests" routerLinkActive="router-link-active" class="dashboard-nav-dropdown-item "> <i class="bi bi-arrow-left-right"></i> Transfer ID Requests </a>
-                            <a routerLink="/ids/transfer-id-history" routerLinkActive="router-link-active" class="dashboard-nav-dropdown-item "> <i class="bi bi-clock-history"></i> Transfer ID History </a>
                             <a routerLink="/ids/list-ids" class="dashboard-nav-dropdown-item "> <i class="bi bi-person-fill-add"></i> Created Accounts</a>
                             <a routerLink="/ids/rejected-id-requests" class="dashboard-nav-dropdown-item "> <i class="bi bi-person-fill-dash"></i> Rejected Accounts</a>
                         </div>
@@ -100,6 +98,8 @@
                         <div class='dashboard-nav-dropdown-menu'>
                             <a routerLink="/adminaction/coins/deposite-to-site-list" class="dashboard-nav-dropdown-item "><i class="bi bi-cash-coin"></i>Deposit Requests</a>
                             <a routerLink="/adminaction/coins/withdraw-from-site-list" class="dashboard-nav-dropdown-item "><i class="bi bi-cash-coin"></i>Withdraw Requests</a>
+                            <a routerLink="/ids/transfer-id-requests" routerLinkActive="router-link-active" class="dashboard-nav-dropdown-item "><i class="bi bi-arrow-left-right"></i>Transfer ID Requests</a>
+                            <a routerLink="/ids/transfer-id-history" routerLinkActive="router-link-active" class="dashboard-nav-dropdown-item "><i class="bi bi-clock-history"></i>Transfer ID History</a>
                            <!-- <a routerLink="/adminaction/coins/deposite-to-site-list" class="dashboard-nav-dropdown-item "><i class="bi bi-cash-coin"></i>Deposit to Site Requests</a>
                             <a routerLink="/adminaction/coins/withdraw-from-site-list" class="dashboard-nav-dropdown-item "><i class="bi bi-cash-coin"></i>Withdraw from Site Requests</a>
                             <a routerLink="/adminaction/coins/deposite-list" class="dashboard-nav-dropdown-item "><i class="bi bi-cash-coin"></i>Desposit To Wallet Requests</a>
@@ -159,6 +159,12 @@
                                         <span class="sidebar-member-text">Create ID</span>
                                     </a>
                                 </li>
+                                <li>
+                                    <a routerLink="/account/refer-earn" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
+                                        <i class="bi bi-share" aria-hidden="true"></i>
+                                        <span class="sidebar-member-text">Refer &amp; Earn</span>
+                                    </a>
+                                </li>
                             </ul>
                         </section>
 
@@ -166,19 +172,19 @@
                             <h2 id="ben-nav-programs-heading" class="sidebar-ben-heading">Programs &amp; rules</h2>
                             <ul class="sidebar-ben-list">
                                 <li>
-                                    <a routerLink="/setting/setting-lists" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
+                                    <a routerLink="/setting/bonus" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
                                         <i class="bi bi-gift" aria-hidden="true"></i>
                                         <span class="sidebar-member-text">Bonus</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a routerLink="/setting/setting-lists" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
+                                    <a routerLink="/setting/lossback" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
                                         <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
                                         <span class="sidebar-member-text">Loss back</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a routerLink="/setting/setting-lists" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
+                                    <a routerLink="/setting/rules" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
                                         <i class="bi bi-file-text" aria-hidden="true"></i>
                                         <span class="sidebar-member-text">Rules</span>
                                     </a>

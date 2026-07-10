@@ -15,7 +15,7 @@ import { NotFoundComponent } from './Shared/component/error/not-found/not-found.
 import { ValidationMessageComponent } from './Shared/component/error/validation-message/validation-message.component';
 import { SitesModule } from './Sites/sites.module';
 import { AppToasterComponent } from './toastr/toastrs/app-toaster.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddImageComponent } from './Dashboard/Add-Image/add-image.component';
 import { AuthInterceptorProvider } from './auth-interceptor.service';
 import { LoaderInterceptorProvider } from './Shared/loader/loader.interceptor';
@@ -50,7 +50,8 @@ import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsa
     AccountsModule,
     SitesModule,
     LoaderModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [AuthInterceptorProvider, LoaderInterceptorProvider],
   bootstrap: [AppComponent]

@@ -40,6 +40,7 @@ export class AdminWithdrawCoinsByRequestIdComponent {
   , private commonservice: CommonService){
       this.WithdrawCoinsByRequestIDFrom = this.formBuilder.group({
         coins: ['', [Validators.required]],
+        utr: ['', [Validators.required, Validators.minLength(6)]],
        },
      )
      this._sessionUser = authservice.userdetail.userId;
@@ -62,6 +63,7 @@ export class AdminWithdrawCoinsByRequestIdComponent {
   formParams.append('coins', this.obj.coins.toString());
   formParams.append('coinType', this.obj.coinType.toString());
   formParams.append('sessionUser', this._sessionUser.toString());
+  formParams.append('utr', (this.WithdrawCoinsByRequestIDFrom.get('utr')?.value || '').toString().trim());
 
     this.coinsService.withdraw_coins_by_request_id(formParams).subscribe(resp => {
       console.log(resp);

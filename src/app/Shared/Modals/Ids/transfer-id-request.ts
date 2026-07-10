@@ -36,6 +36,7 @@ export interface IAddTransferIDRequest {
   accountId: number;
   targetAccountId: number;
   targetSiteId: number;
+  transferAmount: number;
   sessionUser: number;
 }
 

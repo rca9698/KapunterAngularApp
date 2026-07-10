@@ -25,12 +25,12 @@ export class VisitorCountService {
     return this._stats.value;
   }
 
-  loadStats(silent = false): void {
+  loadStats(silent = false, recentCount = 0): void {
     if (!silent) {
       this.loading = true;
     }
 
-    this.apiservice.GetVisitorStats().pipe(
+    this.apiservice.GetVisitorStats(recentCount).pipe(
       finalize(() => {
         this.loading = false;
       })
@@ -60,14 +60,18 @@ export class VisitorCountService {
       clearTimeout(this.loginRefreshTimer);
     }
     this.loginRefreshTimer = setTimeout(() => {
-      this.loadStats(true);
+      this.loadStats(true, 0);
       this.loginRefreshTimer = null;
     }, 400);
   }
 
-  startAutoRefresh(intervalMs = 30000): void {
+  /**
+   * Navbar counter: light payload (no recent logins) on a slow interval.
+   * Default 3 minutes — near-real-time without hammering the API.
+   */
+  startAutoRefresh(intervalMs = 180000): void {
     this.stopAutoRefresh();
-    this.refreshTimer = setInterval(() => this.loadStats(true), intervalMs);
+    this.refreshTimer = setInterval(() => this.loadStats(true, 0), intervalMs);
   }
 
   stopAutoRefresh(): void {

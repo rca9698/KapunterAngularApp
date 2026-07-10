@@ -25,8 +25,8 @@
             </td>
           </tr>
           <tr *ngFor="let item of historyList; trackBy: trackByReqId">
-            <td>{{ item.userNumber }}</td>
-            <td>
+            <td data-label="User">{{ item.userNumber }}</td>
+            <td data-label="From">
               <div class="site-cell">
                 <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion)">
                   <img
@@ -44,11 +44,11 @@
                 </div>
               </div>
             </td>
-            <td class="transfer-table-arrow text-center">
+            <td class="transfer-table-arrow text-center" data-label="">
               <i class="bi bi-currency-rupee"></i>
               <i class="bi bi-arrow-right"></i>
             </td>
-            <td>
+            <td data-label="To">
               <div class="site-cell">
                 <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion)">
                   <img
@@ -66,10 +66,10 @@
                 </div>
               </div>
             </td>
-            <td class="transfer-amount-cell">
+            <td class="transfer-amount-cell" data-label="Amount">
               <i class="bi bi-currency-rupee"></i>{{ transferAmount(item) }}
             </td>
-            <td>{{ approvedDate(item) }}</td>
+            <td data-label="Approved">{{ approvedDate(item) }}</td>
           </tr>
         </tbody>
       </table>

@@ -61,9 +61,105 @@
 }
 
 [data-kp-theme="light"] .modal .close,
-[data-kp-theme="light"] .modal .btn-close {
-  color: var(--kp-muted) !important;
-  opacity: 1;
+[data-kp-theme="light"] .modal .btn-close,
+[data-kp-theme="light"] .modal-chrome-btn-close {
+  width: 2.75rem !important;
+  height: 2.75rem !important;
+  min-width: 2.75rem !important;
+  min-height: 2.75rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 12px !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.22) !important;
+  background: #ffffff !important;
+  color: #1a1a1a !important;
+  opacity: 1 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-kp-theme="light"] .modal .close:hover,
+[data-kp-theme="light"] .modal .close:focus-visible,
+[data-kp-theme="light"] .modal .btn-close:hover,
+[data-kp-theme="light"] .modal-chrome-btn-close:hover {
+  background: #f3f3f3 !important;
+  border-color: rgba(0, 0, 0, 0.35) !important;
+  color: #000 !important;
+  transform: scale(1.04);
+}
+
+[data-kp-theme="light"] .modal-chrome-btn-back,
+[data-kp-theme="light"] .detail-back-btn,
+[data-kp-theme="light"] .btn-back {
+  border: 1.5px solid rgba(0, 0, 0, 0.18) !important;
+  background: #ffffff !important;
+  color: #1a1a1a !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-kp-theme="light"] .modal-chrome-btn-back:hover,
+[data-kp-theme="light"] .detail-back-btn:hover,
+[data-kp-theme="light"] .btn-back:hover {
+  background: #f3f3f3 !important;
+  border-color: rgba(0, 0, 0, 0.3) !important;
+  color: #000 !important;
+}
+
+[data-kp-theme="light"] .sidebar-ben-close,
+[data-kp-theme="light"] .sidebar-admin-close {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.22) !important;
+  background: #ffffff !important;
+  color: #1a1a1a !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+[data-kp-theme="light"] .sidebar-ben-close:hover,
+[data-kp-theme="light"] .sidebar-admin-close:hover {
+  background: #f0f0f0 !important;
+  border-color: rgba(0, 0, 0, 0.35) !important;
+  color: #000 !important;
+}
+
+/* Admin manage-sites / vendor sites (shared classes) */
+[data-kp-theme="light"] .admin-sites-heading h2 {
+  color: #1a1a1a !important;
+}
+
+[data-kp-theme="light"] .admin-sites-heading p,
+[data-kp-theme="light"] .admin-sites-loading {
+  color: #5c5c5c !important;
+}
+
+[data-kp-theme="light"] .admin-sites-empty-card,
+[data-kp-theme="light"] .admin-site-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+  color: #1a1a1a !important;
+}
+
+[data-kp-theme="light"] .admin-site-name,
+[data-kp-theme="light"] .admin-sites-empty-card h3 {
+  color: #1a1a1a !important;
+}
+
+[data-kp-theme="light"] .admin-site-url,
+[data-kp-theme="light"] .admin-sites-empty-card p {
+  color: #5c5c5c !important;
+}
+
+[data-kp-theme="light"] .admin-site-logo-wrap {
+  background: #f7f7f7 !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: none !important;
+}
+
+[data-kp-theme="light"] .admin-site-badge {
+  color: #2f6fed !important;
 }
 
 [data-kp-theme="light"] .modalContentBgclr {
@@ -325,6 +421,72 @@
 [data-kp-theme="light"] .feature-card > p,
 [data-kp-theme="light"] .feature-card .list-subtitle {
   color: var(--kp-muted) !important;
+}
+
+[data-kp-theme="light"] .offer-header,
+[data-kp-theme="light"] .section-header {
+  background: #fff7ed !important;
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-kp-theme="light"] .offer-header h4,
+[data-kp-theme="light"] .section-header h3,
+[data-kp-theme="light"] .offer-rules h5,
+[data-kp-theme="light"] .rule-title,
+[data-kp-theme="light"] .section-title {
+  color: #c2410c !important;
+}
+
+[data-kp-theme="light"] .offer-card,
+[data-kp-theme="light"] .terms-section,
+[data-kp-theme="light"] .feature-tile {
+  background: #fafafa !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-kp-theme="light"] .offer-headline,
+[data-kp-theme="light"] .offer-description,
+[data-kp-theme="light"] .offer-benefits li,
+[data-kp-theme="light"] .offer-additional-benefits li,
+[data-kp-theme="light"] .rule-item p,
+[data-kp-theme="light"] .rule-content,
+[data-kp-theme="light"] .terms-item,
+[data-kp-theme="light"] .notice-content p,
+[data-kp-theme="light"] .timeline-item h4,
+[data-kp-theme="light"] .timeline-item p {
+  color: #3a3a3a !important;
+}
+
+[data-kp-theme="light"] .offer-terms small,
+[data-kp-theme="light"] .terms-footer small {
+  color: #6b6b6b !important;
+}
+
+[data-kp-theme="light"] .rule-item,
+[data-kp-theme="light"] .offer-rules {
+  background: #f5f5f5 !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-kp-theme="light"] .timeline-item {
+  background: #fafafa !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-kp-theme="light"] .site-id-details-platform,
+[data-kp-theme="light"] .site-id-details-heading .modal-title {
+  color: #1a1a1a !important;
+}
+
+[data-kp-theme="light"] .site-id-details-sub,
+[data-kp-theme="light"] .site-id-details-number,
+[data-kp-theme="light"] .site-id-details-field label {
+  color: #5c5c5c !important;
+}
+
+[data-kp-theme="light"] .site-id-details-value,
+[data-kp-theme="light"] .site-id-details-input {
+  color: #1a1a1a !important;
 }
 
 [data-kp-theme="light"] .feature-tile {
@@ -673,4 +835,33 @@
 [data-kp-theme="light"] .approve-transfer-card {
   background: #ffffff !important;
   border: 1px solid var(--kp-border) !important;
+}
+
+/* Theme-aware loaders (global backup for host-context) */
+[data-kp-theme="light"] .global-loader-backdrop {
+  background: rgba(240, 242, 245, 0.72) !important;
+}
+
+[data-kp-theme="light"] .global-loader-panel {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  background: linear-gradient(165deg, #ffffff, #f7f8fa) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-kp-theme="light"] .kapunter-loader-message {
+  color: #3a3a3a !important;
+  font-weight: 600;
+}
+
+[data-kp-theme="light"] .kapunter-loader-ring {
+  border-top-color: #e86a00 !important;
+  border-right-color: rgba(232, 106, 0, 0.28) !important;
+}
+
+[data-kp-theme="light"] .kapunter-loader--overlay {
+  background: rgba(248, 249, 251, 0.78) !important;
+}
+
+[data-kp-theme="light"] .site-utr {
+  color: #1a6bb5 !important;
 }

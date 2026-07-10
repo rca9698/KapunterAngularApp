@@ -224,3 +224,64 @@
   font-style: italic;
   opacity: 0.85;
 }
+
+.transfer-amount-panel {
+  margin-top: 1rem;
+  padding: 0.85rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 160, 80, 0.28);
+  background: rgba(255, 140, 40, 0.06);
+}
+
+.transfer-amount-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.transfer-amount-prefix {
+  color: #ffb347;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.transfer-amount-input {
+  flex: 1;
+  min-height: 44px;
+}
+
+.transfer-amount-hint {
+  margin: 0.45rem 0 0;
+  font-size: 0.75rem;
+  color: #b8a898;
+}
+
+:host-context([data-kp-theme="light"]) .transfer-ids-modal {
+  background: #ffffff;
+  border-color: var(--kp-border);
+}
+
+:host-context([data-kp-theme="light"]) .transfer-ids-heading .modal-title,
+:host-context([data-kp-theme="light"]) .transfer-ids-site {
+  color: var(--kp-text);
+}
+
+:host-context([data-kp-theme="light"]) .transfer-ids-sub,
+:host-context([data-kp-theme="light"]) .transfer-ids-user,
+:host-context([data-kp-theme="light"]) .transfer-panel-label,
+:host-context([data-kp-theme="light"]) .transfer-amount-hint {
+  color: var(--kp-muted);
+}
+
+:host-context([data-kp-theme="light"]) .transfer-account-card,
+:host-context([data-kp-theme="light"]) .transfer-ids-row,
+:host-context([data-kp-theme="light"]) .transfer-amount-panel {
+  background: var(--kp-surface-2);
+  border-color: var(--kp-border);
+}
+
+:host-context([data-kp-theme="light"]) .transfer-ids-row-selected {
+  border-color: var(--kp-accent);
+  background: #fff8f0;
+}
+

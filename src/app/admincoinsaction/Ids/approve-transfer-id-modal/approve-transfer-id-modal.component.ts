@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AuthService } from 'src/app/auth.service';
@@ -14,7 +14,7 @@ import { serializeForApi } from 'src/app/Shared/Utils/api-serialize.util';
   templateUrl: './approve-transfer-id-modal.component.html',
   styleUrls: ['./approve-transfer-id-modal.component.css']
 })
-export class ApproveTransferIdModalComponent {
+export class ApproveTransferIdModalComponent implements OnInit {
   request!: ITransferIDRequestDetail;
   onApproved?: () => void;
 
@@ -33,6 +33,13 @@ export class ApproveTransferIdModalComponent {
     this.approveForm = this.formBuilder.group({
       transferAmount: ['', [Validators.required, Validators.min(0.01)]],
     });
+  }
+
+  ngOnInit(): void {
+    const requested = Number((this.request as any)?.transferAmount ?? this.request?.transferAmount ?? 0);
+    if (requested > 0) {
+      this.approveForm.patchValue({ transferAmount: requested });
+    }
   }
 
   get sourceAccountId(): number {

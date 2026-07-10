@@ -1,3 +1,140 @@
-/* #OtpPasswordModalForm{
-    display: none;
-} */
+/* Login modal — theme-aware */
+
+.login-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--kp-border);
+}
+
+.login-modal-header .modal-title {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kp-text);
+}
+
+.login-back-btn,
+.login-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  color: var(--kp-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.login-back-btn:hover,
+.login-close-btn:hover {
+  border-color: var(--kp-accent);
+  color: var(--kp-accent);
+}
+
+.login-brand {
+  text-align: center;
+  padding: 1.1rem 1.25rem 0.35rem;
+}
+
+.login-brand .modal-brand-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid var(--kp-border);
+  box-shadow: var(--kp-elevation-card);
+}
+
+.login-welcome {
+  margin: 0.75rem 0 0.25rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--kp-text);
+}
+
+.login-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--kp-muted);
+  line-height: 1.4;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-body {
+  padding: 1rem 1.25rem 1.35rem;
+}
+
+.login-auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  padding: 0.3rem;
+  border-radius: 12px;
+  background: var(--kp-surface-2);
+  border: 1px solid var(--kp-border);
+}
+
+.login-auth-tabs:has(.login-auth-tab:only-child) {
+  grid-template-columns: 1fr;
+}
+
+.login-auth-tab {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--kp-muted);
+  padding: 0.55rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.login-auth-tab.active {
+  background: var(--kp-surface);
+  color: var(--kp-text);
+  border-color: var(--kp-accent);
+  box-shadow: var(--kp-elevation-card);
+}
+
+.login-primary-btn {
+  margin-top: 0.35rem;
+  min-height: 44px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.login-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  color: var(--kp-muted);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.login-body .form-label {
+  color: var(--kp-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.login-body .form-control {
+  min-height: 44px;
+}
+
+[data-kp-theme="light"] .login-brand .modal-brand-logo {
+  background: #fff;
+}

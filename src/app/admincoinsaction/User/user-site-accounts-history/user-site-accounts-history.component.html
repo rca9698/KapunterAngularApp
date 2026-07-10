@@ -127,6 +127,10 @@
                   <span>Reference No</span>
                   <strong>{{ detail.passbookHistoryId || '—' }}</strong>
                 </div>
+                <div class="admin-passbook-detail-row" *ngIf="detail.utr">
+                  <span>UTR</span>
+                  <strong>{{ detail.utr }}</strong>
+                </div>
                 <div class="admin-passbook-detail-row">
                   <span>Request Date</span>
                   <strong>{{ detail.createdDate || '—' }}</strong>

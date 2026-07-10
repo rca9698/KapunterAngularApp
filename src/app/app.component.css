@@ -89,18 +89,18 @@
     top: 8px;
     right: 8px;
     z-index: 2;
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 11px !important;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 12px !important;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    background: rgba(20, 12, 32, 0.88) !important;
-    border: 1px solid rgba(255, 149, 31, 0.55) !important;
-    color: #ffd199 !important;
-    font-size: 1.1rem;
+    background: rgba(20, 12, 32, 0.92) !important;
+    border: 1.5px solid rgba(255, 149, 31, 0.7) !important;
+    color: #fff4e8 !important;
+    font-size: 1.2rem;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 .sidebar-admin-close:hover {
@@ -319,19 +319,20 @@
     position: static !important;
     right: auto !important;
     bottom: auto !important;
-    width: 40px !important;
-    height: 40px !important;
+    width: 42px !important;
+    height: 42px !important;
     flex-shrink: 0;
-    border-radius: 10px !important;
+    border-radius: 12px !important;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.06) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    color: rgba(245, 240, 232, 0.85) !important;
-    font-size: 1.05rem;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.28) !important;
+    color: #fff !important;
+    font-size: 1.15rem;
     cursor: pointer;
-    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.15s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 .sidebar-ben-close:hover {

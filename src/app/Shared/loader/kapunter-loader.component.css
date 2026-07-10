@@ -100,3 +100,28 @@
     transform: scale(1);
   }
 }
+
+/* Light theme loader — soft surface, darker text, cooler ring */
+:host-context([data-kp-theme="light"]) .kapunter-loader--overlay {
+  background: rgba(248, 249, 251, 0.78);
+  backdrop-filter: blur(3px);
+}
+
+:host-context([data-kp-theme="light"]) .kapunter-loader-ring {
+  border-top-color: #e86a00;
+  border-right-color: rgba(232, 106, 0, 0.28);
+}
+
+:host-context([data-kp-theme="light"]) .kapunter-loader-ring--delay {
+  border-top-color: #ffb45c;
+}
+
+:host-context([data-kp-theme="light"]) .kapunter-loader-logo {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+:host-context([data-kp-theme="light"]) .kapunter-loader-message {
+  color: #3a3a3a;
+  font-weight: 600;
+}

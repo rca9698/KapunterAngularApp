@@ -42,6 +42,7 @@
             <p class="activity-title">{{ passbook.activityDescription }}</p>
             <p class="site-url">{{ passbook.siteURL }}</p>
             <p class="site-username">{{ passbook.siteUserName }}</p>
+            <p class="site-utr" *ngIf="passbook.utr">UTR: {{ passbook.utr }}</p>
           </div>
           <div class="metadata-section">
             <span class="created-date">
@@ -107,6 +108,10 @@
       <div class="detail-row">
         <span>Reference No</span>
         <strong>{{ passbook.passbookHistoryId }}</strong>
+      </div>
+      <div class="detail-row" *ngIf="passbook.utr">
+        <span>UTR</span>
+        <strong>{{ passbook.utr }}</strong>
       </div>
       <div class="detail-row">
         <span>Request Date</span>

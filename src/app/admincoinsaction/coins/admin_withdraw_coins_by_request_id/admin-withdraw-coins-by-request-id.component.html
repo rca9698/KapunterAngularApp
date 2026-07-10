@@ -26,6 +26,14 @@
                 <span *ngIf="WithdrawCoinsByRequestIDFrom.get('coins')?.errors?.['required']"> Coins are required </span> </div>
             </div>
             <div class="form-group">
+                <label>UTR (bank reference)*</label>
+                <input type="text" formControlName="utr" class="form-control" placeholder="Enter UTR number" autocomplete="off">
+                <div class="text-danger" *ngIf="WithdrawCoinsByRequestIDFrom.get('utr')?.invalid && (submitted || WithdrawCoinsByRequestIDFrom.get('utr')?.touched || WithdrawCoinsByRequestIDFrom.get('utr')?.dirty)">
+                    <span *ngIf="WithdrawCoinsByRequestIDFrom.get('utr')?.errors?.['required']">UTR is required</span>
+                    <span *ngIf="WithdrawCoinsByRequestIDFrom.get('utr')?.errors?.['minlength']">Enter a valid UTR</span>
+                </div>
+            </div>
+            <div class="form-group">
                 <div method="post" enctype="multipart/form-data" style="margin-top: 10px">
                     <div class="form-group col-12 px-0">
                         <label class="kp-file-upload">

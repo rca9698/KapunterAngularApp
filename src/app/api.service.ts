@@ -89,6 +89,26 @@ export class apiService {
   saveThemePreference(obj: { userId: number | bigint; themePreference: string }) {
     return this.http.post(`${environment.apiUrl}/api/Profile/SaveThemePreference`, obj);
   }
+
+  getReferralSummary(obj: { userId: number | bigint }) {
+    return this.http.post(`${environment.apiUrl}/api/Profile/GetReferralSummary`, obj);
+  }
+
+  listMyReferrals(obj: { userId: number | bigint }) {
+    return this.http.post(`${environment.apiUrl}/api/Profile/ListMyReferrals`, obj);
+  }
+
+  claimReferral(obj: { referredUserId: number | bigint; referralCode: string }) {
+    return this.http.post(`${environment.apiUrl}/api/Profile/ClaimReferral`, obj);
+  }
+
+  getReferralRewardAmount() {
+    return this.http.get(`${environment.apiUrl}/api/Profile/GetReferralRewardAmount`);
+  }
+
+  setReferralRewardAmount(obj: { rewardAmount: number; sessionUser: number | bigint }) {
+    return this.http.post(`${environment.apiUrl}/api/Profile/SetReferralRewardAmount`, obj);
+  }
   // Profile Related APIs End
 
   //PassbookHistory Related APIs Start
@@ -192,7 +212,7 @@ export class apiService {
     return this.http.get(`${environment.apiUrl}/api/Home/GetDashboardImages`);
   }
 
-  GetVisitorStats(recentCount = 20){
+  GetVisitorStats(recentCount = 0){
     return this.http.get(`${environment.apiUrl}/api/Home/GetVisitorStats`, {
       params: { recentCount: String(recentCount) }
     });

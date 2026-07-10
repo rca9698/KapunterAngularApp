@@ -13,20 +13,21 @@
             <th>From Account</th>
             <th></th>
             <th>To Account</th>
+            <th>Amount</th>
             <th>Requested On</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngIf="!requestList.length">
-            <td colspan="6" class="admin-list-empty">
+            <td colspan="7" class="admin-list-empty">
               <i class="bi bi-inbox"></i>
               <p class="mb-0">No transfer requests found.</p>
             </td>
           </tr>
-          <tr *ngFor="let item of requestList; trackBy: trackByReqId">
-            <td>{{ item.userNumber }}</td>
-            <td>
+          <tr *ngFor="let item of requestList; trackBy: trackByReqId" class="transfer-request-row">
+            <td data-label="User">{{ item.userNumber }}</td>
+            <td data-label="From">
               <div class="site-cell">
                 <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.sourceDocumentDetailId, item.sourceFileExtenstion)">
                   <img
@@ -44,11 +45,11 @@
                 </div>
               </div>
             </td>
-            <td class="transfer-table-arrow text-center">
+            <td class="transfer-table-arrow text-center" data-label="">
               <i class="bi bi-currency-rupee"></i>
               <i class="bi bi-arrow-right"></i>
             </td>
-            <td>
+            <td data-label="To">
               <div class="site-cell">
                 <div class="site-logo-frame" [class.site-logo-frame-empty]="!siteLogoUrl(item.targetDocumentDetailId, item.targetFileExtenstion)">
                   <img
@@ -66,8 +67,11 @@
                 </div>
               </div>
             </td>
-            <td>{{ item.createdDate }}</td>
-            <td>
+            <td class="transfer-amount-cell" data-label="Amount">
+              <i class="bi bi-currency-rupee"></i>{{ item.transferAmount || 0 }}
+            </td>
+            <td data-label="Requested">{{ item.createdDate }}</td>
+            <td data-label="Action">
               <button type="button" class="btn btn-sm siteBtnbackground" (click)="openApproveModal(item)">
                 Approve
               </button>

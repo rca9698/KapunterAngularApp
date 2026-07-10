@@ -1,0 +1,65 @@
+@import '../../settings/shared/kp-content-page.css';
+
+/* Keep content clear of the fixed footer tab bar */
+.notification-shell {
+  padding-bottom: calc(var(--kp-footer-bar-height, 128px) + 2.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.notification-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.notification-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.85rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 149, 31, 0.28);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.notification-dot {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  margin-top: 0.35rem;
+  border-radius: 50%;
+  background: #ff8a00;
+  box-shadow: 0 0 10px rgba(255, 138, 0, 0.45);
+}
+
+.notification-item h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffe6cd;
+}
+
+.notification-item p {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #ffd4b0;
+}
+
+:host-context([data-kp-theme="light"]) .notification-item {
+  background: #fafafa;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+:host-context([data-kp-theme="light"]) .notification-item h2 {
+  color: #1a1a1a;
+}
+
+:host-context([data-kp-theme="light"]) .notification-item p {
+  color: #5c5c5c;
+}
+
+:host-context([data-kp-theme="light"]) .notification-dot {
+  background: #ea580c;
+  box-shadow: none;
+}

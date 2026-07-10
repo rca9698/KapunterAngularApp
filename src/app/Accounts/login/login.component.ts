@@ -66,19 +66,17 @@ export class LoginComponent{
         this.returnTypeClient.returnMessage = `OTP sent to your Mobile Number - ${this.otp_Login_Modal?.otp}!!"`;
         }
         if(this.otp_Login_Modal?.role == 'admin'){
-          // if(environment.isAdminSite == true)
-          //   {
+              this.role = 'admin';
               this.logintype = 'ADMIN LOGIN'
               this.showOtpPasswordModalForm = true;
               this.showMobileModalForm = false;
               this.showPassword = true;
+              this.showOtp = false;
               this.submitted = false;
               this.backButtonVisibility = true;
               this.LoadPassword();
-          //   }
-          // else
-          //   this.toasterService.warning('Admin accounts are not allowed!!!');
         }else{
+          this.role = 'ben';
           this.LoadOTP();
           this.showOtpPasswordModalForm = true;
           this.showMobileModalForm = false;
@@ -138,11 +136,17 @@ export class LoginComponent{
   loginPayload.UserNumber = this.SendOtpForm.value["userNumber"].toString();
 
   if (this.showPassword) {
-    loginPayload.Password = this.LoginForm.value['password'] ?? '';
+    loginPayload.Password = (this.LoginForm.value['password'] ?? '').toString().trim();
     loginPayload.OTP = '';
+    if (!loginPayload.Password) {
+      return;
+    }
   } else {
-    loginPayload.OTP = this.LoginForm.value['otp'] ?? '';
+    loginPayload.OTP = (this.LoginForm.value['otp'] ?? '').toString().trim();
     loginPayload.Password = '';
+    if (!loginPayload.OTP) {
+      return;
+    }
   }
 
   this.authservice.logLoginDebug('LoginComponent — request', {

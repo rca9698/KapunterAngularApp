@@ -32,6 +32,7 @@ export class TransferIdsListModalComponent implements OnInit {
   sourceAccount: TransferAccountOption | null = null;
   destinationAccounts: TransferAccountOption[] = [];
   selectedDestination: TransferAccountOption | null = null;
+  transferAmount: number | null = null;
   loading = true;
   submitting = false;
 
@@ -99,11 +100,18 @@ export class TransferIdsListModalComponent implements OnInit {
       return;
     }
 
+    const amount = Number(this.transferAmount);
+    if (!amount || amount <= 0) {
+      this.toasterService.warning('Enter a valid transfer amount');
+      return;
+    }
+
     this.submitting = true;
     const payload = serializeForApi({
       accountId: this.sourceAccount.accountId,
       targetAccountId: this.selectedDestination.accountId,
       targetSiteId: this.selectedDestination.siteId,
+      transferAmount: amount,
       sessionUser: this.authservice.user.userId,
     });
 

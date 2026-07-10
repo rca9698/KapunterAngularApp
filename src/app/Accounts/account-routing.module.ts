@@ -6,9 +6,11 @@ import { DeletedUserListComponent } from '../admincoinsaction/User/deleted-user-
 import { IdRequestListComponent } from '../admincoinsaction/Ids/id-request-list/id-request-list.component';
 import { DeletedIdRequestListComponent } from '../admincoinsaction/Ids/deleted-id-request-list/deleted-id-request-list.component';
 import { ProfileDetailsComponent } from './Profile/profile-details/profile-details.component';
+import { ReferEarnComponent } from './Profile/refer-earn/refer-earn.component';
 
 const routes : Routes = [
-  { path: 'profile-details', component: ProfileDetailsComponent }
+  { path: 'profile-details', component: ProfileDetailsComponent },
+  { path: 'refer-earn', component: ReferEarnComponent }
 ]
 
 @NgModule({
