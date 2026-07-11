@@ -15,7 +15,7 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent{
+export class LoginComponent implements OnInit {
   SendOtpForm: FormGroup;
   LoginForm: FormGroup;
   submitted = false;
@@ -35,6 +35,11 @@ export class LoginComponent{
   showOtpPasswordModalForm: boolean = false;
   backButtonVisibility: boolean = false;
 
+  /** From assets/app-config.json (or environment) — admin deploy folder. */
+  get isAdminSite(): boolean {
+    return !!environment.isAdminSite;
+  }
+
   constructor(public bsModalRef:BsModalRef, private formBuilder: FormBuilder,
     private router:Router, private accountService: AccountsService, 
     private toasterService: ToastrService, private authservice: AuthService){
@@ -48,6 +53,19 @@ export class LoginComponent{
      },
    )
  }
+
+  ngOnInit(): void {
+    if (this.isAdminSite) {
+      this.applyAdminSiteMode();
+    }
+  }
+
+  private applyAdminSiteMode(): void {
+    this.role = 'admin';
+    this.logintype = 'ADMIN LOGIN';
+    this.showOtp = false;
+    this.showPassword = true;
+  }
 
  SendOtp() {
   this.submitted = true;
@@ -65,31 +83,44 @@ export class LoginComponent{
         if(environment.environment == 'dev') {
         this.returnTypeClient.returnMessage = `OTP sent to your Mobile Number - ${this.otp_Login_Modal?.otp}!!"`;
         }
-        if(this.otp_Login_Modal?.role == 'admin'){
-              this.role = 'admin';
-              this.logintype = 'ADMIN LOGIN'
+
+        const isAdminUser = this.otp_Login_Modal?.role === 'admin';
+
+        // Admin deploy folder: only real admin accounts may continue to password.
+        if (this.isAdminSite == false && isAdminUser) {
+          this.submitted = false;
+          this.toasterService.warning('Only customer can sign in on this portal.');
+          return;
+        }
+        if (this.isAdminSite == true && !isAdminUser) {
+          this.submitted = false;
+          this.toasterService.warning('Only admin users can sign in on this portal.');
+          return;
+        }
+
+        if (isAdminUser) {
+              this.applyAdminSiteMode();
               this.showOtpPasswordModalForm = true;
               this.showMobileModalForm = false;
-              this.showPassword = true;
-              this.showOtp = false;
               this.submitted = false;
               this.backButtonVisibility = true;
               this.LoadPassword();
-        }else{
+        } else {
+          // User site: normal OTP / password flow for beneficiaries
           this.role = 'ben';
+          this.logintype = 'USER LOGIN';
           this.LoadOTP();
           this.showOtpPasswordModalForm = true;
           this.showMobileModalForm = false;
           this.showPassword = false;
           this.submitted = false;
-          this.backButtonVisibility = true; 
+          this.backButtonVisibility = true;
 
           if(this.returnType["returnStatus"] == 1){
             this.toasterService.success(this.returnType["returnMessage"]);
           }else{
             this.toasterService.warning(this.returnType["returnMessage"]);
           }
-          
         }
       },
       error:(error: any) => {
@@ -199,9 +230,15 @@ export class LoginComponent{
  backToMobileNumber(){
     this.showOtpPasswordModalForm = false;
     this.showMobileModalForm = true;
-    this.showPassword = false;
     this.submitted = false;
     this.backButtonVisibility = false;
+    if (this.isAdminSite) {
+      this.applyAdminSiteMode();
+    } else {
+      this.showPassword = false;
+      this.role = 'ben';
+      this.logintype = 'USER LOGIN';
+    }
  }
 
 }

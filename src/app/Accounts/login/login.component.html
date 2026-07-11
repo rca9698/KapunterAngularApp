@@ -11,9 +11,11 @@
 <div class="login-brand">
   <img src="../../../assets/kapunter-logo.jpeg" alt="Kapunter" class="modal-brand-logo" />
   <p class="login-welcome">Welcome to Kapunter</p>
-  <p class="login-hint" *ngIf="showMobileModalForm">Enter your mobile number to continue with OTP or password.</p>
+  <p class="login-hint" *ngIf="showMobileModalForm && isAdminSite">Enter your admin mobile number, then sign in with password.</p>
+  <p class="login-hint" *ngIf="showMobileModalForm && !isAdminSite">Enter your mobile number to continue with OTP or password.</p>
   <p class="login-hint" *ngIf="showOtpPasswordModalForm && showOtp">Enter the OTP sent to your mobile, or switch to password.</p>
-  <p class="login-hint" *ngIf="showOtpPasswordModalForm && showPassword">Sign in with your password, or switch to OTP.</p>
+  <p class="login-hint" *ngIf="showOtpPasswordModalForm && showPassword && role === 'admin'">Sign in with your admin password.</p>
+  <p class="login-hint" *ngIf="showOtpPasswordModalForm && showPassword && role !== 'admin'">Sign in with your password, or switch to OTP.</p>
 </div>
 
 <div class="login-body">
@@ -27,7 +29,8 @@
     </div>
 
     <button class="col-12 btn siteBtnbackground login-primary-btn" type="submit">Continue</button>
-    <p class="login-note">We will send an OTP by SMS. Admins can continue with password.</p>
+    <p class="login-note" *ngIf="!isAdminSite">We will send an OTP by SMS. Admins can continue with password.</p>
+    <p class="login-note" *ngIf="isAdminSite">Admin portal — password login only.</p>
   </form>
 
   <form (ngSubmit)="LoginToApp()" [formGroup]="LoginForm" autocomplete="off" *ngIf="showOtpPasswordModalForm">

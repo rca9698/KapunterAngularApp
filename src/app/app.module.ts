@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -24,6 +24,7 @@ import { DeleteModuleComponent } from './Shared/Modules/delete-module/delete-mod
 import { MakeDefaultModuleComponent } from './Shared/Modules/make-default-module/make-default-module.component';
 import { ViewImageModuleComponent } from './Shared/Modules/view-image-module/view-image-module.component';
 import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsapp-float.component';
+import { AppConfigService, appConfigInitializer } from './app-config.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,16 @@ import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsa
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthInterceptorProvider, LoaderInterceptorProvider],
+  providers: [
+    AuthInterceptorProvider,
+    LoaderInterceptorProvider,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appConfigInitializer,
+      deps: [AppConfigService],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
