@@ -1,8 +1,11 @@
-
+/**
+ * ng serve fallbacks. For local API, set apiUrl in src/assets/app-config.json
+ * (e.g. "https://localhost:7236") — no rebuild needed after that edit + refresh.
+ */
 export const environment = {
     production: false,
     environment: 'dev',
-    isAdminSite: true,
+    isAdminSite: false,
     appUrl: 'https://kapunter.com/',
     apiUrl: 'https://localhost:7236',
     ueserKey: 'kapunterUser',

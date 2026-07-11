@@ -1,8 +1,8 @@
 {
-  "environment": "prod",
+  "environment": "dev",
   "isAdminSite": false,
   "appUrl": "https://kapunter.com/",
-  "apiUrl": "https://kapunter-api.azurewebsites.net",
+  "apiUrl": "http://api.kapunter.com",
   "ueserKey": "kapunterUser",
   "imagePath": {
     "sitePath": "https://kapunterappstorage.blob.core.windows.net/kapunterstorage/Sites/",

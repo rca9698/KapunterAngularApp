@@ -1,3 +1,8 @@
+/**
+ * Build-time fallbacks only.
+ * Deploy URLs / isAdminSite / image paths / WhatsApp are overridden at runtime
+ * from assets/app-config.json (see AppConfigService) — edit that file per server/folder without rebuild.
+ */
 export const environment = {
     production: true,
     environment: 'prod',

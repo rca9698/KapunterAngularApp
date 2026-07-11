@@ -3,21 +3,34 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+export interface RuntimeImagePath {
+  sitePath?: string;
+  dashboardImages?: string;
+  QR?: string;
+  proofPath?: string;
+}
+
+export interface RuntimeWhatsapp {
+  enabled?: boolean;
+  phoneNumber?: string;
+  defaultMessage?: string;
+}
+
+/** Deploy-time settings from assets/app-config.json (edit without rebuild). */
 export interface RuntimeAppConfig {
+  environment?: string;
   isAdminSite?: boolean;
   apiUrl?: string;
   appUrl?: string;
   ueserKey?: string;
-  whatsapp?: {
-    enabled?: boolean;
-    phoneNumber?: string;
-    defaultMessage?: string;
-  };
+  imagePath?: RuntimeImagePath;
+  whatsapp?: RuntimeWhatsapp;
 }
 
 /**
- * Loads assets/app-config.json at startup so deploy folders can flip
- * isAdminSite / apiUrl without rebuilding Angular.
+ * Loads assets/app-config.json before bootstrap and merges into `environment`.
+ * Same build can serve user/admin or different API URLs by editing this file per folder.
+ * Compile-time environment.ts values are used only as fallbacks when a field is missing/empty.
  */
 @Injectable({ providedIn: 'root' })
 export class AppConfigService {
@@ -25,7 +38,6 @@ export class AppConfigService {
 
   constructor(private http: HttpClient) {}
 
-  /** True after runtime config has been applied (or failed open). */
   get ready(): boolean {
     return this.loaded;
   }
@@ -34,16 +46,23 @@ export class AppConfigService {
     return !!environment.isAdminSite;
   }
 
+  get apiUrl(): string {
+    return environment.apiUrl;
+  }
+
   async load(): Promise<void> {
     try {
       const config = await firstValueFrom(
         this.http.get<RuntimeAppConfig>('assets/app-config.json', {
-          headers: { 'Cache-Control': 'no-cache' }
+          headers: {
+            'Cache-Control': 'no-cache',
+            Pragma: 'no-cache'
+          }
         })
       );
       this.apply(config);
-    } catch {
-      // Keep compile-time environment defaults when file is missing.
+    } catch (err) {
+      console.warn('[AppConfig] assets/app-config.json not loaded — using build environment defaults.', err);
     } finally {
       this.loaded = true;
     }
@@ -54,32 +73,60 @@ export class AppConfigService {
       return;
     }
 
+    const env = environment as Record<string, unknown>;
+
+    if (this.isNonEmptyString(config.environment)) {
+      env['environment'] = config.environment.trim();
+    }
+
     if (typeof config.isAdminSite === 'boolean') {
-      (environment as { isAdminSite: boolean }).isAdminSite = config.isAdminSite;
+      env['isAdminSite'] = config.isAdminSite;
     }
 
-    if (typeof config.apiUrl === 'string' && config.apiUrl.trim()) {
-      (environment as { apiUrl: string }).apiUrl = config.apiUrl.trim().replace(/\/$/, '');
+    if (this.isNonEmptyString(config.apiUrl)) {
+      env['apiUrl'] = this.trimTrailingSlash(config.apiUrl);
     }
 
-    if (typeof config.appUrl === 'string' && config.appUrl.trim()) {
-      (environment as { appUrl: string }).appUrl = config.appUrl.trim();
+    if (this.isNonEmptyString(config.appUrl)) {
+      env['appUrl'] = config.appUrl.trim();
     }
 
-    if (typeof config.ueserKey === 'string' && config.ueserKey.trim()) {
-      (environment as { ueserKey: string }).ueserKey = config.ueserKey.trim();
+    if (this.isNonEmptyString(config.ueserKey)) {
+      env['ueserKey'] = config.ueserKey.trim();
     }
 
-    if (config.whatsapp && environment.whatsapp) {
+    if (config.imagePath && typeof config.imagePath === 'object') {
+      const paths = environment.imagePath as Record<string, string>;
+      this.assignIfString(paths, 'sitePath', config.imagePath.sitePath);
+      this.assignIfString(paths, 'dashboardImages', config.imagePath.dashboardImages);
+      this.assignIfString(paths, 'QR', config.imagePath.QR);
+      this.assignIfString(paths, 'proofPath', config.imagePath.proofPath);
+    }
+
+    if (config.whatsapp && typeof config.whatsapp === 'object' && environment.whatsapp) {
       if (typeof config.whatsapp.enabled === 'boolean') {
         environment.whatsapp.enabled = config.whatsapp.enabled;
       }
-      if (typeof config.whatsapp.phoneNumber === 'string' && config.whatsapp.phoneNumber.trim()) {
+      if (this.isNonEmptyString(config.whatsapp.phoneNumber)) {
         environment.whatsapp.phoneNumber = config.whatsapp.phoneNumber.trim();
       }
-      if (typeof config.whatsapp.defaultMessage === 'string' && config.whatsapp.defaultMessage.trim()) {
+      if (this.isNonEmptyString(config.whatsapp.defaultMessage)) {
         environment.whatsapp.defaultMessage = config.whatsapp.defaultMessage.trim();
       }
+    }
+  }
+
+  private isNonEmptyString(value: unknown): value is string {
+    return typeof value === 'string' && value.trim().length > 0;
+  }
+
+  private trimTrailingSlash(url: string): string {
+    return url.trim().replace(/\/+$/, '');
+  }
+
+  private assignIfString(target: Record<string, string>, key: string, value: unknown): void {
+    if (this.isNonEmptyString(value)) {
+      target[key] = value.trim();
     }
   }
 }

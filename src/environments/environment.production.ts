@@ -1,4 +1,6 @@
-
+/**
+ * Production build fallbacks. Prefer editing deployed assets/app-config.json for URLs.
+ */
 export const environment = {
     production: true,
     environment: 'prod',
