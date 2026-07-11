@@ -13,13 +13,14 @@
             <th>Application</th>
             <th>Account ID</th>
             <th>ID Username</th>
+            <th>Reason</th>
             <th>Requested On</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngIf="!requestList.length">
-            <td colspan="6" class="admin-list-empty">
+            <td colspan="7" class="admin-list-empty">
               <i class="bi bi-inbox"></i>
               <p class="mb-0">No close requests found.</p>
             </td>
@@ -42,6 +43,7 @@
             </td>
             <td><span class="id-badge">#{{ getAccountId(item) }}</span></td>
             <td>{{ item.userName }}</td>
+            <td class="close-reason-cell">{{ getCloseReason(item) }}</td>
             <td>{{ item.createdDate }}</td>
             <td>
               <button type="button" class="btn btn-sm siteBtnbackground" (click)="approveClose(item)">Approve</button>

@@ -60,6 +60,7 @@ export class AppConfigService {
 
   async load(): Promise<void> {
     try {
+      this.ensureRuntimeBuckets();
       await this.loadFileConfig();
       await this.loadDbPublicConfig();
     } finally {
@@ -142,6 +143,8 @@ export class AppConfigService {
   }
 
   private applyImageAndWhatsapp(config: RuntimeAppConfig): void {
+    this.ensureRuntimeBuckets();
+
     if (config.imagePath && typeof config.imagePath === 'object') {
       const paths = environment.imagePath as Record<string, string>;
       const apiPaths = config.imagePath as RuntimeImagePath & { qR?: string };
@@ -161,6 +164,16 @@ export class AppConfigService {
       if (this.isNonEmptyString(config.whatsapp.defaultMessage)) {
         environment.whatsapp.defaultMessage = config.whatsapp.defaultMessage.trim();
       }
+    }
+  }
+
+  private ensureRuntimeBuckets(): void {
+    const env = environment as Record<string, unknown>;
+    if (!env['imagePath'] || typeof env['imagePath'] !== 'object') {
+      env['imagePath'] = { sitePath: '', dashboardImages: '', QR: '', proofPath: '' };
+    }
+    if (!env['whatsapp'] || typeof env['whatsapp'] !== 'object') {
+      env['whatsapp'] = { enabled: false, phoneNumber: '', defaultMessage: '' };
     }
   }
 

@@ -130,6 +130,48 @@ export class apiService {
     }
     return this.http.get(`${environment.apiUrl}/api/Config/GetUtilitySettingHistory?${params.join('&')}`);
   }
+
+  getMyBonus() {
+    return this.http.get(`${environment.apiUrl}/api/Bonus/GetMyBonus`);
+  }
+
+  getUserBonus(userId: number | bigint) {
+    return this.http.get(`${environment.apiUrl}/api/Bonus/GetUserBonus/${userId}`);
+  }
+
+  listUsersBonus(search?: string) {
+    const q = search ? `?search=${encodeURIComponent(search)}` : '';
+    return this.http.get(`${environment.apiUrl}/api/Bonus/ListUsersBonus${q}`);
+  }
+
+  getUserBonusHistory(userId: number | bigint, top = 50) {
+    return this.http.get(`${environment.apiUrl}/api/Bonus/GetUserBonusHistory/${userId}?top=${top}`);
+  }
+
+  creditBonus(obj: { userId: number | bigint; amount: number; remarks?: string; sessionUser: number | bigint }) {
+    return this.http.post(`${environment.apiUrl}/api/Bonus/CreditBonus`, obj);
+  }
+
+  withdrawBonus(obj: { userId: number | bigint; remarks?: string; sessionUser: number | bigint }) {
+    return this.http.post(`${environment.apiUrl}/api/Bonus/WithdrawBonus`, obj);
+  }
+
+  settleBonus(obj: { userId: number | bigint; remarks?: string; sessionUser: number | bigint }) {
+    return this.http.post(`${environment.apiUrl}/api/Bonus/SettleBonus`, obj);
+  }
+
+  getMyDepositStats() {
+    return this.http.get(`${environment.apiUrl}/api/Bonus/GetMyDepositStats`);
+  }
+
+  getAdminCoinPnL(fromDate?: string, toDate?: string, search?: string) {
+    const params: string[] = [];
+    if (fromDate) params.push(`fromDate=${encodeURIComponent(fromDate)}`);
+    if (toDate) params.push(`toDate=${encodeURIComponent(toDate)}`);
+    if (search) params.push(`search=${encodeURIComponent(search)}`);
+    const q = params.length ? `?${params.join('&')}` : '';
+    return this.http.get(`${environment.apiUrl}/api/Bonus/GetAdminCoinPnL${q}`);
+  }
   // Profile Related APIs End
 
   //PassbookHistory Related APIs Start

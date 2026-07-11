@@ -21,13 +21,16 @@ export class SiteIdDetailsModalComponent implements OnInit {
   /** When true, show only the ID for the selected account (per-account pages). */
   filterByAccount = false;
 
-  sitePath = environment.imagePath.sitePath;
+  sitePath = environment.imagePath?.sitePath || '';
   ids: IIDDetailsModal[] = [];
   loading = true;
   returnType: any;
   IdsByUserSiteQuery: any;
   /** Per-row reveal for password */
   passwordRevealed: Record<string, boolean> = {};
+  closingAccountId: string | null = null;
+  closeReason = '';
+  closeSubmitting = false;
 
   constructor(
     public bsModalRef: BsModalRef,
@@ -140,5 +143,50 @@ export class SiteIdDetailsModalComponent implements OnInit {
     if (img) {
       img.style.visibility = 'hidden';
     }
+  }
+
+  startClose(row: IIDDetailsModal): void {
+    const accountId = resolveAccountId(row as unknown as Record<string, unknown>);
+    this.closingAccountId = accountId;
+    this.closeReason = '';
+  }
+
+  cancelClose(): void {
+    this.closingAccountId = null;
+    this.closeReason = '';
+  }
+
+  submitClose(row: IIDDetailsModal): void {
+    const reason = (this.closeReason || '').trim();
+    if (reason.length < 5) {
+      this.toasterService.warning('Please enter a reason (at least 5 characters).');
+      return;
+    }
+    const accountId = resolveAccountId(row as unknown as Record<string, unknown>);
+    this.closeSubmitting = true;
+    this.idsService.addCloseId({
+      userId: this.authservice.user.userId,
+      accountId,
+      sessionUser: this.authservice.user.userId,
+      reason
+    }).subscribe({
+      next: (resp: any) => {
+        this.closeSubmitting = false;
+        if ((resp?.returnStatus ?? resp?.ReturnStatus) === 1) {
+          this.toasterService.success(resp?.returnMessage ?? 'Close request submitted.');
+          this.cancelClose();
+        } else {
+          this.toasterService.warning(resp?.returnMessage ?? 'Unable to submit close request.');
+        }
+      },
+      error: () => {
+        this.closeSubmitting = false;
+        this.toasterService.warning('Unable to submit close request.');
+      }
+    });
+  }
+
+  isClosing(row: IIDDetailsModal): boolean {
+    return this.closingAccountId === resolveAccountId(row as unknown as Record<string, unknown>);
   }
 }

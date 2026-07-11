@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { apiService } from '../../../api.service';
-import { AuthService } from '../../../auth.service';
-import { ToastrService } from '../../../toastr/toastr.service';
+import { apiService } from 'src/app/api.service';
+import { AuthService } from 'src/app/auth.service';
+import { ToastrService } from 'src/app/toastr/toastr.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -10,6 +10,8 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./utility-settings.component.css']
 })
 export class UtilitySettingsComponent implements OnInit {
+  activeTab: 'whatsapp' | 'bonus' = 'whatsapp';
+
   loading = true;
   saving = false;
   loadingHistory = false;
@@ -17,7 +19,6 @@ export class UtilitySettingsComponent implements OnInit {
   enabled = true;
   phoneNumber = '';
   defaultMessage = '';
-
   lastUpdatedBy = '';
   lastUpdatedDate = '';
 
@@ -29,8 +30,30 @@ export class UtilitySettingsComponent implements OnInit {
     updatedBy: string;
     updatedDate: string;
   }> = [];
-
   historyFilter = '';
+
+  bonusSearch = '';
+  bonusLoading = false;
+  bonusActing = false;
+  bonusUsers: Array<{
+    userId: number;
+    userNumber: string;
+    fullName: string;
+    availableBonus: number;
+    pendingBonus: number;
+    totalBonus: number;
+  }> = [];
+  creditUserId: number | null = null;
+  creditAmount: number | null = null;
+  creditRemarks = '';
+  selectedBonusUserId: number | null = null;
+  bonusHistory: Array<{
+    actionType: string;
+    amount: number;
+    remarks: string;
+    createdDate: string;
+    createdBy: string;
+  }> = [];
 
   constructor(
     private api: apiService,
@@ -41,6 +64,14 @@ export class UtilitySettingsComponent implements OnInit {
   ngOnInit(): void {
     this.loadSettings();
     this.loadHistory();
+    this.loadBonusUsers();
+  }
+
+  setTab(tab: 'whatsapp' | 'bonus'): void {
+    this.activeTab = tab;
+    if (tab === 'bonus') {
+      this.loadBonusUsers();
+    }
   }
 
   loadSettings(): void {
@@ -102,7 +133,6 @@ export class UtilitySettingsComponent implements OnInit {
       error: () => {
         this.loadingHistory = false;
         this.history = [];
-        this.toaster.warning('Unable to load setting history.');
       }
     });
   }
@@ -111,11 +141,7 @@ export class UtilitySettingsComponent implements OnInit {
     const phone = (this.phoneNumber || '').trim();
     const message = (this.defaultMessage || '').trim();
 
-    if (!phone) {
-      this.toaster.warning('Enter WhatsApp phone number (digits only, with country code).');
-      return;
-    }
-    if (!/^\d+$/.test(phone)) {
+    if (!phone || !/^\d+$/.test(phone)) {
       this.toaster.warning('Phone number must be digits only (example: 919876543210).');
       return;
     }
@@ -134,12 +160,12 @@ export class UtilitySettingsComponent implements OnInit {
       next: (resp: any) => {
         this.saving = false;
         if ((resp?.returnStatus ?? resp?.ReturnStatus) === 1) {
-          // Apply immediately for this session (float button).
-          if (environment.whatsapp) {
-            environment.whatsapp.enabled = this.enabled;
-            environment.whatsapp.phoneNumber = phone;
-            environment.whatsapp.defaultMessage = message;
+          if (!environment.whatsapp) {
+            (environment as any).whatsapp = { enabled: false, phoneNumber: '', defaultMessage: '' };
           }
+          environment.whatsapp.enabled = this.enabled;
+          environment.whatsapp.phoneNumber = phone;
+          environment.whatsapp.defaultMessage = message;
           this.toaster.success(resp?.returnMessage ?? 'WhatsApp settings saved.');
           this.loadSettings();
           this.loadHistory();
@@ -150,6 +176,132 @@ export class UtilitySettingsComponent implements OnInit {
       error: () => {
         this.saving = false;
         this.toaster.warning('Unable to save settings.');
+      }
+    });
+  }
+
+  loadBonusUsers(): void {
+    this.bonusLoading = true;
+    this.api.listUsersBonus(this.bonusSearch?.trim() || undefined).subscribe({
+      next: (resp: any) => {
+        this.bonusLoading = false;
+        const list = resp?.returnList ?? resp?.ReturnList ?? [];
+        this.bonusUsers = (Array.isArray(list) ? list : []).map((row: any) => ({
+          userId: Number(row.userId ?? row.UserId ?? 0),
+          userNumber: String(row.userNumber ?? row.UserNumber ?? ''),
+          fullName: String(row.fullName ?? row.FullName ?? ''),
+          availableBonus: Number(row.availableBonus ?? row.AvailableBonus ?? 0),
+          pendingBonus: Number(row.pendingBonus ?? row.PendingBonus ?? 0),
+          totalBonus: Number(row.totalBonus ?? row.TotalBonus ?? 0)
+        }));
+      },
+      error: () => {
+        this.bonusLoading = false;
+        this.bonusUsers = [];
+      }
+    });
+  }
+
+  creditBonus(): void {
+    const userId = Number(this.creditUserId);
+    const amount = Number(this.creditAmount);
+    if (!userId || userId <= 0 || !amount || amount <= 0) {
+      this.toaster.warning('Enter a valid user id and positive amount.');
+      return;
+    }
+    this.bonusActing = true;
+    this.api.creditBonus({
+      userId,
+      amount,
+      remarks: this.creditRemarks?.trim() || undefined,
+      sessionUser: this.authService.user.userId
+    }).subscribe({
+      next: (resp: any) => {
+        this.bonusActing = false;
+        if ((resp?.returnStatus ?? resp?.ReturnStatus) === 1) {
+          this.toaster.success(resp?.returnMessage ?? 'Bonus credited.');
+          this.creditAmount = null;
+          this.creditRemarks = '';
+          this.loadBonusUsers();
+          this.selectBonusUser(userId);
+        } else {
+          this.toaster.warning(resp?.returnMessage ?? 'Unable to credit bonus.');
+        }
+      },
+      error: () => {
+        this.bonusActing = false;
+        this.toaster.warning('Unable to credit bonus.');
+      }
+    });
+  }
+
+  withdrawBonus(userId: number): void {
+    if (!confirm('Withdraw all available bonus for this user? It will show as pending until settled.')) {
+      return;
+    }
+    this.bonusActing = true;
+    this.api.withdrawBonus({
+      userId,
+      sessionUser: this.authService.user.userId
+    }).subscribe({
+      next: (resp: any) => {
+        this.bonusActing = false;
+        if ((resp?.returnStatus ?? resp?.ReturnStatus) === 1) {
+          this.toaster.success(resp?.returnMessage ?? 'Bonus moved to pending.');
+          this.loadBonusUsers();
+          this.selectBonusUser(userId);
+        } else {
+          this.toaster.warning(resp?.returnMessage ?? 'Unable to withdraw bonus.');
+        }
+      },
+      error: () => {
+        this.bonusActing = false;
+        this.toaster.warning('Unable to withdraw bonus.');
+      }
+    });
+  }
+
+  settleBonus(userId: number): void {
+    if (!confirm('Mark pending bonus as settled/paid for this user?')) {
+      return;
+    }
+    this.bonusActing = true;
+    this.api.settleBonus({
+      userId,
+      sessionUser: this.authService.user.userId
+    }).subscribe({
+      next: (resp: any) => {
+        this.bonusActing = false;
+        if ((resp?.returnStatus ?? resp?.ReturnStatus) === 1) {
+          this.toaster.success(resp?.returnMessage ?? 'Bonus settled.');
+          this.loadBonusUsers();
+          this.selectBonusUser(userId);
+        } else {
+          this.toaster.warning(resp?.returnMessage ?? 'Unable to settle bonus.');
+        }
+      },
+      error: () => {
+        this.bonusActing = false;
+        this.toaster.warning('Unable to settle bonus.');
+      }
+    });
+  }
+
+  selectBonusUser(userId: number): void {
+    this.selectedBonusUserId = userId;
+    this.api.getUserBonusHistory(userId, 30).subscribe({
+      next: (resp: any) => {
+        const list = resp?.returnList ?? resp?.ReturnList ?? [];
+        this.bonusHistory = (Array.isArray(list) ? list : []).map((row: any) => ({
+          actionType: String(row.actionType ?? row.ActionType ?? ''),
+          amount: Number(row.amount ?? row.Amount ?? 0),
+          remarks: String(row.remarks ?? row.Remarks ?? ''),
+          createdDate: String(row.createdDate ?? row.CreatedDate ?? ''),
+          createdBy: String(row.createdBy ?? row.CreatedBy ?? '')
+        }));
+      },
+      error: () => {
+        this.bonusHistory = [];
       }
     });
   }

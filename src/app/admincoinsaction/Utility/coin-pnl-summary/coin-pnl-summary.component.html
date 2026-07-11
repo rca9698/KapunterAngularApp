@@ -1,0 +1,66 @@
+<section class="feature-shell pnl-shell">
+  <div class="feature-card pnl-card">
+    <div class="admin-list-header text-center mb-3">
+      <h2 class="mb-1">Deposit / Withdraw summary</h2>
+      <p class="list-subtitle">Totals from CoinsToDirectAccountRequestDetails · CoinTypeID 1=deposit, 0=withdraw</p>
+    </div>
+
+    <div class="pnl-filters">
+      <input type="date" class="form-control" [(ngModel)]="fromDate" />
+      <input type="date" class="form-control" [(ngModel)]="toDate" />
+      <input type="text" class="form-control" [(ngModel)]="search" placeholder="Search user" (keyup.enter)="load()" />
+      <button type="button" class="btn siteBtnbackground" (click)="load()">Apply</button>
+    </div>
+
+    <div class="pnl-kpis" *ngIf="!loading">
+      <article class="pnl-kpi">
+        <span>Total deposit</span>
+        <strong>₹{{ totals.deposit | number:'1.2-2' }}</strong>
+      </article>
+      <article class="pnl-kpi pnl-kpi-withdraw">
+        <span>Total withdraw</span>
+        <strong>₹{{ totals.withdraw | number:'1.2-2' }}</strong>
+      </article>
+      <article class="pnl-kpi" [class.pnl-kpi-loss]="totals.pnl < 0" [class.pnl-kpi-profit]="totals.pnl >= 0">
+        <span>Profit / loss</span>
+        <strong>₹{{ totals.pnl | number:'1.2-2' }}</strong>
+      </article>
+    </div>
+
+    <div class="utility-loading" *ngIf="loading">
+      <app-kapunter-loader message="Calculating…"></app-kapunter-loader>
+    </div>
+
+    <div class="request-table-wrap mt-3 admin-list-table" *ngIf="!loading">
+      <table class="table table-hover">
+        <thead>
+          <tr class="tableHeaderClass">
+            <th>User</th>
+            <th>Deposit</th>
+            <th>Withdraw</th>
+            <th>P/L</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!rows.length">
+            <td colspan="4" class="admin-list-empty">
+              <i class="bi bi-inbox"></i>
+              <p class="mb-0">No coin activity in this range.</p>
+            </td>
+          </tr>
+          <tr *ngFor="let row of rows">
+            <td>
+              <strong>#{{ row.userId }}</strong>
+              <div class="pnl-user-meta">{{ row.userNumber }} <span *ngIf="row.fullName">· {{ row.fullName }}</span></div>
+            </td>
+            <td>₹{{ row.totalDeposit | number:'1.2-2' }}</td>
+            <td>₹{{ row.totalWithdraw | number:'1.2-2' }}</td>
+            <td [class.pnl-pos]="row.profitLoss >= 0" [class.pnl-neg]="row.profitLoss < 0">
+              ₹{{ row.profitLoss | number:'1.2-2' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

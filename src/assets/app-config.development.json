@@ -2,12 +2,6 @@
   "environment": "dev",
   "isAdminSite": false,
   "appUrl": "https://kapunter.com/",
-  "apiUrl": "http://api.kapunter.com",
-  "ueserKey": "kapunterUser",
-  "imagePath": {
-    "sitePath": "https://kapunterappstorage.blob.core.windows.net/kapunterstorage/Sites/",
-    "dashboardImages": "https://kapunterappstorage.blob.core.windows.net/kapunterstorage/DashboardImages/",
-    "QR": "https://kapunterappstorage.blob.core.windows.net/kapunterstorage/QR/",
-    "proofPath": "https://kapunterappstorage.blob.core.windows.net/kapunterstorage/PaymentProof/"
-  }
+  "apiUrl": "https://localhost:7236",
+  "ueserKey": "kapunterUser"
 }

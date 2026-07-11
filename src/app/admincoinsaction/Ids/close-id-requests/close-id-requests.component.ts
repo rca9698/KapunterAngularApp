@@ -18,7 +18,7 @@ export class CloseIdRequestsComponent implements OnInit {
   returnType: any;
   paginationCount = 1;
   totalCount = 0;
-  sitePath = environment.imagePath.sitePath;
+  sitePath = environment.imagePath?.sitePath || '';
 
   constructor(
     private idsService: IdsService,
@@ -39,6 +39,13 @@ export class CloseIdRequestsComponent implements OnInit {
 
   getAccountId(item: IID_Request_Modal): string {
     return resolveAccountId(item as unknown as Record<string, unknown>);
+  }
+
+  getCloseReason(item: IID_Request_Modal): string {
+    const raw = item as unknown as Record<string, unknown>;
+    const reason = raw['reason'] ?? raw['Reason'];
+    const text = reason == null ? '' : String(reason).trim();
+    return text || '—';
   }
 
   fetchCloseRequests(paginationQuery: any): void {

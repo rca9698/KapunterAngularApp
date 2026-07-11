@@ -3,20 +3,28 @@
     <div class="utility-head">
       <div>
         <h2><i class="bi bi-tools"></i> Utility</h2>
-        <p>Manage WhatsApp float settings stored in the database. Changes are audited.</p>
+        <p>Admin tools for WhatsApp and user bonus — values live in the database with full audit history.</p>
       </div>
     </div>
 
-    <div class="utility-loading" *ngIf="loading">
+    <div class="utility-tabs" role="tablist">
+      <button type="button" class="utility-tab" [class.active]="activeTab === 'whatsapp'" (click)="setTab('whatsapp')">
+        <i class="bi bi-whatsapp"></i> WhatsApp
+      </button>
+      <button type="button" class="utility-tab" [class.active]="activeTab === 'bonus'" (click)="setTab('bonus')">
+        <i class="bi bi-gift"></i> Bonus
+      </button>
+    </div>
+
+    <div class="utility-loading" *ngIf="activeTab === 'whatsapp' && loading">
       <app-kapunter-loader message="Loading utility settings…"></app-kapunter-loader>
     </div>
 
-    <ng-container *ngIf="!loading">
+    <ng-container *ngIf="activeTab === 'whatsapp' && !loading">
       <div class="utility-panel">
-        <h3>WhatsApp</h3>
+        <h3>WhatsApp float</h3>
         <p class="utility-panel-hint">
-          These values are loaded for all users via <code>GetPublicConfig</code>.
-          Leave phone as digits only with country code (e.g. <strong>919876543210</strong>).
+          Loaded for all users via <code>GetPublicConfig</code>. Phone = digits only with country code.
         </p>
 
         <div class="utility-field utility-toggle-row">
@@ -29,85 +37,134 @@
 
         <div class="utility-field">
           <label for="waPhone">Phone number</label>
-          <input
-            id="waPhone"
-            type="text"
-            class="form-control"
-            [(ngModel)]="phoneNumber"
-            maxlength="20"
-            placeholder="919876543210"
-            autocomplete="tel"
-          />
+          <input id="waPhone" type="text" class="form-control" [(ngModel)]="phoneNumber" maxlength="20" placeholder="919876543210" />
         </div>
 
         <div class="utility-field">
           <label for="waMessage">Default message</label>
-          <textarea
-            id="waMessage"
-            class="form-control"
-            rows="3"
-            [(ngModel)]="defaultMessage"
-            maxlength="500"
-            placeholder="Hi, I need help with Kapunter"
-          ></textarea>
+          <textarea id="waMessage" class="form-control" rows="3" [(ngModel)]="defaultMessage" maxlength="500"></textarea>
           <span class="utility-char">{{ (defaultMessage || '').length }}/500</span>
         </div>
 
         <div class="utility-actions">
           <button type="button" class="btn siteBtnbackground" [disabled]="saving" (click)="save()">
-            {{ saving ? 'Saving…' : 'Save changes' }}
+            {{ saving ? 'Saving…' : 'Save WhatsApp' }}
           </button>
         </div>
 
         <p class="utility-audit" *ngIf="lastUpdatedDate">
-          Last updated
-          <strong *ngIf="lastUpdatedBy">by user {{ lastUpdatedBy }}</strong>
-          on {{ lastUpdatedDate }}
+          Last updated <strong *ngIf="lastUpdatedBy">by user {{ lastUpdatedBy }}</strong> on {{ lastUpdatedDate }}
         </p>
       </div>
 
       <div class="utility-history">
         <div class="utility-history-head">
-          <h3><i class="bi bi-clock-history"></i> Change history</h3>
+          <h3><i class="bi bi-clock-history"></i> WhatsApp change history</h3>
           <div class="utility-history-filters">
             <select class="form-select" [(ngModel)]="historyFilter" (change)="loadHistory()">
-              <option value="">All WhatsApp fields</option>
+              <option value="">All fields</option>
               <option value="WhatsApp_Enabled">Enabled</option>
-              <option value="WhatsApp_PhoneNumber">Phone number</option>
-              <option value="WhatsApp_DefaultMessage">Default message</option>
+              <option value="WhatsApp_PhoneNumber">Phone</option>
+              <option value="WhatsApp_DefaultMessage">Message</option>
             </select>
-            <button type="button" class="btn utility-refresh" (click)="loadHistory()" [disabled]="loadingHistory">
-              <i class="bi bi-arrow-clockwise"></i> Refresh
-            </button>
+            <button type="button" class="btn utility-refresh" (click)="loadHistory()"><i class="bi bi-arrow-clockwise"></i></button>
           </div>
         </div>
 
-        <div class="utility-loading" *ngIf="loadingHistory">
-          <app-kapunter-loader message="Loading history…"></app-kapunter-loader>
-        </div>
-
-        <div class="utility-empty" *ngIf="!loadingHistory && history.length === 0">
-          No changes recorded yet.
-        </div>
-
+        <div class="utility-empty" *ngIf="!loadingHistory && history.length === 0">No changes yet.</div>
         <div class="table-responsive" *ngIf="!loadingHistory && history.length > 0">
           <table class="table customtable admin-list-table utility-history-table">
             <thead>
-              <tr>
-                <th>When</th>
-                <th>Field</th>
-                <th>Old</th>
-                <th>New</th>
-                <th>Changed by</th>
-              </tr>
+              <tr><th>When</th><th>Field</th><th>Old</th><th>New</th><th>By</th></tr>
             </thead>
             <tbody>
               <tr *ngFor="let row of history">
-                <td data-label="When">{{ row.updatedDate }}</td>
-                <td data-label="Field">{{ friendlyKey(row.settingKey) }}</td>
-                <td data-label="Old" class="utility-value">{{ row.oldValue }}</td>
-                <td data-label="New" class="utility-value">{{ row.newValue }}</td>
-                <td data-label="By">{{ row.updatedBy }}</td>
+                <td>{{ row.updatedDate }}</td>
+                <td>{{ friendlyKey(row.settingKey) }}</td>
+                <td class="utility-value">{{ row.oldValue }}</td>
+                <td class="utility-value">{{ row.newValue }}</td>
+                <td>{{ row.updatedBy }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab === 'bonus'">
+      <div class="utility-panel">
+        <h3>Credit bonus to user</h3>
+        <p class="utility-panel-hint">Adds to available bonus, writes passbook, and keeps history.</p>
+        <div class="utility-bonus-credit">
+          <input type="number" class="form-control" [(ngModel)]="creditUserId" placeholder="User ID" />
+          <input type="number" class="form-control" [(ngModel)]="creditAmount" placeholder="Amount" min="1" />
+          <input type="text" class="form-control" [(ngModel)]="creditRemarks" placeholder="Remarks (optional)" />
+          <button type="button" class="btn siteBtnbackground" [disabled]="bonusActing" (click)="creditBonus()">Credit</button>
+        </div>
+      </div>
+
+      <div class="utility-panel">
+        <div class="utility-history-head">
+          <h3>Users with bonus</h3>
+          <div class="utility-history-filters">
+            <input type="text" class="form-control" [(ngModel)]="bonusSearch" placeholder="Search mobile / name / id" (keyup.enter)="loadBonusUsers()" />
+            <button type="button" class="btn utility-refresh" (click)="loadBonusUsers()"><i class="bi bi-search"></i></button>
+          </div>
+        </div>
+
+        <div class="utility-loading" *ngIf="bonusLoading">
+          <app-kapunter-loader message="Loading bonus accounts…"></app-kapunter-loader>
+        </div>
+
+        <div class="utility-empty" *ngIf="!bonusLoading && bonusUsers.length === 0">No bonus balances found.</div>
+
+        <div class="table-responsive" *ngIf="!bonusLoading && bonusUsers.length > 0">
+          <table class="table customtable admin-list-table utility-history-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Available</th>
+                <th>Pending</th>
+                <th>Total</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let u of bonusUsers" [class.utility-row-selected]="selectedBonusUserId === u.userId">
+                <td>
+                  <button type="button" class="utility-linkish" (click)="selectBonusUser(u.userId)">
+                    #{{ u.userId }} · {{ u.userNumber }}
+                    <small *ngIf="u.fullName">{{ u.fullName }}</small>
+                  </button>
+                </td>
+                <td>₹{{ u.availableBonus | number:'1.2-2' }}</td>
+                <td><span class="utility-pending">₹{{ u.pendingBonus | number:'1.2-2' }}</span></td>
+                <td>₹{{ u.totalBonus | number:'1.2-2' }}</td>
+                <td class="utility-action-cell">
+                  <button type="button" class="btn btn-sm utility-refresh" [disabled]="bonusActing || u.availableBonus <= 0" (click)="withdrawBonus(u.userId)">Withdraw</button>
+                  <button type="button" class="btn btn-sm siteBtnbackground" [disabled]="bonusActing || u.pendingBonus <= 0" (click)="settleBonus(u.userId)">Settle</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="utility-history" *ngIf="selectedBonusUserId">
+        <h3>Bonus history · user #{{ selectedBonusUserId }}</h3>
+        <div class="utility-empty" *ngIf="bonusHistory.length === 0">No history.</div>
+        <div class="table-responsive" *ngIf="bonusHistory.length > 0">
+          <table class="table customtable admin-list-table utility-history-table">
+            <thead>
+              <tr><th>When</th><th>Action</th><th>Amount</th><th>Remarks</th><th>By</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let h of bonusHistory">
+                <td>{{ h.createdDate }}</td>
+                <td>{{ h.actionType }}</td>
+                <td>₹{{ h.amount | number:'1.2-2' }}</td>
+                <td class="utility-value">{{ h.remarks }}</td>
+                <td>{{ h.createdBy }}</td>
               </tr>
             </tbody>
           </table>

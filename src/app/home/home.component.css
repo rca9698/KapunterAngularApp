@@ -8,6 +8,39 @@
   gap: 1rem;
 }
 
+.home-deposit-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+.home-stat-card {
+  border-radius: 14px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  padding: 0.85rem 0.95rem;
+  box-shadow: var(--kp-elevation-card);
+}
+
+.home-stat-card span {
+  display: block;
+  color: var(--kp-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.home-stat-card strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--kp-text);
+  font-size: 1.2rem;
+}
+
+[data-kp-theme="light"] .home-stat-card {
+  background: #fff;
+  border-color: #e2e8f0;
+}
+
 .account-header {
   display: flex;
   align-items: center;

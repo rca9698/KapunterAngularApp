@@ -1,26 +1,20 @@
-/**
- * ng serve fallbacks. For local API, set apiUrl in src/assets/app-config.json
- * (e.g. "https://localhost:7236") — no rebuild needed after that edit + refresh.
- * WhatsApp comes from DB (GetPublicConfig / Admin Utility).
- */
+/** Dev build fallbacks — set apiUrl in assets/app-config.json for local API. */
 export const environment = {
-    production: false,
-    environment: 'dev',
-    isAdminSite: false,
-    appUrl: 'https://kapunter.com/',
-    apiUrl: 'https://localhost:7236',
-    ueserKey: 'kapunterUser',
-
-    imagePath:{
-        sitePath:'https://kapunterappstorage.blob.core.windows.net/kapunterstorage/Sites/',
-        dashboardImages:'https://kapunterappstorage.blob.core.windows.net/kapunterstorage/DashboardImages/',
-        QR:'https://kapunterappstorage.blob.core.windows.net/kapunterstorage/QR/',
-        proofPath: 'https://kapunterappstorage.blob.core.windows.net/kapunterstorage/PaymentProof/'
-    },
-
-    whatsapp: {
-        enabled: false,
-        phoneNumber: '',
-        defaultMessage: ''
-    }
+  production: false,
+  environment: 'dev',
+  isAdminSite: false,
+  appUrl: '',
+  apiUrl: 'https://localhost:7236',
+  ueserKey: 'kapunterUser',
+  imagePath: {
+    sitePath: '',
+    dashboardImages: '',
+    QR: '',
+    proofPath: ''
+  },
+  whatsapp: {
+    enabled: false,
+    phoneNumber: '',
+    defaultMessage: ''
+  }
 };

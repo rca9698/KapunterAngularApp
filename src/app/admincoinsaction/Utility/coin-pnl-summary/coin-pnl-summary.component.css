@@ -1,0 +1,77 @@
+.pnl-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.75rem 0.85rem 5rem;
+}
+
+.pnl-card {
+  border-radius: 18px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-card-gradient);
+  box-shadow: var(--kp-elevation-card);
+  padding: 1.1rem;
+}
+
+.pnl-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.pnl-filters .form-control {
+  background: var(--kp-surface);
+  color: var(--kp-text);
+  border: 1px solid var(--kp-border);
+  border-radius: 10px;
+}
+
+.pnl-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.pnl-kpi {
+  border-radius: 14px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  padding: 0.85rem 0.95rem;
+}
+
+.pnl-kpi span {
+  display: block;
+  color: var(--kp-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.pnl-kpi strong {
+  color: var(--kp-text);
+  font-size: 1.15rem;
+}
+
+.pnl-kpi-profit strong { color: #16a34a; }
+.pnl-kpi-loss strong,
+.pnl-neg { color: #dc2626; font-weight: 700; }
+.pnl-pos { color: #16a34a; font-weight: 700; }
+
+.pnl-user-meta {
+  color: var(--kp-muted);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 720px) {
+  .pnl-kpis { grid-template-columns: 1fr; }
+}
+
+[data-kp-theme="light"] .pnl-card {
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+}
+
+[data-kp-theme="light"] .pnl-kpi {
+  background: #f8fafc;
+}

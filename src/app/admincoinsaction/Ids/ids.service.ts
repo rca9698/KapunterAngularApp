@@ -52,6 +52,10 @@ export class IdsService {
     return this.apiservice.ConfirmCloseID(obj);
   }
 
+  addCloseId(obj: any) {
+    return this.apiservice.AddCloseID(obj);
+  }
+
   AdminAddIDPopup(obj: IID_Request_Modal) {
     const initalstate: ModalOptions = {
       initialState: {

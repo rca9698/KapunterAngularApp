@@ -1,7 +1,19 @@
 <section class="kp-content-shell">
   <div class="kp-content-card">
     <h1>Bonus</h1>
-    <p class="kp-content-lead">Exclusive bonus programs for faster payouts and player rewards.</p>
+    <p class="kp-content-lead">Your bonus wallet and program benefits.</p>
+
+    <div class="bonus-wallet" *ngIf="!loading">
+      <article class="bonus-wallet-card">
+        <span>Available bonus</span>
+        <strong>₹{{ availableBonus | number:'1.2-2' }}</strong>
+      </article>
+      <article class="bonus-wallet-card bonus-wallet-pending" *ngIf="pendingBonus > 0">
+        <span>Pending settlement</span>
+        <strong>₹{{ pendingBonus | number:'1.2-2' }}</strong>
+        <em>Payment is being processed. This clears after admin settles.</em>
+      </article>
+    </div>
 
     <article class="kp-offer-block kp-offer-accent-primary">
       <div class="kp-offer-block-header">
@@ -10,43 +22,6 @@
       <div class="kp-offer-block-body">
         <p class="headline">Lightning-fast payouts guaranteed!</p>
         <p class="desc">If we are unable to process your withdrawal within 45 minutes during banking hours, you will receive an <strong>EXTRA 3% bonus compensation</strong>.</p>
-        <ul>
-          <li>Quick payouts</li>
-          <li>Trusted service</li>
-          <li>Smooth gaming experience</li>
-        </ul>
-        <p class="kp-terms-note">T&amp;C Apply</p>
-      </div>
-    </article>
-
-    <article class="kp-offer-block kp-offer-accent-secondary">
-      <div class="kp-offer-block-header">
-        <h2>Withdrawal Delay Offer</h2>
-      </div>
-      <div class="kp-offer-block-body">
-        <p class="headline">Your time matters to us!</p>
-        <p class="desc">If your withdrawal is delayed beyond 45 minutes during banking hours, enjoy an <strong>additional 3% bonus</strong> on your withdrawal amount.</p>
-        <ul>
-          <li>Play with confidence</li>
-          <li>Faster banking support</li>
-          <li>Premium player benefits</li>
-        </ul>
-        <p class="kp-terms-note">T&amp;C Apply</p>
-      </div>
-    </article>
-
-    <article class="kp-offer-block kp-offer-accent-tertiary">
-      <div class="kp-offer-block-header">
-        <h2>45-Minute Withdrawal Promise</h2>
-      </div>
-      <div class="kp-offer-block-body">
-        <p class="headline">We aim for lightning-fast withdrawals!</p>
-        <p class="desc">If your payout is not completed within 45 minutes in banking hours, we'll reward you with an <strong>EXTRA 3% bonus</strong>.</p>
-        <ul>
-          <li>Secure</li>
-          <li>Reliable</li>
-          <li>Player first</li>
-        </ul>
         <p class="kp-terms-note">T&amp;C Apply</p>
       </div>
     </article>

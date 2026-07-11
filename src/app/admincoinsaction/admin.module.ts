@@ -10,6 +10,7 @@ import { UserListComponent } from './User/user-list/user-list.component';
 import { DeletedUserListComponent } from './User/deleted-user-list/deleted-user-list.component';
 import { UserSiteAccountsHistoryComponent } from './User/user-site-accounts-history/user-site-accounts-history.component';
 import { UtilitySettingsComponent } from './Utility/utility-settings/utility-settings.component';
+import { CoinPnlSummaryComponent } from './Utility/coin-pnl-summary/coin-pnl-summary.component';
 import { LoaderModule } from '../Shared/loader/loader.module';
 
 @NgModule({
@@ -17,7 +18,8 @@ import { LoaderModule } from '../Shared/loader/loader.module';
     UserListComponent,
     DeletedUserListComponent,
     UserSiteAccountsHistoryComponent,
-    UtilitySettingsComponent
+    UtilitySettingsComponent,
+    CoinPnlSummaryComponent
   ],
   imports: [
     CommonModule,

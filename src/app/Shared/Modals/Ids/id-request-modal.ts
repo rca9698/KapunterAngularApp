@@ -11,6 +11,7 @@ export interface IID_Request_Modal{
     fileExtenstion: string,
     rejectionReason?: string,
     deletionReason?: string,
+    reason?: string,
     createdBy: string,
     createdDate: string,
     UpdatedBy: string,
