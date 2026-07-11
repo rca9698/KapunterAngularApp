@@ -27,10 +27,18 @@ export interface RuntimeAppConfig {
   whatsapp?: RuntimeWhatsapp;
 }
 
+interface PublicConfigApiResponse {
+  returnStatus?: number;
+  ReturnStatus?: number;
+  returnVal?: RuntimeAppConfig;
+  ReturnVal?: RuntimeAppConfig;
+}
+
 /**
- * Loads assets/app-config.json before bootstrap and merges into `environment`.
- * Same build can serve user/admin or different API URLs by editing this file per folder.
- * Compile-time environment.ts values are used only as fallbacks when a field is missing/empty.
+ * Loads config before bootstrap:
+ * 1) assets/app-config.json — apiUrl / isAdminSite / deploy overrides (and imagePath fallbacks)
+ * 2) GET /api/Config/GetPublicConfig — imagePath + whatsapp from AppSetting (Admin → Utility)
+ * Compile-time environment.ts values are used only when a field is missing/empty.
  */
 @Injectable({ providedIn: 'root' })
 export class AppConfigService {
@@ -52,6 +60,15 @@ export class AppConfigService {
 
   async load(): Promise<void> {
     try {
+      await this.loadFileConfig();
+      await this.loadDbPublicConfig();
+    } finally {
+      this.loaded = true;
+    }
+  }
+
+  private async loadFileConfig(): Promise<void> {
+    try {
       const config = await firstValueFrom(
         this.http.get<RuntimeAppConfig>('assets/app-config.json', {
           headers: {
@@ -63,8 +80,34 @@ export class AppConfigService {
       this.apply(config);
     } catch (err) {
       console.warn('[AppConfig] assets/app-config.json not loaded — using build environment defaults.', err);
-    } finally {
-      this.loaded = true;
+    }
+  }
+
+  private async loadDbPublicConfig(): Promise<void> {
+    const baseUrl = this.trimTrailingSlash(environment.apiUrl || '');
+    if (!baseUrl) {
+      return;
+    }
+
+    try {
+      const response = await firstValueFrom(
+        this.http.get<PublicConfigApiResponse>(`${baseUrl}/api/Config/GetPublicConfig`, {
+          headers: {
+            'Cache-Control': 'no-cache',
+            Pragma: 'no-cache'
+          }
+        })
+      );
+
+      const status = response?.returnStatus ?? response?.ReturnStatus;
+      const payload = response?.returnVal ?? response?.ReturnVal;
+      if (status === 1 && payload) {
+        this.applyImageAndWhatsapp(payload);
+      } else {
+        console.warn('[AppConfig] GetPublicConfig returned no usable settings — keeping file/environment fallbacks.');
+      }
+    } catch (err) {
+      console.warn('[AppConfig] GetPublicConfig failed — keeping file/environment fallbacks.', err);
     }
   }
 
@@ -95,12 +138,17 @@ export class AppConfigService {
       env['ueserKey'] = config.ueserKey.trim();
     }
 
+    this.applyImageAndWhatsapp(config);
+  }
+
+  private applyImageAndWhatsapp(config: RuntimeAppConfig): void {
     if (config.imagePath && typeof config.imagePath === 'object') {
       const paths = environment.imagePath as Record<string, string>;
-      this.assignIfString(paths, 'sitePath', config.imagePath.sitePath);
-      this.assignIfString(paths, 'dashboardImages', config.imagePath.dashboardImages);
-      this.assignIfString(paths, 'QR', config.imagePath.QR);
-      this.assignIfString(paths, 'proofPath', config.imagePath.proofPath);
+      const apiPaths = config.imagePath as RuntimeImagePath & { qR?: string };
+      this.assignIfString(paths, 'sitePath', apiPaths.sitePath);
+      this.assignIfString(paths, 'dashboardImages', apiPaths.dashboardImages);
+      this.assignIfString(paths, 'QR', apiPaths.QR ?? apiPaths.qR);
+      this.assignIfString(paths, 'proofPath', apiPaths.proofPath);
     }
 
     if (config.whatsapp && typeof config.whatsapp === 'object' && environment.whatsapp) {

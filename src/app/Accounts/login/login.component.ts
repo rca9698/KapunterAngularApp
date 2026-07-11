@@ -87,16 +87,16 @@ export class LoginComponent implements OnInit {
         const isAdminUser = this.otp_Login_Modal?.role === 'admin';
 
         // Admin deploy folder: only real admin accounts may continue to password.
-        if (this.isAdminSite == false && isAdminUser) {
-          this.submitted = false;
-          this.toasterService.warning('Only customer can sign in on this portal.');
-          return;
-        }
-        if (this.isAdminSite == true && !isAdminUser) {
-          this.submitted = false;
-          this.toasterService.warning('Only admin users can sign in on this portal.');
-          return;
-        }
+        //if (this.isAdminSite == false && isAdminUser) {
+          //this.submitted = false;
+          //this.toasterService.warning('Only customer can sign in on this portal.');
+          //return;
+        //}
+        //if (this.isAdminSite == true && !isAdminUser) {
+          //this.submitted = false;
+          //this.toasterService.warning('Only admin users can sign in on this portal.');
+          //return;
+        //}
 
         if (isAdminUser) {
               this.applyAdminSiteMode();

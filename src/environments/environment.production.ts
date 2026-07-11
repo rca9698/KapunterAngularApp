@@ -1,5 +1,7 @@
 /**
- * Production build fallbacks. Prefer editing deployed assets/app-config.json for URLs.
+ * Production build fallbacks. Prefer DB AppSetting (GetPublicConfig) for imagePath/whatsapp;
+ * prefer assets/app-config.json for apiUrl / isAdminSite.
+ * WhatsApp is managed in Admin → Utility — empty fallbacks only.
  */
 export const environment = {
     production: true,
@@ -17,8 +19,8 @@ export const environment = {
     },
 
     whatsapp: {
-        enabled: true,
-        phoneNumber: '91',
-        defaultMessage: 'Hi, I need help with Kapunter'
+        enabled: false,
+        phoneNumber: '',
+        defaultMessage: ''
     }
 };

@@ -1,0 +1,118 @@
+<section class="utility-shell">
+  <div class="utility-card">
+    <div class="utility-head">
+      <div>
+        <h2><i class="bi bi-tools"></i> Utility</h2>
+        <p>Manage WhatsApp float settings stored in the database. Changes are audited.</p>
+      </div>
+    </div>
+
+    <div class="utility-loading" *ngIf="loading">
+      <app-kapunter-loader message="Loading utility settings…"></app-kapunter-loader>
+    </div>
+
+    <ng-container *ngIf="!loading">
+      <div class="utility-panel">
+        <h3>WhatsApp</h3>
+        <p class="utility-panel-hint">
+          These values are loaded for all users via <code>GetPublicConfig</code>.
+          Leave phone as digits only with country code (e.g. <strong>919876543210</strong>).
+        </p>
+
+        <div class="utility-field utility-toggle-row">
+          <label class="utility-switch" for="waEnabled">
+            <input id="waEnabled" type="checkbox" [(ngModel)]="enabled" />
+            <span class="utility-switch-ui" aria-hidden="true"></span>
+            <span class="utility-switch-label">{{ enabled ? 'WhatsApp enabled' : 'WhatsApp disabled' }}</span>
+          </label>
+        </div>
+
+        <div class="utility-field">
+          <label for="waPhone">Phone number</label>
+          <input
+            id="waPhone"
+            type="text"
+            class="form-control"
+            [(ngModel)]="phoneNumber"
+            maxlength="20"
+            placeholder="919876543210"
+            autocomplete="tel"
+          />
+        </div>
+
+        <div class="utility-field">
+          <label for="waMessage">Default message</label>
+          <textarea
+            id="waMessage"
+            class="form-control"
+            rows="3"
+            [(ngModel)]="defaultMessage"
+            maxlength="500"
+            placeholder="Hi, I need help with Kapunter"
+          ></textarea>
+          <span class="utility-char">{{ (defaultMessage || '').length }}/500</span>
+        </div>
+
+        <div class="utility-actions">
+          <button type="button" class="btn siteBtnbackground" [disabled]="saving" (click)="save()">
+            {{ saving ? 'Saving…' : 'Save changes' }}
+          </button>
+        </div>
+
+        <p class="utility-audit" *ngIf="lastUpdatedDate">
+          Last updated
+          <strong *ngIf="lastUpdatedBy">by user {{ lastUpdatedBy }}</strong>
+          on {{ lastUpdatedDate }}
+        </p>
+      </div>
+
+      <div class="utility-history">
+        <div class="utility-history-head">
+          <h3><i class="bi bi-clock-history"></i> Change history</h3>
+          <div class="utility-history-filters">
+            <select class="form-select" [(ngModel)]="historyFilter" (change)="loadHistory()">
+              <option value="">All WhatsApp fields</option>
+              <option value="WhatsApp_Enabled">Enabled</option>
+              <option value="WhatsApp_PhoneNumber">Phone number</option>
+              <option value="WhatsApp_DefaultMessage">Default message</option>
+            </select>
+            <button type="button" class="btn utility-refresh" (click)="loadHistory()" [disabled]="loadingHistory">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+        </div>
+
+        <div class="utility-loading" *ngIf="loadingHistory">
+          <app-kapunter-loader message="Loading history…"></app-kapunter-loader>
+        </div>
+
+        <div class="utility-empty" *ngIf="!loadingHistory && history.length === 0">
+          No changes recorded yet.
+        </div>
+
+        <div class="table-responsive" *ngIf="!loadingHistory && history.length > 0">
+          <table class="table customtable admin-list-table utility-history-table">
+            <thead>
+              <tr>
+                <th>When</th>
+                <th>Field</th>
+                <th>Old</th>
+                <th>New</th>
+                <th>Changed by</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of history">
+                <td data-label="When">{{ row.updatedDate }}</td>
+                <td data-label="Field">{{ friendlyKey(row.settingKey) }}</td>
+                <td data-label="Old" class="utility-value">{{ row.oldValue }}</td>
+                <td data-label="New" class="utility-value">{{ row.newValue }}</td>
+                <td data-label="By">{{ row.updatedBy }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</section>

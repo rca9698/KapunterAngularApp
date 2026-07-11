@@ -7,7 +7,9 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./whatsapp-float.component.css']
 })
 export class WhatsappFloatComponent {
-  readonly whatsappUrl = this.buildWhatsappUrl();
+  get whatsappUrl(): string {
+    return this.buildWhatsappUrl();
+  }
 
   private buildWhatsappUrl(): string {
     const config = environment.whatsapp;

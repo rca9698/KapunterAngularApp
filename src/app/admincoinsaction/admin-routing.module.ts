@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DeletedUserListComponent } from './User/deleted-user-list/deleted-user-list.component';
 import { UserListComponent } from './User/user-list/user-list.component';
 import { UserSiteAccountsHistoryComponent } from './User/user-site-accounts-history/user-site-accounts-history.component';
+import { UtilitySettingsComponent } from './Utility/utility-settings/utility-settings.component';
 import { IsAuthenticatedGuard } from '../is-authenticated.guard';
 import { HasRoleGuard } from '../has-role.guard';
 
@@ -13,6 +14,12 @@ const routes: Routes = [
   { path: 'user_list/:userId/site-accounts', component: UserSiteAccountsHistoryComponent },
   { path: 'user_list', component: UserListComponent },
   { path: 'deleted_user_list', component: DeletedUserListComponent },
+  {
+    path: 'utility',
+    component: UtilitySettingsComponent,
+    canActivate: [IsAuthenticatedGuard, HasRoleGuard],
+    data: { role: 'admin' }
+  },
   {
     path: 'coins',
     loadChildren: () => import('../admincoinsaction/coins/coins.module').then(module => module.CoinsModule),

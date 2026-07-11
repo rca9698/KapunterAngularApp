@@ -1,26 +1,15 @@
 /**
  * Build-time fallbacks only.
- * Deploy URLs / isAdminSite / image paths / WhatsApp are overridden at runtime
- * from assets/app-config.json (see AppConfigService) — edit that file per server/folder without rebuild.
+ * Deploy URLs / isAdminSite come from assets/app-config.json (AppConfigService).
+ * imagePath / whatsapp are loaded from DB via GET /api/Config/GetPublicConfig on startup.
+ * WhatsApp is managed in Admin → Utility (DB AppSetting); keep empty fallbacks only.
  */
 export const environment = {
     production: true,
     environment: 'prod',
     isAdminSite: false,
     appUrl: 'https://kapunter.com/',
-    apiUrl: 'https://kapunter-api.azurewebsites.net',
+    apiUrl: 'https://localhost:7236',
     ueserKey: 'kapunterUser',
-
-    imagePath:{
-        sitePath:'https://kapunterappstorage.blob.core.windows.net/kapunterstorage/Sites/',
-        dashboardImages:'https://kapunterappstorage.blob.core.windows.net/kapunterstorage/DashboardImages/',
-        QR:'https://kapunterappstorage.blob.core.windows.net/kapunterstorage/QR/',
-        proofPath: 'https://kapunterappstorage.blob.core.windows.net/kapunterstorage/PaymentProof/'
-    },
-
-    whatsapp: {
-        enabled: true,
-        phoneNumber: '91',
-        defaultMessage: 'Hi, I need help with Kapunter'
-    }
+ 
 };

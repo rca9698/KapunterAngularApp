@@ -9,10 +9,5 @@
     "dashboardImages": "https://kapunterappstorage.blob.core.windows.net/kapunterstorage/DashboardImages/",
     "QR": "https://kapunterappstorage.blob.core.windows.net/kapunterstorage/QR/",
     "proofPath": "https://kapunterappstorage.blob.core.windows.net/kapunterstorage/PaymentProof/"
-  },
-  "whatsapp": {
-    "enabled": true,
-    "phoneNumber": "91",
-    "defaultMessage": "Hi, I need help with Kapunter"
   }
 }

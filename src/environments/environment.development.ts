@@ -1,6 +1,7 @@
 /**
  * ng serve fallbacks. For local API, set apiUrl in src/assets/app-config.json
  * (e.g. "https://localhost:7236") — no rebuild needed after that edit + refresh.
+ * WhatsApp comes from DB (GetPublicConfig / Admin Utility).
  */
 export const environment = {
     production: false,
@@ -18,8 +19,8 @@ export const environment = {
     },
 
     whatsapp: {
-        enabled: true,
-        phoneNumber: '91',
-        defaultMessage: 'Hi, I need help with Kapunter'
+        enabled: false,
+        phoneNumber: '',
+        defaultMessage: ''
     }
 };

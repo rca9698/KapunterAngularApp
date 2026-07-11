@@ -109,6 +109,27 @@ export class apiService {
   setReferralRewardAmount(obj: { rewardAmount: number; sessionUser: number | bigint }) {
     return this.http.post(`${environment.apiUrl}/api/Profile/SetReferralRewardAmount`, obj);
   }
+
+  getUtilitySettings() {
+    return this.http.get(`${environment.apiUrl}/api/Config/GetUtilitySettings`);
+  }
+
+  setUtilitySettings(obj: {
+    enabled: boolean;
+    phoneNumber: string;
+    defaultMessage: string;
+    sessionUser: number | bigint;
+  }) {
+    return this.http.post(`${environment.apiUrl}/api/Config/SetUtilitySettings`, obj);
+  }
+
+  getUtilitySettingHistory(settingKey?: string, top = 50) {
+    const params: string[] = [`top=${top}`];
+    if (settingKey) {
+      params.push(`settingKey=${encodeURIComponent(settingKey)}`);
+    }
+    return this.http.get(`${environment.apiUrl}/api/Config/GetUtilitySettingHistory?${params.join('&')}`);
+  }
   // Profile Related APIs End
 
   //PassbookHistory Related APIs Start
