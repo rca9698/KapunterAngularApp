@@ -20,6 +20,10 @@ export class CloseIdRequestsComponent implements OnInit {
   totalCount = 0;
   sitePath = environment.imagePath?.sitePath || '';
 
+  approvingAccountId: string | null = null;
+  settlementAmount: number | null = null;
+  approveSubmitting = false;
+
   constructor(
     private idsService: IdsService,
     private authservice: AuthService,
@@ -60,22 +64,51 @@ export class CloseIdRequestsComponent implements OnInit {
     });
   }
 
-  approveClose(item: IID_Request_Modal): void {
-    const accountId = (item as any).accountId ?? (item as any).accountID;
+  startApprove(item: IID_Request_Modal): void {
+    this.approvingAccountId = this.getAccountId(item);
+    this.settlementAmount = null;
+  }
+
+  cancelApprove(): void {
+    this.approvingAccountId = null;
+    this.settlementAmount = null;
+    this.approveSubmitting = false;
+  }
+
+  isApproving(item: IID_Request_Modal): boolean {
+    return this.approvingAccountId === this.getAccountId(item);
+  }
+
+  confirmApprove(item: IID_Request_Modal): void {
+    const accountId = this.getAccountId(item);
+    const amount = Number(this.settlementAmount);
+
+    if (this.settlementAmount === null || this.settlementAmount === undefined || Number.isNaN(amount) || amount < 0) {
+      this.toasterService.warning('Enter settlement amount (0 or more) for passbook WithdrawFromAccountId.');
+      return;
+    }
+
+    this.approveSubmitting = true;
     this.idsService.confirmCloseId({
       accountId,
-      sessionUser: this._sessionUser
+      sessionUser: this._sessionUser,
+      settlementAmount: amount
     }).subscribe({
       next: (response: any) => {
+        this.approveSubmitting = false;
         this.returnType = response;
         if (this.returnType?.returnStatus === 1) {
-          this.toasterService.success(this.returnType?.returnMessage ?? 'Request approved');
+          this.toasterService.success(this.returnType?.returnMessage ?? 'Account closed and passbook updated');
+          this.cancelApprove();
           this.fetchCloseRequests(this.usersQuery);
         } else {
           this.toasterService.warning(this.returnType?.returnMessage ?? 'Unable to approve request');
         }
       },
-      error: () => this.toasterService.warning('Unable to approve request')
+      error: () => {
+        this.approveSubmitting = false;
+        this.toasterService.warning('Unable to approve request');
+      }
     });
   }
 

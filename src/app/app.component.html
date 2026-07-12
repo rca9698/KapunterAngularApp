@@ -170,9 +170,21 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a routerLink="/site/user-list-sites" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
+                                    <a routerLink="/site/app-get-user-list-site-by-id" [queryParams]="{ view: 'create' }" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
                                         <i class="bi bi-plus-lg" aria-hidden="true"></i>
                                         <span class="sidebar-member-text">Create ID</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a routerLink="/site/app-get-user-list-site-by-id" [queryParams]="{ view: 'active' }" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
+                                        <i class="bi bi-person-badge" aria-hidden="true"></i>
+                                        <span class="sidebar-member-text">My IDs</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a routerLink="/site/app-get-user-list-site-by-id" [queryParams]="{ view: 'closed' }" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
+                                        <i class="bi bi-archive" aria-hidden="true"></i>
+                                        <span class="sidebar-member-text">Closed IDs</span>
                                     </a>
                                 </li>
                                 <li>

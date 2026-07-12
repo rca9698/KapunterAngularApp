@@ -13,26 +13,14 @@
                     </div>
                 </div>
         </div>
-        <div class="footer-tab-cell" (click)="createId()">
+        <div class="footer-tab-cell" (click)="idsWorkspace()">
             <div class="card sitebackground footer-tab">
                 <div class="card-body text-center">
                     <div class="row">
-                        <i class="bi bi-plus-circle"></i>
+                        <i class="bi" [ngClass]="hasActiveIds ? 'bi-person-badge' : 'bi-plus-circle'"></i>
                     </div>
                     <h6 class="text-muted font-weight-normal">
-                        <p class="text-uppercase"> Create </p>
-                    </h6>
-                </div>
-            </div>
-        </div>
-        <div class="footer-tab-cell" (click)="listIds()">
-            <div class="card sitebackground footer-tab">
-                <div class="card-body text-center">
-                    <div class="row">
-                        <i class="bi bi-square"></i>
-                    </div>
-                    <h6 class="text-muted font-weight-normal">
-                        <p class="text-uppercase"> My ID's </p>
+                        <p class="text-uppercase">{{ hasActiveIds ? "My ID's" : 'Create' }}</p>
                     </h6>
                 </div>
             </div>

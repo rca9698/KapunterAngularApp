@@ -48,11 +48,19 @@ export class CreateIdsComponent {
     this.addIDRequest.siteid = this.obj.siteId;
 
     this.useridsservice.AddIDRequest(this.addIDRequest)?.subscribe({
-      next:(response)=>{
-        this.bsModalRef.hide();
-        this.router.navigate(['/site/user-list-sites'])
-      }}
-    ); 
+      next:(response: any)=>{
+        if ((response?.returnStatus ?? response?.ReturnStatus) === 1) {
+          this.bsModalRef.hide();
+          this.toasterService.success(response?.returnMessage ?? 'ID request submitted.');
+          this.router.navigate(['/site/app-get-user-list-site-by-id'], { queryParams: { view: 'active' } });
+        } else {
+          this.toasterService.warning(response?.returnMessage ?? response?.ReturnMessage ?? 'Unable to create ID request.');
+        }
+      },
+      error: () => {
+        this.toasterService.warning('Unable to create ID request.');
+      }
+    }); 
      
     }
   } 

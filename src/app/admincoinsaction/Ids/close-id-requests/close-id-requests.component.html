@@ -2,7 +2,10 @@
   <div class="feature-card">
     <div class="admin-list-header text-center mb-3">
       <h2 class="mb-1">Close Account Requests</h2>
-      <p class="list-subtitle">Review and process user requests to close existing IDs</p>
+      <p class="list-subtitle">
+        Review beneficiary remove-ID requests. On approve, capture settlement amount for passbook
+        (<strong>WithdrawFromAccountId</strong>).
+      </p>
     </div>
 
     <div class="request-table-wrap mt-4 admin-list-table">
@@ -25,30 +28,74 @@
               <p class="mb-0">No close requests found.</p>
             </td>
           </tr>
-          <tr *ngFor="let item of requestList">
-            <td>{{ item.userNumber }}</td>
-            <td>
-              <div class="site-cell">
-                <img
-                  *ngIf="item.documentDetailId"
-                  class="site-thumb"
-                  [src]="sitePath + item.documentDetailId + item.fileExtenstion"
-                  [alt]="item.siteName"
-                />
-                <div class="site-meta">
-                  <p>{{ item.siteName }}</p>
-                  <p class="site-url">{{ item.siteURL }}</p>
+          <ng-container *ngFor="let item of requestList">
+            <tr>
+              <td>{{ item.userNumber }}</td>
+              <td>
+                <div class="site-cell">
+                  <img
+                    *ngIf="item.documentDetailId"
+                    class="site-thumb"
+                    [src]="sitePath + item.documentDetailId + item.fileExtenstion"
+                    [alt]="item.siteName"
+                  />
+                  <div class="site-meta">
+                    <p>{{ item.siteName }}</p>
+                    <p class="site-url">{{ item.siteURL }}</p>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td><span class="id-badge">#{{ getAccountId(item) }}</span></td>
-            <td>{{ item.userName }}</td>
-            <td class="close-reason-cell">{{ getCloseReason(item) }}</td>
-            <td>{{ item.createdDate }}</td>
-            <td>
-              <button type="button" class="btn btn-sm siteBtnbackground" (click)="approveClose(item)">Approve</button>
-            </td>
-          </tr>
+              </td>
+              <td><span class="id-badge">#{{ getAccountId(item) }}</span></td>
+              <td>{{ item.userName }}</td>
+              <td class="close-reason-cell">{{ getCloseReason(item) }}</td>
+              <td>{{ item.createdDate }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-sm siteBtnbackground"
+                  *ngIf="!isApproving(item)"
+                  (click)="startApprove(item)">
+                  Approve
+                </button>
+              </td>
+            </tr>
+            <tr class="approve-amount-row" *ngIf="isApproving(item)">
+              <td colspan="7">
+                <div class="approve-amount-panel">
+                  <div>
+                    <strong>Settlement amount for Account #{{ getAccountId(item) }}</strong>
+                    <p>This amount is saved to passbook history as <code>WithdrawFromAccountId</code>.</p>
+                  </div>
+                  <div class="approve-amount-form">
+                    <label [attr.for]="'settle-' + getAccountId(item)">Amount (₹)</label>
+                    <input
+                      [id]="'settle-' + getAccountId(item)"
+                      type="number"
+                      class="form-control"
+                      [(ngModel)]="settlementAmount"
+                      min="0"
+                      step="0.01"
+                      placeholder="0.00"
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-sm siteBtnbackground"
+                      [disabled]="approveSubmitting"
+                      (click)="confirmApprove(item)">
+                      {{ approveSubmitting ? 'Saving…' : 'Confirm &amp; close' }}
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm approve-cancel"
+                      [disabled]="approveSubmitting"
+                      (click)="cancelApprove()">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
     </div>

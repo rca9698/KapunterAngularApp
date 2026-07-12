@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ISiteDetailModal } from 'src/app/Shared/Modals/site-detail-modal';
 import { SitesService } from '../../Sites/sites.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
@@ -21,36 +22,43 @@ export class UserListSitesComponent implements OnInit {
   sites: ISiteDetailModal[] | undefined;
   sitePath: string | undefined;
   listSitesQuery: any;
-  returnType: any; 
+  returnType: any;
   private readonly _sessionUser: any;
-  
-  constructor(private siteService:SitesService, 
-    private toasterService: ToastrService, private userIdService: UserIdsService
-    , public authservice: AuthService, private coinsservice: CoinsService
-    , private bsModalService: BsModalService){
+
+  constructor(
+    private siteService: SitesService,
+    private toasterService: ToastrService,
+    private userIdService: UserIdsService,
+    public authservice: AuthService,
+    private coinsservice: CoinsService,
+    private bsModalService: BsModalService,
+    private router: Router
+  ) {
     this.sitePath = environment.imagePath.sitePath;
     this._sessionUser = this.authservice.user.userId;
   }
 
   ngOnInit(): void {
-    this.loadSites();
+    // Alias → IDs hub Create tab (one active ID per site)
+    this.router.navigate(['/site/app-get-user-list-site-by-id'], {
+      queryParams: { view: 'create' },
+      replaceUrl: true
+    });
   }
 
-  loadSites(){
-    this.listSitesQuery = {
-      SessionUser: this._sessionUser
-    };
-     this.siteService.getSiteList(this.listSitesQuery).subscribe(resp => {
+  loadSites() {
+    this.listSitesQuery = { SessionUser: this._sessionUser };
+    this.siteService.getSiteList(this.listSitesQuery).subscribe(resp => {
       this.returnType = resp;
-      if(this.returnType['returnStatus'] == 1){
+      if (this.returnType['returnStatus'] == 1) {
         this.sites = this.returnType['returnList'];
-      }else{
+      } else {
         this.toasterService.warning(this.returnType.returnMessage);
       }
-    })
+    });
   }
 
-  CreateIDRequest(obj: any){
+  CreateIDRequest(obj: any) {
     this.userIdService.OpenAddIDRequestPopup(obj);
   }
 
@@ -90,5 +98,4 @@ export class UserListSitesComponent implements OnInit {
       : `https://${raw}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   }
-
 }

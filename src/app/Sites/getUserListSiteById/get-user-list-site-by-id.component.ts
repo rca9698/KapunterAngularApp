@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ISiteDetailModal } from 'src/app/Shared/Modals/site-detail-modal';
 import { SitesService } from '../../Sites/sites.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
@@ -11,12 +11,23 @@ import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { TransferIdsListModalComponent } from '../userListSites/transfer-ids-list-modal/transfer-ids-list-modal.component';
 import { SiteIdDetailsModalComponent } from '../userListSites/site-id-details-modal/site-id-details-modal.component';
 import { GetUserSiteTransactionHistoryComponent } from '../get-user-site-transaction-history/get-user-site-transaction-history.component';
+import { IdsService } from 'src/app/admincoinsaction/Ids/ids.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
-interface AccountDetail {
+export type IdsHubView = 'active' | 'create' | 'closed';
+
+interface ClosedAccountRow {
   accountId: string | number;
-  accountName: string;
-  isActive: boolean;
-  coins: number;
+  siteId: number;
+  siteName: string;
+  siteURL: string;
+  userName: string;
+  documentDetailId?: string;
+  fileExtenstion?: string;
+  reason?: string;
+  settlementAmount?: number | null;
+  closedDate?: string;
   createdDate?: string;
 }
 
@@ -27,16 +38,21 @@ interface AccountDetail {
 })
 export class GetUserListSiteByIdComponent implements OnInit {
 
-  sites: ISiteDetailModal[] | undefined;
-  accounts: AccountDetail[] = [];
-  selectedAccount: AccountDetail | null = null;
+  view: IdsHubView = 'active';
+  sites: ISiteDetailModal[] = [];
+  createSites: ISiteDetailModal[] = [];
+  closedAccounts: ClosedAccountRow[] = [];
+  activeSiteIds = new Set<string>();
+
   sitePath: string | undefined;
-  listSitesQuery: any;
   returnType: any;
   loading = false;
-  depositType: 'site' | 'wallet' = 'wallet';
   userId: string | number | null = null;
-  
+
+  removingAccountId: string | number | null = null;
+  removeReason = '';
+  removeSubmitting = false;
+
   private readonly _sessionUser: any;
 
   constructor(
@@ -46,126 +62,170 @@ export class GetUserListSiteByIdComponent implements OnInit {
     public authservice: AuthService,
     private coinsservice: CoinsService,
     private bsModalService: BsModalService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private idsService: IdsService,
+    private router: Router
   ) {
-    this.sitePath = environment.imagePath.sitePath;
+    this.sitePath = environment.imagePath?.sitePath || '';
     this._sessionUser = this.authservice.user.userId;
   }
 
   ngOnInit(): void {
-    // Get userId from route parameters
+    this.activatedRoute.queryParamMap.subscribe(q => {
+      const raw = (q.get('view') || 'active').toLowerCase();
+      this.view = raw === 'create' || raw === 'closed' ? raw : 'active';
+    });
+
     this.activatedRoute.params.subscribe(params => {
       this.userId = params['userId'] || this._sessionUser;
-      this.loadAllSites();
+      this.reloadHub();
     });
   }
 
-  /**
-   * Load all sites (merged functionality from user-list-sites)
-   */
-  loadAllSites(): void {
-    this.loading = true;
+  setView(view: IdsHubView): void {
+    this.view = view;
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { view },
+      queryParamsHandling: 'merge'
+    });
+    if (view === 'closed' && !this.closedAccounts.length) {
+      this.loadClosedAccounts();
+    }
+    if (view === 'create' && !this.createSites.length) {
+      this.loadCreateSites();
+    }
+  }
 
-    this.siteService.GetUserListSiteById(this._sessionUser).subscribe({
-      next: (resp) => {
-        this.returnType = resp;
-        if (this.returnType['returnStatus'] == 1) {
-          this.sites = this.returnType['returnList'];
-        } else {
-          this.toasterService.warning(this.returnType.returnMessage);
-          this.sites = [];
+  hasActiveAccount(site: ISiteDetailModal): boolean {
+    if (site?.accountId) {
+      return true;
+    }
+    return this.activeSiteIds.has(String(site?.siteId ?? ''));
+  }
+
+  reloadHub(): void {
+    this.loading = true;
+    const active$ = this.siteService.GetUserListSiteById(this._sessionUser).pipe(
+      catchError(() => of({ returnStatus: 0, returnList: [] }))
+    );
+    const allSites$ = this.siteService.getSiteList({ SessionUser: this._sessionUser }).pipe(
+      catchError(() => of({ returnStatus: 0, returnList: [] }))
+    );
+    const closed$ = this.idsService.deletedIds({
+      userId: this._sessionUser,
+      sessionUser: this._sessionUser,
+      isDeleted: 1
+    }).pipe(catchError(() => of({ returnStatus: 0, returnList: [] })));
+
+    forkJoin({ active: active$, allSites: allSites$, closed: closed$ }).subscribe({
+      next: ({ active, allSites, closed }) => {
+        const activeResp: any = active;
+        const allResp: any = allSites;
+        const closedResp: any = closed;
+
+        this.sites = (activeResp?.returnList ?? []) as ISiteDetailModal[];
+        this.activeSiteIds = new Set(
+          this.sites
+            .filter(s => !!s?.accountId || !!s?.siteId)
+            .map(s => String(s.siteId))
+        );
+
+        const catalog = (allResp?.returnList ?? []) as ISiteDetailModal[];
+        this.createSites = catalog.filter(s => !this.activeSiteIds.has(String(s.siteId)));
+
+        this.closedAccounts = this.mapClosed(closedResp?.returnList ?? []);
+
+        if (this.view === 'active' && !this.sites.length && this.createSites.length) {
+          // Prefer Create when user has no active IDs yet
+          this.setView('create');
         }
+
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Error loading sites:', err);
-        this.toasterService.warning('Failed to load sites');
+      error: () => {
+        this.toasterService.warning('Failed to load IDs');
         this.sites = [];
+        this.createSites = [];
+        this.closedAccounts = [];
         this.loading = false;
       }
     });
   }
 
-  /**
-   * Switch to a different account
-   */
-  selectAccount(account: AccountDetail): void {
-    this.selectedAccount = account;
+  private loadCreateSites(): void {
+    this.siteService.getSiteList({ SessionUser: this._sessionUser }).subscribe({
+      next: (resp: any) => {
+        const catalog = (resp?.returnList ?? []) as ISiteDetailModal[];
+        this.createSites = catalog.filter(s => !this.activeSiteIds.has(String(s.siteId)));
+      }
+    });
   }
 
-  /**
-   * Get active accounts count
-   */
-  getActiveAccountsCount(): number {
-    return this.accounts.filter(acc => acc.isActive).length;
+  private loadClosedAccounts(): void {
+    this.idsService.deletedIds({
+      userId: this._sessionUser,
+      sessionUser: this._sessionUser,
+      isDeleted: 1
+    }).subscribe({
+      next: (resp: any) => {
+        this.closedAccounts = this.mapClosed(resp?.returnList ?? []);
+      }
+    });
   }
 
-  /**
-   * Create new ID request for selected account and site
-   */
+  private mapClosed(list: any[]): ClosedAccountRow[] {
+    return (list || []).map((row: any) => ({
+      accountId: row.accountId ?? row.AccountId,
+      siteId: Number(row.siteId ?? row.SiteId ?? 0),
+      siteName: row.siteName ?? row.SiteName ?? '',
+      siteURL: row.siteURL ?? row.SiteURL ?? '',
+      userName: row.userName ?? row.UserName ?? '',
+      documentDetailId: row.documentDetailId ?? row.DocumentDetailId,
+      fileExtenstion: row.fileExtenstion ?? row.FileExtenstion,
+      reason: row.reason ?? row.Reason ?? '',
+      settlementAmount: row.settlementAmount ?? row.SettlementAmount ?? null,
+      closedDate: row.closedDate ?? row.ClosedDate ?? '',
+      createdDate: row.createdDate ?? row.CreatedDate ?? ''
+    }));
+  }
+
   CreateIDRequest(site: ISiteDetailModal): void {
-    const siteWithAccount = { ...site };
-    this.userIdService.OpenAddIDRequestPopup(siteWithAccount);
+    if (this.hasActiveAccount(site)) {
+      this.toasterService.warning('You already have an active ID on this site. Close it before creating a new one.');
+      this.setView('active');
+      return;
+    }
+    this.userIdService.OpenAddIDRequestPopup({ ...site });
   }
 
-  /**
-   * Open deposit modal for wallet
-   */
   openDepositeCoinsRequest(site: ISiteDetailModal): void {
-    console.log('Opening deposit modal for site:', site);
     this.coinsservice.OpenDepositeCoinsRequestPopup('Deposite', site);
   }
 
-  /**
-   * Open withdraw modal for wallet
-   */
   openWithdrawCoinsRequest(site: ISiteDetailModal): void {
-    console.log('Opening withdraw modal for site:', site);
     this.coinsservice.OpenWithdrawCoinsRequestPopup('Withdraw', site);
   }
 
-  /**
-   * Open transfer IDs list modal
-   */
   openTransferIdsList(site: ISiteDetailModal): void {
-    const initialState: ModalOptions = {
-      initialState: { contextSite: site },
-    };
-    this.bsModalService.show(TransferIdsListModalComponent, initialState);
+    this.bsModalService.show(TransferIdsListModalComponent, {
+      initialState: { contextSite: site }
+    } as ModalOptions);
   }
 
-  /**
-   * Open site ID details modal with account ID and deposit type
-   */
   openSiteIdDetails(site: ISiteDetailModal): void {
-    const initialState: ModalOptions = {
-      initialState: {
-        contextSite: site,
-        accountId: site.accountId,
-        filterByAccount: true,
-        depositType: this.depositType
-      },
-    };
-    this.bsModalService.show(SiteIdDetailsModalComponent, initialState);
+    this.bsModalService.show(SiteIdDetailsModalComponent, {
+      initialState: { contextSite: site, filterByAccount: true }
+    } as ModalOptions);
   }
 
-  
-  /**
-   * Open site ID details modal with account ID and deposit type
-   */
   openTransactionHistoryDetails(site: ISiteDetailModal): void {
-    const initialState: ModalOptions = {
-      initialState: {
-        contextSite: site,
-        accountId: site.accountId
-      },
-    };
-    this.bsModalService.show(GetUserSiteTransactionHistoryComponent, initialState);
+    this.bsModalService.show(GetUserSiteTransactionHistoryComponent, {
+      initialState: { contextSite: site },
+      class: 'modal-lg'
+    } as ModalOptions);
   }
 
-  /**
-   * Open site in new tab
-   */
   openSiteLink(site: ISiteDetailModal): void {
     const raw = (site.siteURL || '').trim();
     if (!raw) {
@@ -178,10 +238,57 @@ export class GetUserListSiteByIdComponent implements OnInit {
     window.open(url, '_blank', 'noopener,noreferrer');
   }
 
-  /**
-   * Switch deposit type
-   */
-  switchDepositType(type: 'site' | 'wallet'): void {
-    this.depositType = type;
+  startRemoveAccount(site: ISiteDetailModal): void {
+    if (!site?.accountId) {
+      this.toasterService.warning('Account ID not found for this ID.');
+      return;
+    }
+    this.removingAccountId = site.accountId != null ? String(site.accountId) : null;
+    this.removeReason = '';
+  }
+
+  cancelRemoveAccount(): void {
+    this.removingAccountId = null;
+    this.removeReason = '';
+    this.removeSubmitting = false;
+  }
+
+  isRemoving(site: ISiteDetailModal): boolean {
+    return this.removingAccountId != null
+      && String(this.removingAccountId) === String(site.accountId);
+  }
+
+  submitRemoveAccount(site: ISiteDetailModal): void {
+    const reason = (this.removeReason || '').trim();
+    if (reason.length < 5) {
+      this.toasterService.warning('Please enter a reason (at least 5 characters).');
+      return;
+    }
+    if (!site?.accountId) {
+      this.toasterService.warning('Account ID is missing.');
+      return;
+    }
+
+    this.removeSubmitting = true;
+    this.idsService.addCloseId({
+      userId: this.authservice.user.userId,
+      accountId: site.accountId,
+      sessionUser: this.authservice.user.userId,
+      reason
+    }).subscribe({
+      next: (resp: any) => {
+        this.removeSubmitting = false;
+        if ((resp?.returnStatus ?? resp?.ReturnStatus) === 1) {
+          this.toasterService.success(resp?.returnMessage ?? 'Remove request submitted for admin approval.');
+          this.cancelRemoveAccount();
+        } else {
+          this.toasterService.warning(resp?.returnMessage ?? 'Unable to submit remove request.');
+        }
+      },
+      error: () => {
+        this.removeSubmitting = false;
+        this.toasterService.warning('Unable to submit remove request.');
+      }
+    });
   }
 }

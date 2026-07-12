@@ -8,3 +8,95 @@
 .request-table-wrap .btn {
   margin-right: 0.3rem;
 }
+
+.close-reason-cell {
+  max-width: 220px;
+  white-space: normal;
+  word-break: break-word;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.approve-amount-row td {
+  background: rgba(255, 149, 31, 0.08);
+  border-top: none;
+  padding: 0.85rem 1rem 1rem;
+}
+
+.approve-amount-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.approve-amount-panel strong {
+  display: block;
+  color: #fff4e8;
+  font-size: 0.95rem;
+}
+
+.approve-amount-panel p {
+  margin: 0.25rem 0 0;
+  color: #c9b8a8;
+  font-size: 0.8rem;
+  max-width: 36rem;
+}
+
+.approve-amount-panel code {
+  color: #ffb347;
+  font-size: 0.78rem;
+}
+
+.approve-amount-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: flex-end;
+}
+
+.approve-amount-form label {
+  display: block;
+  width: 100%;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #c9b8a8;
+  margin-bottom: -0.15rem;
+}
+
+.approve-amount-form .form-control {
+  width: 9rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff4e8;
+  border-radius: 10px;
+}
+
+.approve-cancel {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #c9b8a8;
+}
+
+[data-kp-theme="light"] .close-reason-cell {
+  color: #475569;
+}
+
+[data-kp-theme="light"] .approve-amount-row td {
+  background: #fff7ed;
+}
+
+[data-kp-theme="light"] .approve-amount-panel strong {
+  color: #0f172a;
+}
+
+[data-kp-theme="light"] .approve-amount-panel p {
+  color: #64748b;
+}
+
+[data-kp-theme="light"] .approve-amount-form .form-control {
+  background: #fff;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
