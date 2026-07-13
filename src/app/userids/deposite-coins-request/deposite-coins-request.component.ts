@@ -7,6 +7,7 @@ import { ToastrService } from 'src/app/toastr/toastr.service';
 import { AuthService } from 'src/app/auth.service';
 import { Ibank_details, bank_details } from 'src/app/Shared/Modals/BankAccount/bank_details';
 import { environment } from 'src/environments/environment';
+import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
 import {
   buildLegacyQrBlobUrl,
   buildQrImageUrlFromDetail,
@@ -53,7 +54,8 @@ export class DepositeCoinsRequestComponent {
 
   constructor(public bsModalRef:BsModalRef, private formBuilder:FormBuilder, 
     private router:Router, private coinsservice: CoinsService, 
-    private toasterService: ToastrService, public authservice: AuthService) {
+    private toasterService: ToastrService, public authservice: AuthService,
+    private passbookToast: PassbookActivityToastService) {
       this.depositeCoinRequestFrom = this.formBuilder.group({
         coins: ['', [Validators.required, Validators.min(this.minDepositCoins)]]
        },
@@ -99,10 +101,26 @@ export class DepositeCoinsRequestComponent {
     this.coinsservice.add_coin_to_site_request_insert(formParams).subscribe({
       next:(response) =>{
        this.returnType = response;
+       const resp: any = response;
+       const status = resp?.returnStatus ?? resp?.ReturnStatus;
+       const coins = this.depositeCoinRequestFrom.value['coins'];
+       if (status === 1 || status == null) {
+         this.passbookToast.show({
+           kind: 'deposit',
+           title: 'Deposit request submitted',
+           subtitle: this.site?.siteName || this.site?.userName || 'Account',
+           amountLabel: coins != null ? `₹${coins}` : undefined,
+           detail: 'Track status in Passbook after processing.'
+         });
+         this.toasterService.success(resp?.returnMessage ?? 'Deposit request submitted.');
+       } else {
+         this.toasterService.warning(resp?.returnMessage ?? 'Unable to submit deposit.');
+       }
        this.bsModalRef.hide();
       },
       error:error => {
         console.log(error);
+        this.toasterService.warning('Unable to submit deposit.');
       }
     });
   }

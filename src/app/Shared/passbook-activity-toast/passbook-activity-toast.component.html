@@ -1,0 +1,17 @@
+<div class="pb-toast-stack" *ngIf="items.length" aria-live="polite">
+  <article class="pb-toast" *ngFor="let item of items" [attr.data-kind]="item.kind">
+    <div class="pb-toast-icon" aria-hidden="true">
+      <i class="bi" [ngClass]="iconFor(item.kind)"></i>
+    </div>
+    <div class="pb-toast-body">
+      <strong>{{ item.title }}</strong>
+      <p *ngIf="item.subtitle">{{ item.subtitle }}</p>
+      <p class="pb-toast-detail" *ngIf="item.detail">{{ item.detail }}</p>
+      <span class="pb-toast-amount" *ngIf="item.amountLabel">{{ item.amountLabel }}</span>
+      <button type="button" class="pb-toast-link" (click)="viewPassbook(item.id)">View passbook</button>
+    </div>
+    <button type="button" class="pb-toast-close" (click)="dismiss(item.id)" aria-label="Dismiss">
+      <i class="bi bi-x"></i>
+    </button>
+  </article>
+</div>

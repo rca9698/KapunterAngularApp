@@ -657,3 +657,64 @@
   color: #64748b;
 }
 
+
+.site-username-line {
+  margin: 0.15rem 0 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--kp-text, #fff4e8);
+}
+
+.site-card-create {
+  border-style: dashed;
+}
+
+.site-actions-grid-create {
+  grid-template-columns: 1fr;
+}
+
+.ids-hub-tabs {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin: 0.75rem 0 1rem;
+}
+
+.ids-hub-tab {
+  flex: 1 1 auto;
+  min-width: 5.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--kp-border, rgba(255,255,255,0.14));
+  background: transparent;
+  color: var(--kp-muted, #c9b8a8);
+  padding: 0.55rem 0.85rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.ids-hub-tab-active {
+  border-color: var(--kp-accent, #ff951f);
+  color: var(--kp-text, #fff4e8);
+  background: color-mix(in srgb, var(--kp-accent, #ff951f) 18%, transparent);
+}
+
+.ids-hub-count {
+  margin-left: 0.35rem;
+  opacity: 0.85;
+}
+
+.ids-hub-empty {
+  text-align: center;
+  padding: 1.75rem 1rem;
+  border: 1px dashed var(--kp-border, rgba(255,255,255,0.16));
+  border-radius: 16px;
+  color: var(--kp-muted, #c9b8a8);
+}
+
+[data-kp-theme="light"] .site-username-line {
+  color: #0f172a;
+}
+
+[data-kp-theme="light"] .ids-hub-tab-active {
+  color: #0f172a;
+}

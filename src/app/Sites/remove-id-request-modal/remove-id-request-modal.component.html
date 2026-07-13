@@ -1,0 +1,36 @@
+<div class="modal-content remove-id-modal">
+  <div class="remove-id-modal-header">
+    <div class="remove-id-brand" *ngIf="documentDetailId">
+      <img [src]="sitePath + documentDetailId + fileExtenstion" [alt]="siteName" />
+    </div>
+    <div class="remove-id-titles">
+      <p class="remove-id-eyebrow">Remove ID</p>
+      <h2>Remove {{ accountName }}</h2>
+      <p class="remove-id-sub" *ngIf="siteName">{{ siteName }}</p>
+    </div>
+    <button type="button" class="remove-id-close" (click)="cancel()" aria-label="Close">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="remove-id-modal-body">
+    <p class="remove-id-help">
+      Tell us why you want to close this ID. After admin approval it moves to Closed and Create ID opens again for this site.
+    </p>
+    <label for="removeIdReason">Reason</label>
+    <textarea
+      id="removeIdReason"
+      class="form-control"
+      rows="4"
+      maxlength="500"
+      [(ngModel)]="reason"
+      placeholder="Example: No longer using this platform"></textarea>
+  </div>
+
+  <div class="remove-id-modal-footer">
+    <button type="button" class="btn remove-id-cancel" [disabled]="submitting" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn siteBtnbackground" [disabled]="submitting" (click)="submit()">
+      {{ submitting ? 'Submitting…' : 'Submit for approval' }}
+    </button>
+  </div>
+</div>

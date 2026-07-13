@@ -1,32 +1,45 @@
+<div class="modal-content create-id-modal">
+  <form (ngSubmit)="AddUserId()" [formGroup]="AddIdsFrom">
+    <div class="create-id-header">
+      <div class="create-id-site">
+        <img
+          *ngIf="obj?.documentDetailId"
+          class="create-id-logo"
+          [src]="sitePath + obj?.documentDetailId + obj?.fileExtenstion"
+          [alt]="obj?.siteName"
+        />
+        <div>
+          <p class="create-id-eyebrow">Create ID</p>
+          <h2>{{ obj?.siteName }}</h2>
+          <p class="create-id-url">{{ obj?.siteURL }}</p>
+        </div>
+      </div>
+      <button type="button" class="create-id-close" (click)="bsModalRef.hide()" aria-label="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
 
-<div class="modal-content siteColor">
-    <form (ngSubmit)="AddUserId()" [formGroup]="AddIdsFrom">
-        <div class="modal-header">
-            <p class="modal-title">CREATE ID</p>
-            <div type="button" class="close" (click)="bsModalRef.hide()">
-                <i class="bi bi-x-circle-fill"></i>
-            </div>
-        </div>
-        <div class="modal-body">
-            <div class="form-group col-12">
-                <div class="d-flex flex-column text-center col-12 modal-site-profile">
-                    <span>
-                        <img class="siteIcon rounded-circle" src="{{this.sitePath}}{{obj?.documentDetailId}}{{obj?.fileExtenstion}}" />
-                    </span>
-                    <p class="text-uppercase">{{obj?.siteName}}</p>
-                    <p>{{obj?.siteURL}}</p>
-                </div>
-            </div>
+    <div class="create-id-body">
+      <p class="create-id-help">Choose the username you want on this platform. One active ID per site.</p>
+      <label for="createIdUsername">User name</label>
+      <input
+        id="createIdUsername"
+        formControlName="username"
+        type="text"
+        class="form-control"
+        placeholder="Enter preferred username"
+        autocomplete="off"
+      />
+      <div
+        class="create-id-error"
+        *ngIf="AddIdsFrom.get('username')?.invalid && (submitted || AddIdsFrom.get('username')?.touched || AddIdsFrom.get('username')?.dirty)">
+        <span *ngIf="AddIdsFrom.get('username')?.errors?.['required']">User name is required</span>
+      </div>
+    </div>
 
-            <div class="form-group">
-                <label>User Name*</label>
-                <input formControlName="username" [(ngModel)]="addIDRequest.userName" type="text" class="form-control" placeholder="User Name" autocomplete="off">
-                <div class="text-danger" *ngIf="AddIdsFrom.get('username')?.invalid && (submitted || AddIdsFrom.get('username')?.touched || AddIdsFrom.get('username')?.dirty)">
-                 <span *ngIf="AddIdsFrom.get('username')?.errors?.['required']"> User Name is required </span> </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn siteBtnbackground col-12">Create ID</button>
-        </div>
-    </form>
+    <div class="create-id-footer">
+      <button type="button" class="btn create-id-cancel" (click)="bsModalRef.hide()">Cancel</button>
+      <button type="submit" class="btn siteBtnbackground create-id-submit">Create ID</button>
+    </div>
+  </form>
 </div>

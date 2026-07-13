@@ -24,6 +24,7 @@ import { DeleteModuleComponent } from './Shared/Modules/delete-module/delete-mod
 import { MakeDefaultModuleComponent } from './Shared/Modules/make-default-module/make-default-module.component';
 import { ViewImageModuleComponent } from './Shared/Modules/view-image-module/view-image-module.component';
 import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsapp-float.component';
+import { PassbookActivityToastComponent } from './Shared/passbook-activity-toast/passbook-activity-toast.component';
 import { AppConfigService, appConfigInitializer } from './app-config.service';
 
 @NgModule({
@@ -42,6 +43,7 @@ import { AppConfigService, appConfigInitializer } from './app-config.service';
     MakeDefaultModuleComponent,
     ViewImageModuleComponent,
     WhatsappFloatComponent,
+    PassbookActivityToastComponent,
   ],
   imports: [
     BrowserModule,

@@ -31,7 +31,7 @@
                                 <i class="bi bi-x-lg"></i>
                             </button>
                         </div>
-                        <div class="sidebar-admin-meta">
+                      <!--  <div class="sidebar-admin-meta">
                             <div class="sidebar-user-number" *ngIf="authService.displayUserNumber !== '—'">{{ authService.displayUserNumber }}</div>
                             <div class="wallet-balance-tile sidebar-admin-balance">
                                 <p class="wallet-balance-label">Balance</p>
@@ -40,7 +40,7 @@
                                     <span class="wallet-balance-value">{{ authService.walletBalance }}</span>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
 
                     <nav class="dashboard-nav-list sidebar-admin-nav"
@@ -154,6 +154,29 @@
                         class="dashboard-nav-list sidebar-member-nav sidebar-ben-nav"
                         role="navigation"
                         aria-label="Beneficiary navigation">
+
+                        <section class="sidebar-ben-section sidebar-ben-pnl" *ngIf="pnlLoaded" aria-label="7 and 30 day profit and loss">
+                            <h2 class="sidebar-ben-heading">Activity</h2>
+                            <div class="sidebar-pnl-grid">
+                                <article class="sidebar-pnl-chip" [attr.data-tone]="pnlTone(pnl7)">
+                                    <span class="sidebar-pnl-window">7 days</span>
+                                    <span class="sidebar-pnl-badge">{{ pnlLabel(pnl7) }}</span>
+                                    <strong class="sidebar-pnl-amount">
+                                        <span *ngIf="pnl7 !== 0">{{ pnl7 > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnl7) }}
+                                    </strong>
+                                    <small class="sidebar-pnl-meta">In ₹{{ formatPnLMoney(deposit7) }} · Out ₹{{ formatPnLMoney(withdraw7) }}</small>
+                                </article>
+                                <article class="sidebar-pnl-chip" [attr.data-tone]="pnlTone(pnl30)">
+                                    <span class="sidebar-pnl-window">30 days</span>
+                                    <span class="sidebar-pnl-badge">{{ pnlLabel(pnl30) }}</span>
+                                    <strong class="sidebar-pnl-amount">
+                                        <span *ngIf="pnl30 !== 0">{{ pnl30 > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnl30) }}
+                                    </strong>
+                                    <small class="sidebar-pnl-meta">In ₹{{ formatPnLMoney(deposit30) }} · Out ₹{{ formatPnLMoney(withdraw30) }}</small>
+                                </article>
+                            </div>
+                        </section>
+
                         <section class="sidebar-ben-section" aria-labelledby="ben-nav-account-heading">
                             <h2 id="ben-nav-account-heading" class="sidebar-ben-heading">Your account</h2>
                             <ul class="sidebar-ben-list">
@@ -169,23 +192,51 @@
                                         <span class="sidebar-member-text">Withdraw details</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a routerLink="/site/app-get-user-list-site-by-id" [queryParams]="{ view: 'create' }" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
-                                        <i class="bi bi-plus-lg" aria-hidden="true"></i>
-                                        <span class="sidebar-member-text">Create ID</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a routerLink="/site/app-get-user-list-site-by-id" [queryParams]="{ view: 'active' }" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
+                                <li class="sidebar-ids-group" [class.sidebar-ids-group-open]="idsMenuOpen">
+                                    <button
+                                        type="button"
+                                        class="dashboard-nav-item sidebar-member-link sidebar-ids-toggle"
+                                        [class.sidebar-member-link-active]="idsMenuOpen"
+                                        (click)="toggleIdsMenu()"
+                                        [attr.aria-expanded]="idsMenuOpen">
                                         <i class="bi bi-person-badge" aria-hidden="true"></i>
-                                        <span class="sidebar-member-text">My IDs</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a routerLink="/site/app-get-user-list-site-by-id" [queryParams]="{ view: 'closed' }" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
-                                        <i class="bi bi-archive" aria-hidden="true"></i>
-                                        <span class="sidebar-member-text">Closed IDs</span>
-                                    </a>
+                                        <span class="sidebar-member-text">IDs</span>
+                                        <i class="bi sidebar-ids-chevron" [ngClass]="idsMenuOpen ? 'bi-chevron-up' : 'bi-chevron-down'" aria-hidden="true"></i>
+                                    </button>
+                                    <ul class="sidebar-ben-list sidebar-ids-children" *ngIf="idsMenuOpen">
+                                        <li>
+                                            <a
+                                                routerLink="/site/app-get-user-list-site-by-id"
+                                                [queryParams]="{ view: 'create' }"
+                                                routerLinkActive="sidebar-member-link-active"
+                                                [routerLinkActiveOptions]="{ exact: false }"
+                                                class="dashboard-nav-item sidebar-member-link sidebar-member-link-nested"
+                                                [class.sidebar-member-link-active]="isIdsView('create')">
+                                                <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                                <span class="sidebar-member-text">Create ID</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                routerLink="/site/app-get-user-list-site-by-id"
+                                                [queryParams]="{ view: 'active' }"
+                                                class="dashboard-nav-item sidebar-member-link sidebar-member-link-nested"
+                                                [class.sidebar-member-link-active]="isIdsView('active')">
+                                                <i class="bi bi-person-badge" aria-hidden="true"></i>
+                                                <span class="sidebar-member-text">My IDs</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                routerLink="/site/app-get-user-list-site-by-id"
+                                                [queryParams]="{ view: 'closed' }"
+                                                class="dashboard-nav-item sidebar-member-link sidebar-member-link-nested"
+                                                [class.sidebar-member-link-active]="isIdsView('closed')">
+                                                <i class="bi bi-archive" aria-hidden="true"></i>
+                                                <span class="sidebar-member-text">Closed IDs</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
                                     <a routerLink="/account/refer-earn" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link">
@@ -255,12 +306,6 @@
                                         <span class="sidebar-member-text">Notifications</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a routerLink="/notification/list-notification" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link-secondary">
-                                        <i class="bi bi-bell" aria-hidden="true"></i>
-                                        <span class="sidebar-member-text">Notifications</span>
-                                    </a>
-                                </li>
                             </ul>
                         </section>
                     </nav>
@@ -284,6 +329,7 @@
                 
                 <div class='dashboard-app'>
                     <app-toaster> </app-toaster>
+                    <app-passbook-activity-toast></app-passbook-activity-toast>
                     <app-navbar> </app-navbar>
                 
                     <router-outlet> </router-outlet>

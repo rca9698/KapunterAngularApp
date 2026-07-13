@@ -16,7 +16,6 @@ import { SiteIdDetailsModalComponent } from '../Sites/userListSites/site-id-deta
 import { GetUserSiteTransactionHistoryComponent } from '../Sites/get-user-site-transaction-history/get-user-site-transaction-history.component';
 import { ReferralService } from '../Accounts/Profile/refer-earn/referral.service';
 import { Subscription } from 'rxjs';
-import { apiService } from '../api.service';
 
 @Component({
   selector: 'app-home',
@@ -36,9 +35,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   showReferralBanner = false;
   referralCode = '';
   referralReward = 200;
-  depositStatsLoaded = false;
-  depositLast7Days = 0;
-  depositLast30Days = 0;
   private referralSubs: Subscription[] = [];
 
   @ViewChild('accountCarousel') accountCarousel?: ElementRef<HTMLElement>;
@@ -49,8 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     , public userservice: UserService, private accountService: AccountsService
     , private siteService: SitesService, private userIdsService: UserIdsService
     , private bsModalService: BsModalService
-    , private referralService: ReferralService
-    , private api: apiService){
+    , private referralService: ReferralService){
     this.imgPath = environment.imagePath?.dashboardImages || '';
     this.sitePath = environment.imagePath?.sitePath || '';
   }
@@ -85,22 +80,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
      if (this.authservice.token) {
        this.loadSites();
-       this.loadDepositStats();
      }
-  }
-
-  loadDepositStats(): void {
-    this.api.getMyDepositStats().subscribe({
-      next: (resp: any) => {
-        const val = resp?.returnVal ?? resp?.ReturnVal ?? {};
-        this.depositLast7Days = Number(val.depositLast7Days ?? val.DepositLast7Days ?? 0);
-        this.depositLast30Days = Number(val.depositLast30Days ?? val.DepositLast30Days ?? 0);
-        this.depositStatsLoaded = true;
-      },
-      error: () => {
-        this.depositStatsLoaded = false;
-      }
-    });
   }
 
   ngOnDestroy(): void {

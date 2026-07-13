@@ -11,6 +11,7 @@ import { GetUserBankAccount } from 'src/app/Shared/Modals/BankAccount/get_user_b
 import { CommonService } from 'src/app/common.service';
 import { BankAccountService } from 'src/app/BankAccount/bank-account.service';
 import { add_bank_account } from 'src/app/Shared/Modals/BankAccount/add_bank_account';
+import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
 
 @Component({
   selector: 'app-withdraw-coins-request',
@@ -28,6 +29,7 @@ export class WithdrawCoinsRequestComponent {
   returnType: any;
   bankdetails: Ibank_details;
   withdrawcoinrequestmodalobj: Iwithdrawcoinrequestmodal = new withdrawcoinrequestmodal();
+  site: any;
 
   constructor(
     public bsModalRef: BsModalRef,
@@ -37,7 +39,8 @@ export class WithdrawCoinsRequestComponent {
     private toasterService: ToastrService,
     public authservice: AuthService,
     private commonService: CommonService,
-    private bankAccountService: BankAccountService
+    private bankAccountService: BankAccountService,
+    private passbookToast: PassbookActivityToastService
   ) {
     this._sessionUser = authservice.user.userId;
     this.withdrawCoinRequestFrom = this.formBuilder.group({
@@ -89,6 +92,17 @@ export class WithdrawCoinsRequestComponent {
       next: (response) => {
         this.returnType = response;
         this.commonService.toastrMessages(this.returnType);
+        const status = (response as any)?.returnStatus ?? (response as any)?.ReturnStatus;
+        if (status === 1) {
+          this.passbookToast.show({
+            kind: 'withdraw',
+            title: 'Withdraw request submitted',
+            subtitle: this.site?.siteName || this.site?.userName || 'Account',
+            amountLabel: `₹${this.withdrawcoinrequestmodalobj.coins}`,
+            detail: 'Track status in Passbook after processing.'
+          });
+          this.bsModalRef.hide();
+        }
       },
       error: (error) => {
         console.log(error);

@@ -33,17 +33,6 @@
 
   <section class="home-account-section account-sites-section" *ngIf="authservice.isLoggenIn | async">
 
-    <div class="home-deposit-stats" *ngIf="depositStatsLoaded">
-      <article class="home-stat-card">
-        <span>Deposited · 7 days</span>
-        <strong>₹{{ depositLast7Days | number:'1.2-2' }}</strong>
-      </article>
-      <article class="home-stat-card">
-        <span>Deposited · 30 days</span>
-        <strong>₹{{ depositLast30Days | number:'1.2-2' }}</strong>
-      </article>
-    </div>
-
     <div class="loading-container" *ngIf="sitesLoading">
       <app-kapunter-loader message="Loading sites…"></app-kapunter-loader>
     </div>

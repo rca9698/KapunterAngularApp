@@ -37,7 +37,6 @@
     <app-kapunter-loader message="Loading IDs…"></app-kapunter-loader>
   </div>
 
-  <!-- Active IDs -->
   <ng-container *ngIf="!loading && view === 'active'">
     <div class="ids-hub-empty" *ngIf="!sites.length">
       <p>No active IDs yet.</p>
@@ -51,9 +50,9 @@
             <img class="siteImageSize" [src]="sitePath + site.documentDetailId + site.fileExtenstion" [alt]="site.siteName" />
           </div>
           <div class="site-meta">
-            <h3 class="site-name">{{ site.siteName }} (User Name: {{ site.userName }})</h3>
+            <h3 class="site-name">{{ site.siteName }}</h3>
+            <p class="site-username-line" *ngIf="site.userName">ID: {{ site.userName }}</p>
             <p class="site-url">{{ site.siteURL }}</p>
-            <p class="site-account-id" *ngIf="site.accountId">Account ID: #{{ site.accountId }}</p>
             <p class="site-trust"><i class="bi bi-shield-check"></i> Trusted &amp; secure · Instant payouts</p>
           </div>
         </div>
@@ -85,53 +84,21 @@
         <button
           type="button"
           class="site-action site-action-remove"
-          *ngIf="site.accountId && !isRemoving(site)"
+          *ngIf="site.accountId"
           (click)="startRemoveAccount(site)">
           <i class="bi bi-trash3"></i><span>Remove ID</span>
         </button>
       </div>
-
-      <div class="site-remove-panel" *ngIf="isRemoving(site)">
-        <div class="site-remove-panel-head">
-          <strong>Remove account #{{ site.accountId }}</strong>
-          <p>After admin approves, this ID moves to Closed and Create ID opens again for this site.</p>
-        </div>
-        <label for="removeReason-{{ site.accountId }}">Reason</label>
-        <textarea
-          id="removeReason-{{ site.accountId }}"
-          class="form-control"
-          rows="3"
-          maxlength="500"
-          [(ngModel)]="removeReason"
-          placeholder="Example: No longer using this platform / wrong ID created"></textarea>
-        <div class="site-remove-actions">
-          <button
-            type="button"
-            class="btn siteBtnbackground"
-            [disabled]="removeSubmitting"
-            (click)="submitRemoveAccount(site)">
-            {{ removeSubmitting ? 'Submitting…' : 'Submit for approval' }}
-          </button>
-          <button
-            type="button"
-            class="btn site-remove-cancel"
-            [disabled]="removeSubmitting"
-            (click)="cancelRemoveAccount()">
-            Cancel
-          </button>
-        </div>
-      </div>
     </article>
   </ng-container>
 
-  <!-- Create ID (sites without an active account) -->
   <ng-container *ngIf="!loading && view === 'create'">
     <div class="ids-hub-empty" *ngIf="!createSites.length">
       <p>Every site already has an active ID. Close an ID from the Active tab to create again.</p>
       <button type="button" class="btn siteBtnbackground" (click)="setView('active')">View active IDs</button>
     </div>
 
-    <article class="site-card" *ngFor="let site of createSites">
+    <article class="site-card site-card-create" *ngFor="let site of createSites">
       <div class="site-card-row site-card-row-top">
         <div class="site-card-brand" (click)="openSiteLink(site)">
           <div class="site-logo-wrap">
@@ -147,7 +114,7 @@
           <span>No active ID</span>
         </div>
       </div>
-      <div class="site-actions-grid">
+      <div class="site-actions-grid site-actions-grid-create">
         <button type="button" class="site-action site-action-create" (click)="CreateIDRequest(site)">
           <i class="bi bi-person-plus-fill"></i><span>Create ID</span>
         </button>
@@ -155,10 +122,9 @@
     </article>
   </ng-container>
 
-  <!-- Closed / deactivated -->
   <ng-container *ngIf="!loading && view === 'closed'">
     <div class="ids-hub-empty" *ngIf="!closedAccounts.length">
-      <p>No closed IDs yet. Closed accounts appear here after admin approval (also recorded in passbook as WithdrawFromAccountId).</p>
+      <p>No closed IDs yet. Closed accounts appear here after admin approval and are recorded in passbook.</p>
     </div>
 
     <article class="site-card site-card-closed" *ngFor="let item of closedAccounts">
@@ -172,13 +138,13 @@
             />
           </div>
           <div class="site-meta">
-            <h3 class="site-name">{{ item.siteName }} ({{ item.userName }})</h3>
+            <h3 class="site-name">{{ item.siteName }}</h3>
+            <p class="site-username-line" *ngIf="item.userName">ID: {{ item.userName }}</p>
             <p class="site-url">{{ item.siteURL }}</p>
-            <p class="site-account-id">Account ID: #{{ item.accountId }}</p>
             <p class="site-closed-meta" *ngIf="item.closedDate">Closed: {{ item.closedDate }}</p>
             <p class="site-closed-meta" *ngIf="item.reason">Reason: {{ item.reason }}</p>
             <p class="site-closed-meta" *ngIf="item.settlementAmount != null">
-              Settlement: ₹{{ item.settlementAmount }} · Passbook: WithdrawFromAccountId
+              Settlement: ₹{{ item.settlementAmount }} · Passbook updated
             </p>
           </div>
         </div>
@@ -186,7 +152,7 @@
           <span>Closed</span>
         </div>
       </div>
-      <div class="site-actions-grid" *ngIf="!activeSiteIds.has(item.siteId.toString())">
+      <div class="site-actions-grid" *ngIf="canCreateOnClosedSite(item)">
         <button
           type="button"
           class="site-action site-action-create"

@@ -7,6 +7,7 @@ import { ToastrService } from 'src/app/toastr/toastr.service';
 import { AddIDRequest, IAddIDRequest } from 'src/app/Shared/Modals/Ids/add-ids-request';
 import { AuthService } from 'src/app/auth.service';
 import { environment } from 'src/environments/environment';
+import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
 
 @Component({
   selector: 'app-create-ids',
@@ -24,14 +25,15 @@ export class CreateIdsComponent {
 
   constructor(public bsModalRef:BsModalRef, private formBuilder:FormBuilder, 
     private router:Router, private useridsservice: UserIdsService, 
-    private toasterService: ToastrService, private authservice: AuthService){
+    private toasterService: ToastrService, private authservice: AuthService,
+    private passbookToast: PassbookActivityToastService){
       this._sessionUser = authservice.user.userId;
       this.AddIdsFrom = this.formBuilder.group({
         username: ['', [Validators.required]]
        },
      )
      
-     this.sitePath = environment.imagePath.sitePath;
+     this.sitePath = environment.imagePath?.sitePath || '';
   }
 
 
@@ -51,6 +53,12 @@ export class CreateIdsComponent {
       next:(response: any)=>{
         if ((response?.returnStatus ?? response?.ReturnStatus) === 1) {
           this.bsModalRef.hide();
+          this.passbookToast.show({
+            kind: 'create',
+            title: 'ID request submitted',
+            subtitle: this.obj?.siteName || 'Platform',
+            detail: `Username: ${this.addIDRequest.userName}`,
+          });
           this.toasterService.success(response?.returnMessage ?? 'ID request submitted.');
           this.router.navigate(['/site/app-get-user-list-site-by-id'], { queryParams: { view: 'active' } });
         } else {

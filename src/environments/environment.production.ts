@@ -1,10 +1,10 @@
-/** Production build fallbacks — prefer app-config.json + GetPublicConfig. */
+/** Production build fallbacks — apiUrl from app-config.json (https://api.kapunter.com). */
 export const environment = {
   production: true,
   environment: 'prod',
   isAdminSite: false,
-  appUrl: '',
-  apiUrl: '',
+  appUrl: 'https://kapunter.com/',
+  apiUrl: 'https://api.kapunter.com',
   ueserKey: 'kapunterUser',
   imagePath: {
     sitePath: '',

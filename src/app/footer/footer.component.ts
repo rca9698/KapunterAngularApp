@@ -110,4 +110,12 @@ export class FooterComponent implements OnInit {
       this.toasterService.warning('Login to perform action!!');
     }
   }
+
+  viewBonus() {
+    if (this.authservice.isbenview()) {
+      this.router.navigate(['/setting/bonus']);
+    } else {
+      this.toasterService.warning('Login to perform action!!');
+    }
+  }
 }

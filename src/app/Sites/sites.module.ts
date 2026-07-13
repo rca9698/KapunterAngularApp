@@ -15,6 +15,7 @@ import { LoaderModule } from '../Shared/loader/loader.module';
 import { TransferIdsListModalComponent } from './userListSites/transfer-ids-list-modal/transfer-ids-list-modal.component';
 import { SiteIdDetailsModalComponent } from './userListSites/site-id-details-modal/site-id-details-modal.component';
 import { GetUserSiteTransactionHistoryComponent } from './get-user-site-transaction-history/get-user-site-transaction-history.component';
+import { RemoveIdRequestModalComponent } from './remove-id-request-modal/remove-id-request-modal.component';
 
 
 
@@ -27,7 +28,8 @@ import { GetUserSiteTransactionHistoryComponent } from './get-user-site-transact
     GetUserListSiteByIdComponent,
     TransferIdsListModalComponent,
     SiteIdDetailsModalComponent,
-    GetUserSiteTransactionHistoryComponent
+    GetUserSiteTransactionHistoryComponent,
+    RemoveIdRequestModalComponent
   ],
   imports: [
     CommonModule,

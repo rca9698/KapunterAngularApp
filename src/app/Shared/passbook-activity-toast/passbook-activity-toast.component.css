@@ -1,0 +1,106 @@
+.pb-toast-stack {
+  position: fixed;
+  left: 50%;
+  bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 1080;
+  width: min(420px, calc(100vw - 1.25rem));
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  pointer-events: none;
+}
+
+.pb-toast {
+  pointer-events: auto;
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  padding: 0.85rem 0.9rem;
+  border-radius: 16px;
+  border: 1px solid var(--kp-border, rgba(255, 255, 255, 0.14));
+  background: color-mix(in srgb, var(--kp-surface, #1a1410) 92%, #000 8%);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  color: var(--kp-text, #fff4e8);
+  animation: pb-toast-in 0.28s ease;
+}
+
+.pb-toast-icon {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 149, 31, 0.18);
+  color: #ffb347;
+  flex-shrink: 0;
+}
+
+.pb-toast[data-kind="deposit"] .pb-toast-icon { background: rgba(34, 197, 94, 0.18); color: #4ade80; }
+.pb-toast[data-kind="withdraw"] .pb-toast-icon { background: rgba(249, 115, 22, 0.18); color: #fb923c; }
+.pb-toast[data-kind="close"] .pb-toast-icon { background: rgba(239, 68, 68, 0.16); color: #f87171; }
+.pb-toast[data-kind="create"] .pb-toast-icon { background: rgba(59, 130, 246, 0.16); color: #60a5fa; }
+
+.pb-toast-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.pb-toast-body strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.pb-toast-body p {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: var(--kp-muted, #c9b8a8);
+}
+
+.pb-toast-detail {
+  line-height: 1.35;
+}
+
+.pb-toast-amount {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #ffb347;
+}
+
+.pb-toast-link {
+  display: inline-block;
+  margin-top: 0.4rem;
+  border: none;
+  background: transparent;
+  color: #ffb347;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.pb-toast-close {
+  border: none;
+  background: transparent;
+  color: var(--kp-muted, #c9b8a8);
+  padding: 0;
+  line-height: 1;
+  font-size: 1.1rem;
+}
+
+@keyframes pb-toast-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+[data-kp-theme="light"] .pb-toast {
+  background: #fff;
+  color: #0f172a;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+}
+
+[data-kp-theme="light"] .pb-toast-body p {
+  color: #64748b;
+}

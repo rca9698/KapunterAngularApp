@@ -1,9 +1,9 @@
-/** Dev build fallbacks — set apiUrl in assets/app-config.json for local API. */
+/** Dev build fallbacks — apiUrl from app-config.development.json (https://localhost:7236). */
 export const environment = {
   production: false,
   environment: 'dev',
   isAdminSite: false,
-  appUrl: '',
+  appUrl: 'https://kapunter.com/',
   apiUrl: 'https://localhost:7236',
   ueserKey: 'kapunterUser',
   imagePath: {

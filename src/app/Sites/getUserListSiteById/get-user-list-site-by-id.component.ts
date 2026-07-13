@@ -11,6 +11,7 @@ import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { TransferIdsListModalComponent } from '../userListSites/transfer-ids-list-modal/transfer-ids-list-modal.component';
 import { SiteIdDetailsModalComponent } from '../userListSites/site-id-details-modal/site-id-details-modal.component';
 import { GetUserSiteTransactionHistoryComponent } from '../get-user-site-transaction-history/get-user-site-transaction-history.component';
+import { RemoveIdRequestModalComponent } from '../remove-id-request-modal/remove-id-request-modal.component';
 import { IdsService } from 'src/app/admincoinsaction/Ids/ids.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -48,10 +49,6 @@ export class GetUserListSiteByIdComponent implements OnInit {
   returnType: any;
   loading = false;
   userId: string | number | null = null;
-
-  removingAccountId: string | number | null = null;
-  removeReason = '';
-  removeSubmitting = false;
 
   private readonly _sessionUser: any;
 
@@ -104,6 +101,10 @@ export class GetUserListSiteByIdComponent implements OnInit {
     return this.activeSiteIds.has(String(site?.siteId ?? ''));
   }
 
+  canCreateOnClosedSite(item: ClosedAccountRow): boolean {
+    return !this.activeSiteIds.has(String(item.siteId ?? ''));
+  }
+
   reloadHub(): void {
     this.loading = true;
     const active$ = this.siteService.GetUserListSiteById(this._sessionUser).pipe(
@@ -127,7 +128,7 @@ export class GetUserListSiteByIdComponent implements OnInit {
         this.sites = (activeResp?.returnList ?? []) as ISiteDetailModal[];
         this.activeSiteIds = new Set(
           this.sites
-            .filter(s => !!s?.accountId || !!s?.siteId)
+            .filter(s => !!s?.accountId)
             .map(s => String(s.siteId))
         );
 
@@ -240,55 +241,20 @@ export class GetUserListSiteByIdComponent implements OnInit {
 
   startRemoveAccount(site: ISiteDetailModal): void {
     if (!site?.accountId) {
-      this.toasterService.warning('Account ID not found for this ID.');
+      this.toasterService.warning('Unable to remove this ID right now.');
       return;
     }
-    this.removingAccountId = site.accountId != null ? String(site.accountId) : null;
-    this.removeReason = '';
-  }
-
-  cancelRemoveAccount(): void {
-    this.removingAccountId = null;
-    this.removeReason = '';
-    this.removeSubmitting = false;
-  }
-
-  isRemoving(site: ISiteDetailModal): boolean {
-    return this.removingAccountId != null
-      && String(this.removingAccountId) === String(site.accountId);
-  }
-
-  submitRemoveAccount(site: ISiteDetailModal): void {
-    const reason = (this.removeReason || '').trim();
-    if (reason.length < 5) {
-      this.toasterService.warning('Please enter a reason (at least 5 characters).');
-      return;
-    }
-    if (!site?.accountId) {
-      this.toasterService.warning('Account ID is missing.');
-      return;
-    }
-
-    this.removeSubmitting = true;
-    this.idsService.addCloseId({
-      userId: this.authservice.user.userId,
-      accountId: site.accountId,
-      sessionUser: this.authservice.user.userId,
-      reason
-    }).subscribe({
-      next: (resp: any) => {
-        this.removeSubmitting = false;
-        if ((resp?.returnStatus ?? resp?.ReturnStatus) === 1) {
-          this.toasterService.success(resp?.returnMessage ?? 'Remove request submitted for admin approval.');
-          this.cancelRemoveAccount();
-        } else {
-          this.toasterService.warning(resp?.returnMessage ?? 'Unable to submit remove request.');
-        }
+    const ref = this.bsModalService.show(RemoveIdRequestModalComponent, {
+      initialState: {
+        site: { ...site },
+        accountName: String(site.userName || ''),
+        siteName: String(site.siteName || ''),
+        onSubmitted: () => this.reloadHub()
       },
-      error: () => {
-        this.removeSubmitting = false;
-        this.toasterService.warning('Unable to submit remove request.');
-      }
+      class: 'modal-dialog-centered'
+    } as ModalOptions);
+    ref?.onHidden?.subscribe(() => {
+      // no-op; hub refresh handled on success
     });
   }
 }
