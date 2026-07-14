@@ -160,6 +160,9 @@ export class AuthService {
     if (response?.status === 'Failure') {
       return false;
     }
+    if (response?.status === 'Success' && (response?.token || response?.returnVal)) {
+      return true;
+    }
     return response?.returnStatus === 1;
   }
 
@@ -167,6 +170,7 @@ export class AuthService {
     return (
       response?.returnMessage ??
       response?.reason ??
+      response?.ReturnMessage ??
       'Login failed. Please try again.'
     );
   }

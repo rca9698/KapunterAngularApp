@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HomeService } from './home.service';
 import { environment } from 'src/environments/environment';
-import { DashboardImages, IDashboardImages } from '../Shared/Modals/dashboard-images-modal';
+import { IDashboardImages } from '../Shared/Modals/dashboard-images-modal';
 import { CoinsService } from '../admincoinsaction/coins/coins.service';
 import { AuthService } from '../auth.service';
 import { ToastrService } from '../toastr/toastr.service';
@@ -26,8 +26,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   returnType: any; 
   site: ISiteDetailModal = {} as ISiteDetailModal;
   imgPath: string | undefined;
-  images:IDashboardImages[] = [new DashboardImages()];
-  showslider:boolean | undefined;
+  images: IDashboardImages[] = [];
+  showslider = false;
   sites: ISiteDetailModal[] = [];
   sitePath: string | undefined;
   sitesLoading = false;
@@ -68,11 +68,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
     this.referralService.refreshBannerVisibility(this.authservice.isLoggedIn);
 
-     this.homeService.getDashboradImages().subscribe(resp=>{
-      this.returnType = resp; 
-      this.images = this.returnType['returnList'];
-      if(this.images.length > 0){
-        this.showslider = true;
+     this.homeService.getDashboradImages().subscribe({
+      next: (resp) => {
+        this.returnType = resp;
+        const list = this.returnType?.returnList ?? this.returnType?.ReturnList;
+        this.images = Array.isArray(list) ? list : [];
+        this.showslider = this.images.length > 0;
+      },
+      error: () => {
+        this.images = [];
+        this.showslider = false;
       }
      });
 

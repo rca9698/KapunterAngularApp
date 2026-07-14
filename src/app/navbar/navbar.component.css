@@ -280,12 +280,13 @@
 
 .nav-pnl-chip {
   position: relative;
-  padding: 0.5rem 0.65rem 0.55rem;
+  padding: 0.55rem 0.65rem 0.6rem 0.95rem;
   border-radius: 12px;
   border: 1px solid var(--kp-border);
   background: var(--kp-surface);
   overflow: hidden;
   min-width: 0;
+  box-sizing: border-box;
 }
 
 .nav-pnl-chip::before {

@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div id="DashboardImageSlides" class="carousel slide home-carousel" data-bs-ride="carousel" *ngIf="images.length > 0">
+  <div id="DashboardImageSlides" class="carousel slide home-carousel" data-bs-ride="carousel" *ngIf="images?.length">
     <div class="carousel-inner">
       <div class="carousel-item" [ngClass]="{ active: i === 0 }" data-bs-interval="10000" *ngFor="let image of images; let i = index">
         <img src="{{ imgPath }}{{ image.documentDetailId }}{{ image.fileExtenstion }}" class="d-block w-100" alt="">

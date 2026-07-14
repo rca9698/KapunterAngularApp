@@ -4,7 +4,6 @@ import { ISiteDetailModal, SiteDetailModal } from '../Shared/Modals/site-detail-
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ToastrService } from '../toastr/toastr.service';
-import { IdsService } from '../admincoinsaction/Ids/ids.service';
 
 @Component({
   selector: 'app-footer',
@@ -13,41 +12,15 @@ import { IdsService } from '../admincoinsaction/Ids/ids.service';
 })
 export class FooterComponent implements OnInit {
   site: ISiteDetailModal = new SiteDetailModal();
-  /** When true, footer shows My IDs; otherwise Create (toggle). */
-  hasActiveIds = false;
 
   constructor(
     private siteService: SitesService,
     private router: Router,
     public authservice: AuthService,
-    private toasterService: ToastrService,
-    private idsService: IdsService
+    private toasterService: ToastrService
   ) {}
 
-  ngOnInit(): void {
-    this.refreshActiveIdsFlag();
-  }
-
-  refreshActiveIdsFlag(): void {
-    if (!this.authservice.isbenview()) {
-      this.hasActiveIds = false;
-      return;
-    }
-    const userId = this.authservice.user?.userId;
-    if (!userId) {
-      this.hasActiveIds = false;
-      return;
-    }
-    this.idsService.listIds({ userId, sessionUser: userId, isDeleted: 0 }).subscribe({
-      next: (resp: any) => {
-        const list = resp?.returnList ?? resp?.ReturnList ?? [];
-        this.hasActiveIds = Array.isArray(list) && list.length > 0;
-      },
-      error: () => {
-        this.hasActiveIds = false;
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   RedirectToHome() {
     this.router.navigate(['/']);
@@ -61,32 +34,6 @@ export class FooterComponent implements OnInit {
     }
   }
 
-  /** Single footer slot: Create when no active IDs, My IDs when any exist. */
-  idsWorkspace() {
-    if (!this.authservice.isbenview()) {
-      this.toasterService.warning('Login to perform action!!');
-      return;
-    }
-    const userId = this.authservice.user?.userId;
-    if (!userId) {
-      this.router.navigate(['/site/app-get-user-list-site-by-id'], { queryParams: { view: 'create' } });
-      return;
-    }
-    this.idsService.listIds({ userId, sessionUser: userId, isDeleted: 0 }).subscribe({
-      next: (resp: any) => {
-        const list = resp?.returnList ?? resp?.ReturnList ?? [];
-        this.hasActiveIds = Array.isArray(list) && list.length > 0;
-        this.router.navigate(['/site/app-get-user-list-site-by-id'], {
-          queryParams: { view: this.hasActiveIds ? 'active' : 'create' }
-        });
-      },
-      error: () => {
-        this.hasActiveIds = false;
-        this.router.navigate(['/site/app-get-user-list-site-by-id'], { queryParams: { view: 'create' } });
-      }
-    });
-  }
-
   createId() {
     if (!this.authservice.isbenview()) {
       this.toasterService.warning('Login to perform action!!');
@@ -95,6 +42,7 @@ export class FooterComponent implements OnInit {
     this.router.navigate(['/site/app-get-user-list-site-by-id'], { queryParams: { view: 'create' } });
   }
 
+  /** Always open Active accounts tab (shows "No active IDs" when empty). */
   listIds() {
     if (!this.authservice.isbenview()) {
       this.toasterService.warning('Login to perform action!!');

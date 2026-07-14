@@ -159,16 +159,20 @@
                             <h2 class="sidebar-ben-heading">Activity</h2>
                             <div class="sidebar-pnl-grid">
                                 <article class="sidebar-pnl-chip" [attr.data-tone]="pnlTone(pnl7)">
-                                    <span class="sidebar-pnl-window">7 days</span>
-                                    <span class="sidebar-pnl-badge">{{ pnlLabel(pnl7) }}</span>
+                                    <div class="sidebar-pnl-chip-top">
+                                        <span class="sidebar-pnl-window">7 days</span>
+                                        <span class="sidebar-pnl-badge">{{ pnlLabel(pnl7) }}</span>
+                                    </div>
                                     <strong class="sidebar-pnl-amount">
                                         <span *ngIf="pnl7 !== 0">{{ pnl7 > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnl7) }}
                                     </strong>
                                     <small class="sidebar-pnl-meta">In ₹{{ formatPnLMoney(deposit7) }} · Out ₹{{ formatPnLMoney(withdraw7) }}</small>
                                 </article>
                                 <article class="sidebar-pnl-chip" [attr.data-tone]="pnlTone(pnl30)">
-                                    <span class="sidebar-pnl-window">30 days</span>
-                                    <span class="sidebar-pnl-badge">{{ pnlLabel(pnl30) }}</span>
+                                    <div class="sidebar-pnl-chip-top">
+                                        <span class="sidebar-pnl-window">30 days</span>
+                                        <span class="sidebar-pnl-badge">{{ pnlLabel(pnl30) }}</span>
+                                    </div>
                                     <strong class="sidebar-pnl-amount">
                                         <span *ngIf="pnl30 !== 0">{{ pnl30 > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnl30) }}
                                     </strong>

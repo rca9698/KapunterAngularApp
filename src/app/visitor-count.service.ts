@@ -86,8 +86,14 @@ export class VisitorCountService {
       return null;
     }
 
+    const status = response.returnStatus ?? response.ReturnStatus;
     const val = response.returnVal ?? response.ReturnVal;
     const list = response.returnList ?? response.ReturnList;
+
+    // Explicit API failure / empty — keep zeros, don't treat as "unrecognized"
+    if (status === 0 || status === '0' || status === 'Failure') {
+      return { totalVisits: 0, todayVisits: 0, weekVisits: 0, recentLogins: [] };
+    }
 
     if (val && this.hasStatsShape(val)) {
       return this.mapStats(val);
@@ -101,10 +107,13 @@ export class VisitorCountService {
       return { totalVisits: 0, todayVisits: 0, weekVisits: 0, recentLogins: [] };
     }
 
-    const status = response.returnStatus ?? response.ReturnStatus;
     const statusOk = status === 1 || status === '1' || status === 'Success' || status === 'success';
     if (statusOk && val) {
       return this.mapStats(val);
+    }
+
+    if (statusOk && (val == null || list == null)) {
+      return { totalVisits: 0, todayVisits: 0, weekVisits: 0, recentLogins: [] };
     }
 
     return null;
