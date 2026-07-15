@@ -1,42 +1,21 @@
-/* Layout helpers — colors in global admin-theme.css */
+/* Coin request list helpers — shared rules live in admin-listing.shared.css */
 
 .coins-list-header {
   margin-bottom: 0.25rem;
 }
 
-.coins-list-table .site-cell {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  min-width: 10rem;
+.coins-list-table .coins-amount i {
+  font-size: 0.85em;
 }
 
-.coins-list-table .site-thumb {
-  width: 2.4rem;
-  height: 2.4rem;
-  border-radius: 10px;
-  object-fit: contain;
-  object-position: center;
-  flex-shrink: 0;
-  border: 1px solid var(--kp-border);
+[data-kp-theme="light"] .coins-list-table .coins-amount {
+  background: #ecfdf3;
+  border-color: #86efac;
+  color: #166534;
 }
 
-.coins-list-table .site-meta p {
-  margin-bottom: 0;
-  line-height: 1.35;
-}
-
-.coins-list-table .coins-amount {
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.coins-list-table .action-btn-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
-.coins-list-table .action-btn-group button {
-  min-width: 2rem;
+[data-kp-theme="light"] .coins-list-table .account-id-badge {
+  background: #fff7ed;
+  border-color: #fdba74;
+  color: #9a3412;
 }

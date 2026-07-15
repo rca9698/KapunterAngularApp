@@ -27,7 +27,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   site: ISiteDetailModal = {} as ISiteDetailModal;
   imgPath: string | undefined;
   images: IDashboardImages[] = [];
+  bannerSlides: IDashboardImages[] = [];
   showslider = false;
+  bannersLoading = true;
   sites: ISiteDetailModal[] = [];
   sitePath: string | undefined;
   sitesLoading = false;
@@ -70,13 +72,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
      this.homeService.getDashboradImages().subscribe({
       next: (resp) => {
+        this.bannersLoading = false;
         this.returnType = resp;
         const list = this.returnType?.returnList ?? this.returnType?.ReturnList;
         this.images = Array.isArray(list) ? list : [];
-        this.showslider = this.images.length > 0;
+        this.bannerSlides = this.images.filter((img) => this.isValidBanner(img));
+        this.showslider = this.bannerSlides.length > 0;
       },
       error: () => {
+        this.bannersLoading = false;
         this.images = [];
+        this.bannerSlides = [];
         this.showslider = false;
       }
      });
@@ -231,6 +237,24 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   openLogin(): void {
     this.accountService.OpenLoginPopup(true, 'Login');
+  }
+
+  bannerSrc(image: IDashboardImages): string {
+    return `${this.imgPath || ''}${image.documentDetailId || ''}${image.fileExtenstion || ''}`;
+  }
+
+  onBannerError(image: IDashboardImages): void {
+    this.bannerSlides = this.bannerSlides.filter(
+      (slide) => slide.documentDetailId !== image.documentDetailId
+    );
+    this.showslider = this.bannerSlides.length > 0;
+  }
+
+  private isValidBanner(image: IDashboardImages | null | undefined): boolean {
+    if (!image?.documentDetailId || !image?.fileExtenstion) {
+      return false;
+    }
+    return Boolean(this.imgPath?.trim());
   }
 
   logout(): void {

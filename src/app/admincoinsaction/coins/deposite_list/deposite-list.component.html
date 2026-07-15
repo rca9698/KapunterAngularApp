@@ -24,11 +24,11 @@
                 </td>
             </tr>
             <tr *ngFor="let request of requestList">
-                <th scope="row"><p class="mb-0">{{ request.userNumber }}</p></th>
-                <td><p class="mb-0">{{ request.userName }}</p></td>
-                <td><p class="coins-amount mb-0"><i class="bi bi-currency-rupee"></i>{{ request.coins }}</p></td>
-                <td><p class="mb-0">{{ request.createdDate }}</p></td>
-                <td>
+                <th scope="row" data-label="User Number"><span class="list-cell-user">{{ request.userNumber }}</span></th>
+                <td data-label="User Name"><span class="list-cell-user">{{ request.userName }}</span></td>
+                <td data-label="Coins"><span class="coins-amount"><i class="bi bi-currency-rupee"></i>{{ request.coins }}</span></td>
+                <td data-label="Request Date"><span class="list-cell-date">{{ request.createdDate }}</span></td>
+                <td data-label="Action">
                     <div class="action-btn-group btn-group">
                         <button type="button" title="View payment proof" (click)="ViewCoinRequestProof(request)">
                             <i class="bi bi-eye-fill"></i>

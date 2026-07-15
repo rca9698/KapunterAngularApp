@@ -17,30 +17,34 @@
       </thead>
       <tbody>
         <tr *ngIf="!idList.length">
-          <td colspan="6" class="admin-list-empty">
+          <td colspan="5" class="admin-list-empty">
             <i class="bi bi-inbox"></i>
             <p class="mb-0">No accounts found.</p>
           </td>
         </tr>
         <tr *ngFor="let id of idList">
-          <th scope="row"><p class="mb-0">{{ id.userNumber }}</p></th>
-          <td>
+          <th scope="row" data-label="User"><span class="list-cell-user">{{ id.userNumber }}</span></th>
+          <td data-label="Application">
             <div class="site-cell">
-              <img
-                *ngIf="id.documentDetailId"
-                class="site-thumb"
-                [src]="sitePath + id.documentDetailId + id.fileExtenstion"
-                [alt]="id.siteName"
-              />
+              <div class="site-logo-frame" [class.site-logo-frame-empty]="!id.documentDetailId">
+                <img
+                  *ngIf="id.documentDetailId"
+                  class="site-logo-img"
+                  [src]="sitePath + id.documentDetailId + id.fileExtenstion"
+                  [alt]="id.siteName"
+                  loading="lazy"
+                  decoding="async" />
+                <i *ngIf="!id.documentDetailId" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
+              </div>
               <div class="site-meta">
                 <p>{{ id.siteName }}</p>
                 <p class="site-url">{{ id.siteURL }}</p>
               </div>
             </div>
           </td>
-          <td><p class="mb-0">{{ id.userName }}</p></td>
-          <td><p class="mb-0">{{ id.createdDate }}</p></td>
-          <td>
+          <td data-label="ID Username"><span class="id-badge">{{ id.userName }}</span></td>
+          <td data-label="Created Date"><span class="list-cell-date">{{ id.createdDate }}</span></td>
+          <td data-label="Action">
             <div class="action-btn-group btn-group">
               <button type="button" title="Delete account" (click)="DeleteID(id)">
                 <i class="bi bi-trash-fill"></i>

@@ -25,32 +25,36 @@
                 </td>
             </tr>
             <tr *ngFor="let request of requestList">
-                <th scope="row">
-                    <p class="mb-0">{{ request.userNumber }}</p>
-                    <small *ngIf="request.userName">{{ request.userName }}</small>
+                <th scope="row" data-label="User">
+                    <span class="list-cell-user">{{ request.userNumber }}</span>
+                    <small *ngIf="request.userName" class="d-block text-muted">{{ request.userName }}</small>
                 </th>
-                <td>
+                <td data-label="Application">
                     <div class="site-cell">
-                        <img
-                            *ngIf="request.documentDetailId"
-                            class="site-thumb"
-                            [src]="sitePath + request.documentDetailId + request.fileExtenstion"
-                            [alt]="request.siteName"
-                        />
+                        <div class="site-logo-frame" [class.site-logo-frame-empty]="!request.documentDetailId">
+                            <img
+                                *ngIf="request.documentDetailId"
+                                class="site-logo-img"
+                                [src]="sitePath + request.documentDetailId + request.fileExtenstion"
+                                [alt]="request.siteName"
+                                loading="lazy"
+                                decoding="async" />
+                            <i *ngIf="!request.documentDetailId" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
+                        </div>
                         <div class="site-meta">
                             <p>{{ request.siteName }}</p>
                             <p class="site-url">{{ request.siteURL }}</p>
                         </div>
                     </div>
                 </td>
-                <td>
+                <td data-label="Account ID">
                     <span class="account-id-badge" [title]="'Account #' + getAccountId(request)">
                         {{ getAccountLabel(request) }}
                     </span>
                 </td>
-                <td><p class="coins-amount mb-0"><i class="bi bi-currency-rupee"></i>{{ request.coins }}</p></td>
-                <td><p class="mb-0">{{ request.createdDate }}</p></td>
-                <td>
+                <td data-label="Coins"><span class="coins-amount"><i class="bi bi-currency-rupee"></i>{{ request.coins }}</span></td>
+                <td data-label="Request Date"><span class="list-cell-date">{{ request.createdDate }}</span></td>
+                <td data-label="Action">
                     <div class="action-btn-group btn-group">
                         <button type="button" title="View bank account" (click)="ViewAccountDetails(request)">
                             <i class="bi bi-bank2"></i>

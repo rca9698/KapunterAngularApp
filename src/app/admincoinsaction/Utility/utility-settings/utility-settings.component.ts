@@ -314,4 +314,13 @@ export class UtilitySettingsComponent implements OnInit {
       default: return key;
     }
   }
+
+  get whatsAppPreviewUrl(): string {
+    const phone = (this.phoneNumber || '').trim();
+    if (!phone) {
+      return '#';
+    }
+    const text = encodeURIComponent((this.defaultMessage || '').trim());
+    return `https://wa.me/${phone}${text ? `?text=${text}` : ''}`;
+  }
 }

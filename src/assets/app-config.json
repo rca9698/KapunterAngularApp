@@ -1,6 +1,6 @@
 {
   "environment": "prod",
-  "isAdminSite": false,
+  "isAdminSite": true,
   "appUrl": "https://kapunter.com/",
   "apiUrl": "https://api.kapunter.com",
   "ueserKey": "kapunterUser"

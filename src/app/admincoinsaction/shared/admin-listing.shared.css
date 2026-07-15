@@ -1,37 +1,440 @@
-/* Layout helpers — colors in global admin-theme.css */
+/* Shared admin & listing page chrome — dark + light, mobile + desktop */
 
-.admin-list-header {
-  margin-bottom: 0.25rem;
+.admin-list-header,
+.coins-list-header {
+  max-width: 1180px;
+  margin: 0 auto 0.75rem;
+  padding: 1rem 1.1rem 0.85rem;
+  border-radius: var(--kp-radius-md, 14px);
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  box-shadow: var(--kp-elevation-card);
+  position: relative;
+  overflow: hidden;
 }
 
-.admin-list-table .site-cell {
+.admin-list-header::before,
+.coins-list-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--kp-accent), transparent);
+}
+
+.admin-list-header .text-uppercase,
+.coins-list-header .text-uppercase,
+.listtypeview.admin-list-header p:first-child,
+.listtypeview.coins-list-header p:first-child {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kp-text) !important;
+  line-height: 1.3;
+}
+
+.admin-list-header .list-subtitle,
+.coins-list-header .list-subtitle {
+  margin: 0.35rem 0 0 !important;
+  font-size: 0.875rem !important;
+  color: var(--kp-muted) !important;
+  line-height: 1.45;
+}
+
+.customtable.admin-list-table,
+.customtable.coins-list-table,
+.request-table-wrap.admin-list-table {
+  max-width: 1180px;
+  margin: 0 auto;
+  border-radius: var(--kp-radius-md, 14px);
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  box-shadow: var(--kp-elevation-card);
+  overflow: hidden;
+}
+
+.customtable.admin-list-table .table td,
+.customtable.admin-list-table .table th,
+.customtable.coins-list-table .table td,
+.customtable.coins-list-table .table th {
+  padding: 0.75rem 0.85rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--kp-border) !important;
+}
+
+.customtable.admin-list-table .table th p,
+.customtable.admin-list-table .table td p,
+.customtable.coins-list-table .table th p,
+.customtable.coins-list-table .table td p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--kp-text) !important;
+}
+
+.customtable.admin-list-table .tableHeaderClass,
+.customtable.admin-list-table .tableHeaderClass th,
+.customtable.coins-list-table .tableHeaderClass,
+.customtable.coins-list-table .tableHeaderClass th {
+  background: var(--kp-table-header-bg) !important;
+  color: var(--kp-text) !important;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.customtable.admin-list-table .table tbody tr:nth-child(even),
+.customtable.coins-list-table .table tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--kp-surface-2) 65%, transparent);
+}
+
+.customtable.admin-list-table .table tbody tr:hover,
+.customtable.coins-list-table .table tbody tr:hover {
+  background: color-mix(in srgb, var(--kp-accent) 8%, var(--kp-surface));
+}
+
+.customtable.admin-list-table .action-btn-group button,
+.customtable.coins-list-table .action-btn-group button {
+  border-radius: 8px;
+  background: var(--kp-surface-2) !important;
+  border: 1px solid var(--kp-border) !important;
+  color: var(--kp-muted) !important;
+  min-height: 34px;
+  min-width: 34px;
+}
+
+.customtable.admin-list-table .action-btn-group button:hover,
+.customtable.coins-list-table .action-btn-group button:hover {
+  border-color: var(--kp-accent) !important;
+  color: var(--kp-accent) !important;
+}
+
+.customtable.admin-list-table .user-number-link,
+.customtable.coins-list-table .user-number-link {
+  border: 0;
+  background: transparent;
+  color: var(--kp-accent);
+  font-weight: 650;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* ---- Application / site cell (accounts + coin requests) ---- */
+.admin-list-table .site-cell,
+.coins-list-table .site-cell {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  min-width: 10rem;
+  min-width: 0;
+  max-width: 280px;
 }
 
-.admin-list-table .site-thumb {
-  width: 2.4rem;
-  height: 2.4rem;
+.admin-list-table .site-cell .site-logo-frame,
+.coins-list-table .site-cell .site-logo-frame {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
   border-radius: 10px;
-  object-fit: contain;
-  object-position: center;
+  overflow: hidden;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--kp-border);
+  background: var(--kp-surface-2);
+  box-shadow: none;
 }
 
-.admin-list-table .site-meta p {
-  margin-bottom: 0;
+.admin-list-table .site-cell .site-logo-frame .site-logo-img,
+.coins-list-table .site-cell .site-logo-frame .site-logo-img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+}
+
+.admin-list-table .site-cell .site-logo-frame-empty,
+.coins-list-table .site-cell .site-logo-frame-empty {
+  background: color-mix(in srgb, var(--kp-accent) 8%, var(--kp-surface-2));
+}
+
+.admin-list-table .site-cell .site-logo-img,
+.admin-list-table .site-cell .site-thumb,
+.coins-list-table .site-cell .site-logo-img,
+.coins-list-table .site-cell .site-thumb,
+.admin-list-table .site-cell > img,
+.coins-list-table .site-cell > img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+  min-width: 0;
+  object-fit: contain !important;
+  object-position: center center !important;
+  display: block;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.admin-list-table .site-meta,
+.coins-list-table .site-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-list-table .site-meta p,
+.coins-list-table .site-meta p {
+  margin: 0;
   line-height: 1.35;
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--kp-text);
 }
 
-.admin-list-table .action-btn-group {
+.admin-list-table .site-meta .site-url,
+.coins-list-table .site-meta .site-url {
+  margin-top: 0.15rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--kp-muted);
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.admin-list-table .list-cell-user,
+.coins-list-table .list-cell-user {
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.admin-list-table .list-cell-date,
+.coins-list-table .list-cell-date {
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--kp-muted);
+}
+
+.admin-list-table .id-badge,
+.coins-list-table .account-id-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--kp-accent) 12%, var(--kp-surface-2));
+  border: 1px solid color-mix(in srgb, var(--kp-accent) 28%, var(--kp-border));
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--kp-text);
+  white-space: nowrap;
+}
+
+.coins-list-table .coins-amount {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #22c55e 12%, var(--kp-surface-2));
+  border: 1px solid color-mix(in srgb, #22c55e 28%, var(--kp-border));
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--kp-text);
+}
+
+.customtable.admin-list-table .action-btn-group,
+.customtable.coins-list-table .action-btn-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-end;
+}
+
+.admin-list-empty,
+.coins-list-empty {
+  text-align: center;
+  padding: 2rem 1rem !important;
+  color: var(--kp-muted);
+}
+
+.admin-list-empty i,
+.coins-list-empty i {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.35rem;
+  opacity: 0.75;
+}
+
+.admin-list-table .id-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--kp-accent) 12%, var(--kp-surface-2));
+  border: 1px solid color-mix(in srgb, var(--kp-accent) 28%, var(--kp-border));
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pagination {
+  max-width: 1180px;
+  margin: 1rem auto 0;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.35rem;
 }
 
-.admin-list-table .action-btn-group button {
-  min-width: 2rem;
+.pagination a {
+  min-width: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  color: var(--kp-text);
+  text-decoration: none;
+  font-weight: 650;
+}
+
+.pagination a.active,
+.pagination a:hover:not(.disabled) {
+  border-color: var(--kp-accent);
+  color: var(--kp-accent);
+  background: color-mix(in srgb, var(--kp-accent) 10%, var(--kp-surface));
+}
+
+@media (max-width: 767.98px) {
+  .admin-list-header,
+  .coins-list-header {
+    padding: 0.85rem 0.9rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .customtable.admin-list-table .table thead,
+  .customtable.coins-list-table .table thead {
+    display: none;
+  }
+
+  .customtable.admin-list-table .table tbody tr:not(.admin-list-empty),
+  .customtable.coins-list-table .table tbody tr:not(.admin-list-empty) {
+    display: block;
+    margin: 0.65rem 0.75rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--kp-border);
+    border-radius: 12px;
+    background: var(--kp-surface-2);
+  }
+
+  .customtable.admin-list-table .table tbody td,
+  .customtable.admin-list-table .table tbody th,
+  .customtable.coins-list-table .table tbody td,
+  .customtable.coins-list-table .table tbody th {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    border: 0 !important;
+    padding: 0.35rem 0 !important;
+    background: transparent !important;
+  }
+
+  .customtable.admin-list-table .table tbody td::before,
+  .customtable.admin-list-table .table tbody th::before,
+  .customtable.coins-list-table .table tbody td::before,
+  .customtable.coins-list-table .table tbody th::before {
+    content: attr(data-label);
+    color: var(--kp-muted);
+    font-weight: 650;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+
+  .customtable.admin-list-table .table tbody td:first-child::before,
+  .customtable.admin-list-table .table tbody th:first-child::before,
+  .customtable.coins-list-table .table tbody td:first-child::before,
+  .customtable.coins-list-table .table tbody th:first-child::before {
+    content: attr(data-label);
+  }
+
+  .customtable.admin-list-table .table tbody td:not([data-label]):first-child::before,
+  .customtable.admin-list-table .table tbody th:not([data-label]):first-child::before {
+    content: 'User';
+  }
+
+  .customtable.admin-list-table .table tbody td .site-cell,
+  .customtable.coins-list-table .table tbody td .site-cell {
+    max-width: none;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .customtable.admin-list-table .table tbody td[data-label="Application"] .site-cell,
+  .customtable.coins-list-table .table tbody td[data-label="Application"] .site-cell {
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+
+  .customtable.admin-list-table .action-btn-group,
+  .customtable.coins-list-table .action-btn-group {
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
+
+[data-kp-theme="light"] .admin-list-header,
+[data-kp-theme="light"] .coins-list-header {
+  background: #ffffff;
+}
+
+[data-kp-theme="light"] .customtable.admin-list-table,
+[data-kp-theme="light"] .customtable.coins-list-table {
+  background: #ffffff;
+}
+
+[data-kp-theme="light"] .customtable.admin-list-table .table tbody tr:nth-child(even),
+[data-kp-theme="light"] .customtable.coins-list-table .table tbody tr:nth-child(even) {
+  background: #f6f8fb !important;
+}
+
+[data-kp-theme="light"] .customtable.admin-list-table .table tbody tr:hover,
+[data-kp-theme="light"] .customtable.coins-list-table .table tbody tr:hover {
+  background: #eef3f8 !important;
+}
+
+[data-kp-theme="light"] .admin-list-table .site-cell .site-logo-frame,
+[data-kp-theme="light"] .coins-list-table .site-cell .site-logo-frame {
+  background: #fff;
+  border-color: var(--kp-border);
+}
+
+[data-kp-theme="light"] .coins-list-table .coins-amount {
+  background: #ecfdf3;
+  border-color: #86efac;
+  color: #166534;
+}
+
+[data-kp-theme="light"] .admin-list-table .id-badge,
+[data-kp-theme="light"] .coins-list-table .account-id-badge {
+  background: #fff7ed;
+  border-color: #fdba74;
+  color: #9a3412;
 }

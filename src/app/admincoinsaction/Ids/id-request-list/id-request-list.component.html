@@ -18,32 +18,36 @@
         </thead>
         <tbody>
             <tr *ngIf="!idRequestList.length">
-                <td colspan="6" class="admin-list-empty">
+                <td colspan="5" class="admin-list-empty">
                     <i class="bi bi-inbox"></i>
                     <p class="mb-0">No pending account requests.</p>
                 </td>
             </tr>
             <tr *ngFor="let ids of idRequestList">
-                <th scope="row">
-                    <p class="mb-0">{{ ids.userNumber }}</p>
+                <th scope="row" data-label="User">
+                    <span class="list-cell-user">{{ ids.userNumber }}</span>
                 </th>
-                <td>
+                <td data-label="Application">
                     <div class="site-cell">
-                        <img
-                            *ngIf="ids.documentDetailId"
-                            class="site-thumb"
-                            [src]="sitePath + ids.documentDetailId + ids.fileExtenstion"
-                            [alt]="ids.siteName"
-                        />
+                        <div class="site-logo-frame" [class.site-logo-frame-empty]="!ids.documentDetailId">
+                            <img
+                                *ngIf="ids.documentDetailId"
+                                class="site-logo-img"
+                                [src]="sitePath + ids.documentDetailId + ids.fileExtenstion"
+                                [alt]="ids.siteName"
+                                loading="lazy"
+                                decoding="async" />
+                            <i *ngIf="!ids.documentDetailId" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
+                        </div>
                         <div class="site-meta">
                             <p>{{ ids.siteName }}</p>
                             <p class="site-url">{{ ids.siteURL }}</p>
                         </div>
                     </div>
                 </td>
-                <td><span class="id-badge">{{ ids.userName }}</span></td>
-                <td><p class="mb-0">{{ ids.createdDate }}</p></td>
-                <td>
+                <td data-label="Requested ID"><span class="id-badge">{{ ids.userName }}</span></td>
+                <td data-label="Requested Date"><span class="list-cell-date">{{ ids.createdDate }}</span></td>
+                <td data-label="Action">
                     <div class="action-btn-group btn-group">
                         <button type="button" title="Create ID" (click)="CreateIDPopup(ids)">
                             <i class="bi bi-pencil-square"></i>

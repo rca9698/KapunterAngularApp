@@ -30,26 +30,30 @@
           </tr>
           <ng-container *ngFor="let item of requestList">
             <tr>
-              <td>{{ item.userNumber }}</td>
-              <td>
+              <td data-label="User"><span class="list-cell-user">{{ item.userNumber }}</span></td>
+              <td data-label="Application">
                 <div class="site-cell">
-                  <img
-                    *ngIf="item.documentDetailId"
-                    class="site-thumb"
-                    [src]="sitePath + item.documentDetailId + item.fileExtenstion"
-                    [alt]="item.siteName"
-                  />
+                  <div class="site-logo-frame" [class.site-logo-frame-empty]="!item.documentDetailId">
+                    <img
+                      *ngIf="item.documentDetailId"
+                      class="site-logo-img"
+                      [src]="sitePath + item.documentDetailId + item.fileExtenstion"
+                      [alt]="item.siteName"
+                      loading="lazy"
+                      decoding="async" />
+                    <i *ngIf="!item.documentDetailId" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
+                  </div>
                   <div class="site-meta">
                     <p>{{ item.siteName }}</p>
                     <p class="site-url">{{ item.siteURL }}</p>
                   </div>
                 </div>
               </td>
-              <td><span class="id-badge">#{{ getAccountId(item) }}</span></td>
-              <td>{{ item.userName }}</td>
-              <td class="close-reason-cell">{{ getCloseReason(item) }}</td>
-              <td>{{ item.createdDate }}</td>
-              <td>
+              <td data-label="Account ID"><span class="id-badge">#{{ getAccountId(item) }}</span></td>
+              <td data-label="ID Username"><span class="id-badge">{{ item.userName }}</span></td>
+              <td data-label="Reason" class="close-reason-cell">{{ getCloseReason(item) }}</td>
+              <td data-label="Requested On"><span class="list-cell-date">{{ item.createdDate }}</span></td>
+              <td data-label="Action">
                 <button
                   type="button"
                   class="btn btn-sm siteBtnbackground"

@@ -24,25 +24,29 @@
           </td>
         </tr>
         <tr *ngFor="let item of requestList">
-          <th scope="row"><p class="mb-0">{{ item.userNumber }}</p></th>
-          <td>
+          <th scope="row" data-label="User"><span class="list-cell-user">{{ item.userNumber }}</span></th>
+          <td data-label="Application">
             <div class="site-cell">
-              <img
-                *ngIf="item.documentDetailId"
-                class="site-thumb"
-                [src]="sitePath + item.documentDetailId + item.fileExtenstion"
-                [alt]="item.siteName"
-              />
+              <div class="site-logo-frame" [class.site-logo-frame-empty]="!item.documentDetailId">
+                <img
+                  *ngIf="item.documentDetailId"
+                  class="site-logo-img"
+                  [src]="sitePath + item.documentDetailId + item.fileExtenstion"
+                  [alt]="item.siteName"
+                  loading="lazy"
+                  decoding="async" />
+                <i *ngIf="!item.documentDetailId" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
+              </div>
               <div class="site-meta">
                 <p>{{ item.siteName }}</p>
                 <p class="site-url">{{ item.siteURL }}</p>
               </div>
             </div>
           </td>
-          <td><span class="id-badge">{{ item.userName }}</span></td>
-          <td><span class="request-id">#{{ getRequestId(item) }}</span></td>
-          <td><p class="mb-0">{{ item.createdDate }}</p></td>
-          <td><p class="mb-0 user-sub">{{ item.deletionReason || '—' }}</p></td>
+          <td data-label="Requested ID"><span class="id-badge">{{ item.userName }}</span></td>
+          <td data-label="Request #"><span class="request-id">#{{ getRequestId(item) }}</span></td>
+          <td data-label="Deleted Date"><span class="list-cell-date">{{ item.createdDate }}</span></td>
+          <td data-label="Deletion Reason"><span class="user-sub">{{ item.deletionReason || '—' }}</span></td>
         </tr>
       </tbody>
     </table>

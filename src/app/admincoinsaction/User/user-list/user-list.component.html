@@ -23,14 +23,14 @@
                 </td>
             </tr>
             <tr *ngFor="let user of usersList">
-                <th scope="row">
-                    <button type="button" class="user-number-link" (click)="viewUserSiteAccounts(user)" title="View site IDs and transaction history">
+                <th scope="row" data-label="User Number">
+                    <button type="button" class="user-number-link list-cell-user" (click)="viewUserSiteAccounts(user)" title="View site IDs and transaction history">
                         {{ user.userNumber }}
                     </button>
                 </th>
-                <td><p class="mb-0">{{ user.createdDate }}</p></td>
-                <td><p class="mb-0 id-badge"><i class="bi bi-currency-rupee"></i>{{ user.coins }}</p></td>
-                <td>
+                <td data-label="Created Date"><span class="list-cell-date">{{ user.createdDate }}</span></td>
+                <td data-label="Coins"><span class="coins-amount"><i class="bi bi-currency-rupee"></i>{{ user.coins }}</span></td>
+                <td data-label="Action">
                     <div class="action-btn-group btn-group">
                         <!--<button type="button" title="Deposit coins" (click)="depositeCoinsByUserId(user)">
                             <i class="bi bi-person-fill-up"></i>

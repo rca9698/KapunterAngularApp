@@ -22,10 +22,10 @@ body {
 }
 
 .listtypeview {
-  border-width: 10px;
-  border: 1px solid black;
-  padding: 5px;
-  border-radius: 5px;
+  border: 1px solid var(--kp-border, rgba(255, 141, 33, 0.34));
+  padding: 0.75rem 1rem;
+  border-radius: var(--kp-radius-md, 14px);
+  background: var(--kp-surface, rgba(21, 18, 29, 0.95));
 }
 
 .customtable thead th {

@@ -37,7 +37,9 @@
               "src/stylesheet/theme-polish.css",
               "src/stylesheet/admin-bank-payment.shared.css",
               "src/stylesheet/admin-theme.css",
-              "src/stylesheet/light-theme-professional.css"
+              "src/stylesheet/light-theme-professional.css",
+              "src/app/admincoinsaction/shared/admin-listing.shared.css",
+              "src/app/admincoinsaction/coins/coins-listing.shared.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
