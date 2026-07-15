@@ -34,6 +34,10 @@ body {
     background-size: cover;
 }
 
+body.deployment-cover-open {
+    overflow: hidden;
+}
+
 .siteBtnbackground {
     /*background: #000;*/
     /*background: #d334e3;*/

@@ -1,5 +1,269 @@
 
 
+.deployment-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  overflow: auto;
+  color: #fff7ed;
+}
+
+.deployment-cover-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(251, 146, 60, 0.45), transparent 45%),
+    radial-gradient(ellipse at 85% 80%, rgba(194, 65, 12, 0.5), transparent 42%),
+    linear-gradient(160deg, #1c0a04 0%, #7c2d12 38%, #c2410c 72%, #9a3412 100%);
+}
+
+.deployment-cover-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(255, 247, 237, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 247, 237, 0.09) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, #000 35%, transparent 85%);
+}
+
+.deployment-cover-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: deployment-cover-drift 8s ease-in-out infinite;
+}
+
+.deployment-cover-orb-a {
+  width: 220px;
+  height: 220px;
+  top: 8%;
+  left: 6%;
+  background: radial-gradient(circle, rgba(253, 186, 116, 0.45), transparent 70%);
+}
+
+.deployment-cover-orb-b {
+  width: 280px;
+  height: 280px;
+  right: 4%;
+  bottom: 10%;
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.4), transparent 70%);
+  animation-delay: -2.5s;
+}
+
+.deployment-cover-orb-c {
+  width: 160px;
+  height: 160px;
+  left: 42%;
+  top: 62%;
+  background: radial-gradient(circle, rgba(255, 237, 213, 0.25), transparent 70%);
+  animation-delay: -4s;
+}
+
+.deployment-cover-card {
+  position: relative;
+  width: min(560px, 100%);
+  padding: 1.6rem 1.5rem 1.4rem;
+  border-radius: 28px;
+  background:
+    linear-gradient(165deg, rgba(255, 247, 237, 0.14), rgba(255, 247, 237, 0.05) 55%, rgba(28, 10, 4, 0.25));
+  border: 1px solid rgba(255, 237, 213, 0.28);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(14px);
+  text-align: center;
+  animation: deployment-cover-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.deployment-cover-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.deployment-cover-brand strong {
+  display: block;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  color: #fff7ed;
+}
+
+.deployment-cover-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  border: 2px solid rgba(255, 237, 213, 0.5);
+}
+
+.deployment-cover-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #7c2d12;
+  background: #ffedd5;
+}
+
+.deployment-cover-pulse {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #dc2626;
+  animation: deployment-cover-pulse 1.35s ease-out infinite;
+}
+
+.deployment-cover-hero {
+  width: min(100%, 340px);
+  height: auto;
+  margin: 0.35rem auto 1rem;
+  display: block;
+  filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.35));
+  animation: deployment-cover-float 3s ease-in-out infinite;
+}
+
+.deployment-cover-title {
+  margin: 0 0 0.55rem;
+  font-size: clamp(1.55rem, 4.2vw, 2.15rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: #fff7ed;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.deployment-cover-message {
+  margin: 0 auto 1.1rem;
+  max-width: 36rem;
+  font-size: clamp(0.95rem, 2.2vw, 1.08rem);
+  font-weight: 600;
+  line-height: 1.45;
+  color: #ffedd5;
+}
+
+.deployment-cover-hints {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 1.15rem;
+}
+
+.deployment-cover-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 16px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff7ed;
+  background: rgba(28, 10, 4, 0.28);
+  border: 1px solid rgba(255, 237, 213, 0.2);
+}
+
+.deployment-cover-chip img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.deployment-cover-chip-strong {
+  color: #7c2d12;
+  background: linear-gradient(180deg, #fff7ed, #ffedd5);
+  border-color: rgba(253, 186, 116, 0.85);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.deployment-cover-progress {
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(28, 10, 4, 0.4);
+  border: 1px solid rgba(255, 237, 213, 0.18);
+  margin-bottom: 0.75rem;
+}
+
+.deployment-cover-progress span {
+  display: block;
+  height: 100%;
+  width: 38%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #fdba74, #fb923c, #f97316, #fdba74);
+  background-size: 200% 100%;
+  animation: deployment-cover-bar 1.8s linear infinite;
+}
+
+.deployment-cover-foot {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 237, 213, 0.78);
+}
+
+@keyframes deployment-cover-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes deployment-cover-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes deployment-cover-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+  70% { box-shadow: 0 0 0 11px rgba(220, 38, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+@keyframes deployment-cover-bar {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+
+@keyframes deployment-cover-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(12px, -10px); }
+}
+
+@media (max-width: 560px) {
+  .deployment-cover {
+    padding: 0.75rem;
+    align-items: stretch;
+  }
+
+  .deployment-cover-card {
+    margin: auto 0;
+    padding: 1.25rem 1rem 1.1rem;
+    border-radius: 22px;
+  }
+
+  .deployment-cover-hero {
+    width: min(100%, 280px);
+  }
+
+  .deployment-cover-title {
+    font-size: 1.4rem;
+  }
+}
+
 .sidebar-shell {
     width: 300px !important;
     min-width: 300px;

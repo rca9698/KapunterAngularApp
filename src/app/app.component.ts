@@ -11,6 +11,7 @@ import { VisitorCountService } from './visitor-count.service';
 import { LoaderService } from './Shared/loader/loader.service';
 import { ReferralService } from './Accounts/Profile/refer-earn/referral.service';
 import { apiService } from './api.service';
+import { DeploymentBannerService, DeploymentBannerState } from './deployment-banner.service';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
   site: ISiteDetailModal = new SiteDetailModal();
   private routerSub?: Subscription;
   private authSub?: Subscription;
+  private bannerSub?: Subscription;
   idsMenuOpen = false;
 
   pnlLoaded = false;
@@ -32,6 +34,14 @@ export class AppComponent implements OnInit, OnDestroy {
   deposit30 = 0;
   withdraw7 = 0;
   withdraw30 = 0;
+  deploymentBanner: DeploymentBannerState = {
+    enabled: false,
+    title: '',
+    message: '',
+    hint: '',
+    leftImage: 'assets/deployment-banner-hero.svg',
+    rightImage: 'assets/deployment-banner-server.svg',
+  };
 
   constructor(
     private siteService: SitesService,
@@ -43,12 +53,19 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private loaderService: LoaderService,
     private referralService: ReferralService,
-    private api: apiService
+    private api: apiService,
+    private deploymentBannerService: DeploymentBannerService
   ) {
     this._sessionUser = authService.user.userId;
   }
 
   ngOnInit(): void {
+    this.deploymentBannerService.start();
+    this.bannerSub = this.deploymentBannerService.state$.subscribe((state) => {
+      this.deploymentBanner = state;
+      document.body.classList.toggle('deployment-cover-open', !!state.enabled);
+    });
+
     this.authService.captureReferralFromUrl();
     this.referralService.loadRewardAmount();
 
@@ -152,6 +169,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routerSub?.unsubscribe();
     this.authSub?.unsubscribe();
+    this.bannerSub?.unsubscribe();
+    document.body.classList.remove('deployment-cover-open');
     this.visitorCountService.stopAutoRefresh();
   }
 

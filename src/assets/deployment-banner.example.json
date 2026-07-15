@@ -1,0 +1,8 @@
+{
+  "enabled": true,
+  "title": "We're upgrading Kapunter",
+  "message": "A live system update is running. Deposits, withdrawals, and login may be temporarily unavailable.",
+  "hint": "Please wait a few minutes, then refresh.",
+  "leftImage": "assets/deployment-banner-hero.svg",
+  "rightImage": "assets/deployment-banner-server.svg"
+}

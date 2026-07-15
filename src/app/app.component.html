@@ -1,6 +1,60 @@
 
 <app-global-loader></app-global-loader>
 
+<div
+  class="deployment-cover"
+  *ngIf="deploymentBanner.enabled"
+  role="alertdialog"
+  aria-modal="true"
+  aria-labelledby="deploymentCoverTitle"
+  aria-describedby="deploymentCoverMessage">
+  <div class="deployment-cover-bg" aria-hidden="true">
+    <span class="deployment-cover-orb deployment-cover-orb-a"></span>
+    <span class="deployment-cover-orb deployment-cover-orb-b"></span>
+    <span class="deployment-cover-orb deployment-cover-orb-c"></span>
+    <span class="deployment-cover-grid"></span>
+  </div>
+
+  <div class="deployment-cover-card">
+    <div class="deployment-cover-brand">
+      <img src="assets/kapunter-logo.jpeg" alt="Kapunter" width="48" height="48" class="deployment-cover-logo" />
+      <div>
+        <strong>KAPUNTER</strong>
+        <span class="deployment-cover-live">
+          <span class="deployment-cover-pulse" aria-hidden="true"></span>
+          Live update
+        </span>
+      </div>
+    </div>
+
+    <img
+      class="deployment-cover-hero"
+      [src]="deploymentBanner.leftImage"
+      alt=""
+      width="420"
+      height="280" />
+
+    <h1 class="deployment-cover-title" id="deploymentCoverTitle">{{ deploymentBanner.title }}</h1>
+    <p class="deployment-cover-message" id="deploymentCoverMessage">{{ deploymentBanner.message }}</p>
+
+    <div class="deployment-cover-hints">
+      <div class="deployment-cover-chip">
+        <img [src]="deploymentBanner.rightImage" alt="" width="36" height="36" />
+        <span>Services restarting</span>
+      </div>
+      <div class="deployment-cover-chip deployment-cover-chip-strong">
+        <img src="assets/deployment-banner-clock.svg" alt="" width="28" height="28" />
+        <span>{{ deploymentBanner.hint }}</span>
+      </div>
+    </div>
+
+    <div class="deployment-cover-progress" aria-hidden="true">
+      <span></span>
+    </div>
+    <p class="deployment-cover-foot">This screen closes automatically when the update finishes.</p>
+  </div>
+</div>
+
 <div class="container">
     <main role="main" class="pb-3">
         <div class="main">
