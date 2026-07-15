@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/auth.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { environment } from 'src/environments/environment';
 import { PassbookService } from '../passbook.service';
+import { PassbookUnreadService } from 'src/app/Shared/passbook-unread/passbook-unread.service';
 
 @Component({
   selector: 'app-passbook-view-panel',
@@ -55,7 +56,8 @@ export class PassbookViewPanelComponent implements OnInit {
     private toasterService: ToastrService,
     private authservice: AuthService,
     private router: Router,
-    private passbookservice: PassbookService
+    private passbookservice: PassbookService,
+    private passbookUnread: PassbookUnreadService
   ) {
     this.proofPath = environment.imagePath.proofPath;
     this.sitePath = environment.imagePath.sitePath;
@@ -87,8 +89,10 @@ export class PassbookViewPanelComponent implements OnInit {
         this.isListPassbookHistory = true;
         if (this.returnType['returnStatus'] == 1) {
           this.passbooks = this.returnType['returnList'] ?? [];
+          this.passbookUnread.markAllAsRead(this.passbooks);
         } else {
           this.passbooks = [];
+          this.passbookUnread.markAllAsRead([]);
           this.toasterService.warning(this.returnType.returnMessage);
         }
         this.loading = false;

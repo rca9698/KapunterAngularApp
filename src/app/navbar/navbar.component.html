@@ -26,7 +26,20 @@
         </button>
       </ng-container>
       <ng-container *ngIf="(authservice.isLoggenIn | async)">
-        <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight" tabindex="0" (click)="goToMyAccount()">My Account</button>
+        <button
+          type="button"
+          class="nav-user-chip"
+          tabindex="0"
+          (click)="goToMyAccount()"
+          [attr.title]="'My Account · ' + authservice.displayUserNumber"
+          [attr.aria-label]="'My Account, user number ' + authservice.displayUserNumber"
+        >
+          <i class="bi bi-person-circle" aria-hidden="true"></i>
+          <span class="nav-user-chip-meta">
+            <span class="nav-user-chip-label">Account</span>
+            <strong class="nav-user-chip-number">{{ authservice.displayUserNumber }}</strong>
+          </span>
+        </button>
         <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight nav-pill-logout" tabindex="0" (click)="logout()">Logout</button>
       </ng-container>
     </nav>

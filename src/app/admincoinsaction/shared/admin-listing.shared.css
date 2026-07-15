@@ -54,7 +54,12 @@
   border: 1px solid var(--kp-border);
   background: var(--kp-surface);
   box-shadow: var(--kp-elevation-card);
-  overflow: hidden;
+  /* Horizontal scroll on narrow screens — do not collapse into broken card rows */
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  height: auto;
+  max-height: none;
 }
 
 .customtable.admin-list-table .table td,
@@ -327,76 +332,86 @@
     margin-bottom: 0.65rem;
   }
 
-  .customtable.admin-list-table .table thead,
-  .customtable.coins-list-table .table thead {
-    display: none;
+  /* Keep classic table layout on mobile (readable). Cards were crushing content. */
+  .customtable.admin-list-table,
+  .customtable.coins-list-table,
+  .request-table-wrap.admin-list-table {
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 12px;
   }
 
-  .customtable.admin-list-table .table tbody tr:not(.admin-list-empty),
-  .customtable.coins-list-table .table tbody tr:not(.admin-list-empty) {
-    display: block;
-    margin: 0.65rem 0.75rem;
-    padding: 0.65rem 0.75rem;
-    border: 1px solid var(--kp-border);
-    border-radius: 12px;
-    background: var(--kp-surface-2);
+  .customtable.admin-list-table .table,
+  .customtable.coins-list-table .table,
+  .request-table-wrap.admin-list-table .table {
+    width: max-content;
+    min-width: 640px;
+    margin-bottom: 0;
+  }
+
+  .customtable.admin-list-table .table thead,
+  .customtable.coins-list-table .table thead {
+    display: table-header-group;
+  }
+
+  .customtable.admin-list-table .table tbody tr,
+  .customtable.coins-list-table .table tbody tr {
+    display: table-row;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
   }
 
   .customtable.admin-list-table .table tbody td,
   .customtable.admin-list-table .table tbody th,
   .customtable.coins-list-table .table tbody td,
   .customtable.coins-list-table .table tbody th {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 0.75rem;
-    border: 0 !important;
-    padding: 0.35rem 0 !important;
-    background: transparent !important;
+    display: table-cell;
+    justify-content: unset;
+    align-items: unset;
+    gap: unset;
+    padding: 0.65rem 0.7rem !important;
+    vertical-align: middle;
   }
 
   .customtable.admin-list-table .table tbody td::before,
   .customtable.admin-list-table .table tbody th::before,
   .customtable.coins-list-table .table tbody td::before,
   .customtable.coins-list-table .table tbody th::before {
-    content: attr(data-label);
-    color: var(--kp-muted);
-    font-weight: 650;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
+    content: none !important;
   }
 
-  .customtable.admin-list-table .table tbody td:first-child::before,
-  .customtable.admin-list-table .table tbody th:first-child::before,
-  .customtable.coins-list-table .table tbody td:first-child::before,
-  .customtable.coins-list-table .table tbody th:first-child::before {
-    content: attr(data-label);
+  .admin-list-table .site-cell,
+  .coins-list-table .site-cell {
+    max-width: 220px;
   }
 
-  .customtable.admin-list-table .table tbody td:not([data-label]):first-child::before,
-  .customtable.admin-list-table .table tbody th:not([data-label]):first-child::before {
-    content: 'User';
+  .admin-list-table .site-meta .site-url,
+  .coins-list-table .site-meta .site-url {
+    -webkit-line-clamp: 2;
+  }
+
+  .admin-list-table .list-cell-date,
+  .coins-list-table .list-cell-date {
+    white-space: normal;
+    max-width: 7.5rem;
+    line-height: 1.35;
   }
 
   .customtable.admin-list-table .table tbody td .site-cell,
   .customtable.coins-list-table .table tbody td .site-cell {
-    max-width: none;
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .customtable.admin-list-table .table tbody td[data-label="Application"] .site-cell,
-  .customtable.coins-list-table .table tbody td[data-label="Application"] .site-cell {
-    flex-direction: row-reverse;
-    text-align: right;
+    width: auto;
+    justify-content: flex-start;
+    flex-direction: row;
+    text-align: left;
   }
 
   .customtable.admin-list-table .action-btn-group,
   .customtable.coins-list-table .action-btn-group {
-    justify-content: flex-end;
-    width: 100%;
+    justify-content: flex-start;
+    width: auto;
   }
 }
 

@@ -12,6 +12,7 @@ import { LoaderService } from './Shared/loader/loader.service';
 import { ReferralService } from './Accounts/Profile/refer-earn/referral.service';
 import { apiService } from './api.service';
 import { DeploymentBannerService, DeploymentBannerState } from './deployment-banner.service';
+import { PassbookUnreadService } from './Shared/passbook-unread/passbook-unread.service';
 
 @Component({
   selector: 'app-root',
@@ -54,7 +55,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private loaderService: LoaderService,
     private referralService: ReferralService,
     private api: apiService,
-    private deploymentBannerService: DeploymentBannerService
+    private deploymentBannerService: DeploymentBannerService,
+    _passbookUnread: PassbookUnreadService
   ) {
     this._sessionUser = authService.user.userId;
   }

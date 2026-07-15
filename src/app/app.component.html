@@ -70,6 +70,10 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="sidebar-ben-user-row" *ngIf="authService.displayUserNumber !== '—'">
+                            <span class="sidebar-ben-user-label">Your number</span>
+                            <strong class="sidebar-ben-user-number">{{ authService.displayUserNumber }}</strong>
+                        </div>
                     </header>
 
                     <div class="Burger-Menu-header-container sidebar-profile-card sidebar-admin-hero" *ngIf="this.authService.isadminview()">

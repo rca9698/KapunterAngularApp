@@ -4,6 +4,7 @@ import { ISiteDetailModal, SiteDetailModal } from '../Shared/Modals/site-detail-
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ToastrService } from '../toastr/toastr.service';
+import { PassbookUnreadService } from '../Shared/passbook-unread/passbook-unread.service';
 
 @Component({
   selector: 'app-footer',
@@ -17,7 +18,8 @@ export class FooterComponent implements OnInit {
     private siteService: SitesService,
     private router: Router,
     public authservice: AuthService,
-    private toasterService: ToastrService
+    private toasterService: ToastrService,
+    public passbookUnread: PassbookUnreadService
   ) {}
 
   ngOnInit(): void {}

@@ -40,8 +40,14 @@
         <div class="footer-tab-cell" (click)="viewPassbook()">
             <div class="card sitebackground footer-tab">
                 <div class="card-body text-center">
-                    <div class="row">
+                    <div class="row footer-tab-icon-row">
                         <i class="bi bi-journal-text"></i>
+                        <span
+                            class="footer-badge"
+                            *ngIf="(passbookUnread.unreadCount$ | async) as unread"
+                            [class.footer-badge-hidden]="!unread">
+                            {{ unread > 99 ? '99+' : unread }}
+                        </span>
                     </div>
                     <h6 class="text-muted font-weight-normal">
                         <p class="text-uppercase"> Passbook </p>
