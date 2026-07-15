@@ -16,15 +16,19 @@ export class CommonService {
 
 
    toastrMessages(returnType: any){
-    this.returnStatus = returnType['returnStatus']; 
-    if(this.returnStatus == 1){
-      this.toasterService.success(returnType['returnMessage']);
-    }else{
-      this.toasterService.warning(returnType['returnMessage']);
+    this.returnStatus = returnType?.['returnStatus'] ?? returnType?.['ReturnStatus'];
+    const message = returnType?.['returnMessage'] ?? returnType?.['ReturnMessage'] ?? '';
+    if (Number(this.returnStatus) === 1) {
+      this.toasterService.success(message || 'Saved successfully.');
+      try {
+        this.bsModalRef?.hide();
+      } catch {
+        // root-injected modal ref may be inactive; callers still hide their own modal
+      }
+      window.location.reload();
+    } else {
+      this.toasterService.warning(message || 'Unable to complete the request.');
     }
-    this.bsModalRef.hide();
-
-     window.location.reload();
   }
   
 }

@@ -51,16 +51,25 @@ export class SiteIdDetailsModalComponent implements OnInit {
       sessionUser: uid
     };
 
-    this.idsService.listIdsByUserSite({ userId: uid, siteId: this.contextSite.siteId, sessionUser: uid }).subscribe({
+    const siteId = Number(this.contextSite.siteId);
+    this.idsService.listIdsByUserSite({ userId: uid, siteId, sessionUser: uid }).subscribe({
       next: (response) => {
         this.returnType = response;
-        if (this.returnType['returnStatus'] == 1) {
-          const all: IIDDetailsModal[] = this.returnType['returnList'] ?? [];
-          const sid = this.contextSite.siteId;
-          this.ids = all.filter((x) => Number(x.siteId) === Number(sid));
+        const status = Number(this.returnType?.['returnStatus'] ?? this.returnType?.['ReturnStatus'] ?? 0);
+        const all: IIDDetailsModal[] = this.returnType?.['returnList']
+          ?? this.returnType?.['ReturnList']
+          ?? [];
+        const hasRows = Array.isArray(all) && all.length > 0;
+
+        if (status === 1 || hasRows) {
+          this.ids = all.filter((x) => {
+            const rowSite = Number((x as any)?.siteId ?? (x as any)?.SiteId ?? 0);
+            return !siteId || !rowSite || rowSite === siteId;
+          });
           if (this.filterByAccount) {
             const targetAccountId = resolveAccountId({
-              accountId: this.accountId ?? this.contextSite.accountId
+              accountId: this.accountId ?? this.contextSite.accountId,
+              AccountId: (this.contextSite as any)?.AccountId,
             });
             if (targetAccountId) {
               this.ids = this.ids.filter(
@@ -70,7 +79,7 @@ export class SiteIdDetailsModalComponent implements OnInit {
           }
           this.fetchMissingPasswords();
         } else {
-          this.toasterService.warning(this.returnType.returnMessage ?? 'Unable to load IDs');
+          this.toasterService.warning(this.returnType?.returnMessage ?? this.returnType?.ReturnMessage ?? 'Unable to load IDs');
           this.ids = [];
           this.loading = false;
         }

@@ -5,7 +5,6 @@ import { BankAccountService } from '../../bank-account.service';
 import { AuthService } from 'src/app/auth.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { Iadd_admin_bank_account, add_admin_bank_account } from 'src/app/Shared/Modals/BankAccount/add_admin_bank_account';
-import { CommonService } from 'src/app/common.service';
 
 @Component({
   selector: 'app-add-admin-upi',
@@ -24,8 +23,7 @@ export class AddAdminUPIComponent implements OnInit {
     private formBuilder: FormBuilder,
     private bankAccountService: BankAccountService,
     private toasterService: ToastrService,
-    private authservice: AuthService,
-    private commonService: CommonService
+    private authservice: AuthService
   ) {
     this.addAdminUpiForm = this.formBuilder.group({
       UpiName: ['', [Validators.required]],
@@ -54,8 +52,10 @@ export class AddAdminUPIComponent implements OnInit {
       return;
     }
 
+    const siteId = Number(this.obj.siteId);
     const payload: Iadd_admin_bank_account = {
       ...this.obj,
+      siteId,
       userName: this.addAdminUpiForm.value.UpiName,
       upiId: this.addAdminUpiForm.value.UpiId,
       userId: this.authservice.user.userId,
@@ -63,11 +63,15 @@ export class AddAdminUPIComponent implements OnInit {
     };
 
     this.bankAccountService.add_update_admin_upi(payload).subscribe({
-      next: (resp) => {
+      next: (resp: any) => {
         this.returnType = resp;
-        this.commonService.toastrMessages(this.returnType);
-        if (this.returnType?.returnStatus == 1) {
+        const status = Number(resp?.returnStatus ?? resp?.ReturnStatus ?? 0);
+        const message = resp?.returnMessage ?? resp?.ReturnMessage ?? '';
+        if (status === 1) {
+          this.toasterService.success(message || 'UPI details saved.');
           this.bsModalRef.hide();
+        } else {
+          this.toasterService.warning(message || 'Unable to save UPI details.');
         }
       },
       error: () => {

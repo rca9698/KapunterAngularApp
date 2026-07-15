@@ -215,6 +215,10 @@
   background: linear-gradient(160deg, rgba(12, 95, 108, 0.95), rgba(24, 145, 158, 0.92));
 }
 
+.site-action-remove {
+  background: linear-gradient(160deg, rgba(140, 25, 35, 0.95), rgba(190, 45, 55, 0.92));
+}
+
 @media (max-width: 520px) {
   .site-card-row-top {
     grid-template-columns: 1fr auto;

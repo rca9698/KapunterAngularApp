@@ -9,11 +9,11 @@ import { UserService } from '../admincoinsaction/User/user.service';
 import { AccountsService } from '../Accounts/accounts.service';
 import { ISiteDetailModal } from '../Shared/Modals/site-detail-modal';
 import { SitesService } from '../Sites/sites.service';
-import { UserIdsService } from '../userids/user-ids.service';
 import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { TransferIdsListModalComponent } from '../Sites/userListSites/transfer-ids-list-modal/transfer-ids-list-modal.component';
 import { SiteIdDetailsModalComponent } from '../Sites/userListSites/site-id-details-modal/site-id-details-modal.component';
 import { GetUserSiteTransactionHistoryComponent } from '../Sites/get-user-site-transaction-history/get-user-site-transaction-history.component';
+import { RemoveIdRequestModalComponent } from '../Sites/remove-id-request-modal/remove-id-request-modal.component';
 import { ReferralService } from '../Accounts/Profile/refer-earn/referral.service';
 import { Subscription } from 'rxjs';
 
@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private homeService:HomeService, private coinsservice: CoinsService
     , public authservice: AuthService, private toasterService: ToastrService
     , public userservice: UserService, private accountService: AccountsService
-    , private siteService: SitesService, private userIdsService: UserIdsService
+    , private siteService: SitesService
     , private bsModalService: BsModalService
     , private referralService: ReferralService){
     this.imgPath = environment.imagePath?.dashboardImages || '';
@@ -155,10 +155,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.accountCarouselInstance = undefined;
   }
 
-  CreateIDRequest(site: ISiteDetailModal): void {
-    this.userIdsService.OpenAddIDRequestPopup(site);
-  }
-
   openDepositeCoinsRequest(site: ISiteDetailModal): void {
     this.coinsservice.OpenDepositeCoinsRequestPopup('Deposite', site);
   }
@@ -175,15 +171,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   openSiteIdDetails(site: ISiteDetailModal): void {
-    const initialState: ModalOptions = {
+    this.bsModalService.show(SiteIdDetailsModalComponent, {
       initialState: {
         contextSite: site,
-        accountId: site.accountId,
         filterByAccount: true,
-        depositType: this.depositType,
       },
-    };
-    this.bsModalService.show(SiteIdDetailsModalComponent, initialState);
+    } as ModalOptions);
+  }
+
+  startRemoveAccount(site: ISiteDetailModal): void {
+    if (!site?.accountId) {
+      this.toasterService.warning('Unable to remove this ID right now.');
+      return;
+    }
+    this.bsModalService.show(RemoveIdRequestModalComponent, {
+      initialState: {
+        site: { ...site },
+        accountName: String(site.userName || ''),
+        siteName: String(site.siteName || ''),
+        onSubmitted: () => this.loadSites(),
+      },
+      class: 'modal-dialog-centered',
+    } as ModalOptions);
   }
 
   openTransactionHistoryDetails(site: ISiteDetailModal): void {

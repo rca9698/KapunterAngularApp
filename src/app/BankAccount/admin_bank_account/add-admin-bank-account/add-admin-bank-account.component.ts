@@ -5,7 +5,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { Iadd_admin_bank_account, add_admin_bank_account } from 'src/app/Shared/Modals/BankAccount/add_admin_bank_account';
 import { AuthService } from 'src/app/auth.service';
-import { CommonService } from 'src/app/common.service';
 
 @Component({
   selector: 'app-add-admin-bank-account',
@@ -24,8 +23,7 @@ export class AddAdminBankAccountComponent implements OnInit {
     private formBuilder: FormBuilder,
     private bankAccountService: BankAccountService,
     private toasterService: ToastrService,
-    private authservice: AuthService,
-    private commonService: CommonService
+    private authservice: AuthService
   ) {
     this.addAdminBankAccountForm = this.formBuilder.group({
       BName: ['', [Validators.required]],
@@ -53,13 +51,15 @@ export class AddAdminBankAccountComponent implements OnInit {
       return;
     }
 
-    if (!this.obj?.siteId) {
+    const siteId = Number(this.obj?.siteId ?? (this.obj as any)?.SiteId ?? 0);
+    if (!siteId) {
       this.toasterService.warning('Site is required.');
       return;
     }
 
     const payload: Iadd_admin_bank_account = {
       ...this.obj,
+      siteId,
       bankName: this.addAdminBankAccountForm.value.BName,
       accountHolderName: this.addAdminBankAccountForm.value.AHName,
       accountNumber: this.addAdminBankAccountForm.value.ANumber,
@@ -69,11 +69,15 @@ export class AddAdminBankAccountComponent implements OnInit {
     };
 
     this.bankAccountService.Add_Admin_Bank_Account(payload).subscribe({
-      next: (resp) => {
+      next: (resp: any) => {
         this.returnType = resp;
-        this.commonService.toastrMessages(this.returnType);
-        if (this.returnType?.returnStatus == 1) {
+        const status = Number(resp?.returnStatus ?? resp?.ReturnStatus ?? 0);
+        const message = resp?.returnMessage ?? resp?.ReturnMessage ?? '';
+        if (status === 1) {
+          this.toasterService.success(message || 'Admin bank details saved.');
           this.bsModalRef.hide();
+        } else {
+          this.toasterService.warning(message || 'Unable to save bank account.');
         }
       },
       error: () => {
