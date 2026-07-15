@@ -37,16 +37,10 @@
     <h1 class="deployment-cover-title" id="deploymentCoverTitle">{{ deploymentBanner.title }}</h1>
     <p class="deployment-cover-message" id="deploymentCoverMessage">{{ deploymentBanner.message }}</p>
 
-    <div class="deployment-cover-hints">
-      <div class="deployment-cover-chip">
-        <img [src]="deploymentBanner.rightImage" alt="" width="36" height="36" />
-        <span>Services restarting</span>
-      </div>
-      <div class="deployment-cover-chip deployment-cover-chip-strong">
-        <img src="assets/deployment-banner-clock.svg" alt="" width="28" height="28" />
-        <span>{{ deploymentBanner.hint }}</span>
-      </div>
-    </div>
+    <p class="deployment-cover-hint-line">
+      <img src="assets/deployment-banner-clock.svg" alt="" width="22" height="22" />
+      <strong>{{ deploymentBanner.hint }}</strong>
+    </p>
 
     <div class="deployment-cover-progress" aria-hidden="true">
       <span></span>

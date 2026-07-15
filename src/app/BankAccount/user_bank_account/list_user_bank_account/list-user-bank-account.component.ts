@@ -13,6 +13,9 @@ import { Iadd_bank_account, add_bank_account } from 'src/app/Shared/Modals/BankA
   styleUrls: ['./list-user-bank-account.component.css']
 })
 export class ListUserBankAccountComponent implements OnInit {
+  /** Set to true when Bank / UPI / QR should go live for users. */
+  readonly paymentMethodsEnabled = false;
+
   Ibank_details: Ibank_details[] | undefined; 
   Iuser_upi_details: any[] | undefined;
   Iuser_qr_details: any[] | undefined;
@@ -30,6 +33,9 @@ export class ListUserBankAccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.paymentMethodsEnabled) {
+      return;
+    }
     this.list_User_Bank_Accounts();
     this.list_User_Upi_Accounts();
     this.list_User_QR_Accounts();

@@ -2,143 +2,140 @@
   <header class="bank-page-header">
     <div>
       <h2>Payment Methods</h2>
-      <p>Manage bank accounts, UPI IDs, and QR codes for withdrawals</p>
     </div>
   </header>
 
-  <nav class="payment-type-tabs">
-    <button type="button" class="payment-tab" [class.active]="activePaymentTab === 'bank'" (click)="setPaymentTab('bank')">
-      <i class="bi bi-bank"></i><span>Bank Accounts</span>
-    </button>
-    <button type="button" class="payment-tab" [class.active]="activePaymentTab === 'upi'" (click)="setPaymentTab('upi')">
-      <i class="bi bi-phone"></i><span>UPI</span>
-    </button>
-    <button type="button" class="payment-tab" [class.active]="activePaymentTab === 'qr'" (click)="setPaymentTab('qr')">
-      <i class="bi bi-qr-code"></i><span>QR Code</span>
-    </button>
-  </nav>
-
-  <!-- Bank Accounts -->
-  <div *ngIf="activePaymentTab === 'bank'" class="payment-panel">
-    <div class="panel-toolbar">
-      <nav class="bank-filter-tabs">
-        <button type="button" [class.active]="bankFilter === 'active'" (click)="setBankFilter('active')">Active</button>
-        <button type="button" [class.active]="bankFilter === 'deleted'" (click)="setBankFilter('deleted')">Deleted</button>
-        <button type="button" [class.active]="bankFilter === 'history'" (click)="setBankFilter('history')">History</button>
-      </nav>
-      <button type="button" class="btn-add-payment" (click)="AddBankDetailPopup()">
-        <i class="bi bi-plus-lg"></i> Add Bank
-      </button>
+  <!-- Temporarily hidden — flip paymentMethodsEnabled to true when ready -->
+  <div class="payment-coming-soon" *ngIf="!paymentMethodsEnabled">
+    <div class="payment-coming-soon-icons" aria-hidden="true">
+      <span class="payment-coming-soon-icon"><i class="bi bi-bank"></i></span>
+      <span class="payment-coming-soon-icon"><i class="bi bi-phone"></i></span>
+      <span class="payment-coming-soon-icon"><i class="bi bi-qr-code"></i></span>
     </div>
-
-    <div class="empty-state" *ngIf="!Ibank_details?.length">
-      <i class="bi bi-bank2"></i>
-      <h3>No bank accounts yet</h3>
-      <p>Add your first bank account to receive withdrawals</p>
-      <button type="button" class="btn-add-payment" (click)="AddBankDetailPopup()">Add Bank Account</button>
-    </div>
-
-    <article class="payment-card" *ngFor="let bank of Ibank_details">
-      <div class="payment-card-header">
-        <div class="payment-card-title">
-          <span class="payment-icon bank"><i class="bi bi-bank"></i></span>
-          <div>
-            <h3>{{ bank.bankName }}</h3>
-            <p>{{ bank.accountHolderName }}</p>
-          </div>
-        </div>
-        <div class="payment-card-actions">
-          <span class="default-badge" *ngIf="bank.isDefault === '1'"><i class="bi bi-patch-check-fill"></i> Default</span>
-          <button type="button" class="icon-action" title="Make default" *ngIf="bank.isDefault !== '1' && isActive" (click)="MakeBankDetailDefault(bank)">
-            <i class="bi bi-patch-plus-fill"></i>
-          </button>
-          <button type="button" class="icon-action danger" title="Delete" *ngIf="isActive" (click)="DeleteBankAccountPopup(bank)">
-            <i class="bi bi-trash3-fill"></i>
-          </button>
-        </div>
-      </div>
-      <div class="payment-card-body">
-        <div class="detail-row"><span>Account Number</span><strong>{{ bank.accountNumber }}</strong></div>
-        <div class="detail-row"><span>IFSC Code</span><strong>{{ bank.ifscCode }}</strong></div>
-      </div>
-    </article>
+    <p class="payment-coming-soon-note">Available in a few days</p>
   </div>
 
-  <!-- UPI -->
-  <div *ngIf="activePaymentTab === 'upi'" class="payment-panel">
-    <div class="panel-toolbar">
-      <p class="panel-hint">Add multiple UPI IDs for faster payments</p>
-      <button type="button" class="btn-add-payment" (click)="AddUserUpiPopup()">
-        <i class="bi bi-plus-lg"></i> Add UPI
+  <ng-container *ngIf="paymentMethodsEnabled">
+    <nav class="payment-type-tabs">
+      <button type="button" class="payment-tab" [class.active]="activePaymentTab === 'bank'" (click)="setPaymentTab('bank')">
+        <i class="bi bi-bank"></i>
       </button>
-    </div>
+      <button type="button" class="payment-tab" [class.active]="activePaymentTab === 'upi'" (click)="setPaymentTab('upi')">
+        <i class="bi bi-phone"></i>
+      </button>
+      <button type="button" class="payment-tab" [class.active]="activePaymentTab === 'qr'" (click)="setPaymentTab('qr')">
+        <i class="bi bi-qr-code"></i>
+      </button>
+    </nav>
 
-    <div class="empty-state" *ngIf="!Iuser_upi_details?.length">
-      <i class="bi bi-phone"></i>
-      <h3>No UPI details yet</h3>
-      <p>Add a UPI ID to use for payments</p>
-      <button type="button" class="btn-add-payment" (click)="AddUserUpiPopup()">Add UPI</button>
-    </div>
+    <!-- Bank Accounts -->
+    <div *ngIf="activePaymentTab === 'bank'" class="payment-panel">
+      <div class="panel-toolbar">
+        <nav class="bank-filter-tabs">
+          <button type="button" [class.active]="bankFilter === 'active'" (click)="setBankFilter('active')">Active</button>
+          <button type="button" [class.active]="bankFilter === 'deleted'" (click)="setBankFilter('deleted')">Deleted</button>
+          <button type="button" [class.active]="bankFilter === 'history'" (click)="setBankFilter('history')">History</button>
+        </nav>
+        <button type="button" class="btn-add-payment" (click)="AddBankDetailPopup()">
+          <i class="bi bi-plus-lg"></i> Add
+        </button>
+      </div>
 
-    <article class="payment-card" *ngFor="let upi of Iuser_upi_details">
-      <div class="payment-card-header">
-        <div class="payment-card-title">
-          <span class="payment-icon upi"><i class="bi bi-phone"></i></span>
-          <div>
-            <h3>{{ upi.accountDisplayName }}</h3>
-            <p>{{ upi.upiId }}</p>
+      <div class="empty-state" *ngIf="!Ibank_details?.length">
+        <i class="bi bi-bank2"></i>
+        <button type="button" class="btn-add-payment" (click)="AddBankDetailPopup()">Add</button>
+      </div>
+
+      <article class="payment-card" *ngFor="let bank of Ibank_details">
+        <div class="payment-card-header">
+          <div class="payment-card-title">
+            <span class="payment-icon bank"><i class="bi bi-bank"></i></span>
+            <div>
+              <h3>{{ bank.bankName }}</h3>
+              <p>{{ bank.accountHolderName }}</p>
+            </div>
+          </div>
+          <div class="payment-card-actions">
+            <button type="button" class="icon-action" title="Make default" *ngIf="bank.isDefault !== '1' && isActive" (click)="MakeBankDetailDefault(bank)">
+              <i class="bi bi-patch-plus-fill"></i>
+            </button>
+            <button type="button" class="icon-action danger" title="Delete" *ngIf="isActive" (click)="DeleteBankAccountPopup(bank)">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
           </div>
         </div>
-        <div class="payment-card-actions">
-          <span class="default-badge" *ngIf="upi.isDefault === '1'"><i class="bi bi-patch-check-fill"></i> Default</span>
-          <button type="button" class="icon-action" title="Make default" *ngIf="upi.isDefault !== '1'" (click)="MakeUpiDetailDefault(upi)">
-            <i class="bi bi-patch-plus-fill"></i>
-          </button>
-          <button type="button" class="icon-action danger" title="Delete" (click)="DeleteUpiDetailPopup(upi)">
-            <i class="bi bi-trash3-fill"></i>
-          </button>
+        <div class="payment-card-body">
+          <div class="detail-row"><span>Account Number</span><strong>{{ bank.accountNumber }}</strong></div>
+          <div class="detail-row"><span>IFSC Code</span><strong>{{ bank.ifscCode }}</strong></div>
         </div>
+      </article>
+    </div>
+
+    <!-- UPI -->
+    <div *ngIf="activePaymentTab === 'upi'" class="payment-panel">
+      <div class="panel-toolbar panel-toolbar-end">
+        <button type="button" class="btn-add-payment" (click)="AddUserUpiPopup()">
+          <i class="bi bi-plus-lg"></i> Add
+        </button>
       </div>
-    </article>
-  </div>
 
-  <!-- QR -->
-  <div *ngIf="activePaymentTab === 'qr'" class="payment-panel">
-    <div class="panel-toolbar">
-      <p class="panel-hint">Upload QR codes for scan-and-pay</p>
-      <button type="button" class="btn-add-payment" (click)="AddUserQRPopup()">
-        <i class="bi bi-plus-lg"></i> Add QR
-      </button>
-    </div>
+      <div class="empty-state" *ngIf="!Iuser_upi_details?.length">
+        <i class="bi bi-phone"></i>
+        <button type="button" class="btn-add-payment" (click)="AddUserUpiPopup()">Add</button>
+      </div>
 
-    <div class="empty-state" *ngIf="!Iuser_qr_details?.length">
-      <i class="bi bi-qr-code"></i>
-      <h3>No QR codes yet</h3>
-      <p>Upload a QR image for payment collection</p>
-      <button type="button" class="btn-add-payment" (click)="AddUserQRPopup()">Add QR Code</button>
-    </div>
-
-    <article class="payment-card qr-card" *ngFor="let qr of Iuser_qr_details">
-      <div class="payment-card-header">
-        <div class="payment-card-title">
-          <span class="payment-icon qr"><i class="bi bi-qr-code"></i></span>
-          <div>
-            <h3>{{ qr.accountDisplayName }}</h3>
+      <article class="payment-card" *ngFor="let upi of Iuser_upi_details">
+        <div class="payment-card-header">
+          <div class="payment-card-title">
+            <span class="payment-icon upi"><i class="bi bi-phone"></i></span>
+            <div>
+              <h3>{{ upi.accountDisplayName }}</h3>
+              <p>{{ upi.upiId }}</p>
+            </div>
+          </div>
+          <div class="payment-card-actions">
+            <button type="button" class="icon-action" title="Make default" *ngIf="upi.isDefault !== '1'" (click)="MakeUpiDetailDefault(upi)">
+              <i class="bi bi-patch-plus-fill"></i>
+            </button>
+            <button type="button" class="icon-action danger" title="Delete" (click)="DeleteUpiDetailPopup(upi)">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
           </div>
         </div>
-        <div class="payment-card-actions">
-          <span class="default-badge" *ngIf="qr.isDefault === '1'"><i class="bi bi-patch-check-fill"></i> Default</span>
-          <button type="button" class="icon-action" title="Make default" *ngIf="qr.isDefault !== '1'" (click)="MakeQRDetailDefault(qr)">
-            <i class="bi bi-patch-plus-fill"></i>
-          </button>
-          <button type="button" class="icon-action danger" title="Delete" (click)="DeleteQRDetailPopup(qr)">
-            <i class="bi bi-trash3-fill"></i>
-          </button>
+      </article>
+    </div>
+
+    <!-- QR -->
+    <div *ngIf="activePaymentTab === 'qr'" class="payment-panel">
+      <div class="panel-toolbar panel-toolbar-end">
+        <button type="button" class="btn-add-payment" (click)="AddUserQRPopup()">
+          <i class="bi bi-plus-lg"></i> Add
+        </button>
+      </div>
+
+      <div class="empty-state" *ngIf="!Iuser_qr_details?.length">
+        <i class="bi bi-qr-code"></i>
+        <button type="button" class="btn-add-payment" (click)="AddUserQRPopup()">Add</button>
+      </div>
+
+      <article class="payment-card qr-card" *ngFor="let qr of Iuser_qr_details">
+        <div class="payment-card-header">
+          <div class="payment-card-title">
+            <span class="payment-icon qr"><i class="bi bi-qr-code"></i></span>
+          </div>
+          <div class="payment-card-actions">
+            <button type="button" class="icon-action" title="Make default" *ngIf="qr.isDefault !== '1'" (click)="MakeQRDetailDefault(qr)">
+              <i class="bi bi-patch-plus-fill"></i>
+            </button>
+            <button type="button" class="icon-action danger" title="Delete" (click)="DeleteQRDetailPopup(qr)">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="qr-preview-wrap" *ngIf="qr.qrImageUrl || qr.qrPath">
-        <img class="qr-preview" [src]="qr.qrImageUrl || qr.qrPath" [alt]="qr.accountDisplayName" />
-      </div>
-    </article>
-  </div>
+        <div class="qr-preview-wrap" *ngIf="qr.qrImageUrl || qr.qrPath">
+          <img class="qr-preview" [src]="qr.qrImageUrl || qr.qrPath" alt="" />
+        </div>
+      </article>
+    </div>
+  </ng-container>
 </section>

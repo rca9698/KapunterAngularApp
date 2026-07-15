@@ -74,6 +74,22 @@
     color: #ffcfa3;
 }
 
+.deposit-pay-modes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.55rem;
+    background: transparent;
+    padding: 0.15rem 0 0.35rem;
+}
+
+.deposit-pay-mode {
+    min-height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+}
+
 .payment-option-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));

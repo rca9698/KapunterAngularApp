@@ -1,7 +1,17 @@
-
-
-
-<div *ngFor="let toast of toasterService.toasts" class="toast" [ngClass]="toast.type">
-    {{ toast.message }}
-    <!-- <button (click)="remove(toast)">X</button> -->
-  </div>
+<div class="kp-notice-stack" *ngIf="toasterService.notices.length" aria-live="polite">
+  <article
+    class="kp-notice"
+    *ngFor="let notice of toasterService.notices; trackBy: trackById"
+    [attr.data-kind]="notice.kind">
+    <div class="kp-notice-icon" aria-hidden="true">
+      <i class="bi" [ngClass]="iconFor(notice.kind)"></i>
+    </div>
+    <div class="kp-notice-body">
+      <strong class="kp-notice-title">{{ notice.title }}</strong>
+      <p class="kp-notice-message" *ngIf="notice.message">{{ notice.message }}</p>
+    </div>
+    <button type="button" class="kp-notice-close" (click)="dismiss(notice.id)" aria-label="Dismiss">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </article>
+</div>

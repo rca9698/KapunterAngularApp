@@ -73,15 +73,30 @@ export class AddAdminBankAccountComponent implements OnInit {
         this.returnType = resp;
         const status = Number(resp?.returnStatus ?? resp?.ReturnStatus ?? 0);
         const message = resp?.returnMessage ?? resp?.ReturnMessage ?? '';
+
         if (status === 1) {
-          this.toasterService.success(message || 'Admin bank details saved.');
+          this.toasterService.notice('success', 'Bank account added', message || 'Saved for this site.');
           this.bsModalRef.hide();
-        } else {
-          this.toasterService.warning(message || 'Unable to save bank account.');
+          return;
         }
+
+        if (status === 2) {
+          this.toasterService.notice(
+            'warning',
+            'Already on file',
+            message || 'This bank account number already exists for this site.'
+          );
+          return;
+        }
+
+        this.toasterService.notice(
+          'error',
+          'Could not save',
+          message || 'Unable to save bank account.'
+        );
       },
       error: () => {
-        this.toasterService.error('Unable to save bank account.');
+        this.toasterService.notice('error', 'Could not save', 'Unable to save bank account.');
       }
     });
   }

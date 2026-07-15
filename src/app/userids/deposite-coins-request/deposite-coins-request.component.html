@@ -43,17 +43,17 @@
     <div class="modal-body">
         <div *ngIf="paymentModeListView">
             <div class="nav-item-divider"></div>
-            <div class="col-12" style="background-color: #191928;">
-                <button type="button" class="btn col-12 siteBtnbackground" (click)="PaymentDataView('QRCodeDetail')">QR Code</button>
+            <div class="col-12 deposit-pay-modes">
+                <button type="button" class="btn siteBtnbackground deposit-pay-mode" (click)="PaymentDataView('QRCodeDetail')" title="QR">
+                    <i class="bi bi-qr-code" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn siteBtnbackground deposit-pay-mode" (click)="PaymentDataView('BankTrDetail')" title="Bank">
+                    <i class="bi bi-bank" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn siteBtnbackground deposit-pay-mode" (click)="PaymentDataView('PhonePeDetail')" title="UPI">
+                    <i class="bi bi-phone" aria-hidden="true"></i>
+                </button>
             </div>
-            <div class="nav-item-divider"></div>
-            <div class="col-12" style="background-color: #191928;">
-                <button type="button" class="btn col-12 siteBtnbackground" (click)="PaymentDataView('BankTrDetail')">Bank Transfer</button>
-            </div>
-            <div class="nav-item-divider"></div>
-            <div class="col-12" style="background-color: #191928;">
-                <button type="button" class="btn col-12  siteBtnbackground" (click)="PaymentDataView('PhonePeDetail')">Phone Pe</button>
-            </div> 
         </div>
         <div *ngIf="paymentModeTypesDetailListView">
             <div *ngIf="QRCodeDetail">
@@ -61,7 +61,6 @@
                     <i class="bi bi-arrow-repeat"></i> Loading QR code...
                 </div>
                 <div *ngIf="!paymentDetailLoading && qrOptions.length > 1" class="payment-option-picker">
-                    <p class="payment-option-label">Choose a QR code</p>
                     <div class="payment-option-list">
                         <button
                             type="button"
@@ -70,9 +69,7 @@
                             [class.selected]="isSelectedQr(option)"
                             (click)="selectQrOption(option)"
                         >
-                            <span class="payment-option-default" *ngIf="isDefaultOption(option.isDefault)">Default</span>
-                            <img [src]="qrPreviewUrl(option)" [alt]="option.accountDisplayName" />
-                            <strong>{{ option.accountDisplayName }}</strong>
+                            <img [src]="qrPreviewUrl(option)" alt="" />
                         </button>
                     </div>
                 </div>
@@ -93,7 +90,6 @@
                     <i class="bi bi-arrow-repeat"></i> Loading bank details...
                 </div>
                 <div *ngIf="!paymentDetailLoading && bankOptions.length > 1" class="payment-option-picker">
-                    <p class="payment-option-label">Choose a bank account</p>
                     <div class="payment-option-list">
                         <button
                             type="button"
@@ -102,7 +98,6 @@
                             [class.selected]="isSelectedBank(option)"
                             (click)="selectBankOption(option)"
                         >
-                            <span class="payment-option-default" *ngIf="isDefaultOption(option.isDefault)">Default</span>
                             <strong>{{ option.bankName }}</strong>
                             <small>{{ option.accountNumber }}</small>
                         </button>
@@ -149,7 +144,6 @@
                     <i class="bi bi-arrow-repeat"></i> Loading UPI details...
                 </div>
                 <div *ngIf="!paymentDetailLoading && upiOptions.length > 1" class="payment-option-picker">
-                    <p class="payment-option-label">Choose a UPI ID</p>
                     <div class="payment-option-list">
                         <button
                             type="button"
@@ -158,7 +152,6 @@
                             [class.selected]="isSelectedUpi(option)"
                             (click)="selectUpiOption(option)"
                         >
-                            <span class="payment-option-default" *ngIf="isDefaultOption(option.isDefault)">Default</span>
                             <strong>{{ option.accountDisplayName }}</strong>
                             <small>{{ option.upiId }}</small>
                         </button>
