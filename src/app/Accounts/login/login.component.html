@@ -10,7 +10,8 @@
 
 <div class="login-brand">
   <img src="../../../assets/kapunter-logo.jpeg" alt="Kapunter" class="modal-brand-logo" />
-  <p class="login-welcome">Welcome to Kapunter</p>
+  <app-kp-wordmark size="lg"></app-kp-wordmark>
+  <p class="login-welcome">Welcome back</p>
   <p class="login-hint" *ngIf="showMobileModalForm && isAdminSite">Enter your admin mobile number, then sign in with password.</p>
   <p class="login-hint" *ngIf="showMobileModalForm && !isAdminSite">Enter your mobile number to continue with OTP or password.</p>
   <p class="login-hint" *ngIf="showOtpPasswordModalForm && showOtp">Enter the OTP sent to your mobile, or switch to password.</p>
@@ -29,7 +30,16 @@
     </div>
 
     <button class="col-12 btn siteBtnbackground login-primary-btn" type="submit">Continue</button>
-    <p class="login-note" *ngIf="!isAdminSite">We will send an OTP by SMS.</p>
+    <div class="login-otp-static-note" *ngIf="!isAdminSite" role="note">
+      <i class="bi bi-chat-left-text" aria-hidden="true"></i>
+      <div>
+        <strong>OTP SMS from SULTNE-T</strong>
+        <p>
+          <app-kp-wordmark size="xs" [showBar]="false"></app-kp-wordmark>
+          will send your login OTP by SMS.
+        </p>
+      </div>
+    </div>
     <p class="login-note" *ngIf="isAdminSite">Admin portal — password login only.</p>
   </form>
 
@@ -37,6 +47,17 @@
     <div class="login-auth-tabs" role="tablist">
       <button type="button" class="login-auth-tab" [class.active]="showOtp" (click)="LoadOTP()" *ngIf="role !== 'admin'">OTP</button>
       <button type="button" class="login-auth-tab" [class.active]="showPassword" (click)="LoadPassword()">Password</button>
+    </div>
+
+    <div class="login-otp-static-note" *ngIf="showOtp && role !== 'admin'" role="note">
+      <i class="bi bi-phone" aria-hidden="true"></i>
+      <div>
+        <strong>OTP sent via SMS from SULTNE-T</strong>
+        <p>
+          <app-kp-wordmark size="xs" [showBar]="false"></app-kp-wordmark>
+          — check your phone. Do not share the OTP.
+        </p>
+      </div>
     </div>
 
     <div class="mb-3 form-group" *ngIf="showOtp">

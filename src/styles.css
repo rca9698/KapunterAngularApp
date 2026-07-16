@@ -2065,7 +2065,6 @@ p, li, label, input, textarea, select, button, .viewotp, .viewPassword {
 }
 
 /* ---------- Light theme: sidebar, nav, home, transactions ---------- */
-[data-kp-theme="light"] .sidebar-ben-wordmark,
 [data-kp-theme="light"] .sidebar-member-nav .sidebar-member-text,
 [data-kp-theme="light"] .sidebar-member-nav .sidebar-member-link-secondary,
 [data-kp-theme="light"] .sidebar-ben-heading,

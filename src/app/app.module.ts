@@ -26,6 +26,7 @@ import { ViewImageModuleComponent } from './Shared/Modules/view-image-module/vie
 import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsapp-float.component';
 import { PassbookActivityToastComponent } from './Shared/passbook-activity-toast/passbook-activity-toast.component';
 import { AppConfigService, appConfigInitializer } from './app-config.service';
+import { BrandModule } from './Shared/brand/brand.module';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { AppConfigService, appConfigInitializer } from './app-config.service';
     AccountsModule,
     SitesModule,
     LoaderModule,
+    BrandModule,
     FormsModule,
     ReactiveFormsModule
   ],

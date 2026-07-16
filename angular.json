@@ -31,6 +31,7 @@
               "./node_modules/bootswatch/dist/sandstone/bootstrap.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css",
+              "src/stylesheet/kp-wordmark.css",
               "src/stylesheet/CommonSite.css",
               "src/stylesheet/Dashboard.css",
               "src/stylesheet/site.css",

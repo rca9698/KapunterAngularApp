@@ -16,7 +16,13 @@
     </div>
 
     <div class="navbar-brand-center">
-      <div class="brand-title" (click)="RedirectToHome()">KAPUNTER</div>
+      <button
+        type="button"
+        class="navbar-kp-wordmark-btn"
+        (click)="RedirectToHome()"
+        aria-label="Kapunter home">
+        <app-kp-wordmark size="nav"></app-kp-wordmark>
+      </button>
     </div>
 
     <nav class="navbar-auth-cluster" aria-label="Account actions">

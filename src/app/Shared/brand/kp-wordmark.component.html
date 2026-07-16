@@ -1,0 +1,14 @@
+<span
+  class="kp-wordmark"
+  [class.kp-wordmark--xs]="size === 'xs'"
+  [class.kp-wordmark--sm]="size === 'sm'"
+  [class.kp-wordmark--md]="size === 'md'"
+  [class.kp-wordmark--lg]="size === 'lg'"
+  [class.kp-wordmark--nav]="size === 'nav'"
+  [class.kp-wordmark--start]="align === 'start'"
+  aria-label="Kapunter">
+  <span class="kp-wordmark-text">
+    <span class="kp-wordmark-ka">KA</span><span class="kp-wordmark-punter">PUNTER</span>
+  </span>
+  <span class="kp-wordmark-bar" *ngIf="showBar" aria-hidden="true"></span>
+</span>

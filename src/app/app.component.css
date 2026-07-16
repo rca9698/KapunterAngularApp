@@ -324,20 +324,36 @@
     margin: -1px -1px 0;
     border-radius: 10px 10px 0 0;
     overflow: hidden;
+    display: grid;
+    grid-template-columns: 72px 1fr auto;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.65rem 0.7rem;
+    background: linear-gradient(120deg, rgba(20, 16, 28, 0.98), rgba(12, 10, 18, 0.98));
+    border-bottom: 1px solid rgba(255, 149, 31, 0.28);
 }
 
 .sidebar-admin-banner-img {
     display: block;
-    width: 100%;
-    height: clamp(72px, 22vw, 104px);
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
     object-fit: cover;
-    object-position: center top;
+    object-position: center;
+    border: 1px solid rgba(255, 149, 31, 0.4);
+}
+
+.sidebar-admin-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
 }
 
 .sidebar-admin-close {
-    position: absolute;
-    top: 8px;
-    right: 8px;
+    position: static;
+    top: auto;
+    right: auto;
     z-index: 2;
     width: 42px !important;
     height: 42px !important;
@@ -556,13 +572,8 @@
 }
 
 .sidebar-ben-wordmark {
-    font-size: clamp(1rem, 3.4vw, 1.08rem);
-    font-weight: 700;
-    font-style: normal;
-    letter-spacing: 0.08em;
-    line-height: 1.15;
-    color: #ebe6dc;
-    display: block;
+    /* wordmark styles live in kp-wordmark.css */
+    font-size: 1.05rem;
 }
 
 .sidebar-ben-user-row {
@@ -916,7 +927,6 @@
     }
 }
 
-:host-context([data-kp-theme="light"]) .sidebar-ben-wordmark,
 :host-context([data-kp-theme="light"]) .sidebar-member-nav .sidebar-member-text,
 :host-context([data-kp-theme="light"]) .sidebar-member-nav .sidebar-member-link-secondary,
 :host-context([data-kp-theme="light"]) .sidebar-ben-heading,

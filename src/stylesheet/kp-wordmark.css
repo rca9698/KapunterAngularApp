@@ -1,0 +1,32 @@
+/* Fallback / shared helpers for brand surfaces (component owns main wordmark look) */
+
+.kp-modal-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+}
+
+.kp-modal-brand .modallogosize,
+.kp-modal-brand .modal-brand-logo {
+  margin-bottom: 0 !important;
+}
+
+.referral-invite-title {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.45rem;
+}
+
+.kapunter-loader-wordmark {
+  margin-top: 0.55rem;
+}
+
+.login-otp-static-note p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.35rem;
+}

@@ -19,6 +19,7 @@ import { AdminVendorSitesListComponent } from './admin_bank_account/admin-vendor
 import { ViewAdminSitePaymentComponent } from './admin_bank_account/view-admin-site-payment/view-admin-site-payment.component';
 import { AddAdminSitePaymentComponent } from './admin_bank_account/add-admin-site-payment/add-admin-site-payment.component';
 import { LoaderModule } from '../Shared/loader/loader.module';
+import { BrandModule } from '../Shared/brand/brand.module';
 
 
 
@@ -45,7 +46,8 @@ import { LoaderModule } from '../Shared/loader/loader.module';
     BankAccountRoutingModule,
     HttpClientModule,
     ModalModule.forRoot(),
-    LoaderModule
+    LoaderModule,
+    BrandModule
   ],
   exports:[
     ReactiveFormsModule

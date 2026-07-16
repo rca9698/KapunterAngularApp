@@ -19,7 +19,7 @@
     <div class="deployment-cover-brand">
       <img src="assets/kapunter-logo.jpeg" alt="Kapunter" width="48" height="48" class="deployment-cover-logo" />
       <div>
-        <strong>KAPUNTER</strong>
+        <app-kp-wordmark size="md" align="start"></app-kp-wordmark>
         <span class="deployment-cover-live">
           <span class="deployment-cover-pulse" aria-hidden="true"></span>
           Live update
@@ -60,7 +60,7 @@
                             <div class="sidebar-ben-brand">
                                 <img src="../assets/kapunter-logo.jpeg" alt="" width="42" height="42" class="sidebar-ben-logo" />
                                 <div class="sidebar-ben-brand-text">
-                                    <span class="sidebar-ben-wordmark">KAPUNTER</span>
+                                    <app-kp-wordmark size="sm" align="start"></app-kp-wordmark>
                                     <span class="sidebar-ben-badge">Beneficiary</span>
                                 </div>
                             </div>
@@ -70,15 +70,19 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="sidebar-ben-user-row" *ngIf="authService.displayUserNumber !== '—'">
+                        <!-- <div class="sidebar-ben-user-row" *ngIf="authService.displayUserNumber !== '—'">
                             <span class="sidebar-ben-user-label">Your number</span>
                             <strong class="sidebar-ben-user-number">{{ authService.displayUserNumber }}</strong>
-                        </div>
+                        </div> -->
                     </header>
 
                     <div class="Burger-Menu-header-container sidebar-profile-card sidebar-admin-hero" *ngIf="this.authService.isadminview()">
                         <div class="sidebar-admin-banner">
                             <img src="../assets/kapunter-logo.jpeg" alt="Kapunter" class="sidebar-admin-banner-img" />
+                            <div class="sidebar-admin-brand-text">
+                                <app-kp-wordmark size="sm" align="start"></app-kp-wordmark>
+                                <span class="sidebar-ben-badge">Admin</span>
+                            </div>
                             <button type="button" class="sidebar-admin-close Burger-Menu-Close-btn" aria-label="Close menu">
                                 <i class="bi bi-x-lg"></i>
                             </button>

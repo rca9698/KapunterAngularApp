@@ -2,7 +2,10 @@
 <div class="dashboard-content home-dashboard">
   <div class="referral-invite-banner" *ngIf="showReferralBanner">
     <div class="referral-invite-copy">
-      <strong>You're invited to Kapunter</strong>
+      <strong class="referral-invite-title">
+        You're invited to
+        <app-kp-wordmark size="xs" [showBar]="false"></app-kp-wordmark>
+      </strong>
       <p>
         Invite code <em>{{ referralCode }}</em> is ready.
         Log in with your mobile number (OTP or password) to complete this invite.
