@@ -12,6 +12,7 @@ import {
   filterPassbooksForSiteAccount,
   passbookFilterFromSite,
 } from 'src/app/Shared/Utils/passbook-account.util';
+import { formatPassbookAmount, isNonMonetaryPassbookActivity } from 'src/app/Shared/Utils/passbook-display.util';
 
 @Component({
   selector: 'app-user-site-accounts-history',
@@ -217,13 +218,15 @@ export class UserSiteAccountsHistoryComponent implements OnInit {
   }
 
   getTxnAmount(txn: Ipassbook_detail_model): string {
-    if (txn.displayCoins?.trim()) {
-      return txn.displayCoins.trim();
+    const amount = formatPassbookAmount(txn);
+    if (amount) {
+      return amount;
     }
-    if (txn.coins != null) {
-      return String(txn.coins);
-    }
-    return '—';
+    return isNonMonetaryPassbookActivity(txn) ? 'ID only' : '—';
+  }
+
+  showsTxnAmount(txn: Ipassbook_detail_model): boolean {
+    return formatPassbookAmount(txn) != null;
   }
 
   hasTxnImage(txn: Ipassbook_detail_model): boolean {

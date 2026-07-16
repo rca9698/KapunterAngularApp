@@ -119,9 +119,13 @@
                 <p class="admin-passbook-detail-title">Details</p>
                 <div class="admin-passbook-detail-divider"></div>
 
-                <div class="admin-passbook-detail-row">
+                <div class="admin-passbook-detail-row" *ngIf="showsTxnAmount(detail)">
                   <span>Amount</span>
                   <strong><i class="bi bi-currency-rupee"></i> {{ detail.coins }}</strong>
+                </div>
+                <div class="admin-passbook-detail-row" *ngIf="!showsTxnAmount(detail)">
+                  <span>Wallet impact</span>
+                  <strong>None — Create ID only</strong>
                 </div>
                 <div class="admin-passbook-detail-row">
                   <span>Reference No</span>

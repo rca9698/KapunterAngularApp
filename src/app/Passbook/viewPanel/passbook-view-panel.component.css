@@ -14,7 +14,9 @@
   margin-bottom: 1.1rem;
   border-radius: 18px;
   border: 1px solid var(--kp-border);
-  background: var(--kp-card-gradient);
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(255, 140, 40, 0.16), transparent 55%),
+    var(--kp-card-gradient);
   box-shadow: var(--kp-elevation-card);
 }
 
@@ -109,7 +111,7 @@
 .passbook-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.7rem;
 }
 
 .passbook-card {
@@ -117,28 +119,53 @@
   border: 1px solid var(--kp-border);
   background: var(--kp-card-gradient);
   box-shadow: var(--kp-elevation-card);
-  cursor: pointer;
-  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  overflow: hidden;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.passbook-card:hover {
-  border-color: var(--kp-accent);
-  transform: translateY(-1px);
+.passbook-card--open {
+  border-color: rgba(255, 149, 31, 0.55);
   box-shadow: var(--kp-elevation-card-hover);
 }
 
-.card-inner {
+.passbook-card[data-kind="create"] {
+  border-left: 3px solid rgba(96, 165, 250, 0.75);
+}
+
+.passbook-card[data-kind="deposit"] {
+  border-left: 3px solid rgba(74, 222, 128, 0.75);
+}
+
+.passbook-card[data-kind="withdraw"] {
+  border-left: 3px solid rgba(251, 146, 60, 0.8);
+}
+
+.passbook-card[data-kind="close"] {
+  border-left: 3px solid rgba(248, 113, 113, 0.8);
+}
+
+.passbook-card[data-kind="transfer"] {
+  border-left: 3px solid rgba(192, 132, 252, 0.75);
+}
+
+.passbook-card-toggle {
+  width: 100%;
   display: flex;
   align-items: flex-start;
-  gap: 0.9rem;
-  padding: 1rem 0.95rem;
+  gap: 0.85rem;
+  padding: 0.95rem 0.9rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .passbook-image-wrapper,
 .detail-image-wrapper {
   flex-shrink: 0;
-  width: 58px;
-  height: 58px;
+  width: 52px;
+  height: 52px;
 }
 
 .passbook-image,
@@ -147,8 +174,8 @@
   height: 100%;
   object-fit: contain;
   border-radius: 12px;
-  border: 1px solid rgba(255, 149, 31, 0.5);
-  box-shadow: 0 0 12px rgba(255, 130, 0, 0.18);
+  border: 1px solid rgba(255, 149, 31, 0.45);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .passbook-image-fallback,
@@ -156,13 +183,19 @@
   width: 100%;
   height: 100%;
   border-radius: 12px;
-  border: 1px solid rgba(255, 149, 31, 0.45);
+  border: 1px solid rgba(255, 149, 31, 0.4);
   background: rgba(255, 149, 31, 0.12);
   color: #ffc978;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
+}
+
+.passbook-card[data-kind="create"] .passbook-image-fallback {
+  background: rgba(96, 165, 250, 0.14);
+  border-color: rgba(96, 165, 250, 0.4);
+  color: #93c5fd;
 }
 
 .passbook-content {
@@ -170,54 +203,44 @@
   min-width: 0;
 }
 
+.passbook-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .activity-title {
   margin: 0;
+  flex: 1 1 120px;
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--kp-text);
-  letter-spacing: 0.01em;
-  line-height: 1.4;
+  line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.site-url {
-  margin: 0.3rem 0 0;
-  font-size: 0.75rem;
-  color: var(--kp-muted);
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-all;
+.site-name {
+  margin: 0.28rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: #ffd6b2;
 }
 
 .site-username {
-  margin: 0.2rem 0 0;
+  margin: 0.15rem 0 0;
   font-size: 0.72rem;
   color: var(--kp-muted);
-  line-height: 1.35;
-}
-
-.site-utr {
-  margin: 0.2rem 0 0;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #9dd4ff;
-  letter-spacing: 0.02em;
-}
-
-.metadata-section {
-  margin-top: 0.35rem;
 }
 
 .created-date {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+  margin-top: 0.35rem;
   font-size: 0.68rem;
   color: #8f8275;
 }
@@ -228,159 +251,145 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 0.35rem;
+  min-width: 4.5rem;
 }
 
 .coins-amount {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   font-weight: 800;
   color: var(--kp-accent);
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
 }
 
+.amount-na {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  background: rgba(96, 165, 250, 0.12);
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  border-radius: 999px;
+  padding: 0.2rem 0.45rem;
+}
+
 .status-badge {
   display: inline-block;
-  padding: 0.22rem 0.5rem;
+  padding: 0.2rem 0.48rem;
   border-radius: 999px;
-  font-size: 0.58rem;
+  font-size: 0.56rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #fff;
+  white-space: nowrap;
 }
 
 .passbook-chevron {
-  color: rgba(255, 201, 120, 0.7);
-  font-size: 0.95rem;
+  color: rgba(255, 201, 120, 0.75);
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
 }
 
-.detail-back-btn {
-  width: 100%;
-  border: 1px solid rgba(255, 149, 31, 0.4);
-  border-radius: 12px;
-  padding: 0.65rem 0.85rem;
+.passbook-chevron--open {
+  transform: rotate(180deg);
+}
+
+/* ---- Expanded panel ---- */
+.passbook-expand {
+  padding: 0 0.85rem 0.95rem;
+  animation: passbook-expand-in 0.22s ease;
+}
+
+@keyframes passbook-expand-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.expand-loading {
+  padding: 0.75rem 0;
+}
+
+.expand-hero {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 149, 31, 0.28);
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(255, 140, 40, 0.12), transparent 50%),
+    rgba(255, 255, 255, 0.03);
+  padding: 0.9rem;
+  margin-bottom: 0.7rem;
+}
+
+.expand-hero[data-kind="create"] {
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(96, 165, 250, 0.14), transparent 50%),
+    rgba(255, 255, 255, 0.03);
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+.expand-hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
   margin-bottom: 0.85rem;
-  background: rgba(255, 120, 0, 0.1);
-  color: #ffd6b2;
-  font-weight: 700;
-  display: inline-flex;
+}
+
+.expand-site {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  cursor: pointer;
+  gap: 0.65rem;
+  min-width: 0;
 }
 
-.detail-back-btn:hover {
-  background: rgba(255, 120, 0, 0.18);
+.expand-site .detail-image-wrapper {
+  width: 44px;
+  height: 44px;
 }
 
-.detail-site-card {
-  text-align: center;
-  padding: 1.25rem 1rem;
-  margin-bottom: 0.85rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 136, 26, 0.45);
-  background: linear-gradient(165deg, rgba(22, 19, 32, 0.98), rgba(8, 7, 14, 0.99));
-}
-
-.detail-image-wrapper {
-  width: 88px;
-  height: 88px;
-  margin: 0 auto 0.75rem;
-}
-
-.detail-site-name {
+.expand-site-name {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 800;
-  text-transform: uppercase;
   color: #fff4e8;
 }
 
-.detail-site-url {
-  margin: 0.25rem 0 0.65rem;
-  font-size: 0.75rem;
-  color: #ffd6b2;
+.expand-site-url {
+  margin: 0.15rem 0 0;
+  font-size: 0.7rem;
+  color: #c9b8a8;
   word-break: break-all;
 }
 
 .detail-status-pill {
   display: inline-block;
-  padding: 0.28rem 0.7rem;
+  padding: 0.28rem 0.65rem;
   border-radius: 999px;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 700;
   text-transform: uppercase;
   color: #fff;
+  flex-shrink: 0;
 }
 
-.detail-desc-card,
-.detail-grid-card {
-  border-radius: 14px;
-  border: 1px solid rgba(255, 149, 31, 0.28);
-  background: rgba(255, 255, 255, 0.03);
-  padding: 1rem;
-  margin-bottom: 0.85rem;
-}
-
-.detail-desc-label,
-.detail-title {
-  margin: 0 0 0.5rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #ffcfab;
-}
-
-.detail-desc-text {
-  margin: 0;
-  color: #fff0de;
-  line-height: 1.55;
-  font-size: 0.9rem;
-}
-
-.nav-item-divider {
-  height: 1px;
-  background: linear-gradient(90deg, rgba(255, 149, 31, 0.25), transparent);
-  margin-bottom: 0.5rem;
-}
-
-.detail-row {
+.expand-amount-block {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  align-items: center;
   gap: 0.75rem;
-  padding: 0.55rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  font-size: 0.82rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.detail-row:last-child {
-  border-bottom: none;
-}
-
-.detail-row span {
-  color: #a89888;
-}
-
-.detail-row strong {
-  color: #fff4e8;
-  font-weight: 700;
-  text-align: right;
-}
-
-.detail-proof {
-  border-radius: 14px;
-  border: 1px solid rgba(255, 149, 31, 0.35);
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.detail-proof-label {
-  margin: 0;
-  padding: 0.65rem 0.85rem 0;
+.expand-amount-label {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -388,13 +397,91 @@
   color: #ffcfab;
 }
 
-.detail-proof img {
+.expand-amount-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--kp-accent);
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.expand-amount-block--na .expand-amount-value {
+  font-size: 0.88rem;
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+.expand-desc,
+.expand-grid,
+.expand-proof {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 149, 31, 0.22);
+  background: rgba(255, 255, 255, 0.025);
+  padding: 0.85rem;
+  margin-bottom: 0.65rem;
+}
+
+.expand-label {
+  margin: 0 0 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffcfab;
+}
+
+.expand-text {
+  margin: 0;
+  color: #fff0de;
+  line-height: 1.5;
+  font-size: 0.88rem;
+}
+
+.expand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.82rem;
+}
+
+.expand-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.expand-row:first-child {
+  padding-top: 0;
+}
+
+.expand-row span {
+  color: #a89888;
+}
+
+.expand-row strong {
+  color: #fff4e8;
+  font-weight: 700;
+  text-align: right;
+  word-break: break-word;
+}
+
+.expand-proof {
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.expand-proof img {
   display: block;
   width: 100%;
-  max-height: 360px;
+  max-height: 320px;
   object-fit: contain;
-  padding: 0.65rem;
-  box-sizing: border-box;
+  margin-top: 0.35rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width: 576px) {
@@ -402,7 +489,7 @@
     padding: 0.65rem 0.65rem 5rem;
   }
 
-  .card-inner {
+  .passbook-card-toggle {
     flex-wrap: wrap;
   }
 
@@ -411,18 +498,16 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .passbook-chevron {
-    display: none;
+    min-width: 0;
   }
 }
 
 :host-context([data-kp-theme="light"]) .passbook-hero,
 :host-context([data-kp-theme="light"]) .passbook-card,
-:host-context([data-kp-theme="light"]) .detail-site-card,
-:host-context([data-kp-theme="light"]) .detail-desc-card,
-:host-context([data-kp-theme="light"]) .detail-grid-card {
+:host-context([data-kp-theme="light"]) .expand-hero,
+:host-context([data-kp-theme="light"]) .expand-desc,
+:host-context([data-kp-theme="light"]) .expand-grid,
+:host-context([data-kp-theme="light"]) .expand-proof {
   background: var(--kp-card-gradient) !important;
   border-color: var(--kp-border) !important;
   box-shadow: 0 4px 16px var(--kp-shadow) !important;
@@ -431,54 +516,51 @@
 :host-context([data-kp-theme="light"]) .passbook-hero-copy h1,
 :host-context([data-kp-theme="light"]) .passbook-hero-stat strong,
 :host-context([data-kp-theme="light"]) .activity-title,
-:host-context([data-kp-theme="light"]) .detail-site-name,
-:host-context([data-kp-theme="light"]) .detail-desc-text,
-:host-context([data-kp-theme="light"]) .detail-row strong,
+:host-context([data-kp-theme="light"]) .expand-site-name,
+:host-context([data-kp-theme="light"]) .expand-text,
+:host-context([data-kp-theme="light"]) .expand-row strong,
 :host-context([data-kp-theme="light"]) .passbook-empty h2 {
   color: var(--kp-text) !important;
 }
 
 :host-context([data-kp-theme="light"]) .passbook-hero-copy p,
 :host-context([data-kp-theme="light"]) .passbook-hero-stat-label,
-:host-context([data-kp-theme="light"]) .site-url,
-:host-context([data-kp-theme="light"]) .detail-site-url,
-:host-context([data-kp-theme="light"]) .detail-desc-label,
-:host-context([data-kp-theme="light"]) .detail-title,
-:host-context([data-kp-theme="light"]) .detail-proof-label,
-:host-context([data-kp-theme="light"]) .passbook-loading,
+:host-context([data-kp-theme="light"]) .site-name,
+:host-context([data-kp-theme="light"]) .site-username,
+:host-context([data-kp-theme="light"]) .created-date,
+:host-context([data-kp-theme="light"]) .expand-site-url,
+:host-context([data-kp-theme="light"]) .expand-label,
+:host-context([data-kp-theme="light"]) .expand-amount-label,
+:host-context([data-kp-theme="light"]) .expand-row span,
 :host-context([data-kp-theme="light"]) .passbook-empty,
 :host-context([data-kp-theme="light"]) .passbook-empty p {
   color: var(--kp-muted) !important;
 }
 
-:host-context([data-kp-theme="light"]) .site-username,
-:host-context([data-kp-theme="light"]) .created-date,
-:host-context([data-kp-theme="light"]) .detail-row span {
-  color: var(--kp-muted) !important;
-}
-
-:host-context([data-kp-theme="light"]) .site-utr {
-  color: #1a6bb5 !important;
-}
-
-:host-context([data-kp-theme="light"]) .coins-amount {
+:host-context([data-kp-theme="light"]) .coins-amount,
+:host-context([data-kp-theme="light"]) .expand-amount-value {
   color: var(--kp-accent) !important;
 }
 
-:host-context([data-kp-theme="light"]) .passbook-hero-icon,
+:host-context([data-kp-theme="light"]) .amount-na,
+:host-context([data-kp-theme="light"]) .expand-amount-block--na .expand-amount-value {
+  color: #1d4ed8 !important;
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.25);
+}
+
 :host-context([data-kp-theme="light"]) .passbook-image-fallback,
-:host-context([data-kp-theme="light"]) .detail-image-fallback {
+:host-context([data-kp-theme="light"]) .detail-image-fallback,
+:host-context([data-kp-theme="light"]) .passbook-hero-icon {
   background: var(--kp-surface-2) !important;
   border-color: var(--kp-border) !important;
   color: var(--kp-accent) !important;
 }
 
-:host-context([data-kp-theme="light"]) .detail-back-btn {
-  background: var(--kp-surface) !important;
-  border-color: var(--kp-border) !important;
-  color: var(--kp-text) !important;
+:host-context([data-kp-theme="light"]) .expand-row {
+  border-bottom-color: var(--kp-border) !important;
 }
 
-:host-context([data-kp-theme="light"]) .detail-row {
-  border-bottom-color: var(--kp-border) !important;
+:host-context([data-kp-theme="light"]) .expand-amount-block {
+  border-top-color: var(--kp-border) !important;
 }

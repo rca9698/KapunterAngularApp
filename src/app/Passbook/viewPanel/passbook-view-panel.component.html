@@ -4,132 +4,162 @@
       <i class="bi bi-journal-text"></i>
     </div>
     <div class="passbook-hero-copy">
-      <h1>Transaction History</h1>
-      <p>All wallet activity across your platforms</p>
+      <h1>Passbook</h1>
+      <p>Wallet and ID activity across your platforms</p>
     </div>
-    <div class="passbook-hero-stat" *ngIf="!loading && isListPassbookHistory">
+    <div class="passbook-hero-stat" *ngIf="!loading && passbooks.length">
       <span class="passbook-hero-stat-label">Records</span>
       <strong>{{ passbooks.length }}</strong>
     </div>
   </header>
 
-    <div class="passbook-loading" *ngIf="loading">
-      <app-kapunter-loader message="Loading transaction history…"></app-kapunter-loader>
-    </div>
+  <div class="passbook-loading" *ngIf="loading">
+    <app-kapunter-loader message="Loading passbook…"></app-kapunter-loader>
+  </div>
 
-  <div class="passbook-list" *ngIf="!loading && isListPassbookHistory && passbooks.length > 0">
+  <div class="passbook-list" *ngIf="!loading && passbooks.length > 0">
     <article
       class="passbook-card"
-      *ngFor="let passbook of passbooks; trackBy: trackByPassbookId"
-      (click)="PassbookHistoryById(passbook.passbookHistoryId)"
+      *ngFor="let item of passbooks; trackBy: trackByPassbookId"
+      [class.passbook-card--open]="isExpanded(item)"
+      [attr.data-kind]="activityKind(item)"
     >
-      <div class="card-inner">
+      <button type="button" class="passbook-card-toggle" (click)="toggleExpand(item)">
         <div class="passbook-image-wrapper">
           <img
-            *ngIf="hasValidImagePath(passbook)"
+            *ngIf="hasValidImagePath(item)"
             class="passbook-image"
-            [src]="getImagePath(passbook)"
-            [alt]="passbook.siteName || passbook.siteUserName"
+            [src]="getImagePath(item)"
+            [alt]="item.siteName || item.siteUserName"
             loading="lazy"
           />
-          <div *ngIf="!hasValidImagePath(passbook)" class="passbook-image-fallback" aria-hidden="true">
-            <i class="bi bi-building"></i>
+          <div *ngIf="!hasValidImagePath(item)" class="passbook-image-fallback" aria-hidden="true">
+            <i class="bi" [ngClass]="{
+              'bi-person-plus-fill': activityKind(item) === 'create',
+              'bi-arrow-down-circle': activityKind(item) === 'deposit',
+              'bi-arrow-up-circle': activityKind(item) === 'withdraw',
+              'bi-arrow-left-right': activityKind(item) === 'transfer',
+              'bi-x-octagon': activityKind(item) === 'close',
+              'bi-building': activityKind(item) === 'info'
+            }"></i>
           </div>
         </div>
 
         <div class="passbook-content">
-          <div class="activity-section">
-            <p class="activity-title">{{ passbook.activityDescription }}</p>
-            <p class="site-url">{{ passbook.siteURL }}</p>
-            <p class="site-username">{{ passbook.siteUserName }}</p>
-            <p class="site-utr" *ngIf="passbook.utr">UTR: {{ passbook.utr }}</p>
+          <div class="passbook-title-row">
+            <p class="activity-title">{{ item.activityDescription }}</p>
+            <span
+              class="status-badge"
+              [style.backgroundColor]="item.trxColor || 'rgba(255,149,31,0.75)'"
+            >{{ item.trxStatus }}</span>
           </div>
-          <div class="metadata-section">
-            <span class="created-date">
-              <i class="bi bi-calendar3"></i> {{ passbook.createdDate }}
-            </span>
-          </div>
+          <p class="site-name" *ngIf="item.siteName">{{ item.siteName }}</p>
+          <p class="site-username" *ngIf="item.siteUserName">{{ item.siteUserName }}</p>
+          <span class="created-date">
+            <i class="bi bi-calendar3"></i> {{ item.createdDate }}
+          </span>
         </div>
 
         <div class="passbook-right">
-          <p class="coins-amount">{{ passbook.displayCoins }}</p>
-          <span class="status-badge" [style.backgroundColor]="passbook.trxColor || 'rgba(255,149,31,0.75)'">
-            {{ passbook.trxStatus }}
-          </span>
-          <i class="bi bi-chevron-right passbook-chevron" aria-hidden="true"></i>
+          <p class="coins-amount" *ngIf="showsAmount(item)">{{ getAmountLabel(item) }}</p>
+          <span class="amount-na" *ngIf="!showsAmount(item) && isCreateActivity(item)">ID only</span>
+          <span class="amount-na" *ngIf="!showsAmount(item) && !isCreateActivity(item)">—</span>
+          <i
+            class="bi bi-chevron-down passbook-chevron"
+            [class.passbook-chevron--open]="isExpanded(item)"
+            aria-hidden="true"
+          ></i>
         </div>
+      </button>
+
+      <div class="passbook-expand" *ngIf="isExpanded(item)">
+        <ng-container *ngIf="getDetail(item) as detail">
+          <div class="expand-loading" *ngIf="isDetailLoading(item)">
+            <app-kapunter-loader size="sm" [inline]="true" message="Loading details…"></app-kapunter-loader>
+          </div>
+
+          <div class="expand-hero" [attr.data-kind]="activityKind(detail)">
+            <div class="expand-hero-top">
+              <div class="expand-site">
+                <div class="detail-image-wrapper">
+                  <img
+                    *ngIf="hasValidImagePath(detail)"
+                    class="detail-image"
+                    [src]="getImagePath(detail)"
+                    [alt]="detail.siteName"
+                  />
+                  <div *ngIf="!hasValidImagePath(detail)" class="detail-image-fallback" aria-hidden="true">
+                    <i class="bi bi-building"></i>
+                  </div>
+                </div>
+                <div>
+                  <p class="expand-site-name">{{ detail.siteName || 'Platform' }}</p>
+                  <p class="expand-site-url" *ngIf="detail.siteURL">{{ detail.siteURL }}</p>
+                </div>
+              </div>
+              <span
+                class="detail-status-pill"
+                [style.backgroundColor]="detail.trxColor || '#ff9100'"
+              >{{ detail.trxStatus }}</span>
+            </div>
+
+            <div class="expand-amount-block" *ngIf="showsAmount(detail); else noAmountBlock">
+              <span class="expand-amount-label">Amount</span>
+              <strong class="expand-amount-value">{{ getAmountLabel(detail) }}</strong>
+            </div>
+            <ng-template #noAmountBlock>
+              <div class="expand-amount-block expand-amount-block--na">
+                <span class="expand-amount-label">Wallet impact</span>
+                <strong class="expand-amount-value" *ngIf="isCreateActivity(detail)">None — Create ID only</strong>
+                <strong class="expand-amount-value" *ngIf="!isCreateActivity(detail)">Not applicable</strong>
+              </div>
+            </ng-template>
+          </div>
+
+          <div class="expand-desc">
+            <p class="expand-label">Activity</p>
+            <p class="expand-text">{{ detail.activityDescription }}</p>
+          </div>
+
+          <div class="expand-grid">
+            <div class="expand-row" *ngIf="showsAmount(detail)">
+              <span>Coins</span>
+              <strong><i class="bi bi-currency-rupee"></i> {{ detail.coins }}</strong>
+            </div>
+            <div class="expand-row">
+              <span>Reference</span>
+              <strong>{{ detail.passbookHistoryId }}</strong>
+            </div>
+            <div class="expand-row" *ngIf="detail.utr">
+              <span>UTR</span>
+              <strong>{{ detail.utr }}</strong>
+            </div>
+            <div class="expand-row">
+              <span>Requested</span>
+              <strong>{{ detail.createdDate || '—' }}</strong>
+            </div>
+            <div class="expand-row">
+              <span>Approved</span>
+              <strong>{{ detail.approvedDate || '—' }}</strong>
+            </div>
+            <div class="expand-row" *ngIf="detail.siteUserName || detail.userName">
+              <span>Site username</span>
+              <strong>{{ detail.siteUserName || detail.userName }}</strong>
+            </div>
+          </div>
+
+          <div class="expand-proof" *ngIf="hasValidProofPath(detail)">
+            <p class="expand-label">Payment proof</p>
+            <img [src]="getProofPath(detail)" [alt]="(detail.siteName || 'Payment') + ' proof'" loading="lazy" />
+          </div>
+        </ng-container>
       </div>
     </article>
   </div>
 
-  <div class="passbook-empty" *ngIf="!loading && isListPassbookHistory && passbooks.length === 0">
+  <div class="passbook-empty" *ngIf="!loading && passbooks.length === 0">
     <i class="bi bi-inbox" aria-hidden="true"></i>
     <h2>No transactions yet</h2>
-    <p>Your passbook will show deposits, withdrawals, and transfers here.</p>
-  </div>
-
-  <div class="passbook-detail" *ngIf="isPassbookHistory && passbook">
-    <button type="button" class="detail-back-btn" (click)="viewpassbookHistorylist()">
-      <i class="bi bi-arrow-left-circle-fill"></i> Back to list
-    </button>
-
-    <div class="detail-site-card">
-      <div class="detail-image-wrapper">
-        <img
-          *ngIf="hasValidImagePath(passbook)"
-          class="detail-image"
-          [src]="getImagePath(passbook)"
-          [alt]="passbook.siteName"
-        />
-        <div *ngIf="!hasValidImagePath(passbook)" class="detail-image-fallback" aria-hidden="true">
-          <i class="bi bi-building"></i>
-        </div>
-      </div>
-      <h2 class="detail-site-name">{{ passbook.siteName }}</h2>
-      <p class="detail-site-url">{{ passbook.siteURL }}</p>
-      <span class="detail-status-pill" [style.backgroundColor]="passbook.trxColor || '#ff9100'">
-        {{ passbook.trxStatus }}
-      </span>
-    </div>
-
-    <div class="detail-desc-card">
-      <p class="detail-desc-label">Activity</p>
-      <p class="detail-desc-text">{{ passbook.activityDescription }}</p>
-    </div>
-
-    <div class="detail-grid-card">
-      <p class="detail-title">Details</p>
-      <div class="nav-item-divider"></div>
-
-      <div class="detail-row">
-        <span>Amount</span>
-        <strong><i class="bi bi-currency-rupee"></i> {{ passbook.coins }}</strong>
-      </div>
-      <div class="detail-row">
-        <span>Reference No</span>
-        <strong>{{ passbook.passbookHistoryId }}</strong>
-      </div>
-      <div class="detail-row" *ngIf="passbook.utr">
-        <span>UTR</span>
-        <strong>{{ passbook.utr }}</strong>
-      </div>
-      <div class="detail-row">
-        <span>Request Date</span>
-        <strong>{{ passbook.createdDate }}</strong>
-      </div>
-      <div class="detail-row">
-        <span>Approved On</span>
-        <strong>{{ passbook.approvedDate || '—' }}</strong>
-      </div>
-      <div class="detail-row" *ngIf="passbook.siteUserName">
-        <span>Site Username</span>
-        <strong>{{ passbook.siteUserName }}</strong>
-      </div>
-    </div>
-
-    <div class="detail-proof" *ngIf="hasValidProofPath(passbook)">
-      <p class="detail-proof-label">Payment proof</p>
-      <img [src]="getProofPath(passbook)" [alt]="passbook.siteName + ' proof'" loading="lazy" />
-    </div>
+    <p>Deposits, withdrawals, transfers, and ID updates will show here.</p>
   </div>
 </section>

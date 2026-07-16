@@ -13,8 +13,8 @@ import { Iadd_bank_account, add_bank_account } from 'src/app/Shared/Modals/BankA
   styleUrls: ['./list-user-bank-account.component.css']
 })
 export class ListUserBankAccountComponent implements OnInit {
-  /** Set to true when Bank / UPI / QR should go live for users. */
-  readonly paymentMethodsEnabled = false;
+  /** User withdraw payment methods (Bank / UPI / QR). */
+  readonly paymentMethodsEnabled = true;
 
   Ibank_details: Ibank_details[] | undefined; 
   Iuser_upi_details: any[] | undefined;

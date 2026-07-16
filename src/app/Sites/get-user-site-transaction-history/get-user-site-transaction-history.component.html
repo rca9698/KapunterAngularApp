@@ -48,7 +48,11 @@
             <p class="txn-history-desc">{{ txn.activityDescription }}</p>
             <p class="txn-history-site">{{ getTxnSiteLabel(txn) }}</p>
           </div>
-          <strong class="txn-history-amount" [style.color]="txn.trxColor || '#ffba70'">{{ txn.displayCoins }}</strong>
+          <strong
+            class="txn-history-amount"
+            [class.txn-history-amount--na]="!showsTxnAmount(txn)"
+            [style.color]="showsTxnAmount(txn) ? (txn.trxColor || '#ffba70') : null"
+          >{{ getTxnAmount(txn) }}</strong>
         </div>
         <div class="txn-history-card-foot">
           <span class="txn-history-status" [style.backgroundColor]="txn.trxColor || '#ff9100'">{{ txn.trxStatus }}</span>

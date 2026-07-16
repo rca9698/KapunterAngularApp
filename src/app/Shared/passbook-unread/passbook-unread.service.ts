@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/auth.service';
 import { PassbookService } from 'src/app/Passbook/passbook.service';
 import { Ipassbook_detail_model } from 'src/app/Shared/Modals/passbook_detail_model';
 import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
+import { formatPassbookAmount } from 'src/app/Shared/Utils/passbook-display.util';
 
 @Injectable({ providedIn: 'root' })
 export class PassbookUnreadService implements OnDestroy {
@@ -178,7 +179,7 @@ export class PassbookUnreadService implements OnDestroy {
         title: item.trxStatus?.trim() || 'Passbook update',
         subtitle: item.siteName || item.activityDescription,
         detail: item.activityDescription,
-        amountLabel: item.displayCoins || (item.coins != null ? `₹${item.coins}` : undefined)
+        amountLabel: formatPassbookAmount(item) ?? undefined
       });
     }
   }

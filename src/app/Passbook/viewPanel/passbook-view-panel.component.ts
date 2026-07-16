@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Ipassbook_detail_model } from 'src/app/Shared/Modals/passbook_detail_model';
 import { AuthService } from 'src/app/auth.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { environment } from 'src/environments/environment';
 import { PassbookService } from '../passbook.service';
 import { PassbookUnreadService } from 'src/app/Shared/passbook-unread/passbook-unread.service';
+import {
+  formatPassbookAmount,
+  isNonMonetaryPassbookActivity,
+  passbookActivityKind
+} from 'src/app/Shared/Utils/passbook-display.util';
 
 @Component({
   selector: 'app-passbook-view-panel',
@@ -15,19 +19,33 @@ import { PassbookUnreadService } from 'src/app/Shared/passbook-unread/passbook-u
 export class PassbookViewPanelComponent implements OnInit {
 
   passbooks: Ipassbook_detail_model[] = [];
-  passbook: Ipassbook_detail_model | undefined;
-  proofPath: string | undefined;
-  sitePath: string | undefined;
-  returnType: any;
-  isListPassbookHistory = true;
-  isPassbookHistory = false;
   loading = false;
+  expandedId: string | null = null;
+  detailById: Record<string, Ipassbook_detail_model> = {};
+  loadingDetailId: string | null = null;
 
   private readonly _sessionUser: any;
+  private readonly proofPath: string | undefined;
+  private readonly sitePath: string | undefined;
 
   trackByPassbookId = (_i: number, item: Ipassbook_detail_model): string => {
     return item.passbookHistoryId || String(_i);
   };
+
+  constructor(
+    private toasterService: ToastrService,
+    private authservice: AuthService,
+    private passbookservice: PassbookService,
+    private passbookUnread: PassbookUnreadService
+  ) {
+    this.proofPath = environment.imagePath.proofPath;
+    this.sitePath = environment.imagePath.sitePath;
+    this._sessionUser = this.authservice.user.userId;
+  }
+
+  ngOnInit(): void {
+    this.passbookHistorylist(1);
+  }
 
   hasValidImagePath(item: Ipassbook_detail_model | undefined): boolean {
     return !!item?.documentDetailId && !!item?.fileExtenstion;
@@ -52,30 +70,50 @@ export class PassbookViewPanelComponent implements OnInit {
     return `${this.proofPath || ''}${item.proofDocumentDetailID}${ext}`;
   }
 
-  constructor(
-    private toasterService: ToastrService,
-    private authservice: AuthService,
-    private router: Router,
-    private passbookservice: PassbookService,
-    private passbookUnread: PassbookUnreadService
-  ) {
-    this.proofPath = environment.imagePath.proofPath;
-    this.sitePath = environment.imagePath.sitePath;
-    this._sessionUser = this.authservice.user.userId;
+  showsAmount(item: Ipassbook_detail_model | undefined): boolean {
+    return formatPassbookAmount(item) != null;
   }
 
-  ngOnInit(): void {
-    this.passbookHistorylist(1);
+  getAmountLabel(item: Ipassbook_detail_model | undefined): string {
+    return formatPassbookAmount(item) ?? '';
   }
 
-  viewpassbookHistorylist(): void {
-    this.isPassbookHistory = false;
-    this.isListPassbookHistory = true;
-    this.passbook = undefined;
+  isCreateActivity(item: Ipassbook_detail_model | undefined): boolean {
+    return isNonMonetaryPassbookActivity(item);
+  }
+
+  activityKind(item: Ipassbook_detail_model | undefined): string {
+    return passbookActivityKind(item);
+  }
+
+  isExpanded(item: Ipassbook_detail_model): boolean {
+    return this.expandedId === item.passbookHistoryId;
+  }
+
+  getDetail(item: Ipassbook_detail_model): Ipassbook_detail_model {
+    return this.detailById[item.passbookHistoryId] || item;
+  }
+
+  isDetailLoading(item: Ipassbook_detail_model): boolean {
+    return this.loadingDetailId === item.passbookHistoryId;
+  }
+
+  toggleExpand(item: Ipassbook_detail_model, event?: Event): void {
+    event?.stopPropagation();
+    const id = item.passbookHistoryId;
+    if (this.expandedId === id) {
+      this.expandedId = null;
+      return;
+    }
+    this.expandedId = id;
+    this.detailById[id] = { ...item };
+    this.loadDetail(id);
   }
 
   passbookHistorylist(siteId: number): void {
     this.loading = true;
+    this.expandedId = null;
+    this.detailById = {};
     const obj = {
       userId: this._sessionUser,
       siteId,
@@ -84,16 +122,14 @@ export class PassbookViewPanelComponent implements OnInit {
 
     this.passbookservice.passbookHistorylist(obj).subscribe({
       next: (resp) => {
-        this.returnType = resp;
-        this.isPassbookHistory = false;
-        this.isListPassbookHistory = true;
-        if (this.returnType['returnStatus'] == 1) {
-          this.passbooks = this.returnType['returnList'] ?? [];
+        const returnType: any = resp;
+        if (returnType['returnStatus'] == 1) {
+          this.passbooks = returnType['returnList'] ?? [];
           this.passbookUnread.markAllAsRead(this.passbooks);
         } else {
           this.passbooks = [];
           this.passbookUnread.markAllAsRead([]);
-          this.toasterService.warning(this.returnType.returnMessage);
+          this.toasterService.warning(returnType.returnMessage);
         }
         this.loading = false;
       },
@@ -105,9 +141,8 @@ export class PassbookViewPanelComponent implements OnInit {
     });
   }
 
-  PassbookHistoryById(passbookid: string): void {
-    this.isPassbookHistory = true;
-    this.isListPassbookHistory = false;
+  private loadDetail(passbookid: string): void {
+    this.loadingDetailId = passbookid;
     const obj = {
       PassbookId: passbookid,
       sessionUser: this._sessionUser
@@ -115,16 +150,15 @@ export class PassbookViewPanelComponent implements OnInit {
 
     this.passbookservice.passbookHistorybyid(obj).subscribe({
       next: (resp) => {
-        this.returnType = resp;
-        if (this.returnType['returnStatus'] == 1) {
-          this.passbook = this.returnType['returnVal'];
-        } else {
-          this.toasterService.warning(this.returnType.returnMessage);
+        const returnType: any = resp;
+        if (returnType['returnStatus'] == 1 && returnType['returnVal']) {
+          this.detailById[passbookid] = returnType['returnVal'];
         }
+        this.loadingDetailId = null;
       },
       error: () => {
+        this.loadingDetailId = null;
         this.toasterService.warning('Unable to load transaction details.');
-        this.viewpassbookHistorylist();
       }
     });
   }

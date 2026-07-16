@@ -2,29 +2,23 @@
   <header class="bank-page-header">
     <div>
       <h2>Payment Methods</h2>
+      <p class="bank-page-subtitle">Add bank, UPI, or QR details for withdrawals</p>
     </div>
   </header>
 
-  <!-- Temporarily hidden — flip paymentMethodsEnabled to true when ready -->
-  <div class="payment-coming-soon" *ngIf="!paymentMethodsEnabled">
-    <div class="payment-coming-soon-icons" aria-hidden="true">
-      <span class="payment-coming-soon-icon"><i class="bi bi-bank"></i></span>
-      <span class="payment-coming-soon-icon"><i class="bi bi-phone"></i></span>
-      <span class="payment-coming-soon-icon"><i class="bi bi-qr-code"></i></span>
-    </div>
-    <p class="payment-coming-soon-note">Available in a few days</p>
-  </div>
-
   <ng-container *ngIf="paymentMethodsEnabled">
-    <nav class="payment-type-tabs">
+    <nav class="payment-type-tabs" aria-label="Payment method type">
       <button type="button" class="payment-tab" [class.active]="activePaymentTab === 'bank'" (click)="setPaymentTab('bank')">
         <i class="bi bi-bank"></i>
+        <span>Bank</span>
       </button>
       <button type="button" class="payment-tab" [class.active]="activePaymentTab === 'upi'" (click)="setPaymentTab('upi')">
         <i class="bi bi-phone"></i>
+        <span>UPI</span>
       </button>
       <button type="button" class="payment-tab" [class.active]="activePaymentTab === 'qr'" (click)="setPaymentTab('qr')">
         <i class="bi bi-qr-code"></i>
+        <span>QR</span>
       </button>
     </nav>
 
@@ -37,13 +31,14 @@
           <button type="button" [class.active]="bankFilter === 'history'" (click)="setBankFilter('history')">History</button>
         </nav>
         <button type="button" class="btn-add-payment" (click)="AddBankDetailPopup()">
-          <i class="bi bi-plus-lg"></i> Add
+          <i class="bi bi-plus-lg"></i> Add bank
         </button>
       </div>
 
       <div class="empty-state" *ngIf="!Ibank_details?.length">
         <i class="bi bi-bank2"></i>
-        <button type="button" class="btn-add-payment" (click)="AddBankDetailPopup()">Add</button>
+        <p>No bank accounts yet</p>
+        <button type="button" class="btn-add-payment" (click)="AddBankDetailPopup()">Add bank account</button>
       </div>
 
       <article class="payment-card" *ngFor="let bank of Ibank_details">
@@ -75,13 +70,14 @@
     <div *ngIf="activePaymentTab === 'upi'" class="payment-panel">
       <div class="panel-toolbar panel-toolbar-end">
         <button type="button" class="btn-add-payment" (click)="AddUserUpiPopup()">
-          <i class="bi bi-plus-lg"></i> Add
+          <i class="bi bi-plus-lg"></i> Add UPI
         </button>
       </div>
 
       <div class="empty-state" *ngIf="!Iuser_upi_details?.length">
         <i class="bi bi-phone"></i>
-        <button type="button" class="btn-add-payment" (click)="AddUserUpiPopup()">Add</button>
+        <p>No UPI IDs yet</p>
+        <button type="button" class="btn-add-payment" (click)="AddUserUpiPopup()">Add UPI</button>
       </div>
 
       <article class="payment-card" *ngFor="let upi of Iuser_upi_details">
@@ -109,13 +105,14 @@
     <div *ngIf="activePaymentTab === 'qr'" class="payment-panel">
       <div class="panel-toolbar panel-toolbar-end">
         <button type="button" class="btn-add-payment" (click)="AddUserQRPopup()">
-          <i class="bi bi-plus-lg"></i> Add
+          <i class="bi bi-plus-lg"></i> Add QR
         </button>
       </div>
 
       <div class="empty-state" *ngIf="!Iuser_qr_details?.length">
         <i class="bi bi-qr-code"></i>
-        <button type="button" class="btn-add-payment" (click)="AddUserQRPopup()">Add</button>
+        <p>No QR codes yet</p>
+        <button type="button" class="btn-add-payment" (click)="AddUserQRPopup()">Add QR</button>
       </div>
 
       <article class="payment-card qr-card" *ngFor="let qr of Iuser_qr_details">

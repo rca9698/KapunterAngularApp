@@ -10,6 +10,7 @@ export interface VisitorStats {
   totalVisits: number;
   todayVisits: number;
   weekVisits: number;
+  activeSessions: number;
   lastUpdated?: string;
   recentLogins?: VisitorLoginLog[];
 }

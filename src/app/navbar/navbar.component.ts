@@ -14,7 +14,7 @@ import { VisitorStats } from '../Shared/Modals/visitor-stats';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   displayTotal = 0;
-  stats: VisitorStats = { totalVisits: 0, todayVisits: 0, weekVisits: 0 };
+  stats: VisitorStats = { totalVisits: 0, todayVisits: 0, weekVisits: 0, activeSessions: 0 };
   private statsSub?: Subscription;
   private animationFrame: number | null = null;
 

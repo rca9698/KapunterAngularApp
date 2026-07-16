@@ -11,7 +11,8 @@ export class VisitorCountService {
   private readonly _stats = new BehaviorSubject<VisitorStats>({
     totalVisits: 0,
     todayVisits: 0,
-    weekVisits: 0
+    weekVisits: 0,
+    activeSessions: 0
   });
 
   readonly stats$ = this._stats.asObservable();
@@ -92,7 +93,7 @@ export class VisitorCountService {
 
     // Explicit API failure / empty — keep zeros, don't treat as "unrecognized"
     if (status === 0 || status === '0' || status === 'Failure') {
-      return { totalVisits: 0, todayVisits: 0, weekVisits: 0, recentLogins: [] };
+      return { totalVisits: 0, todayVisits: 0, weekVisits: 0, activeSessions: 0, recentLogins: [] };
     }
 
     if (val && this.hasStatsShape(val)) {
@@ -104,7 +105,7 @@ export class VisitorCountService {
     }
 
     if (Array.isArray(list) && list.length === 0 && val == null) {
-      return { totalVisits: 0, todayVisits: 0, weekVisits: 0, recentLogins: [] };
+      return { totalVisits: 0, todayVisits: 0, weekVisits: 0, activeSessions: 0, recentLogins: [] };
     }
 
     const statusOk = status === 1 || status === '1' || status === 'Success' || status === 'success';
@@ -113,7 +114,7 @@ export class VisitorCountService {
     }
 
     if (statusOk && (val == null || list == null)) {
-      return { totalVisits: 0, todayVisits: 0, weekVisits: 0, recentLogins: [] };
+      return { totalVisits: 0, todayVisits: 0, weekVisits: 0, activeSessions: 0, recentLogins: [] };
     }
 
     return null;
@@ -124,7 +125,9 @@ export class VisitorCountService {
       obj.totalVisits != null ||
       obj.TotalVisits != null ||
       obj.todayVisits != null ||
-      obj.TodayVisits != null
+      obj.TodayVisits != null ||
+      obj.activeSessions != null ||
+      obj.ActiveSessions != null
     );
   }
 
@@ -133,6 +136,7 @@ export class VisitorCountService {
       totalVisits: Number(val.totalVisits ?? val.TotalVisits ?? 0),
       todayVisits: Number(val.todayVisits ?? val.TodayVisits ?? 0),
       weekVisits: Number(val.weekVisits ?? val.WeekVisits ?? 0),
+      activeSessions: Number(val.activeSessions ?? val.ActiveSessions ?? 0),
       lastUpdated: val.lastUpdated ?? val.LastUpdated,
       recentLogins: val.recentLogins ?? val.RecentLogins ?? []
     };

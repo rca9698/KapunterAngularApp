@@ -11,6 +11,7 @@ import {
   filterPassbooksForSiteAccount,
   passbookFilterFromSite,
 } from 'src/app/Shared/Utils/passbook-account.util';
+import { formatPassbookAmount } from 'src/app/Shared/Utils/passbook-display.util';
 
 @Component({
   selector: 'app-get-user-site-transaction-history',
@@ -92,6 +93,14 @@ export class GetUserSiteTransactionHistoryComponent implements OnInit {
 
   getTxnSiteLabel(txn: Ipassbook_detail_model): string {
     return txn.siteName || this.getSiteDisplayName();
+  }
+
+  getTxnAmount(txn: Ipassbook_detail_model): string {
+    return formatPassbookAmount(txn) ?? 'ID only';
+  }
+
+  showsTxnAmount(txn: Ipassbook_detail_model): boolean {
+    return formatPassbookAmount(txn) != null;
   }
 
   loadTransactions(): void {
