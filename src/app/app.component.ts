@@ -191,4 +191,15 @@ export class AppComponent implements OnInit, OnDestroy {
   logoutSeesion() {
     this.authService.logout();
   }
+
+  /** Sideload APK from site assets (not shown / not used inside the native Capacitor shell). */
+  downloadAndroidApp(): void {
+    const isNative =
+      typeof (window as any).Capacitor !== 'undefined' &&
+      !!(window as any).Capacitor?.isNativePlatform?.();
+    if (isNative) {
+      return;
+    }
+    window.location.href = 'assets/app/kapunter.apk';
+  }
 }

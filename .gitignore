@@ -45,3 +45,7 @@ src/assets/DashboardImages/
 
 # Live deployment flag — copy from deployment-banner.example.json when deploying
 src/assets/deployment-banner.json
+
+# Capacitor / Android local TLS truststore (machine-specific, e.g. antivirus MITM CA)
+android/.tls/
+src/assets/app/*.apk
