@@ -1,7 +1,7 @@
 
 <div class="col-12 text-center listtypeview admin-list-header">
     <p class="text-uppercase mb-1">User Listing</p>
-    <p class="list-subtitle">Active registered users and wallet balances</p>
+    <p class="list-subtitle">Profit / loss from approved deposits &amp; withdrawals only</p>
 </div>
 
 <div class="mt-4">
@@ -11,13 +11,14 @@
         <tr class="tableHeaderClass">
             <th scope="col"><p>User Number</p></th>
             <th scope="col"><p>Created Date</p></th>
-            <th scope="col"><p>Coins (<i class="bi bi-currency-rupee"></i>)</p></th>
+            <!-- <th scope="col"><p>Wallet</p></th> -->
+            <th scope="col"><p>Profit / Loss</p></th>
             <th scope="col"><p>Action</p></th>
         </tr>
         </thead>
         <tbody>
             <tr *ngIf="!usersList.length">
-                <td colspan="6" class="admin-list-empty">
+                <td colspan="5" class="admin-list-empty">
                     <i class="bi bi-inbox"></i>
                     <p class="mb-0">No users found.</p>
                 </td>
@@ -29,15 +30,22 @@
                     </button>
                 </th>
                 <td data-label="Created Date"><span class="list-cell-date">{{ user.createdDate }}</span></td>
-                <td data-label="Coins"><span class="coins-amount"><i class="bi bi-currency-rupee"></i>{{ user.coins }}</span></td>
+                <!-- <td data-label="Wallet"><span class="coins-amount"><i class="bi bi-currency-rupee"></i>{{ user.coins }}</span></td> -->
+                <td data-label="Profit / Loss">
+                    <button
+                        type="button"
+                        class="pnl-chip"
+                        [attr.data-tone]="pnlTone(getPnL(user).profitLoss)"
+                        (click)="openPnLDetail(user, $event)"
+                        title="View 7-day, 30-day and total deposit / withdraw">
+                        <span class="pnl-chip-label">{{ pnlLabel(getPnL(user).profitLoss) }}</span>
+                        <strong class="pnl-chip-amount">
+                            <span *ngIf="getPnL(user).profitLoss !== 0">{{ getPnL(user).profitLoss > 0 ? '+' : '−' }}</span>₹{{ formatMoney(getPnL(user).profitLoss) }}
+                        </strong>
+                    </button>
+                </td>
                 <td data-label="Action">
                     <div class="action-btn-group btn-group">
-                        <!--<button type="button" title="Deposit coins" (click)="depositeCoinsByUserId(user)">
-                            <i class="bi bi-person-fill-up"></i>
-                        </button>
-                        <button type="button" title="Withdraw coins" (click)="withdrawCoinsByUserId(user)">
-                            <i class="bi bi-person-fill-down"></i>
-                        </button>-->
                         <button type="button" title="Delete user" (click)="deleteUser(user)">
                             <i class="bi bi-person-fill-slash"></i>
                         </button>
@@ -64,3 +72,63 @@
        [style.cursor]="hasNextPage() ? 'pointer' : 'default'"
        [style.opacity]="hasNextPage() ? '1' : '0.5'">&raquo;</a>
 </div>
+
+<ng-template #pnlModal>
+  <div class="modal-header user-pnl-header">
+    <div>
+      <h5 class="modal-title mb-0">Deposit / Withdraw summary</h5>
+      <p class="user-pnl-sub mb-0" *ngIf="selectedUser">
+        {{ selectedUser.userNumber }}
+        <span *ngIf="getDisplayName(selectedUser) !== '—'"> · {{ getDisplayName(selectedUser) }}</span>
+      </p>
+    </div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closePnLModal()"></button>
+  </div>
+  <div class="modal-body user-pnl-body">
+    <div class="user-pnl-loading" *ngIf="detailLoading">
+      <app-kapunter-loader message="Calculating…"></app-kapunter-loader>
+    </div>
+
+    <ng-container *ngIf="!detailLoading && detail as d">
+      <p class="user-pnl-hint">Quick calculation from approved passbook deposit &amp; withdraw only.</p>
+
+      <div class="user-pnl-grid">
+        <article class="user-pnl-card" [attr.data-tone]="pnlTone(windowPnL(d.deposit7, d.withdraw7))">
+          <header>
+            <span>7 days</span>
+            <em>{{ pnlLabel(windowPnL(d.deposit7, d.withdraw7)) }}</em>
+          </header>
+          <strong>
+            <span *ngIf="windowPnL(d.deposit7, d.withdraw7) !== 0">{{ windowPnL(d.deposit7, d.withdraw7) > 0 ? '+' : '−' }}</span>₹{{ formatMoney(windowPnL(d.deposit7, d.withdraw7)) }}
+          </strong>
+          <small>Deposit ₹{{ formatMoney(d.deposit7) }} · Withdraw ₹{{ formatMoney(d.withdraw7) }}</small>
+        </article>
+
+        <article class="user-pnl-card" [attr.data-tone]="pnlTone(windowPnL(d.deposit30, d.withdraw30))">
+          <header>
+            <span>30 days</span>
+            <em>{{ pnlLabel(windowPnL(d.deposit30, d.withdraw30)) }}</em>
+          </header>
+          <strong>
+            <span *ngIf="windowPnL(d.deposit30, d.withdraw30) !== 0">{{ windowPnL(d.deposit30, d.withdraw30) > 0 ? '+' : '−' }}</span>₹{{ formatMoney(windowPnL(d.deposit30, d.withdraw30)) }}
+          </strong>
+          <small>Deposit ₹{{ formatMoney(d.deposit30) }} · Withdraw ₹{{ formatMoney(d.withdraw30) }}</small>
+        </article>
+
+        <article class="user-pnl-card user-pnl-card--total" [attr.data-tone]="pnlTone(d.profitLoss)">
+          <header>
+            <span>Total</span>
+            <em>{{ pnlLabel(d.profitLoss) }}</em>
+          </header>
+          <strong>
+            <span *ngIf="d.profitLoss !== 0">{{ d.profitLoss > 0 ? '+' : '−' }}</span>₹{{ formatMoney(d.profitLoss) }}
+          </strong>
+          <small>Deposit ₹{{ formatMoney(d.totalDeposit) }} · Withdraw ₹{{ formatMoney(d.totalWithdraw) }}</small>
+        </article>
+      </div>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closePnLModal()">Close</button>
+  </div>
+</ng-template>

@@ -6,23 +6,19 @@ import { WithdrawListComponent } from './withdraw_list/withdraw-list.component';
 import { DepositeToSiteListComponent } from './deposite_to_site_list/deposite-to-site-list.component';
 import { WithdrawFromSiteListComponent } from './withdraw_from_site_list/withdraw-from-site-list.component';
 
-const routes : Routes = [
+const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'deposite-list' },
   { path: 'deposite-list', component: DepositeListComponent },
   { path: 'withdraw-list', component: WithdrawListComponent },
   { path: 'deposite-to-site-list', component: DepositeToSiteListComponent },
   { path: 'withdraw-from-site-list', component: WithdrawFromSiteListComponent },
-]
+];
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
     RouterModule.forChild(routes)
   ],
-  exports: [
-    RouterModule
-  ]
+  exports: [RouterModule]
 })
-export class CoinsRoutingModule { 
-  
-}
+export class CoinsRoutingModule { }

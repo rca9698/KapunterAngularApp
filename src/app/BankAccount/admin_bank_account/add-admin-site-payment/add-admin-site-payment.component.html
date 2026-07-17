@@ -80,7 +80,7 @@
       </form>
     </section>
 
-    <button type="button" class="admin-pay-modal-submit" [disabled]="saving" (click)="saveAll()">
+    <button type="button" class="admin-pay-modal-submit" appSingleClick [disabled]="saving" (click)="saveAll()">
       {{ saving ? 'Saving…' : 'Save payment details' }}
     </button>
   </div>

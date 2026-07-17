@@ -71,7 +71,7 @@
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn siteBtnbackground" [disabled]="saving">
+      <button type="submit" class="btn siteBtnbackground" appSingleClick [disabled]="saving">
         <span *ngIf="!saving">Approve Transfer</span>
         <span *ngIf="saving">Approving…</span>
       </button>

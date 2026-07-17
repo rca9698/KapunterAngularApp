@@ -1,10 +1,74 @@
-<a
-  *ngIf="whatsappUrl"
-  class="whatsapp-float"
-  [href]="whatsappUrl"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="Chat with us on WhatsApp"
-  title="Chat on WhatsApp">
-  <i class="bi bi-whatsapp" aria-hidden="true"></i>
-</a>
+<div class="whatsapp-float-wrap" *ngIf="isVisible" (click)="$event.stopPropagation()">
+  <div
+    class="whatsapp-picker-backdrop"
+    *ngIf="menuOpen && activeNumbers.length > 1"
+    (click)="closeMenu($event)"
+    aria-hidden="true">
+  </div>
+
+  <div
+    class="whatsapp-picker"
+    *ngIf="menuOpen && activeNumbers.length > 1"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="whatsappPickerTitle">
+    <div class="whatsapp-picker-handle" aria-hidden="true"></div>
+
+    <header class="whatsapp-picker-header">
+      <div class="whatsapp-picker-brand">
+        <span class="whatsapp-picker-brand-icon" aria-hidden="true">
+          <i class="bi bi-whatsapp"></i>
+        </span>
+        <div class="whatsapp-picker-brand-text">
+          <h2 id="whatsappPickerTitle">Chat on WhatsApp</h2>
+          <p>Choose a support number to start chatting</p>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="whatsapp-picker-close"
+        (click)="closeMenu($event)"
+        aria-label="Close WhatsApp options">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </header>
+
+    <div class="whatsapp-picker-list" role="menu" aria-label="WhatsApp numbers">
+      <a
+        *ngFor="let n of activeNumbers; let i = index; trackBy: trackByPhone"
+        class="whatsapp-picker-option"
+        role="menuitem"
+        [href]="buildWhatsappUrl(n.phoneNumber)"
+        [attr.aria-label]="'Chat with ' + n.label + ' on WhatsApp ' + displayNumber(n.phoneNumber)"
+        target="_blank"
+        rel="noopener noreferrer"
+        (click)="selectNumber($event, n)">
+        <span class="whatsapp-picker-option-icon" aria-hidden="true">
+          <i class="bi bi-whatsapp"></i>
+        </span>
+        <span class="whatsapp-picker-option-body">
+          <span class="whatsapp-picker-option-label">{{ n.label }}</span>
+          <span class="whatsapp-picker-option-number">{{ displayNumber(n.phoneNumber) }}</span>
+        </span>
+        <span class="whatsapp-picker-option-meta">
+          <span class="whatsapp-picker-option-badge" *ngIf="i === 0">Primary</span>
+          <i class="bi bi-chevron-right" aria-hidden="true"></i>
+        </span>
+      </a>
+    </div>
+
+    <p class="whatsapp-picker-footnote">Opens WhatsApp in a new window</p>
+  </div>
+
+  <button
+    type="button"
+    class="whatsapp-float"
+    [class.open]="menuOpen"
+    [attr.aria-expanded]="menuOpen && activeNumbers.length > 1"
+    aria-haspopup="dialog"
+    aria-label="Chat with us on WhatsApp"
+    title="Chat on WhatsApp"
+    (click)="toggleMenu($event)">
+    <i class="bi bi-whatsapp" aria-hidden="true"></i>
+  </button>
+</div>

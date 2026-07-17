@@ -23,7 +23,13 @@ var accountCoins = 0;
 
 
 const mobileScreen = window.matchMedia("(max-width: 992px)");
+
+function syncDashboardCompactBodyClass() {
+    $("body").toggleClass("dashboard-compact", $(".dashboard").hasClass("dashboard-compact"));
+}
+
 $(document).ready(function () {
+    syncDashboardCompactBodyClass();
     accountCoins = parseInt($('.coinsValidation').attr('data-coins'));
     $(document).on('click',".dashboard-nav-dropdown-toggle",function () {
         $(this).closest(".dashboard-nav-dropdown")
@@ -41,6 +47,7 @@ $(document).ready(function () {
             $("body").toggleClass("sidebar-drawer-open", $(".dashboard-nav").hasClass("mobile-show"));
         } else {
             $(".dashboard").toggleClass("dashboard-compact");
+            syncDashboardCompactBodyClass();
         }
     });
 

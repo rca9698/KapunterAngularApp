@@ -33,7 +33,8 @@
           </span>
         </div>
         <p class="utility-panel-hint">
-          Shown to all users when enabled. Use digits only with country code (example: 919876543210).
+          Active numbers appear when users tap the WhatsApp button. Use digits only with country code
+          (example: 919876543210). Hover/tooltip on each option shows the full number.
         </p>
 
         <div class="utility-field utility-toggle-row">
@@ -44,9 +45,43 @@
           </label>
         </div>
 
-        <div class="utility-field">
-          <label for="waPhone">Phone number</label>
-          <input id="waPhone" type="text" class="form-control" [(ngModel)]="phoneNumber" maxlength="20" placeholder="919876543210" />
+        <div class="utility-numbers">
+          <div class="utility-numbers-head">
+            <h4>Support numbers</h4>
+            <button type="button" class="btn utility-refresh" (click)="addNumber()">
+              <i class="bi bi-plus-lg"></i> Add number
+            </button>
+          </div>
+
+          <div class="utility-number-row" *ngFor="let n of numbers; let i = index">
+            <label class="utility-number-active" [attr.title]="n.active ? 'Active — shown on float' : 'Inactive — hidden from float'">
+              <input type="checkbox" [(ngModel)]="n.active" />
+              <span>Active</span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="n.label"
+              maxlength="40"
+              placeholder="Label (e.g. Sales)"
+              [attr.aria-label]="'Label for number ' + (i + 1)" />
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="n.phoneNumber"
+              maxlength="20"
+              placeholder="919876543210"
+              [attr.aria-label]="'Phone number ' + (i + 1)"
+              [title]="n.phoneNumber ? '+' + n.phoneNumber : 'Enter phone number'" />
+            <button
+              type="button"
+              class="btn utility-refresh utility-number-remove"
+              (click)="removeNumber(i)"
+              [disabled]="numbers.length <= 1"
+              aria-label="Remove number">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
         </div>
 
         <div class="utility-field">
@@ -55,19 +90,27 @@
           <span class="utility-char">{{ (defaultMessage || '').length }}/500</span>
         </div>
 
-        <div class="utility-preview" *ngIf="phoneNumber?.trim()">
+        <div class="utility-preview" *ngIf="activePreviewNumbers.length > 0">
           <div class="utility-preview-top">
-            <span class="utility-preview-label">Preview</span>
-            <a class="utility-preview-link" [href]="whatsAppPreviewUrl" target="_blank" rel="noopener noreferrer">
-              Open chat <i class="bi bi-box-arrow-up-right"></i>
+            <span class="utility-preview-label">Active on float ({{ activePreviewNumbers.length }})</span>
+          </div>
+          <div class="utility-preview-list">
+            <a
+              *ngFor="let n of activePreviewNumbers"
+              class="utility-preview-item"
+              [href]="previewUrl(n.phoneNumber)"
+              [title]="'+' + n.phoneNumber"
+              target="_blank"
+              rel="noopener noreferrer">
+              <strong>{{ n.label || n.phoneNumber }}</strong>
+              <span>+{{ n.phoneNumber }}</span>
             </a>
           </div>
-          <p class="utility-preview-phone">+{{ phoneNumber }}</p>
           <p class="utility-preview-msg">{{ defaultMessage || 'Your default message will appear here.' }}</p>
         </div>
 
         <div class="utility-actions">
-          <button type="button" class="btn siteBtnbackground" [disabled]="saving" (click)="save()">
+          <button type="button" class="btn siteBtnbackground" appSingleClick [disabled]="saving" (click)="save()">
             {{ saving ? 'Saving…' : 'Save WhatsApp' }}
           </button>
         </div>
@@ -84,7 +127,8 @@
             <select class="form-select" [(ngModel)]="historyFilter" (change)="loadHistory()">
               <option value="">All fields</option>
               <option value="WhatsApp_Enabled">Enabled</option>
-              <option value="WhatsApp_PhoneNumber">Phone</option>
+              <option value="WhatsApp_Numbers">Numbers list</option>
+              <option value="WhatsApp_PhoneNumber">Primary phone</option>
               <option value="WhatsApp_DefaultMessage">Message</option>
             </select>
             <button type="button" class="btn utility-refresh" (click)="loadHistory()" aria-label="Refresh history">
@@ -128,7 +172,7 @@
           <input type="number" class="form-control" [(ngModel)]="creditUserId" placeholder="User ID" />
           <input type="number" class="form-control" [(ngModel)]="creditAmount" placeholder="Amount" min="1" />
           <input type="text" class="form-control" [(ngModel)]="creditRemarks" placeholder="Remarks (optional)" />
-          <button type="button" class="btn siteBtnbackground" [disabled]="bonusActing" (click)="creditBonus()">Credit</button>
+          <button type="button" class="btn siteBtnbackground" appSingleClick [disabled]="bonusActing" (click)="creditBonus()">Credit</button>
         </div>
       </div>
 
@@ -175,8 +219,8 @@
                 <td data-label="Pending"><span class="utility-pending">₹{{ u.pendingBonus | number:'1.2-2' }}</span></td>
                 <td data-label="Total">₹{{ u.totalBonus | number:'1.2-2' }}</td>
                 <td class="utility-action-cell" data-label="Actions">
-                  <button type="button" class="btn btn-sm utility-refresh" [disabled]="bonusActing || u.availableBonus <= 0" (click)="withdrawBonus(u.userId)">Withdraw</button>
-                  <button type="button" class="btn btn-sm siteBtnbackground" [disabled]="bonusActing || u.pendingBonus <= 0" (click)="settleBonus(u.userId)">Settle</button>
+                  <button type="button" class="btn btn-sm utility-refresh" appSingleClick [disabled]="bonusActing || u.availableBonus <= 0" (click)="withdrawBonus(u.userId)">Withdraw</button>
+                  <button type="button" class="btn btn-sm siteBtnbackground" appSingleClick [disabled]="bonusActing || u.pendingBonus <= 0" (click)="settleBonus(u.userId)">Settle</button>
                 </td>
               </tr>
             </tbody>

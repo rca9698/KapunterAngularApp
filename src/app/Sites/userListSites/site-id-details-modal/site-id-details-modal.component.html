@@ -78,7 +78,7 @@
           <label>Why do you want to close this ID?</label>
           <textarea class="form-control" rows="3" [(ngModel)]="closeReason" maxlength="500" placeholder="Enter reason for admin approval"></textarea>
           <div class="site-id-close-actions">
-            <button type="button" class="btn btn-sm siteBtnbackground" [disabled]="closeSubmitting" (click)="submitClose(row)">
+            <button type="button" class="btn btn-sm siteBtnbackground" appSingleClick [disabled]="closeSubmitting" (click)="submitClose(row)">
               {{ closeSubmitting ? 'Submitting…' : 'Submit request' }}
             </button>
             <button type="button" class="btn btn-sm site-id-close-cancel" [disabled]="closeSubmitting" (click)="cancelClose()">Cancel</button>

@@ -83,12 +83,21 @@ export class WithdrawCoinsRequestComponent {
       return;
     }
 
+    const siteAccountId = this.site?.accountId != null && this.site.accountId !== ''
+      ? this.site.accountId
+      : (0 as unknown as bigint);
+
     this.withdrawcoinrequestmodalobj.coins = this.withdrawCoinRequestFrom.value['coins'];
     this.withdrawcoinrequestmodalobj.bankId = this.withdrawCoinRequestFrom.value['bankDropdown'];
     this.withdrawcoinrequestmodalobj.sessionUser = this.authservice.user.userId;
     this.withdrawcoinrequestmodalobj.userId = this.authservice.user.userId;
-    this.withdrawcoinrequestmodalobj.accountid = this.authservice.user.userId;
-    this.coinsservice.withdraw_coin_from_site_request_insert(this.withdrawcoinrequestmodalobj).subscribe({
+    this.withdrawcoinrequestmodalobj.accountId = siteAccountId;
+
+    const request$ = siteAccountId && siteAccountId !== (0 as unknown as bigint)
+      ? this.coinsservice.withdraw_coin_from_site_request_insert(this.withdrawcoinrequestmodalobj)
+      : this.coinsservice.withdraw_coin_request_insert(this.withdrawcoinrequestmodalobj);
+
+    request$.subscribe({
       next: (response) => {
         this.returnType = response;
         this.commonService.toastrMessages(this.returnType);
@@ -97,7 +106,7 @@ export class WithdrawCoinsRequestComponent {
           this.passbookToast.show({
             kind: 'withdraw',
             title: 'Withdraw request submitted',
-            subtitle: this.site?.siteName || this.site?.userName || 'Account',
+            subtitle: this.site?.siteName || this.site?.userName || 'Wallet',
             amountLabel: `₹${this.withdrawcoinrequestmodalobj.coins}`,
             detail: 'Track status in Passbook after processing.'
           });
@@ -106,6 +115,7 @@ export class WithdrawCoinsRequestComponent {
       },
       error: (error) => {
         console.log(error);
+        this.toasterService.warning('Unable to submit withdraw request.');
       }
     });
   }

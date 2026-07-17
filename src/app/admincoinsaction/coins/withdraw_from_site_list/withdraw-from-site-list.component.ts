@@ -37,6 +37,7 @@ export class WithdrawFromSiteListComponent implements OnInit {
   }
 
   withdraw_from_site_list() {
+    // Previous listing call: GET /api/Coin/GetCoinsToAccountRequest/{coinType}/{sessionUser}
     this.coinsservice.withdraw_from_site_list(0, this._sessionUser).subscribe(resp => {
       this.returnType = resp;
       if (this.returnType['returnStatus'] == 1) {

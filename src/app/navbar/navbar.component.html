@@ -26,6 +26,16 @@
     </div>
 
     <nav class="navbar-auth-cluster" aria-label="Account actions">
+      <button
+        type="button"
+        class="nav-get-app-btn"
+        *ngIf="!isNativeApp"
+        (click)="downloadAndroidApp()"
+        title="Download Kapunter for Android"
+        aria-label="Download Kapunter for Android">
+        <i class="bi bi-phone" aria-hidden="true"></i>
+        <span>Get App</span>
+      </button>
       <ng-container *ngIf="!(authservice.isLoggenIn | async)">
         <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight" tabindex="0" (click)="loginPopup()">
           Login &nbsp;|&nbsp; Signup

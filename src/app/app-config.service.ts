@@ -10,10 +10,17 @@ export interface RuntimeImagePath {
   proofPath?: string;
 }
 
+export interface RuntimeWhatsappNumber {
+  phoneNumber?: string;
+  label?: string;
+  active?: boolean;
+}
+
 export interface RuntimeWhatsapp {
   enabled?: boolean;
   phoneNumber?: string;
   defaultMessage?: string;
+  numbers?: RuntimeWhatsappNumber[];
 }
 
 /** Deploy-time settings from assets/app-config.json (edit without rebuild). */
@@ -164,6 +171,21 @@ export class AppConfigService {
       if (this.isNonEmptyString(config.whatsapp.defaultMessage)) {
         environment.whatsapp.defaultMessage = config.whatsapp.defaultMessage.trim();
       }
+      if (Array.isArray(config.whatsapp.numbers)) {
+        environment.whatsapp.numbers = config.whatsapp.numbers
+          .filter((n) => n && this.isNonEmptyString(n.phoneNumber))
+          .map((n) => ({
+            phoneNumber: String(n.phoneNumber).trim(),
+            label: this.isNonEmptyString(n.label) ? n.label.trim() : String(n.phoneNumber).trim(),
+            active: n.active !== false
+          }));
+      } else if (this.isNonEmptyString(config.whatsapp.phoneNumber)) {
+        environment.whatsapp.numbers = [{
+          phoneNumber: config.whatsapp.phoneNumber.trim(),
+          label: 'Support',
+          active: true
+        }];
+      }
     }
   }
 
@@ -173,7 +195,9 @@ export class AppConfigService {
       env['imagePath'] = { sitePath: '', dashboardImages: '', QR: '', proofPath: '' };
     }
     if (!env['whatsapp'] || typeof env['whatsapp'] !== 'object') {
-      env['whatsapp'] = { enabled: false, phoneNumber: '', defaultMessage: '' };
+      env['whatsapp'] = { enabled: false, phoneNumber: '', defaultMessage: '', numbers: [] };
+    } else if (!Array.isArray((env['whatsapp'] as RuntimeWhatsapp).numbers)) {
+      (env['whatsapp'] as RuntimeWhatsapp).numbers = [];
     }
   }
 

@@ -3,7 +3,7 @@
     <div class="refer-head">
       <div>
         <h2>Refer &amp; Earn</h2>
-        <p>Invite friends with your link. When they complete their first login, you earn ₹{{ rewardAmount }}.</p>
+        <p>Invite friends with your link. Share the Android app for easy install. When they complete first login, you earn ₹{{ rewardAmount }}.</p>
       </div>
       <button
         type="button"
@@ -31,7 +31,7 @@
             min="1"
             step="1"
           />
-          <button type="button" class="btn siteBtnbackground" [disabled]="savingConfig" (click)="saveRewardConfig()">
+          <button type="button" class="btn siteBtnbackground" appSingleClick [disabled]="savingConfig" (click)="saveRewardConfig()">
             {{ savingConfig ? 'Saving…' : 'Save' }}
           </button>
         </div>
@@ -42,15 +42,15 @@
         <li>
           <span class="refer-step-num">1</span>
           <div>
-            <strong>Share your invite link</strong>
-            <p>Send the prepared message or link to a friend (WhatsApp, SMS, etc.).</p>
+            <strong>Share your invite</strong>
+            <p>Send your invite link. Optionally include the Android APK so friends can install the app first.</p>
           </div>
         </li>
         <li>
           <span class="refer-step-num">2</span>
           <div>
-            <strong>Friend opens the link</strong>
-            <p>Kapunter opens with your invite code ready and asks them to log in.</p>
+            <strong>Friend opens &amp; logs in</strong>
+            <p>They open your invite on the website or in the Kapunter app, then complete login.</p>
           </div>
         </li>
         <li>
@@ -114,12 +114,48 @@
         </div>
       </div>
 
+      <!-- Additive: Android APK install / share -->
+      <div class="refer-app-box" aria-label="Android application download">
+        <div class="refer-app-head">
+          <div class="refer-app-icon" aria-hidden="true">
+            <i class="bi bi-phone"></i>
+          </div>
+          <div>
+            <h3>Kapunter Android app</h3>
+            <p>Share the official APK so friends can download and install Kapunter on their phone.</p>
+          </div>
+        </div>
+
+        <span class="refer-label">APK download link</span>
+        <div class="refer-link-row">
+          <p class="refer-link">{{ apkUrl }}</p>
+          <button type="button" class="btn refer-secondary-btn" (click)="copyApkLink()" [disabled]="!apkUrl">
+            <i class="bi" [class.bi-check2]="copiedField === 'apk'" [class.bi-clipboard]="copiedField !== 'apk'"></i>
+            {{ copiedField === 'apk' ? 'Copied' : 'Copy link' }}
+          </button>
+        </div>
+
+        <div class="refer-actions refer-app-actions">
+          <button type="button" class="btn siteBtnbackground" (click)="shareApkLink()" [disabled]="!apkUrl">
+            <i class="bi bi-share"></i> Share app link
+          </button>
+          <button type="button" class="btn refer-secondary-btn" (click)="downloadApk()" [disabled]="!apkUrl">
+            <i class="bi bi-download"></i> {{ isNativeApp ? 'Open APK link' : 'Download APK' }}
+          </button>
+        </div>
+
+        <p class="refer-app-hint">
+          Tip: when sharing an invite, the prepared message already includes both your referral link and this APK install link.
+        </p>
+      </div>
+
       <div class="refer-notice">
         <i class="bi bi-info-circle"></i>
         <div>
           <strong>Before you share</strong>
           <p>
-            Your friend must open <em>your</em> invite link, then complete login with mobile OTP or password.
+            Your friend must open <em>your</em> invite link (website or app), then complete login with mobile OTP or password.
+            They can install the Android APK first, then use the same invite link inside the app.
             Reward ₹{{ rewardAmount }} is credited only on their first successful referral login.
             Self-referrals are not allowed.
           </p>
@@ -149,13 +185,13 @@
     <div class="refer-confirm-card" (click)="$event.stopPropagation()" role="dialog" aria-modal="true">
       <h3>Ready to share?</h3>
       <p>
-        This sends your working invite link. When your friend opens it and completes first login,
-        you receive <strong>₹{{ rewardAmount }}</strong>.
+        This sends your invite link plus the official Android APK download link.
+        When your friend opens the invite and completes first login, you receive <strong>₹{{ rewardAmount }}</strong>.
       </p>
       <pre class="refer-message-preview refer-message-preview--modal">{{ shareMessage }}</pre>
       <div class="refer-confirm-actions">
         <button type="button" class="btn refer-secondary-btn" (click)="cancelShare()">Cancel</button>
-        <button type="button" class="btn siteBtnbackground" (click)="confirmShare()">Continue &amp; share</button>
+        <button type="button" class="btn siteBtnbackground" appSingleClick (click)="confirmShare()">Continue &amp; share</button>
       </div>
     </div>
   </div>

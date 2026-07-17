@@ -273,6 +273,97 @@
   font-weight: 650;
 }
 
+.utility-numbers {
+  margin: 0.35rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.utility-numbers-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.utility-numbers-head h4 {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--kp-text);
+}
+
+.utility-number-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.2fr) auto;
+  gap: 0.45rem;
+  align-items: center;
+  padding: 0.55rem;
+  border-radius: 12px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface-2);
+}
+
+.utility-number-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--kp-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.utility-number-active input {
+  accent-color: #25d366;
+}
+
+.utility-number-row .form-control {
+  min-height: 40px;
+  font-size: 0.86rem;
+}
+
+.utility-number-remove {
+  min-width: 40px;
+  padding-inline: 0.55rem;
+}
+
+.utility-preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
+}
+
+.utility-preview-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--kp-text);
+  background: color-mix(in srgb, #25d366 10%, var(--kp-surface));
+  border: 1px solid color-mix(in srgb, #25d366 28%, var(--kp-border));
+}
+
+.utility-preview-item:hover {
+  color: var(--kp-text);
+  background: color-mix(in srgb, #25d366 18%, var(--kp-surface));
+}
+
+.utility-preview-item strong {
+  font-size: 0.86rem;
+}
+
+.utility-preview-item span {
+  font-size: 0.78rem;
+  color: var(--kp-muted);
+}
+
 .utility-preview {
   margin: 0.35rem 0 0.95rem;
   padding: 0.9rem 1rem;
@@ -422,6 +513,23 @@
 @media (max-width: 720px) {
   .utility-bonus-credit {
     grid-template-columns: 1fr;
+  }
+
+  .utility-number-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .utility-number-active {
+    grid-column: 1 / -1;
+  }
+
+  .utility-number-row .form-control {
+    grid-column: 1 / -1;
+  }
+
+  .utility-number-remove {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .utility-bonus-credit .btn,

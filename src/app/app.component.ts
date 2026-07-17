@@ -13,6 +13,8 @@ import { ReferralService } from './Accounts/Profile/refer-earn/referral.service'
 import { apiService } from './api.service';
 import { DeploymentBannerService, DeploymentBannerState } from './deployment-banner.service';
 import { PassbookUnreadService } from './Shared/passbook-unread/passbook-unread.service';
+import { ToastrService } from './toastr/toastr.service';
+import { getApkDownloadUrl, getPublicAppUrl, isNativeApp } from './Shared/platform/platform.util';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +37,8 @@ export class AppComponent implements OnInit, OnDestroy {
   deposit30 = 0;
   withdraw7 = 0;
   withdraw30 = 0;
+  totalDeposit = 0;
+  totalWithdraw = 0;
   deploymentBanner: DeploymentBannerState = {
     enabled: false,
     title: '',
@@ -56,7 +60,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private referralService: ReferralService,
     private api: apiService,
     private deploymentBannerService: DeploymentBannerService,
-    _passbookUnread: PassbookUnreadService
+    _passbookUnread: PassbookUnreadService,
+    private toasterService: ToastrService
   ) {
     this._sessionUser = authService.user.userId;
   }
@@ -120,6 +125,10 @@ export class AppComponent implements OnInit, OnDestroy {
     return this.withdraw30 - this.deposit30;
   }
 
+  get pnlTotal(): number {
+    return this.totalWithdraw - this.totalDeposit;
+  }
+
   loadPnLStats(): void {
     this.api.getMyDepositStats().subscribe({
       next: (resp: any) => {
@@ -128,6 +137,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.deposit30 = Number(val.depositLast30Days ?? val.DepositLast30Days ?? 0);
         this.withdraw7 = Number(val.withdrawLast7Days ?? val.WithdrawLast7Days ?? 0);
         this.withdraw30 = Number(val.withdrawLast30Days ?? val.WithdrawLast30Days ?? 0);
+        this.totalDeposit = Number(val.totalDeposit ?? val.TotalDeposit ?? 0);
+        this.totalWithdraw = Number(val.totalWithdraw ?? val.TotalWithdraw ?? 0);
         this.pnlLoaded = true;
       },
       error: () => {
@@ -192,14 +203,44 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.logout();
   }
 
-  /** Sideload APK from site assets (not shown / not used inside the native Capacitor shell). */
-  downloadAndroidApp(): void {
-    const isNative =
-      typeof (window as any).Capacitor !== 'undefined' &&
-      !!(window as any).Capacitor?.isNativePlatform?.();
-    if (isNative) {
+  /** Web browser only — native app hides Download and shows Share alone. */
+  readonly isNativeApp = isNativeApp();
+
+  /** Share the public web URL (works from browser and native app). */
+  async shareAppLink(): Promise<void> {
+    const url = getPublicAppUrl();
+    const title = 'Kapunter';
+    const text = 'Join Kapunter — open on web or install the app: ' + url;
+
+    try {
+      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+        await navigator.share({ title, text, url });
+        return;
+      }
+    } catch {
+      // User cancelled share sheet — ignore
       return;
     }
-    window.location.href = 'assets/app/kapunter.apk';
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        this.toasterService.success('App link copied');
+        return;
+      }
+    } catch {
+      // fall through
+    }
+
+    window.prompt('Copy this link to share Kapunter:', url);
+  }
+
+  /** Web only: download the hosted Android APK. */
+  downloadAndroidApp(): void {
+    if (this.isNativeApp) {
+      return;
+    }
+    const apkUrl = getApkDownloadUrl();
+    window.open(apkUrl, '_blank', 'noopener');
   }
 }

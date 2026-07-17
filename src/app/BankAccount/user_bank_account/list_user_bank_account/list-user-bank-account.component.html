@@ -51,7 +51,7 @@
             </div>
           </div>
           <div class="payment-card-actions">
-            <button type="button" class="icon-action" title="Make default" *ngIf="bank.isDefault !== '1' && isActive" (click)="MakeBankDetailDefault(bank)">
+            <button type="button" class="icon-action" title="Make default" appSingleClick *ngIf="bank.isDefault !== '1' && isActive" (click)="MakeBankDetailDefault(bank)">
               <i class="bi bi-patch-plus-fill"></i>
             </button>
             <button type="button" class="icon-action danger" title="Delete" *ngIf="isActive" (click)="DeleteBankAccountPopup(bank)">

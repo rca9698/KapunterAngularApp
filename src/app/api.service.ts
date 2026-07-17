@@ -116,8 +116,9 @@ export class apiService {
 
   setUtilitySettings(obj: {
     enabled: boolean;
-    phoneNumber: string;
+    phoneNumber?: string;
     defaultMessage: string;
+    numbers: Array<{ phoneNumber: string; label: string; active: boolean }>;
     sessionUser: number | bigint;
   }) {
     return this.http.post(`${environment.apiUrl}/api/Config/SetUtilitySettings`, obj);
@@ -162,6 +163,11 @@ export class apiService {
 
   getMyDepositStats() {
     return this.http.get(`${environment.apiUrl}/api/Bonus/GetMyDepositStats`);
+  }
+
+  /** Admin: 7d / 30d / all-time deposit & withdraw for a user (passbook approvals only). */
+  getUserDepositStats(userId: number | bigint) {
+    return this.http.get(`${environment.apiUrl}/api/Bonus/GetUserDepositStats/${userId}`);
   }
 
   getAdminCoinPnL(fromDate?: string, toDate?: string, search?: string) {

@@ -1,111 +1,109 @@
+<nav class="footer-shell footernavbar" aria-label="Primary">
+  <!-- Beneficiary -->
+  <div class="footer-bar" *ngIf="authservice.isbenview()">
+    <div class="footer-rail">
+      <div class="footer-rail-meta">
+        <span class="footer-rail-kicker">Quick nav</span>
+        <strong class="footer-rail-title">Workspace</strong>
+      </div>
 
-<div class="card mt-0 footer-nav footernavbar sitebackground cursorPointer footer-shell">
-    <div class="footer-tab-row" *ngIf="this.authservice.isbenview()">
-        <div class="footer-tab-cell" (click)="RedirectToHome()">
-                <div class="card sitebackground footer-tab active-tab">
-                    <div class="card-body text-center">
-                        <div class="row">
-                            <i class="bi bi-house-door"></i>
-                        </div>
-                        <h6 class="text-muted font-weight-normal">
-                            <p class="text-uppercase"> Home </p>
-                        </h6>
-                    </div>
-                </div>
-        </div>
-        <div class="footer-tab-cell" (click)="listIds()">
-            <div class="card sitebackground footer-tab">
-                <div class="card-body text-center">
-                    <div class="row">
-                        <i class="bi bi-person-badge"></i>
-                    </div>
-                    <h6 class="text-muted font-weight-normal">
-                        <p class="text-uppercase">My ID's</p>
-                    </h6>
-                </div>
-            </div>
-        </div>
-        <div class="footer-tab-cell" (click)="createId()">
-            <div class="card sitebackground footer-tab">
-                <div class="card-body text-center">
-                    <div class="row">
-                        <i class="bi bi-plus-circle"></i>
-                    </div>
-                    <h6 class="text-muted font-weight-normal">
-                        <p class="text-uppercase">Create ID's</p>
-                    </h6>
-                </div>
-            </div>
-        </div>
-        <div class="footer-tab-cell" (click)="viewPassbook()">
-            <div class="card sitebackground footer-tab">
-                <div class="card-body text-center">
-                    <div class="row footer-tab-icon-row">
-                        <i class="bi bi-journal-text"></i>
-                        <span
-                            class="footer-badge"
-                            *ngIf="(passbookUnread.unreadCount$ | async) as unread"
-                            [class.footer-badge-hidden]="!unread">
-                            {{ unread > 99 ? '99+' : unread }}
-                        </span>
-                    </div>
-                    <h6 class="text-muted font-weight-normal">
-                        <p class="text-uppercase"> Passbook </p>
-                    </h6>
-                </div>
-            </div>
-        </div>
+      <div class="footer-cluster">
+        <button type="button" class="footer-item" (click)="RedirectToHome()" [class.is-active]="isHomeActive()" aria-label="Home">
+          <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+          <span class="footer-label footer-label--short">Home</span>
+          <span class="footer-label footer-label--long">Home</span>
+        </button>
+
+        <button type="button" class="footer-item" (click)="listIds()" [class.is-active]="isIdsActive()" aria-label="My IDs">
+          <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
+          <span class="footer-label footer-label--short">My IDs</span>
+          <span class="footer-label footer-label--long">My IDs</span>
+        </button>
+
+        <button type="button" class="footer-item footer-item--fab" (click)="createId()" aria-label="Create ID">
+          <span class="footer-fab">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+          </span>
+          <span class="footer-fab-text footer-label--short">Create</span>
+          <span class="footer-fab-text footer-label--long">Create ID</span>
+        </button>
+
+        <button type="button" class="footer-item" (click)="viewShareBonus()" [class.is-active]="isShareActive()" aria-label="Refer and Earn">
+          <i class="bi bi-gift-fill" aria-hidden="true"></i>
+          <span class="footer-label footer-label--short">Invite</span>
+          <span class="footer-label footer-label--long">Refer &amp; Earn</span>
+        </button>
+
+        <button type="button" class="footer-item" (click)="viewPassbook()" [class.is-active]="isPassbookActive()" aria-label="Passbook">
+          <span class="footer-icon-wrap">
+            <i class="bi bi-journal-text" aria-hidden="true"></i>
+            <span
+              class="footer-badge"
+              *ngIf="(passbookUnread.unreadCount$ | async) as unread"
+              [class.footer-badge-hidden]="!unread">
+              {{ unread > 99 ? '99+' : unread }}
+            </span>
+          </span>
+          <span class="footer-label footer-label--short">Passbook</span>
+          <span class="footer-label footer-label--long">Passbook</span>
+        </button>
+      </div>
+
+      <div class="footer-rail-cta" *ngIf="!isNativeApp">
+        <button type="button" class="footer-get-app" (click)="downloadAndroidApp()" aria-label="Download Android app">
+          <i class="bi bi-phone" aria-hidden="true"></i>
+          <span class="footer-get-app-copy">
+            <em>Android</em>
+            <strong>Get the App</strong>
+          </span>
+        </button>
+      </div>
     </div>
+  </div>
 
-    <div class="footer-tab-row" *ngIf="this.authservice.isadminview()">
-        <div class="footer-tab-cell" (click)="RedirectToHome()">
-                <div class="card sitebackground footer-tab active-tab">
-                    <div class="card-body text-center">
-                        <div class="row">
-                            <i class="bi bi-house-door"></i>
-                        </div>
-                        <h6 class="text-muted font-weight-normal">
-                            <p class="text-uppercase"> Home </p>
-                        </h6>
-                    </div>
-                </div>
-        </div> 
-        <div class="footer-tab-cell" (click)="AddSitesPopup()">
-            <div class="card sitebackground footer-tab">
-                <div class="card-body text-center">
-                    <div class="row">
-                        <i class="bi bi-cart-plus-fill"></i>
-                    </div>
-                    <h6 class="text-muted font-weight-normal">
-                        <p class="text-uppercase"> Create Site </p>
-                    </h6>
-                </div>
-            </div>
-        </div>
-        <div class="footer-tab-cell" routerLink="/site/list-sites">
-            <div class="card sitebackground footer-tab">
-                <div class="card-body text-center">
-                    <div class="row">
-                        <i class="bi bi-square"></i>
-                    </div>
-                    <h6 class="text-muted font-weight-normal">
-                        <p class="text-uppercase"> Sites </p>
-                    </h6>
-                </div>
-            </div>
-        </div>
-        <div class="footer-tab-cell" routerLink="/adminaction/user_list">
-            <div class="card sitebackground footer-tab">
-                <div class="card-body text-center">
-                    <div class="row">
-                        <i class="bi bi-person-vcard"></i>
-                    </div>
-                    <h6 class="text-muted font-weight-normal">
-                        <p class="text-uppercase"> Users </p>
-                    </h6>
-                </div>
-            </div>
-        </div>
+  <!-- Admin -->
+  <div class="footer-bar footer-bar--admin" *ngIf="authservice.isadminview()">
+    <div class="footer-rail">
+      <div class="footer-rail-meta">
+        <span class="footer-rail-kicker">Quick nav</span>
+        <strong class="footer-rail-title">Admin</strong>
+      </div>
+
+      <div class="footer-cluster footer-cluster--admin">
+        <button type="button" class="footer-item" (click)="RedirectToHome()" [class.is-active]="isHomeActive()" aria-label="Home">
+          <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+          <span class="footer-label footer-label--short">Home</span>
+          <span class="footer-label footer-label--long">Home</span>
+        </button>
+
+        <button type="button" class="footer-item" (click)="AddSitesPopup()" aria-label="Add Site">
+          <i class="bi bi-plus-square-fill" aria-hidden="true"></i>
+          <span class="footer-label footer-label--short">Add Site</span>
+          <span class="footer-label footer-label--long">Add Site</span>
+        </button>
+
+        <a class="footer-item" routerLink="/site/list-sites" routerLinkActive="is-active" aria-label="Sites">
+          <i class="bi bi-grid-fill" aria-hidden="true"></i>
+          <span class="footer-label footer-label--short">Sites</span>
+          <span class="footer-label footer-label--long">All Sites</span>
+        </a>
+
+        <a class="footer-item" routerLink="/adminaction/user_list" routerLinkActive="is-active" aria-label="Users">
+          <i class="bi bi-people-fill" aria-hidden="true"></i>
+          <span class="footer-label footer-label--short">Users</span>
+          <span class="footer-label footer-label--long">All Users</span>
+        </a>
+      </div>
+
+      <div class="footer-rail-cta" *ngIf="!isNativeApp">
+        <button type="button" class="footer-get-app" (click)="downloadAndroidApp()" aria-label="Download Android app">
+          <i class="bi bi-phone" aria-hidden="true"></i>
+          <span class="footer-get-app-copy">
+            <em>Android</em>
+            <strong>Get the App</strong>
+          </span>
+        </button>
+      </div>
     </div>
-
-</div>
+  </div>
+</nav>

@@ -466,6 +466,91 @@
     background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.35));
 }
 
+.sidebar-app-promo {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+        "icon copy"
+        "actions actions";
+    gap: 0.55rem 0.65rem;
+    padding: 0.75rem;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 149, 31, 0.35);
+    background:
+        radial-gradient(circle at 12% 20%, rgba(255, 149, 31, 0.22), transparent 55%),
+        linear-gradient(160deg, rgba(36, 28, 18, 0.95), rgba(18, 14, 22, 0.98));
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+}
+
+.sidebar-app-promo-icon {
+    grid-area: icon;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #ffb347, #ff6300);
+    color: #1a1208;
+    font-size: 1.15rem;
+    box-shadow: 0 4px 12px rgba(255, 120, 0, 0.35);
+}
+
+.sidebar-app-promo-copy {
+    grid-area: copy;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.sidebar-app-promo-copy strong {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #fff4ea;
+    letter-spacing: 0.01em;
+}
+
+.sidebar-app-promo-copy span {
+    font-size: 0.68rem;
+    line-height: 1.35;
+    color: rgba(255, 220, 190, 0.78);
+}
+
+.sidebar-app-promo-actions {
+    grid-area: actions;
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 0.4rem;
+}
+
+.sidebar-app-promo-download,
+.sidebar-app-promo-share,
+.sidebar-share-only {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 2.35rem !important;
+    border-radius: 10px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em;
+}
+
+.sidebar-app-promo-download {
+    background: linear-gradient(120deg, #c45a00, #ff7a18) !important;
+    border: 1px solid rgba(255, 200, 150, 0.45) !important;
+    color: #fff !important;
+}
+
+.sidebar-app-promo-share,
+.sidebar-share-only {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 141, 33, 0.28) !important;
+    color: #fff4ea !important;
+}
+
 .Burger-Menu-footer-container button {
     border-radius: 10px;
     background-color: #1d1b24;
@@ -976,6 +1061,29 @@
 :host-context([data-kp-theme="light"]) .Burger-Menu-footer-container {
     border-color: var(--kp-border) !important;
     background: transparent !important;
+}
+
+:host-context([data-kp-theme="light"]) .sidebar-app-promo {
+    border-color: var(--kp-border) !important;
+    background:
+        radial-gradient(circle at 12% 20%, rgba(184, 92, 0, 0.12), transparent 55%),
+        linear-gradient(160deg, #ffffff, #f4f7fa) !important;
+    box-shadow: var(--kp-elevation-card);
+}
+
+:host-context([data-kp-theme="light"]) .sidebar-app-promo-copy strong {
+    color: var(--kp-text) !important;
+}
+
+:host-context([data-kp-theme="light"]) .sidebar-app-promo-copy span {
+    color: var(--kp-muted) !important;
+}
+
+:host-context([data-kp-theme="light"]) .sidebar-app-promo-share,
+:host-context([data-kp-theme="light"]) .sidebar-share-only {
+    background: var(--kp-surface) !important;
+    border-color: var(--kp-border) !important;
+    color: var(--kp-text) !important;
 }
 
 :host-context([data-kp-theme="light"]) .Burger-Menu-footer-container button {

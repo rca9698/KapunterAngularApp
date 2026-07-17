@@ -20,6 +20,7 @@ import { ViewAdminSitePaymentComponent } from './admin_bank_account/view-admin-s
 import { AddAdminSitePaymentComponent } from './admin_bank_account/add-admin-site-payment/add-admin-site-payment.component';
 import { LoaderModule } from '../Shared/loader/loader.module';
 import { BrandModule } from '../Shared/brand/brand.module';
+import { SingleClickModule } from '../Shared/single-click/single-click.module';
 
 
 
@@ -47,7 +48,8 @@ import { BrandModule } from '../Shared/brand/brand.module';
     HttpClientModule,
     ModalModule.forRoot(),
     LoaderModule,
-    BrandModule
+    BrandModule,
+    SingleClickModule
   ],
   exports:[
     ReactiveFormsModule

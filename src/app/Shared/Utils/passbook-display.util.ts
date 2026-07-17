@@ -24,6 +24,14 @@ export function isNonMonetaryPassbookActivity(
   return NON_MONETARY_PATTERNS.some((re) => re.test(text));
 }
 
+/** True when the row is a deposit or withdraw (used for P/L calculations). */
+export function isDepositOrWithdrawPassbookActivity(
+  item: Pick<Ipassbook_detail_model, 'activityDescription' | 'trxStatus' | 'activityId'> | null | undefined
+): boolean {
+  const kind = passbookActivityKind(item);
+  return kind === 'deposit' || kind === 'withdraw';
+}
+
 export function formatPassbookAmount(
   item: Pick<Ipassbook_detail_model, 'displayCoins' | 'coins' | 'activityDescription' | 'trxStatus' | 'activityId'> | null | undefined
 ): string | null {

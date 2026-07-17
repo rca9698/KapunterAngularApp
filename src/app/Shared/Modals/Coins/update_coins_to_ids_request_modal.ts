@@ -4,7 +4,8 @@ export interface Iupdate_coins_to_ids_request_modal{
     userId: bigint,
     coins: bigint,
     coinType : number,
-    sessionUser: bigint
+    sessionUser: bigint,
+    bankId: bigint
 }
 
 
@@ -15,10 +16,12 @@ export class update_coins_to_ids_request_modal implements Iupdate_coins_to_ids_r
     coins: bigint;
     coinType : number;
     sessionUser: bigint;
+    bankId: bigint;
 
     constructor(siteId: bigint = 0 as unknown as bigint, accountId: bigint = 0 as unknown as bigint
         , userId: bigint = 0 as unknown as bigint , coins: bigint = 0 as unknown as bigint
         , coinType : number = 0, sessionUser: bigint = 0 as unknown as bigint
+        , bankId: bigint = 0 as unknown as bigint
     ) {
          this.siteId = siteId;
          this.accountId = accountId;
@@ -26,5 +29,6 @@ export class update_coins_to_ids_request_modal implements Iupdate_coins_to_ids_r
          this.coinType = coinType;
          this.coins = coins;
          this.sessionUser = sessionUser;
+         this.bankId = bankId;
       }
 }

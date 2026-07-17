@@ -204,6 +204,48 @@
   min-width: 0;
 }
 
+.nav-get-app-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.15rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--kp-accent, #ff8a00) 55%, transparent);
+  background: color-mix(in srgb, var(--kp-accent, #ff8a00) 16%, transparent);
+  color: var(--kp-accent, #ff8a00);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.15s ease, color 0.18s ease;
+}
+
+.nav-get-app-btn:hover,
+.nav-get-app-btn:focus-visible {
+  background: linear-gradient(120deg, var(--kp-accent, #ff9620), var(--kp-accent-2, #ff6300));
+  border-color: transparent;
+  color: #1a1208;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.nav-get-app-btn i {
+  font-size: 0.95rem;
+}
+
+@media (max-width: 420px) {
+  .nav-get-app-btn span {
+    display: none;
+  }
+
+  .nav-get-app-btn {
+    padding: 0.35rem 0.5rem;
+  }
+}
+
 .theme-toggle-btn {
   flex: 0 0 auto;
   width: 40px;

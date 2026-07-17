@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { apiService } from 'src/app/api.service';
+import { getApkDownloadUrl, getPublicAppUrl } from 'src/app/Shared/platform/platform.util';
 
 const REF_STORAGE_KEY = 'kapunter_pending_ref';
 const REF_BANNER_DISMISSED = 'kapunter_ref_banner_dismissed';
@@ -86,16 +87,35 @@ export class ReferralService {
   }
 
   buildShareMessage(code: string, link: string, reward: number): string {
+    const apkUrl = getApkDownloadUrl();
     return (
-      `Join Kapunter with my invite!\n\n` +
-      `Open this link, then log in with your mobile number (OTP or password).\n` +
-      `When you complete your first login, I earn ₹${reward}.\n\n` +
+      `You're invited to Kapunter\n\n` +
+      `1) Open your personal invite link and complete first login (OTP or password).\n` +
+      `2) Prefer the mobile app? Install the Android APK, then open the same invite link.\n\n` +
+      `Invite link:\n${link}\n\n` +
+      `Android app (APK):\n${apkUrl}\n\n` +
       `Invite code: ${code}\n` +
-      `${link}`
+      `After your first successful login, I earn ₹${reward}.`
     );
   }
 
+  /** Always use the public web URL so invites work from browser and native app. */
   buildShareLink(code: string): string {
-    return `${window.location.origin}/?ref=${encodeURIComponent(code)}`;
+    return `${getPublicAppUrl()}?ref=${encodeURIComponent(code)}`;
+  }
+
+  /** Direct APK download URL for install / share. */
+  getApkUrl(): string {
+    return getApkDownloadUrl();
+  }
+
+  buildApkShareMessage(): string {
+    const apkUrl = getApkDownloadUrl();
+    return (
+      `Install Kapunter for Android\n\n` +
+      `Download the official APK and install it on your phone:\n` +
+      `${apkUrl}\n\n` +
+      `After installing, open the app and log in with your mobile number.`
+    );
   }
 }

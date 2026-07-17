@@ -48,4 +48,5 @@ src/assets/deployment-banner.json
 
 # Capacitor / Android local TLS truststore (machine-specific, e.g. antivirus MITM CA)
 android/.tls/
-src/assets/app/*.apk
+# Keep APK out of git by default; copy into assets/app before deploy (npm run android:publish-apk)
+# src/assets/app/*.apk

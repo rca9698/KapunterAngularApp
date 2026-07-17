@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { SitesService } from '../Sites/sites.service';
 import { ISiteDetailModal, SiteDetailModal } from '../Shared/Modals/site-detail-modal';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ToastrService } from '../toastr/toastr.service';
 import { PassbookUnreadService } from '../Shared/passbook-unread/passbook-unread.service';
+import { filter } from 'rxjs/operators';
+import { getApkDownloadUrl, isNativeApp } from '../Shared/platform/platform.util';
 
 @Component({
   selector: 'app-footer',
@@ -13,6 +15,8 @@ import { PassbookUnreadService } from '../Shared/passbook-unread/passbook-unread
 })
 export class FooterComponent implements OnInit {
   site: ISiteDetailModal = new SiteDetailModal();
+  readonly isNativeApp = isNativeApp();
+  private currentUrl = '';
 
   constructor(
     private siteService: SitesService,
@@ -22,7 +26,30 @@ export class FooterComponent implements OnInit {
     public passbookUnread: PassbookUnreadService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.currentUrl = this.router.url || '';
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe((e) => {
+        this.currentUrl = e.urlAfterRedirects || e.url || '';
+      });
+  }
+
+  isHomeActive(): boolean {
+    return this.currentUrl === '/' || this.currentUrl.startsWith('/?');
+  }
+
+  isIdsActive(): boolean {
+    return this.currentUrl.includes('/site/app-get-user-list-site-by-id');
+  }
+
+  isShareActive(): boolean {
+    return this.currentUrl.includes('/account/refer-earn');
+  }
+
+  isPassbookActive(): boolean {
+    return this.currentUrl.includes('/passbook/');
+  }
 
   RedirectToHome() {
     this.router.navigate(['/']);
@@ -44,7 +71,6 @@ export class FooterComponent implements OnInit {
     this.router.navigate(['/site/app-get-user-list-site-by-id'], { queryParams: { view: 'create' } });
   }
 
-  /** Always open Active accounts tab (shows "No active IDs" when empty). */
   listIds() {
     if (!this.authservice.isbenview()) {
       this.toasterService.warning('Login to perform action!!');
@@ -61,11 +87,26 @@ export class FooterComponent implements OnInit {
     }
   }
 
+  viewShareBonus() {
+    if (this.authservice.isbenview()) {
+      this.router.navigate(['/account/refer-earn']);
+    } else {
+      this.toasterService.warning('Login to perform action!!');
+    }
+  }
+
   viewBonus() {
     if (this.authservice.isbenview()) {
       this.router.navigate(['/setting/bonus']);
     } else {
       this.toasterService.warning('Login to perform action!!');
     }
+  }
+
+  downloadAndroidApp(): void {
+    if (this.isNativeApp) {
+      return;
+    }
+    window.open(getApkDownloadUrl(), '_blank', 'noopener');
   }
 }

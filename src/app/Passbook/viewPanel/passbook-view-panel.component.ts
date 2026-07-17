@@ -5,9 +5,11 @@ import { ToastrService } from 'src/app/toastr/toastr.service';
 import { environment } from 'src/environments/environment';
 import { PassbookService } from '../passbook.service';
 import { PassbookUnreadService } from 'src/app/Shared/passbook-unread/passbook-unread.service';
+import { apiService } from 'src/app/api.service';
 import {
   formatPassbookAmount,
   isNonMonetaryPassbookActivity,
+  isDepositOrWithdrawPassbookActivity,
   passbookActivityKind
 } from 'src/app/Shared/Utils/passbook-display.util';
 
@@ -24,6 +26,16 @@ export class PassbookViewPanelComponent implements OnInit {
   detailById: Record<string, Ipassbook_detail_model> = {};
   loadingDetailId: string | null = null;
 
+  pnlLoaded = false;
+  /** Open by default so 7d / 30d / total details show above the listing. */
+  pnlExpanded = true;
+  deposit7 = 0;
+  deposit30 = 0;
+  withdraw7 = 0;
+  withdraw30 = 0;
+  totalDeposit = 0;
+  totalWithdraw = 0;
+
   private readonly _sessionUser: any;
   private readonly proofPath: string | undefined;
   private readonly sitePath: string | undefined;
@@ -36,7 +48,8 @@ export class PassbookViewPanelComponent implements OnInit {
     private toasterService: ToastrService,
     private authservice: AuthService,
     private passbookservice: PassbookService,
-    private passbookUnread: PassbookUnreadService
+    private passbookUnread: PassbookUnreadService,
+    private api: apiService
   ) {
     this.proofPath = environment.imagePath.proofPath;
     this.sitePath = environment.imagePath.sitePath;
@@ -45,6 +58,60 @@ export class PassbookViewPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.passbookHistorylist(1);
+    this.loadPnLStats();
+  }
+
+  get pnl7(): number {
+    return this.withdraw7 - this.deposit7;
+  }
+
+  get pnl30(): number {
+    return this.withdraw30 - this.deposit30;
+  }
+
+  get pnlTotal(): number {
+    return this.totalWithdraw - this.totalDeposit;
+  }
+
+  loadPnLStats(): void {
+    this.api.getMyDepositStats().subscribe({
+      next: (resp: any) => {
+        const val = resp?.returnVal ?? resp?.ReturnVal ?? {};
+        this.deposit7 = Number(val.depositLast7Days ?? val.DepositLast7Days ?? 0);
+        this.deposit30 = Number(val.depositLast30Days ?? val.DepositLast30Days ?? 0);
+        this.withdraw7 = Number(val.withdrawLast7Days ?? val.WithdrawLast7Days ?? 0);
+        this.withdraw30 = Number(val.withdrawLast30Days ?? val.WithdrawLast30Days ?? 0);
+        this.totalDeposit = Number(val.totalDeposit ?? val.TotalDeposit ?? 0);
+        this.totalWithdraw = Number(val.totalWithdraw ?? val.TotalWithdraw ?? 0);
+        this.pnlLoaded = true;
+      },
+      error: () => {
+        this.pnlLoaded = false;
+      }
+    });
+  }
+
+  togglePnLExpand(): void {
+    this.pnlExpanded = !this.pnlExpanded;
+  }
+
+  pnlLabel(value: number): string {
+    if (value > 0) return 'Profit';
+    if (value < 0) return 'Loss';
+    return 'Even';
+  }
+
+  pnlTone(value: number): 'profit' | 'loss' | 'even' {
+    if (value > 0) return 'profit';
+    if (value < 0) return 'loss';
+    return 'even';
+  }
+
+  formatPnLMoney(value: number): string {
+    return new Intl.NumberFormat('en-IN', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(Math.abs(value ?? 0));
   }
 
   hasValidImagePath(item: Ipassbook_detail_model | undefined): boolean {
@@ -80,6 +147,10 @@ export class PassbookViewPanelComponent implements OnInit {
 
   isCreateActivity(item: Ipassbook_detail_model | undefined): boolean {
     return isNonMonetaryPassbookActivity(item);
+  }
+
+  isDepositOrWithdraw(item: Ipassbook_detail_model | undefined): boolean {
+    return isDepositOrWithdrawPassbookActivity(item);
   }
 
   activityKind(item: Ipassbook_detail_model | undefined): string {

@@ -6,6 +6,7 @@ import { VisitorCountService } from '../visitor-count.service';
 import { ThemeService } from '../theme.service';
 import { Subscription } from 'rxjs';
 import { VisitorStats } from '../Shared/Modals/visitor-stats';
+import { getApkDownloadUrl, isNativeApp } from '../Shared/platform/platform.util';
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +16,7 @@ import { VisitorStats } from '../Shared/Modals/visitor-stats';
 export class NavbarComponent implements OnInit, OnDestroy {
   displayTotal = 0;
   stats: VisitorStats = { totalVisits: 0, todayVisits: 0, weekVisits: 0, activeSessions: 0 };
+  readonly isNativeApp = isNativeApp();
   private statsSub?: Subscription;
   private animationFrame: number | null = null;
 
@@ -58,6 +60,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleTheme(): void {
     this.themeService.toggle();
+  }
+
+  downloadAndroidApp(): void {
+    if (this.isNativeApp) {
+      return;
+    }
+    window.open(getApkDownloadUrl(), '_blank', 'noopener');
   }
 
   formatCount(value: number): string {

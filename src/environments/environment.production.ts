@@ -15,6 +15,7 @@ export const environment = {
   whatsapp: {
     enabled: false,
     phoneNumber: '',
-    defaultMessage: ''
+    defaultMessage: '',
+    numbers: [] as Array<{ phoneNumber: string; label: string; active: boolean }>
   }
 };

@@ -20,6 +20,8 @@ import { AddImageComponent } from './Dashboard/Add-Image/add-image.component';
 import { AuthInterceptorProvider } from './auth-interceptor.service';
 import { LoaderInterceptorProvider } from './Shared/loader/loader.interceptor';
 import { LoaderModule } from './Shared/loader/loader.module';
+import { SingleClickActivityInterceptorProvider } from './Shared/single-click/single-click-activity.interceptor';
+import { SingleClickModule } from './Shared/single-click/single-click.module';
 import { DeleteModuleComponent } from './Shared/Modules/delete-module/delete-module.component';
 import { MakeDefaultModuleComponent } from './Shared/Modules/make-default-module/make-default-module.component';
 import { ViewImageModuleComponent } from './Shared/Modules/view-image-module/view-image-module.component';
@@ -54,12 +56,14 @@ import { BrandModule } from './Shared/brand/brand.module';
     AccountsModule,
     SitesModule,
     LoaderModule,
+    SingleClickModule,
     BrandModule,
     FormsModule,
     ReactiveFormsModule
   ],
   providers: [
     AuthInterceptorProvider,
+    SingleClickActivityInterceptorProvider,
     LoaderInterceptorProvider,
     {
       provide: APP_INITIALIZER,

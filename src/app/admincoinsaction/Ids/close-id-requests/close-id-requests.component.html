@@ -84,6 +84,7 @@
                     <button
                       type="button"
                       class="btn btn-sm siteBtnbackground"
+                      appSingleClick
                       [disabled]="approveSubmitting"
                       (click)="confirmApprove(item)">
                       {{ approveSubmitting ? 'Saving…' : 'Confirm &amp; close' }}

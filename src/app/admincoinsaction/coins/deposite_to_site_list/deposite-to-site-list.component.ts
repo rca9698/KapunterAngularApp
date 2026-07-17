@@ -36,6 +36,7 @@ export class DepositeToSiteListComponent implements OnInit {
   }
 
   deposite_to_site_list() {
+    // Previous listing call: GET /api/Coin/GetCoinsToAccountRequest/{coinType}/{sessionUser}
     this.coinsservice.deposit_to_site_list(1, this._sessionUser).subscribe(resp => {
       this.returnType = resp;
       if (this.returnType['returnStatus'] == 1) {

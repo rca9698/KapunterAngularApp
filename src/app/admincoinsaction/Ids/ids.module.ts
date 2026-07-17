@@ -16,6 +16,7 @@ import { TransferIdRequestsComponent } from './transfer-id-requests/transfer-id-
 import { TransferIdHistoryComponent } from './transfer-id-history/transfer-id-history.component';
 import { ApproveTransferIdModalComponent } from './approve-transfer-id-modal/approve-transfer-id-modal.component';
 import { LoaderModule } from 'src/app/Shared/loader/loader.module';
+import { SingleClickModule } from 'src/app/Shared/single-click/single-click.module';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { LoaderModule } from 'src/app/Shared/loader/loader.module';
     IdsRoutingModule,
     HttpClientModule,
     ModalModule.forRoot(),
-    LoaderModule
+    LoaderModule,
+    SingleClickModule
   ],
   exports: [
     IdRequestListComponent,

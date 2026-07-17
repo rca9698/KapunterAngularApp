@@ -115,6 +115,7 @@
     <button
       type="button"
       class="btn siteBtnbackground"
+      appSingleClick
       [disabled]="!selectedDestination || !transferAmount || transferAmount <= 0 || submitting"
       (click)="submitTransferRequest()"
     >

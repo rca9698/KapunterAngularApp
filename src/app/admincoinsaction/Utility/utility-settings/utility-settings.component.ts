@@ -4,6 +4,12 @@ import { AuthService } from 'src/app/auth.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { environment } from 'src/environments/environment';
 
+interface WhatsappNumberRow {
+  phoneNumber: string;
+  label: string;
+  active: boolean;
+}
+
 @Component({
   selector: 'app-utility-settings',
   templateUrl: './utility-settings.component.html',
@@ -17,7 +23,7 @@ export class UtilitySettingsComponent implements OnInit {
   loadingHistory = false;
 
   enabled = true;
-  phoneNumber = '';
+  numbers: WhatsappNumberRow[] = [{ phoneNumber: '', label: 'Support', active: true }];
   defaultMessage = '';
   lastUpdatedBy = '';
   lastUpdatedDate = '';
@@ -86,6 +92,9 @@ export class UtilitySettingsComponent implements OnInit {
         }
 
         let latestDate = '';
+        let legacyPhone = '';
+        let numbersJson = '';
+
         for (const row of list) {
           const key = String(row.settingKey ?? row.SettingKey ?? '').trim();
           const value = String(row.settingValue ?? row.SettingValue ?? '');
@@ -95,9 +104,11 @@ export class UtilitySettingsComponent implements OnInit {
           if (key === 'WhatsApp_Enabled') {
             this.enabled = value.toLowerCase() === 'true' || value === '1';
           } else if (key === 'WhatsApp_PhoneNumber') {
-            this.phoneNumber = value;
+            legacyPhone = value;
           } else if (key === 'WhatsApp_DefaultMessage') {
             this.defaultMessage = value;
+          } else if (key === 'WhatsApp_Numbers') {
+            numbersJson = value;
           }
 
           if (updatedDate && updatedDate > latestDate) {
@@ -106,12 +117,51 @@ export class UtilitySettingsComponent implements OnInit {
             this.lastUpdatedDate = updatedDate;
           }
         }
+
+        this.numbers = this.parseNumbers(numbersJson, legacyPhone);
       },
       error: () => {
         this.loading = false;
         this.toaster.warning('Unable to load utility settings.');
       }
     });
+  }
+
+  private parseNumbers(numbersJson: string, legacyPhone: string): WhatsappNumberRow[] {
+    if (numbersJson?.trim()) {
+      try {
+        const parsed = JSON.parse(numbersJson);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const rows = parsed
+            .map((n: any) => ({
+              phoneNumber: String(n.phoneNumber ?? n.PhoneNumber ?? '').trim(),
+              label: String(n.label ?? n.Label ?? '').trim() || 'Support',
+              active: n.active !== false && n.Active !== false
+            }))
+            .filter((n: WhatsappNumberRow) => !!n.phoneNumber);
+          if (rows.length > 0) {
+            return rows;
+          }
+        }
+      } catch {
+        // Fall through to legacy phone.
+      }
+    }
+
+    const phone = (legacyPhone || '').trim();
+    return [{ phoneNumber: phone, label: 'Support', active: true }];
+  }
+
+  addNumber(): void {
+    this.numbers = [...this.numbers, { phoneNumber: '', label: '', active: true }];
+  }
+
+  removeNumber(index: number): void {
+    if (this.numbers.length <= 1) {
+      this.toaster.warning('At least one WhatsApp number is required.');
+      return;
+    }
+    this.numbers = this.numbers.filter((_, i) => i !== index);
   }
 
   loadHistory(): void {
@@ -138,34 +188,58 @@ export class UtilitySettingsComponent implements OnInit {
   }
 
   save(): void {
-    const phone = (this.phoneNumber || '').trim();
     const message = (this.defaultMessage || '').trim();
+    const cleaned = this.numbers
+      .map((n) => ({
+        phoneNumber: (n.phoneNumber || '').trim(),
+        label: (n.label || '').trim() || (n.phoneNumber || '').trim(),
+        active: !!n.active
+      }))
+      .filter((n) => !!n.phoneNumber);
 
-    if (!phone || !/^\d+$/.test(phone)) {
-      this.toaster.warning('Phone number must be digits only (example: 919876543210).');
+    if (cleaned.length === 0) {
+      this.toaster.warning('Add at least one WhatsApp phone number.');
       return;
     }
+
+    for (const n of cleaned) {
+      if (!/^\d+$/.test(n.phoneNumber)) {
+        this.toaster.warning('Phone numbers must be digits only (example: 919876543210).');
+        return;
+      }
+    }
+
+    if (!cleaned.some((n) => n.active)) {
+      this.toaster.warning('At least one WhatsApp number must be active.');
+      return;
+    }
+
     if (!message) {
       this.toaster.warning('Enter a default WhatsApp message.');
       return;
     }
 
+    const primary = cleaned.find((n) => n.active)?.phoneNumber ?? cleaned[0].phoneNumber;
+
     this.saving = true;
     this.api.setUtilitySettings({
       enabled: this.enabled,
-      phoneNumber: phone,
+      phoneNumber: primary,
       defaultMessage: message,
+      numbers: cleaned,
       sessionUser: this.authService.user.userId
     }).subscribe({
       next: (resp: any) => {
         this.saving = false;
         if ((resp?.returnStatus ?? resp?.ReturnStatus) === 1) {
           if (!environment.whatsapp) {
-            (environment as any).whatsapp = { enabled: false, phoneNumber: '', defaultMessage: '' };
+            (environment as any).whatsapp = { enabled: false, phoneNumber: '', defaultMessage: '', numbers: [] };
           }
           environment.whatsapp.enabled = this.enabled;
-          environment.whatsapp.phoneNumber = phone;
+          environment.whatsapp.phoneNumber = primary;
           environment.whatsapp.defaultMessage = message;
+          environment.whatsapp.numbers = cleaned;
+          this.numbers = cleaned;
           this.toaster.success(resp?.returnMessage ?? 'WhatsApp settings saved.');
           this.loadSettings();
           this.loadHistory();
@@ -309,18 +383,23 @@ export class UtilitySettingsComponent implements OnInit {
   friendlyKey(key: string): string {
     switch (key) {
       case 'WhatsApp_Enabled': return 'Enabled';
-      case 'WhatsApp_PhoneNumber': return 'Phone number';
+      case 'WhatsApp_PhoneNumber': return 'Primary phone';
       case 'WhatsApp_DefaultMessage': return 'Default message';
+      case 'WhatsApp_Numbers': return 'Numbers list';
       default: return key;
     }
   }
 
-  get whatsAppPreviewUrl(): string {
-    const phone = (this.phoneNumber || '').trim();
-    if (!phone) {
+  previewUrl(phone: string): string {
+    const digits = (phone || '').trim();
+    if (!digits) {
       return '#';
     }
     const text = encodeURIComponent((this.defaultMessage || '').trim());
-    return `https://wa.me/${phone}${text ? `?text=${text}` : ''}`;
+    return `https://wa.me/${digits}${text ? `?text=${text}` : ''}`;
+  }
+
+  get activePreviewNumbers(): WhatsappNumberRow[] {
+    return this.numbers.filter((n) => n.active && (n.phoneNumber || '').trim());
   }
 }

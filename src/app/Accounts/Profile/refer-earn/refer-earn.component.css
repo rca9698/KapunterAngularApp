@@ -264,6 +264,58 @@
   color: #6dffb0;
 }
 
+.refer-app-box {
+  margin-top: 1rem;
+  border: 1px solid var(--kp-border);
+  border-radius: 14px;
+  background: var(--kp-surface);
+  padding: 0.95rem 1rem;
+}
+
+.refer-app-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.refer-app-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface-2);
+  color: var(--kp-accent);
+  font-size: 1.25rem;
+}
+
+.refer-app-head h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--kp-text);
+}
+
+.refer-app-head p {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--kp-muted);
+}
+
+.refer-app-actions {
+  margin-top: 0.75rem;
+}
+
+.refer-app-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--kp-muted);
+}
+
 .refer-notice {
   margin-top: 1rem;
   display: flex;
@@ -413,6 +465,7 @@
 [data-kp-theme="light"] .refer-card,
 [data-kp-theme="light"] .refer-stat,
 [data-kp-theme="light"] .refer-code-box,
+[data-kp-theme="light"] .refer-app-box,
 [data-kp-theme="light"] .refer-list li,
 [data-kp-theme="light"] .refer-confirm-card,
 [data-kp-theme="light"] .refer-steps li,

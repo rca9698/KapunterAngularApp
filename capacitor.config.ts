@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.kapunter.app',
-  appName: 'Kapunter',
+  appName: 'KAPUNTER',
   webDir: 'dist/kapunter.client',
   server: {
     // Use https scheme so Angular assets and cookies behave like production web.

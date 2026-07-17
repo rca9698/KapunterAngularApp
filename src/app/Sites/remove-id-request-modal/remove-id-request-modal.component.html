@@ -29,7 +29,7 @@
 
   <div class="remove-id-modal-footer">
     <button type="button" class="btn remove-id-cancel" [disabled]="submitting" (click)="cancel()">Cancel</button>
-    <button type="button" class="btn siteBtnbackground" [disabled]="submitting" (click)="submit()">
+    <button type="button" class="btn siteBtnbackground" appSingleClick [disabled]="submitting" (click)="submit()">
       {{ submitting ? 'Submitting…' : 'Submit for approval' }}
     </button>
   </div>

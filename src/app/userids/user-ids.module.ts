@@ -10,8 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { DepositeCoinsToIdsComponent } from './deposite-coins-to-ids/deposite-coins-to-ids.component';
 import { WithdrawCoinsFromIdsComponent } from './withdraw-coins-from-ids/withdraw-coins-from-ids.component';
-
-
+import { SingleClickModule } from '../Shared/single-click/single-click.module';
 
 @NgModule({
   declarations: [ 
@@ -25,7 +24,8 @@ import { WithdrawCoinsFromIdsComponent } from './withdraw-coins-from-ids/withdra
     ReactiveFormsModule,
     UserIdRoutingModule,
     HttpClientModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    SingleClickModule
   ],
   exports:[
     ReactiveFormsModule

@@ -4,10 +4,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { DepositeCoinsRequestComponent } from './deposite-coins-request/deposite-coins-request.component';
 import { WithdrawCoinsRequestComponent } from './withdraw-coins-request/withdraw-coins-request.component';
+import { SingleClickModule } from '../Shared/single-click/single-click.module';
 
 @NgModule({
   declarations: [DepositeCoinsRequestComponent, WithdrawCoinsRequestComponent],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, ModalModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, ModalModule, SingleClickModule],
   exports: [DepositeCoinsRequestComponent, WithdrawCoinsRequestComponent],
 })
 export class WalletRequestModalsModule {}

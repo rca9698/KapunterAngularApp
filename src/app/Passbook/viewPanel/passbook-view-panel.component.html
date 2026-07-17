@@ -13,6 +13,67 @@
     </div>
   </header>
 
+  <!-- Additive feature: deposit / withdraw P/L summary (does not replace listing) -->
+  <section class="passbook-pnl" *ngIf="pnlLoaded" aria-label="Deposit and withdraw summary">
+    <button
+      type="button"
+      class="passbook-pnl-toggle"
+      (click)="togglePnLExpand()"
+      [attr.aria-expanded]="pnlExpanded"
+      [attr.data-tone]="pnlTone(pnlTotal)"
+    >
+      <div class="passbook-pnl-main">
+        <div class="passbook-pnl-copy">
+          <span class="passbook-pnl-kicker">Total · Deposit &amp; Withdraw only</span>
+          <strong class="passbook-pnl-amount">
+            <span *ngIf="pnlTotal !== 0">{{ pnlTotal > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnlTotal) }}
+            <em>{{ pnlLabel(pnlTotal) }}</em>
+          </strong>
+          <small>In ₹{{ formatPnLMoney(totalDeposit) }} · Out ₹{{ formatPnLMoney(totalWithdraw) }}</small>
+        </div>
+        <i class="bi bi-chevron-down passbook-pnl-chevron" [class.is-open]="pnlExpanded" aria-hidden="true"></i>
+      </div>
+    </button>
+
+    <div class="passbook-pnl-detail" *ngIf="pnlExpanded">
+      <article class="passbook-pnl-chip" [attr.data-tone]="pnlTone(pnl7)">
+        <header>
+          <span>7 days</span>
+          <em>{{ pnlLabel(pnl7) }}</em>
+        </header>
+        <strong>
+          <span *ngIf="pnl7 !== 0">{{ pnl7 > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnl7) }}
+        </strong>
+        <small>Deposit ₹{{ formatPnLMoney(deposit7) }} · Withdraw ₹{{ formatPnLMoney(withdraw7) }}</small>
+      </article>
+      <article class="passbook-pnl-chip" [attr.data-tone]="pnlTone(pnl30)">
+        <header>
+          <span>30 days</span>
+          <em>{{ pnlLabel(pnl30) }}</em>
+        </header>
+        <strong>
+          <span *ngIf="pnl30 !== 0">{{ pnl30 > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnl30) }}
+        </strong>
+        <small>Deposit ₹{{ formatPnLMoney(deposit30) }} · Withdraw ₹{{ formatPnLMoney(withdraw30) }}</small>
+      </article>
+      <article class="passbook-pnl-chip" [attr.data-tone]="pnlTone(pnlTotal)">
+        <header>
+          <span>Total</span>
+          <em>{{ pnlLabel(pnlTotal) }}</em>
+        </header>
+        <strong>
+          <span *ngIf="pnlTotal !== 0">{{ pnlTotal > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnlTotal) }}
+        </strong>
+        <small>Deposit ₹{{ formatPnLMoney(totalDeposit) }} · Withdraw ₹{{ formatPnLMoney(totalWithdraw) }}</small>
+      </article>
+    </div>
+  </section>
+
+  <div class="passbook-list-heading" *ngIf="!loading && passbooks.length > 0">
+    <h2>Transaction history</h2>
+    <p>All passbook activity (deposits, withdrawals, ID create / close, and more)</p>
+  </div>
+
   <div class="passbook-loading" *ngIf="loading">
     <app-kapunter-loader message="Loading passbook…"></app-kapunter-loader>
   </div>
@@ -23,6 +84,7 @@
       *ngFor="let item of passbooks; trackBy: trackByPassbookId"
       [class.passbook-card--open]="isExpanded(item)"
       [attr.data-kind]="activityKind(item)"
+      [class.passbook-card--dw]="isDepositOrWithdraw(item)"
     >
       <button type="button" class="passbook-card-toggle" (click)="toggleExpand(item)">
         <div class="passbook-image-wrapper">

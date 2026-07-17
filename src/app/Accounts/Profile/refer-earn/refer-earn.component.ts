@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { apiService } from 'src/app/api.service';
 import { AuthService } from 'src/app/auth.service';
+import { isNativeApp } from 'src/app/Shared/platform/platform.util';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { ReferralService } from './referral.service';
 
@@ -18,11 +19,14 @@ export class ReferEarnComponent implements OnInit {
   referralCode = '';
   shareLink = '';
   shareMessage = '';
+  apkUrl = '';
+  apkShareMessage = '';
   totalReferrals = 0;
   totalEarned = 0;
   rewardAmount = 200;
   configRewardAmount: number | null = 200;
-  copiedField: 'link' | 'message' | 'code' | null = null;
+  copiedField: 'link' | 'message' | 'code' | 'apk' | null = null;
+  readonly isNativeApp = isNativeApp();
   referrals: Array<{
     referredUserNumber: string;
     rewardAmount: number;
@@ -41,6 +45,8 @@ export class ReferEarnComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.apkUrl = this.referralService.getApkUrl();
+    this.apkShareMessage = this.referralService.buildApkShareMessage();
     this.load();
   }
 
@@ -62,6 +68,8 @@ export class ReferEarnComponent implements OnInit {
         this.rewardAmount = reward > 0 ? reward : 200;
         this.configRewardAmount = this.rewardAmount;
         this.shareLink = this.referralService.buildShareLink(this.referralCode);
+        this.apkUrl = this.referralService.getApkUrl();
+        this.apkShareMessage = this.referralService.buildApkShareMessage();
         this.shareMessage = this.referralService.buildShareMessage(
           this.referralCode,
           this.shareLink,
@@ -144,13 +152,47 @@ export class ReferEarnComponent implements OnInit {
     await this.copyText(this.shareMessage, 'message');
   }
 
-  private async copyText(value: string, field: 'link' | 'message' | 'code'): Promise<void> {
+  async copyApkLink(): Promise<void> {
+    await this.copyText(this.apkUrl, 'apk');
+  }
+
+  /** Open the hosted APK for download / install (web). Native app already installed. */
+  downloadApk(): void {
+    if (!this.apkUrl) {
+      this.apkUrl = this.referralService.getApkUrl();
+    }
+    window.open(this.apkUrl, '_blank', 'noopener');
+  }
+
+  async shareApkLink(): Promise<void> {
+    if (!this.apkUrl) {
+      this.apkUrl = this.referralService.getApkUrl();
+    }
+    this.apkShareMessage = this.referralService.buildApkShareMessage();
+    try {
+      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+        await navigator.share({
+          title: 'Kapunter Android App',
+          text: this.apkShareMessage,
+          url: this.apkUrl,
+        });
+        this.toaster.success('App install link shared');
+        return;
+      }
+    } catch {
+      return;
+    }
+    await this.copyText(this.apkShareMessage, 'apk');
+  }
+
+  private async copyText(value: string, field: 'link' | 'message' | 'code' | 'apk'): Promise<void> {
     try {
       await navigator.clipboard.writeText(value);
       this.copiedField = field;
       this.toaster.success(
         field === 'link' ? 'Invite link copied' :
         field === 'code' ? 'Referral code copied' :
+        field === 'apk' ? 'Android app link copied' :
         'Invite message copied — paste it anywhere'
       );
       setTimeout(() => {

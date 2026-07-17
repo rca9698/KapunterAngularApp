@@ -7,21 +7,36 @@
             </div>
         </div>
         <div class="modal-body">
-            <!--<div class="form-group col-12">
-                <div class="d-flex flex-column text-center col-12">
-                    <span class="business">WALLET BALANCE</span>
-                    <span><i class="bi bi-currency-rupee"></i><span>{{this.authservice.walletBalance}}</span></span>
-                </div>
-            </div>-->
             <div class="form-group">
                 <label>Coins(<i class="bi bi-currency-rupee"></i>)*</label>
                 <input type="text" formControlName="coins" class="form-control" placeholder="Coins" autocomplete="off">
                 <div class="text-danger" *ngIf="WithdrawCoinsToIdsForm.get('coins')?.invalid && (submitted || WithdrawCoinsToIdsForm.get('coins')?.touched || WithdrawCoinsToIdsForm.get('coins')?.dirty)">
-                <span *ngIf="WithdrawCoinsToIdsForm.get('coins')?.errors?.['required']"> coins are is required </span> </div>
+                <span *ngIf="WithdrawCoinsToIdsForm.get('coins')?.errors?.['required']">Coins are required</span> </div>
+            </div>
+
+            <div class="form-group">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="mb-0">Payout Bank Account*</label>
+                    <button type="button" class="btn btn-sm siteBtnbackground" (click)="openAddBankAccount()">Add Bank</button>
+                </div>
+                <div *ngIf="banks.length === 0" class="text-muted small mb-2">No bank account found. Add one to continue.</div>
+                <select class="form-select" formControlName="bankDropdown" (change)="ChangeWithDrawBank($event)" *ngIf="banks.length > 0">
+                    <option *ngFor="let bank of banks" [value]="bank.bankAccountDetailID">
+                        {{ bank.bankName }} — {{ bank.accountNumber }}
+                    </option>
+                </select>
+                <div class="text-danger" *ngIf="WithdrawCoinsToIdsForm.get('bankDropdown')?.invalid && submitted">
+                    <span *ngIf="WithdrawCoinsToIdsForm.get('bankDropdown')?.errors?.['required']">Please select a bank account</span>
+                </div>
+                <div class="mt-2 small" *ngIf="bankdetails?.bankName">
+                    <div><strong>{{ bankdetails.accountHolderName }}</strong></div>
+                    <div>{{ bankdetails.bankName }} · {{ bankdetails.accountNumber }}</div>
+                    <div>IFSC: {{ bankdetails.ifscCode }}</div>
+                </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn siteBtnbackground">Withdraw Coins from Id</button>
+            <button type="submit" class="btn siteBtnbackground" appSingleClick>Withdraw Coins from Id</button>
         </div>
     </form>
 </div>

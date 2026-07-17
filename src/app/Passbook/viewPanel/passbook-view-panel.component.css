@@ -74,6 +74,177 @@
   font-variant-numeric: tabular-nums;
 }
 
+.passbook-pnl {
+  display: block;
+  width: 100%;
+  margin: 0 0 1rem;
+  padding: 0;
+  border-radius: 16px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  box-shadow: var(--kp-elevation-card);
+  overflow: hidden;
+}
+
+.passbook-pnl-toggle {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 0;
+  padding: 0.95rem 1rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.passbook-pnl-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.passbook-pnl-kicker {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--kp-muted);
+  margin-bottom: 0.2rem;
+}
+
+.passbook-pnl-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-size: 1.25rem;
+  color: var(--kp-text);
+}
+
+.passbook-pnl-amount em {
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--kp-muted);
+  text-transform: uppercase;
+}
+
+.passbook-pnl-copy small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--kp-muted);
+  font-size: 0.78rem;
+}
+
+.passbook-pnl-toggle[data-tone='profit'] .passbook-pnl-amount,
+.passbook-pnl-toggle[data-tone='profit'] .passbook-pnl-amount em {
+  color: #16a34a;
+}
+
+.passbook-pnl-toggle[data-tone='loss'] .passbook-pnl-amount,
+.passbook-pnl-toggle[data-tone='loss'] .passbook-pnl-amount em {
+  color: #dc2626;
+}
+
+.passbook-pnl-chevron {
+  transition: transform 0.2s ease;
+  color: var(--kp-muted);
+}
+
+.passbook-pnl-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.passbook-pnl-detail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0 1rem 0.95rem;
+  border-top: 1px solid var(--kp-border);
+  padding-top: 0.85rem;
+}
+
+.passbook-pnl-chip {
+  border-radius: 12px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface-2, rgba(15, 23, 42, 0.25));
+  padding: 0.7rem 0.8rem;
+}
+
+.passbook-pnl-chip header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.passbook-pnl-chip header span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--kp-muted);
+}
+
+.passbook-pnl-chip header em {
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--kp-muted);
+}
+
+.passbook-pnl-chip strong {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--kp-text);
+  margin-bottom: 0.15rem;
+}
+
+.passbook-pnl-chip small {
+  color: var(--kp-muted);
+  font-size: 0.72rem;
+}
+
+.passbook-pnl-chip[data-tone='profit'] header em,
+.passbook-pnl-chip[data-tone='profit'] strong {
+  color: #16a34a;
+}
+
+.passbook-pnl-chip[data-tone='loss'] header em,
+.passbook-pnl-chip[data-tone='loss'] strong {
+  color: #dc2626;
+}
+
+.passbook-list-heading {
+  margin: 0 0 0.75rem;
+}
+
+.passbook-list-heading h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--kp-text);
+}
+
+.passbook-list-heading p {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  color: var(--kp-muted);
+}
+
+.passbook-card--dw {
+  border-color: rgba(255, 149, 31, 0.35);
+}
+
+@media (max-width: 720px) {
+  .passbook-pnl-detail {
+    grid-template-columns: 1fr;
+  }
+}
+
 .passbook-loading,
 .passbook-empty {
   text-align: center;

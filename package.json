@@ -10,10 +10,11 @@
     "build:dev": "ng build --configuration=development",
     "watch": "ng build --watch --configuration=development",
     "test": "ng test",
-    "cap:sync": "npx cap sync android",
+    "cap:sync": "npx cap sync android && node scripts/strip-apk-from-android.js",
     "cap:open": "npx cap open android",
-    "android:build": "npm run build:prod && npx cap sync android",
-    "android:apk": "npm run android:build && cd android && gradlew.bat assembleDebug"
+    "android:build": "npm run build:prod && npm run cap:sync",
+    "android:apk": "npm run android:build && cd android && gradlew.bat assembleDebug",
+    "android:publish-apk": "node scripts/publish-apk.js"
   },
   "private": true,
   "dependencies": {
