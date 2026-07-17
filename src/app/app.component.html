@@ -49,6 +49,52 @@
   </div>
 </div>
 
+<div
+  class="app-update-overlay"
+  *ngIf="appUpdate.visible"
+  role="alertdialog"
+  aria-modal="true"
+  aria-labelledby="appUpdateTitle"
+  aria-describedby="appUpdateMessage">
+  <div class="app-update-card">
+    <div class="app-update-badge">
+      <i class="bi bi-phone" aria-hidden="true"></i>
+      App update
+    </div>
+    <h2 id="appUpdateTitle">New version available</h2>
+    <p id="appUpdateMessage" class="app-update-version">Kapunter {{ appUpdate.versionName }}</p>
+    <p class="app-update-notes">{{ appUpdate.releaseNotes }}</p>
+
+    <div class="app-update-progress" *ngIf="appUpdate.downloading" aria-live="polite">
+      <div class="app-update-progress-track">
+        <span [style.width.%]="appUpdate.progress || 8"></span>
+      </div>
+      <p>{{ appUpdate.message || 'Downloading update…' }}</p>
+    </div>
+
+    <p class="app-update-error" *ngIf="appUpdate.error">{{ appUpdate.error }}</p>
+
+    <div class="app-update-actions">
+      <button
+        type="button"
+        class="btn app-update-later"
+        *ngIf="!appUpdate.forceUpdate && !appUpdate.downloading"
+        (click)="dismissAppUpdate()">
+        Later
+      </button>
+      <button
+        type="button"
+        class="btn siteBtnbackground app-update-now"
+        appSingleClick
+        [disabled]="appUpdate.downloading"
+        (click)="startAppUpdate()">
+        {{ appUpdate.downloading ? 'Updating…' : 'Update &amp; reinstall' }}
+      </button>
+    </div>
+    <p class="app-update-hint">Android will ask you to confirm the install.</p>
+  </div>
+</div>
+
 <div class="container">
     <main role="main" class="pb-3">
         <div class="main">

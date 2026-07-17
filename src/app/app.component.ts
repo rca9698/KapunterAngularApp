@@ -15,6 +15,7 @@ import { DeploymentBannerService, DeploymentBannerState } from './deployment-ban
 import { PassbookUnreadService } from './Shared/passbook-unread/passbook-unread.service';
 import { ToastrService } from './toastr/toastr.service';
 import { getApkDownloadUrl, getPublicAppUrl, isNativeApp } from './Shared/platform/platform.util';
+import { AppUpdateService, AppUpdateUiState } from './Shared/platform/app-update.service';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private routerSub?: Subscription;
   private authSub?: Subscription;
   private bannerSub?: Subscription;
+  private updateSub?: Subscription;
   idsMenuOpen = false;
 
   pnlLoaded = false;
@@ -39,6 +41,16 @@ export class AppComponent implements OnInit, OnDestroy {
   withdraw30 = 0;
   totalDeposit = 0;
   totalWithdraw = 0;
+  appUpdate: AppUpdateUiState = {
+    visible: false,
+    downloading: false,
+    progress: 0,
+    message: '',
+    versionName: '',
+    releaseNotes: '',
+    forceUpdate: false,
+    error: '',
+  };
   deploymentBanner: DeploymentBannerState = {
     enabled: false,
     title: '',
@@ -61,7 +73,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private api: apiService,
     private deploymentBannerService: DeploymentBannerService,
     _passbookUnread: PassbookUnreadService,
-    private toasterService: ToastrService
+    private toasterService: ToastrService,
+    private appUpdateService: AppUpdateService
   ) {
     this._sessionUser = authService.user.userId;
   }
@@ -72,6 +85,14 @@ export class AppComponent implements OnInit, OnDestroy {
       this.deploymentBanner = state;
       document.body.classList.toggle('deployment-cover-open', !!state.enabled);
     });
+
+    this.updateSub = this.appUpdateService.ui$.subscribe((state) => {
+      this.appUpdate = state;
+    });
+    // Delay slightly so first paint / config settle before network check
+    setTimeout(() => {
+      void this.appUpdateService.checkOnLaunch();
+    }, 1200);
 
     this.authService.captureReferralFromUrl();
     this.referralService.loadRewardAmount();
@@ -172,8 +193,17 @@ export class AppComponent implements OnInit, OnDestroy {
     this.routerSub?.unsubscribe();
     this.authSub?.unsubscribe();
     this.bannerSub?.unsubscribe();
+    this.updateSub?.unsubscribe();
     document.body.classList.remove('deployment-cover-open');
     this.visitorCountService.stopAutoRefresh();
+  }
+
+  startAppUpdate(): void {
+    void this.appUpdateService.startUpdate();
+  }
+
+  dismissAppUpdate(): void {
+    this.appUpdateService.dismiss();
   }
 
   AddSitesPopup() {

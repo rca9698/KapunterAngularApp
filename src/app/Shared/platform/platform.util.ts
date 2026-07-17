@@ -24,3 +24,8 @@ export function getPublicAppUrl(): string {
 export function getApkDownloadUrl(): string {
   return `${getPublicAppUrl()}assets/app/kapunter.apk`;
 }
+
+/** Remote version manifest used by the native in-app updater. */
+export function getAndroidVersionManifestUrl(): string {
+  return `${getPublicAppUrl()}assets/app/android-version.json`;
+}
