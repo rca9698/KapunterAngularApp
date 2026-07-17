@@ -15,7 +15,8 @@ const config: CapacitorConfig = {
     },
   },
   android: {
-    allowMixedContent: false,
+    // Allow http image/CDN assets inside the https WebView when needed.
+    allowMixedContent: true,
   },
 };
 

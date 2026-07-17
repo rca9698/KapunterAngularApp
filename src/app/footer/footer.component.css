@@ -285,6 +285,19 @@
   letter-spacing: 0.01em;
 }
 
+.footer-share-app {
+  border-color: rgba(37, 211, 102, 0.4) !important;
+  background: rgba(37, 211, 102, 0.12) !important;
+  color: #4ade80 !important;
+}
+
+.footer-share-app:hover,
+.footer-share-app:focus-visible {
+  background: #25d366 !important;
+  color: #062912 !important;
+  border-color: transparent !important;
+}
+
 @media (max-width: 380px) {
   .footer-item > .footer-label,
   .footer-fab-text {
@@ -509,6 +522,8 @@
   .footer-rail-cta {
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.45rem;
   }
 
   .footer-badge {

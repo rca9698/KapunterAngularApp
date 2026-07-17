@@ -16,6 +16,7 @@ import { PassbookUnreadService } from './Shared/passbook-unread/passbook-unread.
 import { ToastrService } from './toastr/toastr.service';
 import { getApkDownloadUrl, getPublicAppUrl, isNativeApp } from './Shared/platform/platform.util';
 import { AppUpdateService, AppUpdateUiState } from './Shared/platform/app-update.service';
+import { AppShareService, ShareSheetState, KAPUNTER_SHARE_TARGETS, ShareTarget } from './Shared/platform/app-share.service';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private authSub?: Subscription;
   private bannerSub?: Subscription;
   private updateSub?: Subscription;
+  private shareSub?: Subscription;
   idsMenuOpen = false;
 
   pnlLoaded = false;
@@ -51,6 +53,8 @@ export class AppComponent implements OnInit, OnDestroy {
     forceUpdate: false,
     error: '',
   };
+  shareSheet: ShareSheetState = { open: false, payload: null };
+  readonly shareTargets: ShareTarget[] = KAPUNTER_SHARE_TARGETS;
   deploymentBanner: DeploymentBannerState = {
     enabled: false,
     title: '',
@@ -74,7 +78,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private deploymentBannerService: DeploymentBannerService,
     _passbookUnread: PassbookUnreadService,
     private toasterService: ToastrService,
-    private appUpdateService: AppUpdateService
+    private appUpdateService: AppUpdateService,
+    private appShareService: AppShareService
   ) {
     this._sessionUser = authService.user.userId;
   }
@@ -88,6 +93,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.updateSub = this.appUpdateService.ui$.subscribe((state) => {
       this.appUpdate = state;
+    });
+    this.shareSub = this.appShareService.sheet$.subscribe((state) => {
+      this.shareSheet = state;
     });
     // Delay slightly so first paint / config settle before network check
     setTimeout(() => {
@@ -194,6 +202,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authSub?.unsubscribe();
     this.bannerSub?.unsubscribe();
     this.updateSub?.unsubscribe();
+    this.shareSub?.unsubscribe();
     document.body.classList.remove('deployment-cover-open');
     this.visitorCountService.stopAutoRefresh();
   }
@@ -222,36 +231,20 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.logout();
   }
 
-  /** Web browser only — native app hides Download and shows Share alone. */
+  /** True inside Capacitor Android / iOS shell. */
   readonly isNativeApp = isNativeApp();
 
-  /** Share the public web URL (works from browser and native app). */
+  /** Share Kapunter via WhatsApp, Telegram, and other installed apps. */
   async shareAppLink(): Promise<void> {
-    const url = getPublicAppUrl();
-    const title = 'Kapunter';
-    const text = 'Join Kapunter — open on web or install the app: ' + url;
+    await this.appShareService.shareKapunterApp();
+  }
 
-    try {
-      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-        await navigator.share({ title, text, url });
-        return;
-      }
-    } catch {
-      // User cancelled share sheet — ignore
-      return;
-    }
+  closeShareSheet(): void {
+    this.appShareService.closeSheet();
+  }
 
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url);
-        this.toasterService.success('App link copied');
-        return;
-      }
-    } catch {
-      // fall through
-    }
-
-    window.prompt('Copy this link to share Kapunter:', url);
+  shareVia(targetId: string): void {
+    void this.appShareService.shareViaTarget(targetId);
   }
 
   /** Web only: download the hosted Android APK. */

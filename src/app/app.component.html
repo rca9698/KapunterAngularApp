@@ -95,6 +95,43 @@
   </div>
 </div>
 
+<div
+  class="share-sheet-overlay"
+  *ngIf="shareSheet.open"
+  (click)="closeShareSheet()"
+  role="presentation">
+  <div
+    class="share-sheet"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="shareSheetTitle"
+    (click)="$event.stopPropagation()">
+    <div class="share-sheet-handle" aria-hidden="true"></div>
+    <header class="share-sheet-header">
+      <div>
+        <h2 id="shareSheetTitle">{{ shareSheet.payload?.dialogTitle || 'Share via' }}</h2>
+        <p>Choose an app to send Kapunter</p>
+      </div>
+      <button type="button" class="share-sheet-close" (click)="closeShareSheet()" aria-label="Close">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </header>
+    <div class="share-sheet-grid">
+      <button
+        type="button"
+        class="share-sheet-target"
+        *ngFor="let t of shareTargets"
+        [attr.data-tone]="t.tone"
+        (click)="shareVia(t.id)">
+        <span class="share-sheet-target-icon" aria-hidden="true">
+          <i class="bi" [ngClass]="t.icon"></i>
+        </span>
+        <span>{{ t.label }}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="container">
     <main role="main" class="pb-3">
         <div class="main">
@@ -412,17 +449,20 @@
                     </nav>
 
                     <div class="Burger-Menu-footer-container" [class.sidebar-member-footer]="authService.isbenview()">
-                        <!-- Web: promoted app card. Native app: Share only. -->
-                        <div class="sidebar-app-promo" *ngIf="!isNativeApp">
+                        <div class="sidebar-app-promo">
                           <div class="sidebar-app-promo-icon" aria-hidden="true">
                             <i class="bi bi-phone"></i>
                           </div>
                           <div class="sidebar-app-promo-copy">
-                            <strong>Kapunter Android</strong>
-                            <span>Install the app for faster access on your phone</span>
+                            <strong>Share Kapunter</strong>
+                            <span>Send via WhatsApp, Telegram, Messages, and more</span>
                           </div>
                           <div class="sidebar-app-promo-actions">
-                            <button type="button" class="sidebar-app-promo-download closeMobileMenu" (click)="downloadAndroidApp()">
+                            <button
+                              type="button"
+                              class="sidebar-app-promo-download closeMobileMenu"
+                              *ngIf="!isNativeApp"
+                              (click)="downloadAndroidApp()">
                               <i class="bi bi-download" aria-hidden="true"></i>
                               Download
                             </button>
@@ -432,14 +472,6 @@
                             </button>
                           </div>
                         </div>
-                        <button
-                          type="button"
-                          class="closeMobileMenu sidebar-share-only"
-                          *ngIf="isNativeApp"
-                          (click)="shareAppLink()">
-                          <i class="bi bi-share-fill" aria-hidden="true"></i>
-                          Share App
-                        </button>
                         <button type="button" class="Burger-Menu-footer-container-LogSignin-btn siteBtnbackground closeMobileMenu" *ngIf="(authService.isLoggenIn | async)" (click)="logoutSeesion()">
                             Logout
                         </button>

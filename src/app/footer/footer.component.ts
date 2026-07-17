@@ -7,6 +7,7 @@ import { ToastrService } from '../toastr/toastr.service';
 import { PassbookUnreadService } from '../Shared/passbook-unread/passbook-unread.service';
 import { filter } from 'rxjs/operators';
 import { getApkDownloadUrl, isNativeApp } from '../Shared/platform/platform.util';
+import { AppShareService } from '../Shared/platform/app-share.service';
 
 @Component({
   selector: 'app-footer',
@@ -23,7 +24,8 @@ export class FooterComponent implements OnInit {
     private router: Router,
     public authservice: AuthService,
     private toasterService: ToastrService,
-    public passbookUnread: PassbookUnreadService
+    public passbookUnread: PassbookUnreadService,
+    private appShareService: AppShareService
   ) {}
 
   ngOnInit(): void {
@@ -108,5 +110,9 @@ export class FooterComponent implements OnInit {
       return;
     }
     window.open(getApkDownloadUrl(), '_blank', 'noopener');
+  }
+
+  shareApp(): void {
+    void this.appShareService.shareKapunterApp();
   }
 }

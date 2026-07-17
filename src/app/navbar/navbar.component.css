@@ -212,9 +212,28 @@
   min-height: 2.15rem;
   padding: 0.35rem 0.7rem;
   border-radius: 10px;
-  border: 1px solid color-mix(in srgb, var(--kp-accent, #ff8a00) 55%, transparent);
-  background: color-mix(in srgb, var(--kp-accent, #ff8a00) 16%, transparent);
+  border: 1px solid rgba(255, 149, 31, 0.55);
+  background: rgba(255, 140, 40, 0.16);
   color: var(--kp-accent, #ff8a00);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.15s ease, color 0.18s ease;
+}
+
+.nav-share-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.15rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid rgba(37, 211, 102, 0.45);
+  background: rgba(37, 211, 102, 0.14);
+  color: #25d366;
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -232,16 +251,28 @@
   outline: none;
 }
 
-.nav-get-app-btn i {
+.nav-share-btn:hover,
+.nav-share-btn:focus-visible {
+  background: #25d366;
+  border-color: transparent;
+  color: #062912;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.nav-get-app-btn i,
+.nav-share-btn i {
   font-size: 0.95rem;
 }
 
 @media (max-width: 420px) {
-  .nav-get-app-btn span {
+  .nav-get-app-btn span,
+  .nav-share-btn span {
     display: none;
   }
 
-  .nav-get-app-btn {
+  .nav-get-app-btn,
+  .nav-share-btn {
     padding: 0.35rem 0.5rem;
   }
 }

@@ -7,6 +7,7 @@ import { ThemeService } from '../theme.service';
 import { Subscription } from 'rxjs';
 import { VisitorStats } from '../Shared/Modals/visitor-stats';
 import { getApkDownloadUrl, isNativeApp } from '../Shared/platform/platform.util';
+import { AppShareService } from '../Shared/platform/app-share.service';
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +26,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public authservice: AuthService,
     private router: Router,
     public visitorCountService: VisitorCountService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private appShareService: AppShareService
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +69,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return;
     }
     window.open(getApkDownloadUrl(), '_blank', 'noopener');
+  }
+
+  shareApp(): void {
+    void this.appShareService.shareKapunterApp();
   }
 
   formatCount(value: number): string {

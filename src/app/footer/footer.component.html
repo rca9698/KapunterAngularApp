@@ -49,12 +49,28 @@
         </button>
       </div>
 
-      <div class="footer-rail-cta" *ngIf="!isNativeApp">
-        <button type="button" class="footer-get-app" (click)="downloadAndroidApp()" aria-label="Download Android app">
+      <div class="footer-rail-cta">
+        <button
+          type="button"
+          class="footer-get-app"
+          *ngIf="!isNativeApp"
+          (click)="downloadAndroidApp()"
+          aria-label="Download Android app">
           <i class="bi bi-phone" aria-hidden="true"></i>
           <span class="footer-get-app-copy">
             <em>Android</em>
             <strong>Get the App</strong>
+          </span>
+        </button>
+        <button
+          type="button"
+          class="footer-get-app footer-share-app"
+          (click)="shareApp()"
+          aria-label="Share Kapunter">
+          <i class="bi bi-share-fill" aria-hidden="true"></i>
+          <span class="footer-get-app-copy">
+            <em>Invite</em>
+            <strong>Share App</strong>
           </span>
         </button>
       </div>
@@ -95,12 +111,28 @@
         </a>
       </div>
 
-      <div class="footer-rail-cta" *ngIf="!isNativeApp">
-        <button type="button" class="footer-get-app" (click)="downloadAndroidApp()" aria-label="Download Android app">
+      <div class="footer-rail-cta">
+        <button
+          type="button"
+          class="footer-get-app"
+          *ngIf="!isNativeApp"
+          (click)="downloadAndroidApp()"
+          aria-label="Download Android app">
           <i class="bi bi-phone" aria-hidden="true"></i>
           <span class="footer-get-app-copy">
             <em>Android</em>
             <strong>Get the App</strong>
+          </span>
+        </button>
+        <button
+          type="button"
+          class="footer-get-app footer-share-app"
+          (click)="shareApp()"
+          aria-label="Share Kapunter">
+          <i class="bi bi-share-fill" aria-hidden="true"></i>
+          <span class="footer-get-app-copy">
+            <em>Invite</em>
+            <strong>Share App</strong>
           </span>
         </button>
       </div>

@@ -36,6 +36,15 @@
         <i class="bi bi-phone" aria-hidden="true"></i>
         <span>Get App</span>
       </button>
+      <button
+        type="button"
+        class="nav-share-btn"
+        (click)="shareApp()"
+        title="Share Kapunter"
+        aria-label="Share Kapunter with other apps">
+        <i class="bi bi-share-fill" aria-hidden="true"></i>
+        <span>Share</span>
+      </button>
       <ng-container *ngIf="!(authservice.isLoggenIn | async)">
         <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight" tabindex="0" (click)="loginPopup()">
           Login &nbsp;|&nbsp; Signup

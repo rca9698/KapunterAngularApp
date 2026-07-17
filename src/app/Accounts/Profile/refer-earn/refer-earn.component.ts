@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/auth.service';
 import { isNativeApp } from 'src/app/Shared/platform/platform.util';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { ReferralService } from './referral.service';
+import { AppShareService } from 'src/app/Shared/platform/app-share.service';
 
 @Component({
   selector: 'app-refer-earn',
@@ -37,7 +38,8 @@ export class ReferEarnComponent implements OnInit {
     private api: apiService,
     public authService: AuthService,
     private toaster: ToastrService,
-    private referralService: ReferralService
+    private referralService: ReferralService,
+    private appShareService: AppShareService
   ) {}
 
   get isAdmin(): boolean {
@@ -118,16 +120,13 @@ export class ReferEarnComponent implements OnInit {
     this.showShareConfirm = false;
     this.sharing = true;
     try {
-      if (navigator.share) {
-        await navigator.share({
-          title: 'Kapunter Refer & Earn',
-          text: this.shareMessage,
-          url: this.shareLink,
-        });
-        this.toaster.success('Invite shared');
-      } else {
-        await this.copyText(this.shareMessage, 'message');
-      }
+      await this.appShareService.share({
+        title: 'Kapunter Refer & Earn',
+        text: this.shareMessage,
+        url: this.shareLink,
+        dialogTitle: 'Share invite via',
+      });
+      this.toaster.success('Invite ready to share');
     } catch {
       /* cancelled */
     } finally {
@@ -169,20 +168,12 @@ export class ReferEarnComponent implements OnInit {
       this.apkUrl = this.referralService.getApkUrl();
     }
     this.apkShareMessage = this.referralService.buildApkShareMessage();
-    try {
-      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-        await navigator.share({
-          title: 'Kapunter Android App',
-          text: this.apkShareMessage,
-          url: this.apkUrl,
-        });
-        this.toaster.success('App install link shared');
-        return;
-      }
-    } catch {
-      return;
-    }
-    await this.copyText(this.apkShareMessage, 'apk');
+    await this.appShareService.share({
+      title: 'Kapunter Android App',
+      text: this.apkShareMessage,
+      url: this.apkUrl,
+      dialogTitle: 'Share app install via',
+    });
   }
 
   private async copyText(value: string, field: 'link' | 'message' | 'code' | 'apk'): Promise<void> {

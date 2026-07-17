@@ -135,7 +135,7 @@ export class AppConfigService {
     }
 
     if (this.isNonEmptyString(config.apiUrl)) {
-      env['apiUrl'] = this.trimTrailingSlash(config.apiUrl);
+      env['apiUrl'] = this.normalizeApiUrl(config.apiUrl);
     }
 
     if (this.isNonEmptyString(config.appUrl)) {
@@ -207,6 +207,29 @@ export class AppConfigService {
 
   private trimTrailingSlash(url: string): string {
     return url.trim().replace(/\/+$/, '');
+  }
+
+  /**
+   * Android APK blocks cleartext HTTP by default. Production Kapunter API is HTTPS-only
+   * (http://api.kapunter.com times out / is rejected on device).
+   */
+  private normalizeApiUrl(url: string): string {
+    let normalized = this.trimTrailingSlash(url);
+    try {
+      const parsed = new URL(normalized);
+      const host = parsed.hostname.toLowerCase();
+      if (
+        parsed.protocol === 'http:' &&
+        (host === 'api.kapunter.com' || host.endsWith('.kapunter.com'))
+      ) {
+        parsed.protocol = 'https:';
+        normalized = this.trimTrailingSlash(parsed.toString());
+        console.warn('[AppConfig] Upgraded apiUrl to HTTPS for Android/native compatibility:', normalized);
+      }
+    } catch {
+      /* keep trimmed value */
+    }
+    return normalized;
   }
 
   private assignIfString(target: Record<string, string>, key: string, value: unknown): void {

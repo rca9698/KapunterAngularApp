@@ -1476,3 +1476,130 @@
     transform: translateY(0) scale(1);
   }
 }
+
+/* Desktop / fallback share chooser */
+.share-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10060;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0.75rem;
+  background: rgba(8, 6, 14, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.share-sheet {
+  width: min(26rem, 100%);
+  max-height: min(78vh, 34rem);
+  overflow: auto;
+  border-radius: 1.15rem 1.15rem 1rem 1rem;
+  border: 1px solid rgba(255, 149, 31, 0.3);
+  background: linear-gradient(165deg, #1c1628 0%, #120e1a 100%);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  padding: 0.55rem 1rem 1rem;
+  color: #fff4e8;
+  animation: share-sheet-in 0.22s ease-out;
+}
+
+.share-sheet-handle {
+  width: 2.4rem;
+  height: 0.28rem;
+  margin: 0.2rem auto 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.share-sheet-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.share-sheet-header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.share-sheet-header p {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  color: rgba(255, 244, 232, 0.65);
+}
+
+.share-sheet-close {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff4e8;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.share-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.share-sheet-target {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 0.4rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff4e8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.share-sheet-target:hover,
+.share-sheet-target:focus-visible {
+  background: rgba(255, 140, 40, 0.14);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.share-sheet-target-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.share-sheet-target[data-tone='wa'] .share-sheet-target-icon { background: rgba(37, 211, 102, 0.2); color: #25d366; }
+.share-sheet-target[data-tone='tg'] .share-sheet-target-icon { background: rgba(34, 158, 217, 0.2); color: #229ed9; }
+.share-sheet-target[data-tone='sms'] .share-sheet-target-icon { background: rgba(96, 165, 250, 0.2); color: #60a5fa; }
+.share-sheet-target[data-tone='email'] .share-sheet-target-icon { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+.share-sheet-target[data-tone='fb'] .share-sheet-target-icon { background: rgba(59, 89, 152, 0.25); color: #8b9dc3; }
+.share-sheet-target[data-tone='x'] .share-sheet-target-icon { background: rgba(255, 255, 255, 0.12); color: #fff; }
+.share-sheet-target[data-tone='copy'] .share-sheet-target-icon { background: rgba(255, 140, 40, 0.2); color: #ff9500; }
+
+@keyframes share-sheet-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 768px) {
+  .share-sheet-overlay {
+    align-items: center;
+  }
+  .share-sheet {
+    border-radius: 1.15rem;
+  }
+}
