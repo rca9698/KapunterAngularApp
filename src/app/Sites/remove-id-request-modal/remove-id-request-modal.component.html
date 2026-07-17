@@ -8,8 +8,8 @@
       <h2>Remove {{ accountName }}</h2>
       <p class="remove-id-sub" *ngIf="siteName">{{ siteName }}</p>
     </div>
-    <button type="button" class="remove-id-close" (click)="cancel()" aria-label="Close">
-      <i class="bi bi-x-lg"></i>
+    <button type="button" class="close modal-chrome-btn modal-chrome-btn-close remove-id-close" (click)="cancel()" aria-label="Close">
+      <i class="bi bi-x-lg" aria-hidden="true"></i>
     </button>
   </div>
 

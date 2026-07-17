@@ -1,9 +1,9 @@
 <form (ngSubmit)="DepositeCoinsToIds()" [formGroup]="DepositeCoinsToIdsForm" autocomplete="off">
     <div class="modal-header">
         <p class="modal-title" id="exampleModalLabel">Deposite Coins To ID</p>
-        <div type="button" class="close" (click)="this.bsModalRef.hide()" aria-label="Close">
-            <i class="bi bi-x-circle-fill"></i>
-        </div>
+        <button type="button" class="close modal-chrome-btn modal-chrome-btn-close" (click)="bsModalRef.hide()" aria-label="Close">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
     </div>
     <div class="modal-body">
         <div class="form-group col-12">

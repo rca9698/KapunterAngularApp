@@ -117,16 +117,17 @@ export class AppComponent implements OnInit, OnDestroy {
     this.visitorCountService.startAutoRefresh(180000);
   }
 
-  get pnl7(): number {
-    return this.withdraw7 - this.deposit7;
-  }
-
-  get pnl30(): number {
-    return this.withdraw30 - this.deposit30;
-  }
-
-  get pnlTotal(): number {
-    return this.totalWithdraw - this.totalDeposit;
+  get playHighlight(): string {
+    if (this.totalWithdraw > 0 && this.totalWithdraw >= this.totalDeposit) {
+      return 'Nice cashouts — keep the streak going';
+    }
+    if (this.totalWithdraw > 0) {
+      return 'Cashouts are rolling — stay in the game';
+    }
+    if (this.totalDeposit > 0) {
+      return 'Funds added — you are ready to play';
+    }
+    return 'Start with a deposit and track every move here';
   }
 
   loadPnLStats(): void {
@@ -145,18 +146,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.pnlLoaded = false;
       }
     });
-  }
-
-  pnlLabel(value: number): string {
-    if (value > 0) return 'Profit';
-    if (value < 0) return 'Loss';
-    return 'Even';
-  }
-
-  pnlTone(value: number): 'profit' | 'loss' | 'even' {
-    if (value > 0) return 'profit';
-    if (value < 0) return 'loss';
-    return 'even';
   }
 
   formatPnLMoney(value: number): string {

@@ -1259,6 +1259,23 @@
 .sidebar-pnl-chip[data-tone='profit']::before { background: #22c55e; }
 .sidebar-pnl-chip[data-tone='loss']::before { background: #ef4444; }
 .sidebar-pnl-chip[data-tone='even']::before { background: #94a3b8; }
+.sidebar-pnl-chip[data-tone='play-in']::before { background: #38bdf8; }
+.sidebar-pnl-chip[data-tone='play-out']::before { background: #4ade80; }
+
+.sidebar-play-tagline {
+  margin: 0 0 0.55rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--kp-muted);
+}
+
+.sidebar-play-chip .sidebar-pnl-amount {
+  color: var(--kp-text);
+}
+
+.sidebar-pnl-chip[data-tone='play-out'] .sidebar-pnl-amount {
+  color: #4ade80;
+}
 
 .sidebar-pnl-chip-top {
   display: flex;

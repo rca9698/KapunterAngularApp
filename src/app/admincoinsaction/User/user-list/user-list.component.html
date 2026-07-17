@@ -82,7 +82,9 @@
         <span *ngIf="getDisplayName(selectedUser) !== '—'"> · {{ getDisplayName(selectedUser) }}</span>
       </p>
     </div>
-    <button type="button" class="btn-close" aria-label="Close" (click)="closePnLModal()"></button>
+    <button type="button" class="close modal-chrome-btn modal-chrome-btn-close" (click)="closePnLModal()" aria-label="Close">
+      <i class="bi bi-x-lg" aria-hidden="true"></i>
+    </button>
   </div>
   <div class="modal-body user-pnl-body">
     <div class="user-pnl-loading" *ngIf="detailLoading">

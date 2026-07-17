@@ -13,8 +13,8 @@
     </div>
   </header>
 
-  <!-- Additive feature: deposit / withdraw P/L summary (does not replace listing) -->
-  <section class="passbook-pnl" *ngIf="pnlLoaded" aria-label="Deposit and withdraw summary">
+  <!-- Admin only: total profit / loss -->
+  <section class="passbook-pnl" *ngIf="pnlLoaded && isAdmin" aria-label="Deposit and withdraw profit loss">
     <button
       type="button"
       class="passbook-pnl-toggle"
@@ -24,7 +24,7 @@
     >
       <div class="passbook-pnl-main">
         <div class="passbook-pnl-copy">
-          <span class="passbook-pnl-kicker">Total · Deposit &amp; Withdraw only</span>
+          <span class="passbook-pnl-kicker">Admin · Total profit / loss</span>
           <strong class="passbook-pnl-amount">
             <span *ngIf="pnlTotal !== 0">{{ pnlTotal > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnlTotal) }}
             <em>{{ pnlLabel(pnlTotal) }}</em>
@@ -65,6 +65,39 @@
           <span *ngIf="pnlTotal !== 0">{{ pnlTotal > 0 ? '+' : '−' }}</span>₹{{ formatPnLMoney(pnlTotal) }}
         </strong>
         <small>Deposit ₹{{ formatPnLMoney(totalDeposit) }} · Withdraw ₹{{ formatPnLMoney(totalWithdraw) }}</small>
+      </article>
+    </div>
+  </section>
+
+  <!-- Clients: encouraging play snapshot (no profit / loss) -->
+  <section class="passbook-play" *ngIf="pnlLoaded && !isAdmin" aria-label="Your play snapshot">
+    <div class="passbook-play-header">
+      <div class="passbook-play-icon" aria-hidden="true">
+        <i class="bi bi-lightning-charge-fill"></i>
+      </div>
+      <div class="passbook-play-copy">
+        <span class="passbook-play-kicker">Your play snapshot</span>
+        <strong>{{ playHighlight }}</strong>
+        <p>Deposits and cashouts only — keep playing with confidence.</p>
+      </div>
+    </div>
+
+    <div class="passbook-play-grid">
+      <article class="passbook-play-chip passbook-play-chip--in">
+        <header>
+          <i class="bi bi-arrow-down-circle-fill" aria-hidden="true"></i>
+          <span>Added to play</span>
+        </header>
+        <strong>₹{{ formatPnLMoney(totalDeposit) }}</strong>
+        <small>Last 7d ₹{{ formatPnLMoney(deposit7) }} · 30d ₹{{ formatPnLMoney(deposit30) }}</small>
+      </article>
+      <article class="passbook-play-chip passbook-play-chip--out">
+        <header>
+          <i class="bi bi-arrow-up-circle-fill" aria-hidden="true"></i>
+          <span>Cashed out</span>
+        </header>
+        <strong>₹{{ formatPnLMoney(totalWithdraw) }}</strong>
+        <small>Last 7d ₹{{ formatPnLMoney(withdraw7) }} · 30d ₹{{ formatPnLMoney(withdraw30) }}</small>
       </article>
     </div>
   </section>

@@ -44,12 +44,12 @@ i{
 
 .modal-header {
     display: grid;
-    grid-template-columns: 36px 1fr 36px;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 0.5rem;
-    border-bottom: 0 none;
-    padding: 0.75rem 1rem;
-    min-height: 48px;
+    gap: 0.55rem;
+    border-bottom: 1px solid rgba(255, 149, 31, 0.22);
+    padding: 0.9rem 1rem;
+    min-height: 3.25rem;
 }
 
 .modal-header .modal-title {
@@ -59,37 +59,17 @@ i{
     align-self: center;
 }
 
-.modal-header > .close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    min-height: 36px;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    flex-shrink: 0;
-    border: none;
-    background: transparent;
-    line-height: 1;
-}
-
-.modal-header > .close i {
-    font-size: 1.35rem;
-    line-height: 1;
-}
-
-.modal-header > .close:first-child:not(:only-child) {
-    grid-column: 1;
-    justify-self: start;
-}
-
-.modal-header > .close:last-child,
-.modal-header > .close:only-of-type {
+.modal-header > .close,
+.modal-header > .modal-chrome-btn-close,
+.modal-header > button.close {
     grid-column: 3;
     justify-self: end;
+}
+
+.modal-header > .close:first-child:not(:only-child),
+.modal-header > .modal-chrome-btn-back:first-child {
+    grid-column: 1;
+    justify-self: start;
 }
 
 .custom_card-header{
@@ -119,13 +99,6 @@ i{
         /* background: #51087E !important; */
         border-radius: 50%;
     }
-
-
-
-
-.modal-header .close i {
-    color: #7752A2;
-}
 
 .idSwitch {
     padding: 10px;

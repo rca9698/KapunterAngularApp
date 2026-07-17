@@ -56,6 +56,24 @@ export class PassbookViewPanelComponent implements OnInit {
     this._sessionUser = this.authservice.user.userId;
   }
 
+  /** Profit / loss totals are admin-only — clients see a positive play snapshot instead. */
+  get isAdmin(): boolean {
+    return this.authservice.isadminview();
+  }
+
+  get playHighlight(): string {
+    if (this.totalWithdraw > 0 && this.totalWithdraw >= this.totalDeposit) {
+      return 'Nice cashouts — keep the streak going';
+    }
+    if (this.totalWithdraw > 0) {
+      return 'Cashouts are rolling — stay in the game';
+    }
+    if (this.totalDeposit > 0) {
+      return 'Funds added — you are ready to play';
+    }
+    return 'Start with a deposit and track every move here';
+  }
+
   ngOnInit(): void {
     this.passbookHistorylist(1);
     this.loadPnLStats();

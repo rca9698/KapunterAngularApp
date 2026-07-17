@@ -62,7 +62,13 @@
 
 [data-kp-theme="light"] .modal .close,
 [data-kp-theme="light"] .modal .btn-close,
-[data-kp-theme="light"] .modal-chrome-btn-close {
+[data-kp-theme="light"] .modal-chrome-btn-close,
+[data-kp-theme="light"] .kp-modal-close,
+[data-kp-theme="light"] .login-close-btn,
+[data-kp-theme="light"] .create-id-close,
+[data-kp-theme="light"] .remove-id-close,
+[data-kp-theme="light"] .txn-history-close,
+[data-kp-theme="light"] .admin-pay-modal-close {
   width: 2.75rem !important;
   height: 2.75rem !important;
   min-width: 2.75rem !important;
@@ -81,7 +87,13 @@
 [data-kp-theme="light"] .modal .close:hover,
 [data-kp-theme="light"] .modal .close:focus-visible,
 [data-kp-theme="light"] .modal .btn-close:hover,
-[data-kp-theme="light"] .modal-chrome-btn-close:hover {
+[data-kp-theme="light"] .modal-chrome-btn-close:hover,
+[data-kp-theme="light"] .kp-modal-close:hover,
+[data-kp-theme="light"] .login-close-btn:hover,
+[data-kp-theme="light"] .create-id-close:hover,
+[data-kp-theme="light"] .remove-id-close:hover,
+[data-kp-theme="light"] .txn-history-close:hover,
+[data-kp-theme="light"] .admin-pay-modal-close:hover {
   background: #f3f3f3 !important;
   border-color: rgba(0, 0, 0, 0.35) !important;
   color: #000 !important;

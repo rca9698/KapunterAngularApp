@@ -5,9 +5,9 @@
     <form (ngSubmit)="AdminCreateId()" [formGroup]="AdminCreateIdForm">
         <div class="modal-header">
             <p class="modal-title">CREATE ID</p>
-            <div type="button" class="close" (click)="bsModalRef.hide()">
-                <i class="bi bi-x-circle-fill"></i>
-            </div>
+            <button type="button" class="close modal-chrome-btn modal-chrome-btn-close" (click)="bsModalRef.hide()" aria-label="Close">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
         </div>
         <div class="modal-body">
             <div class="form-group col-12">

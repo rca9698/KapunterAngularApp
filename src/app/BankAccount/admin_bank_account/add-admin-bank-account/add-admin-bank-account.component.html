@@ -3,8 +3,8 @@
     <p class="modal-title mb-0">Admin bank account</p>
     <p class="admin-pay-modal-site" *ngIf="siteName">{{ siteName }}</p>
   </div>
-  <button type="button" class="admin-pay-modal-close" (click)="bsModalRef.hide()" aria-label="Close">
-    <i class="bi bi-x-lg"></i>
+  <button type="button" class="close modal-chrome-btn modal-chrome-btn-close admin-pay-modal-close" (click)="bsModalRef.hide()" aria-label="Close">
+    <i class="bi bi-x-lg" aria-hidden="true"></i>
   </button>
 </div>
 

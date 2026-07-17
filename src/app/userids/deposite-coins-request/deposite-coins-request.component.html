@@ -3,9 +3,9 @@
 <form (ngSubmit)="DepositCoinsRequestAmount()" [formGroup]="depositeCoinRequestFrom" *ngIf="depositecoinsdetails">
     <div class="modal-header">
         <p class="modal-title" id="exampleModalLabel">Deposit</p>
-        <div type="button" class="close" (click)="bsModalRef.hide()" aria-label="Close">
-            <i class="bi bi-x-circle-fill"></i>
-        </div>
+        <button type="button" class="close modal-chrome-btn modal-chrome-btn-close" (click)="bsModalRef.hide()" aria-label="Close">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
     </div>
     <div class="modal-body">
         <!--<div class="form-group col-12 modalContentBgclr">
@@ -32,13 +32,13 @@
         
   <div *ngIf="depositecoinsproofupload">
     <div class="modal-header" >
-        <div type="button" class="close modal-chrome-btn modal-chrome-btn-back" *ngIf="backButtonVisibility" (click)="backToAddCoins()" aria-label="Back">
+        <button type="button" class="close modal-chrome-btn modal-chrome-btn-back" *ngIf="backButtonVisibility" (click)="backToAddCoins()" aria-label="Back">
             <i class="bi bi-arrow-left" aria-hidden="true"></i>
-          </div>
+          </button>
         <p class="modal-title" id="exampleModalLabel">Deposit ({{this.depositeCoinRequestFrom.value["coins"]}})</p>
-        <div type="button" class="close modal-chrome-btn modal-chrome-btn-close" aria-label="Close" (click)="bsModalRef.hide()">
+        <button type="button" class="close modal-chrome-btn modal-chrome-btn-close" aria-label="Close" (click)="bsModalRef.hide()">
             <i class="bi bi-x-lg" aria-hidden="true"></i>
-        </div>
+        </button>
     </div>
     <div class="modal-body">
         <div *ngIf="paymentModeListView">
