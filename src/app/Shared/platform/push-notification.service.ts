@@ -1,12 +1,30 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, registerPlugin } from '@capacitor/core';
 import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { apiService } from 'src/app/api.service';
 import { NotificationCenterService } from 'src/app/Shared/notification-center/notification-center.service';
 import { isNativeApp } from './platform.util';
+
+/**
+ * Native check for whether Firebase is configured in this APK build.
+ * Calling PushNotifications.register() without a google-services.json kills
+ * the whole app (uncaught IllegalStateException in the native plugin), so
+ * registration must be skipped when Firebase is unavailable.
+ */
+interface FirebaseStatusPlugin {
+  isAvailable(): Promise<{ available: boolean }>;
+}
+
+const FirebaseStatus = registerPlugin<FirebaseStatusPlugin>('FirebaseStatus', {
+  web: () => ({
+    async isAvailable() {
+      return { available: false };
+    },
+  }),
+});
 
 /**
  * Capacitor push registration for native Android.
@@ -61,6 +79,15 @@ export class PushNotificationService implements OnDestroy {
     }
     this.registering = true;
     try {
+      // PushNotifications.register() crashes the app process when Firebase is
+      // not configured (no google-services.json in the APK). Never register
+      // without confirming Firebase is initialized on the native side.
+      const status = await FirebaseStatus.isAvailable().catch(() => ({ available: false }));
+      if (!status?.available) {
+        console.warn('[Push] Firebase not configured in this build — skipping push registration.');
+        return;
+      }
+
       await this.ensureListeners();
 
       let perm = await PushNotifications.checkPermissions();

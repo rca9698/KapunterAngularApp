@@ -12,6 +12,7 @@ public class MainActivity extends BridgeActivity {
 
         registerPlugin(ApkInstallerPlugin.class);
         registerPlugin(NativeSharePlugin.class);
+        registerPlugin(FirebaseStatusPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }

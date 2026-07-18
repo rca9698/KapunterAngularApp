@@ -1,9 +1,9 @@
 {
-  "versionCode": 11,
-  "versionName": "1.1.9",
+  "versionCode": 13,
+  "versionName": "1.1.11",
   "apkUrl": "https://kapunter.com/assets/app/kapunter.apk",
   "minVersionCode": 1,
   "forceUpdate": false,
-  "releaseNotes": "Kapunter 1.1.9 is ready. Update for the latest fixes and features.",
-  "publishedAt": "2026-07-18T22:03:15.698Z"
+  "releaseNotes": "Kapunter 1.1.11 is ready. Update for the latest fixes and features.",
+  "publishedAt": "2026-07-18T23:42:42.660Z"
 }
