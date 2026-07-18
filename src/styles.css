@@ -2289,3 +2289,64 @@ p, li, label, input, textarea, select, button, .viewotp, .viewPassword {
     pointer-events: none;
     opacity: 0.75;
 }
+
+/* ---------- Global responsive polish (visual only, no behavior changes) ---------- */
+
+/* Icon action rows (deposit/withdraw pay modes and similar): equal columns that
+   scale with the container instead of fixed sizes. */
+.deposit-pay-modes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.4rem, 2vw, 0.75rem);
+}
+
+.deposit-pay-mode {
+    min-width: 0;
+    min-height: clamp(44px, 11vw, 56px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+    padding: 0.35rem 0.25rem;
+}
+
+/* Buttons and media never overflow their containers. */
+.btn {
+    max-width: 100%;
+}
+
+.modal-body img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Inputs shrink inside flex/grid cells instead of forcing horizontal overflow. */
+.form-control,
+.form-select,
+.input-group {
+    min-width: 0;
+}
+
+/* Phone-width refinements: modals hug the viewport, list wrappers scroll
+   horizontally instead of breaking the page layout. */
+@media (max-width: 575.98px) {
+    .modal-dialog {
+        max-width: calc(100vw - 1rem);
+        margin: 0.75rem auto;
+    }
+
+    .modal-body {
+        padding: 0.85rem 0.9rem 1rem;
+    }
+
+    .modal-footer {
+        padding: 0.75rem 0.9rem 0.9rem;
+    }
+
+    .customtable,
+    .admin-list-table,
+    .coins-list-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}

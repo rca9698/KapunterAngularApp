@@ -4,11 +4,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NotificationRoutingModule } from './notification-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ListNotificationComponent } from './list-notification/list-notification.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [ListNotificationComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

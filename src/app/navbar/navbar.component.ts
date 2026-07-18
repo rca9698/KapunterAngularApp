@@ -119,14 +119,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   openNotification(item: NotificationCenterItem): void {
     this.notifications.markAsRead(item);
-    this.notificationMenuOpen = false;
     if (item.source === 'passbook') {
+      this.notificationMenuOpen = false;
       this.router.navigate(['/passbook/passbook-view-panel']);
     } else if (item.source === 'app-update') {
+      this.notificationMenuOpen = false;
       this.notifications.startAppUpdate();
-    } else {
-      this.router.navigate(['/notification/list-notification']);
     }
+    // request/custom: mark as read and stay put — the details are already visible in the dropdown.
   }
 
   markAllNotificationsRead(event: Event): void {

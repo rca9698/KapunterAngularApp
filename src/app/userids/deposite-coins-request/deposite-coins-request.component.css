@@ -76,18 +76,21 @@
 
 .deposit-pay-modes {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.55rem;
+    /* Buttons share the row equally and shrink/grow with the modal width. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.4rem, 2vw, 0.75rem);
     background: transparent;
     padding: 0.15rem 0 0.35rem;
 }
 
 .deposit-pay-mode {
-    min-height: 52px;
+    min-width: 0;
+    min-height: clamp(44px, 11vw, 56px);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.35rem;
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+    padding: 0.35rem 0.25rem;
 }
 
 .payment-option-list {
