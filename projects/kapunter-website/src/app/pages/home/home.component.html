@@ -1,0 +1,173 @@
+<!-- HERO -->
+<section class="kw-hero">
+  <div class="kw-hero__glow" aria-hidden="true"></div>
+  <div class="kw-container kw-hero__grid">
+    <div class="kw-hero__copy kw-anim-up">
+      <span class="kw-eyebrow">Trusted since {{ brand.foundedYear }} · {{ years }}+ years of excellence</span>
+      <h1>
+        India's most reliable
+        <span class="kw-accent">gaming ID &amp; wallet</span>
+        platform
+      </h1>
+      <p class="kw-hero__lead">
+        Kapunter helps players create gaming IDs, deposit instantly, withdraw in under 45 minutes
+        and earn with lossback &amp; referrals — all from one secure, player-first wallet.
+      </p>
+      <div class="kw-hero__actions">
+        <a class="kw-btn kw-btn--primary" [href]="brand.appUrl" target="_blank" rel="noopener">
+          Open Kapunter App
+        </a>
+        <a class="kw-btn kw-btn--ghost" [href]="brand.apkUrl">
+          Download Android APK
+        </a>
+      </div>
+      <ul class="kw-hero__trust">
+        <li>Lightning-fast payouts</li>
+        <li>OTP-secured accounts</li>
+        <li>24×7 WhatsApp support</li>
+      </ul>
+    </div>
+
+    <div class="kw-hero__visual kw-anim-up kw-anim-up-delay-2">
+      <div class="kw-hero__card kw-anim-float">
+        <img src="assets/kapunter-logo.png" alt="Kapunter" class="kw-hero__logo" />
+        <div class="kw-hero__badge">Player First · Since {{ brand.foundedYear }}</div>
+        <div class="kw-hero__metrics">
+          <div>
+            <strong>45 min</strong>
+            <span>Withdrawal SLA</span>
+          </div>
+          <div>
+            <strong>3%</strong>
+            <span>Lossback</span>
+          </div>
+          <div>
+            <strong>24×7</strong>
+            <span>Live Support</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="kw-section--tight">
+  <div class="kw-container kw-stats">
+    <div class="kw-stat" *ngFor="let s of stats">
+      <strong>{{ s.value }}</strong>
+      <span>{{ s.label }}</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES TEASER -->
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-center" style="margin-bottom: 48px;">
+      <span class="kw-eyebrow">Why players choose Kapunter</span>
+      <h2 class="kw-section-title">Built for speed, safety &amp; satisfaction</h2>
+      <p class="kw-section-sub">
+        Everything you need to manage gaming IDs and wallet activity — without the usual delays,
+        confusion or hidden steps.
+      </p>
+    </div>
+    <div class="kw-grid kw-grid--3">
+      <article class="kw-card" *ngFor="let f of highlights">
+        <div class="kw-card__icon" aria-hidden="true">{{ f.icon }}</div>
+        <h3>{{ f.title }}</h3>
+        <p>{{ f.description }}</p>
+      </article>
+    </div>
+    <div class="kw-center" style="margin-top: 40px;">
+      <a routerLink="/features" class="kw-btn kw-btn--ghost">Explore all features</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="kw-section kw-how">
+  <div class="kw-container">
+    <div class="kw-center" style="margin-bottom: 48px;">
+      <span class="kw-eyebrow">How it works</span>
+      <h2 class="kw-section-title">From signup to payout in four steps</h2>
+      <p class="kw-section-sub">
+        A clear, guided experience designed so first-time users feel confident from day one.
+      </p>
+    </div>
+    <div class="kw-how__grid">
+      <article class="kw-how__step" *ngFor="let step of steps">
+        <span class="kw-how__num">{{ step.step }}</span>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.description }}</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS TEASER -->
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-center" style="margin-bottom: 48px;">
+      <span class="kw-eyebrow">Satisfied customers</span>
+      <h2 class="kw-section-title">Players who stay, for a reason</h2>
+      <p class="kw-section-sub">
+        Thousands of Kapunter users across India trust us with their IDs and withdrawals every day.
+      </p>
+    </div>
+    <div class="kw-grid kw-grid--3">
+      <article class="kw-card kw-quote" *ngFor="let t of testimonials">
+        <div class="kw-quote__stars" [attr.aria-label]="t.rating + ' star rating'">
+          <span *ngFor="let s of stars(t.rating)">★</span>
+        </div>
+        <p class="kw-quote__text">“{{ t.quote }}”</p>
+        <div class="kw-quote__meta">
+          <strong>{{ t.name }}</strong>
+          <span>{{ t.city }} · {{ t.tag }}</span>
+        </div>
+      </article>
+    </div>
+    <div class="kw-center" style="margin-top: 40px;">
+      <a routerLink="/testimonials" class="kw-btn kw-btn--ghost">Read more stories</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SNAPSHOT -->
+<section class="kw-section kw-about-snap">
+  <div class="kw-container kw-about-snap__grid">
+    <div>
+      <span class="kw-eyebrow">Our story</span>
+      <h2 class="kw-section-title">Born in {{ brand.foundedYear }}. Built for players.</h2>
+      <p>
+        Kapunter started with a simple idea: gaming wallets and IDs should be fast, transparent
+        and supported by real people. More than {{ years }} years later, that idea still drives
+        every deposit, every ID request and every guaranteed payout we process.
+      </p>
+      <p>
+        We are not a game board ourselves — we are the trusted bridge between players and the
+        sites they love, with a passbook you can rely on and support that never sleeps.
+      </p>
+      <a routerLink="/about" class="kw-btn kw-btn--primary" style="margin-top: 24px;">About Kapunter</a>
+    </div>
+    <div class="kw-about-snap__panel">
+      <img src="assets/kapunter-icon-512.png" alt="Kapunter brand mark" />
+      <ul>
+        <li>Player-first product decisions</li>
+        <li>Transparent wallet &amp; ID passbook</li>
+        <li>Responsible gaming commitment</li>
+        <li>Continuous Android &amp; web updates</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<kw-cta-band
+  title="Ready to play with confidence?"
+  subtitle="Join Kapunter today — instant deposits, 45-minute withdrawals and support whenever you need it."
+  primaryLabel="Get Started"
+  [primaryHref]="brand.appUrl"
+  secondaryLabel="Talk to Support"
+  secondaryRouterLink="/contact">
+</kw-cta-band>

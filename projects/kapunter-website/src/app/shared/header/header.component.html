@@ -1,0 +1,33 @@
+<header class="kw-header">
+  <div class="kw-container kw-header__inner">
+    <a routerLink="/" class="kw-header__brand" (click)="closeMenu()">
+      <img src="assets/kapunter-logo.png" alt="Kapunter logo" class="kw-header__logo" />
+      <span class="kw-header__wordmark">
+        <span class="kw-header__ka">KA</span><span class="kw-header__punter">PUNTER</span>
+      </span>
+    </a>
+
+    <button
+      class="kw-header__toggle"
+      type="button"
+      aria-label="Toggle navigation menu"
+      [attr.aria-expanded]="menuOpen"
+      (click)="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="kw-header__nav" [class.kw-header__nav--open]="menuOpen" aria-label="Primary">
+      <a
+        *ngFor="let link of links"
+        [routerLink]="link.path"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: link.exact }"
+        (click)="closeMenu()">
+        {{ link.label }}
+      </a>
+      <a class="kw-btn kw-btn--primary kw-header__cta" [href]="brand.appUrl" target="_blank" rel="noopener">
+        Login / Sign Up
+      </a>
+    </nav>
+  </div>
+</header>

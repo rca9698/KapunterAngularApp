@@ -1,0 +1,42 @@
+<section class="kw-page-hero">
+  <div class="kw-container kw-center">
+    <span class="kw-eyebrow">Help centre</span>
+    <h1 class="kw-section-title">Frequently asked questions</h1>
+    <p class="kw-section-sub">
+      Quick answers about Kapunter accounts, deposits, withdrawals, lossback and support.
+      Still stuck? Reach us anytime.
+    </p>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container kw-faq">
+    <article
+      class="kw-faq__item"
+      *ngFor="let faq of faqs; let i = index"
+      [class.kw-faq__item--open]="openIndex === i">
+      <button type="button" class="kw-faq__question" (click)="toggle(i)" [attr.aria-expanded]="openIndex === i">
+        <span>{{ faq.question }}</span>
+        <span class="kw-faq__icon" aria-hidden="true">{{ openIndex === i ? '−' : '+' }}</span>
+      </button>
+      <div class="kw-faq__answer" *ngIf="openIndex === i">
+        <p>{{ faq.answer }}</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-cta">
+      <div>
+        <h2>Didn't find your answer?</h2>
+        <p>Our support team is available 24×7 via WhatsApp and the contact form.</p>
+      </div>
+      <div class="kw-cta__actions">
+        <a class="kw-btn kw-btn--primary" routerLink="/contact">Contact support</a>
+        <a class="kw-btn kw-btn--ghost" [href]="brand.appUrl" target="_blank" rel="noopener">Open app</a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,51 @@
+<footer class="kw-footer">
+  <div class="kw-container">
+    <div class="kw-footer__grid">
+      <div class="kw-footer__brand">
+        <div class="kw-footer__brand-row">
+          <img src="assets/kapunter-logo.png" alt="Kapunter logo" />
+          <span class="kw-footer__wordmark">
+            <span>KA</span>PUNTER
+          </span>
+        </div>
+        <p>
+          India's trusted online gaming ID &amp; wallet platform since {{ brand.foundedYear }}.
+          Instant deposits, guaranteed 45-minute withdrawals and round-the-clock support —
+          built for players who value speed and safety.
+        </p>
+        <p class="kw-footer__age">
+          <span class="kw-footer__age-badge">18+</span>
+          Play responsibly. Kapunter is intended for adults aged 18 years and above only.
+        </p>
+      </div>
+
+      <div class="kw-footer__col">
+        <h4>Explore</h4>
+        <a routerLink="/">Home</a>
+        <a routerLink="/features">Features</a>
+        <a routerLink="/about">About Us</a>
+        <a routerLink="/testimonials">Customer Stories</a>
+      </div>
+
+      <div class="kw-footer__col">
+        <h4>Support</h4>
+        <a routerLink="/faq">FAQ</a>
+        <a routerLink="/contact">Contact Us</a>
+        <a routerLink="/legal">Terms &amp; Conditions</a>
+        <a routerLink="/legal" fragment="responsible-gaming">Responsible Gaming</a>
+      </div>
+
+      <div class="kw-footer__col">
+        <h4>Get the App</h4>
+        <a [href]="brand.appUrl" target="_blank" rel="noopener">Web App</a>
+        <a [href]="brand.apkUrl">Download Android APK</a>
+        <a routerLink="/contact">24×7 WhatsApp Support</a>
+      </div>
+    </div>
+
+    <div class="kw-footer__bottom">
+      <span>© {{ currentYear }} {{ brand.name }}. All rights reserved. Serving players for {{ years }}+ years.</span>
+      <span>www.kapunter.com</span>
+    </div>
+  </div>
+</footer>

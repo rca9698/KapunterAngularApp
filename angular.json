@@ -130,6 +130,88 @@
           }
         }
       }
+    },
+    "kapunter-website": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/kapunter-website",
+      "sourceRoot": "projects/kapunter-website/src",
+      "prefix": "kw",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/kapunter-website",
+            "index": "projects/kapunter-website/src/index.html",
+            "main": "projects/kapunter-website/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/kapunter-website/tsconfig.app.json",
+            "assets": [
+              "projects/kapunter-website/src/favicon.ico",
+              "projects/kapunter-website/src/assets",
+              {
+                "glob": "*",
+                "input": "projects/kapunter-website/src/hosting",
+                "output": "/"
+              },
+              {
+                "glob": ".htaccess",
+                "input": "projects/kapunter-website/src/hosting",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "projects/kapunter-website/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "64kb",
+                  "maximumError": "128kb"
+                }
+              ],
+              "optimization": {
+                "scripts": true,
+                "styles": true,
+                "fonts": false
+              },
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "kapunter-website:build:production"
+            },
+            "development": {
+              "browserTarget": "kapunter-website:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
     }
   },
   "cli": {

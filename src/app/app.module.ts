@@ -30,6 +30,7 @@ import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsa
 import { PassbookActivityToastComponent } from './Shared/passbook-activity-toast/passbook-activity-toast.component';
 import { RequestTrackerPanelComponent } from './Shared/request-tracker/request-tracker-panel.component';
 import { AppConfigService, appConfigInitializer } from './app-config.service';
+import { GlobalErrorHandlerProvider } from './Shared/logging/global-error-handler';
 import { BrandModule } from './Shared/brand/brand.module';
 import { WhatsappLinksComponent } from './whatsapp-links/whatsapp-links.component';
 
@@ -67,6 +68,7 @@ import { WhatsappLinksComponent } from './whatsapp-links/whatsapp-links.componen
     ReactiveFormsModule
   ],
   providers: [
+    GlobalErrorHandlerProvider,
     AuthInterceptorProvider,
     SingleClickActivityInterceptorProvider,
     LoaderInterceptorProvider,

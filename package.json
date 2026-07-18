@@ -14,7 +14,10 @@
     "cap:open": "npx cap open android",
     "android:build": "npm run build:prod && npm run cap:sync",
     "android:apk": "npm run android:build && cd android && gradlew.bat assembleDebug",
-    "android:publish-apk": "node scripts/publish-apk.js"
+    "android:publish-apk": "node scripts/publish-apk.js",
+    "website:start": "ng serve kapunter-website --configuration=development",
+    "website:build": "ng build kapunter-website --configuration=production",
+    "website:watch": "ng build kapunter-website --watch --configuration=development"
   },
   "private": true,
   "dependencies": {

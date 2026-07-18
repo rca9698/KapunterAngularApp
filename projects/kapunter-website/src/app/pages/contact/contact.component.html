@@ -1,0 +1,103 @@
+<section class="kw-page-hero">
+  <div class="kw-container kw-center">
+    <span class="kw-eyebrow">Support</span>
+    <h1 class="kw-section-title">We're here 24×7</h1>
+    <p class="kw-section-sub">
+      Whether you need help with a deposit, withdrawal, ID request or account access —
+      Kapunter support is always a message away.
+    </p>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container kw-contact">
+    <div class="kw-contact__info">
+      <article class="kw-card">
+        <div class="kw-card__icon" aria-hidden="true">💬</div>
+        <h3>WhatsApp Support</h3>
+        <p *ngIf="hasWhatsAppPhone">
+          Preferred channel for fastest response. Tap below to start a WhatsApp chat with our support team.
+        </p>
+        <p *ngIf="!hasWhatsAppPhone">
+          Preferred channel for fastest response. Open the Kapunter app and tap WhatsApp Support,
+          or leave a message using the form — our team will reach you shortly.
+        </p>
+        <a
+          *ngIf="hasWhatsAppPhone"
+          class="kw-btn kw-btn--whatsapp"
+          [href]="whatsappHref"
+          target="_blank"
+          rel="noopener">
+          Chat on WhatsApp
+        </a>
+        <a
+          *ngIf="!hasWhatsAppPhone"
+          class="kw-btn kw-btn--whatsapp"
+          [href]="brand.appUrl"
+          target="_blank"
+          rel="noopener">
+          Open app for WhatsApp
+        </a>
+      </article>
+
+      <article class="kw-card">
+        <div class="kw-card__icon" aria-hidden="true">🌐</div>
+        <h3>Web &amp; Android App</h3>
+        <p>
+          Manage deposits, withdrawals and IDs directly in the Kapunter application.
+          Download the official Android APK for the native experience.
+        </p>
+        <div class="kw-contact__actions">
+          <a class="kw-btn kw-btn--primary" [href]="brand.appUrl" target="_blank" rel="noopener">Open Web App</a>
+          <a class="kw-btn kw-btn--ghost" [href]="brand.apkUrl">Download APK</a>
+        </div>
+      </article>
+
+      <article class="kw-card">
+        <div class="kw-card__icon" aria-hidden="true">✉️</div>
+        <h3>Email</h3>
+        <p>For formal queries and documentation requests, write to us at:</p>
+        <a [href]="'mailto:' + brand.email">{{ brand.email }}</a>
+      </article>
+    </div>
+
+    <div class="kw-contact__form-wrap">
+      <h2>Send us a message</h2>
+      <p class="kw-contact__hint">
+        This form is ready for API integration. For now it captures your details locally and
+        confirms receipt — wire it to your backend when you're ready.
+      </p>
+
+      <div class="kw-contact__success" *ngIf="submitted">
+        Thank you! Your message has been recorded. Our team will get back to you shortly via the app or WhatsApp.
+      </div>
+
+      <form class="kw-contact__form" (ngSubmit)="submit()" #contactForm="ngForm">
+        <label>
+          Full name
+          <input name="name" [(ngModel)]="form.name" required placeholder="Your name" />
+        </label>
+        <label>
+          Mobile number
+          <input name="mobile" [(ngModel)]="form.mobile" required placeholder="10-digit mobile" />
+        </label>
+        <label>
+          Topic
+          <select name="topic" [(ngModel)]="form.topic">
+            <option>General enquiry</option>
+            <option>Deposit issue</option>
+            <option>Withdrawal issue</option>
+            <option>ID / Account request</option>
+            <option>Refer &amp; Earn</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>
+          Message
+          <textarea name="message" [(ngModel)]="form.message" required rows="5" placeholder="How can we help?"></textarea>
+        </label>
+        <button class="kw-btn kw-btn--primary" type="submit">Submit message</button>
+      </form>
+    </div>
+  </div>
+</section>

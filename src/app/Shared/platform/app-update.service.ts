@@ -47,6 +47,9 @@ export class AppUpdateService {
   private remote: AndroidVersionManifest | null = null;
   private localVersionCode = 0;
   private checking = false;
+  /** APK downloaded, waiting for the user to grant the install permission. */
+  private pendingInstall = false;
+  private resumeListenerAttached = false;
 
   get ui(): AppUpdateUiState {
     return this.uiSubject.value;
@@ -134,23 +137,18 @@ export class AppUpdateService {
         }
       );
 
-      const permission = await ApkInstaller.canRequestInstall();
-      if (!permission.allowed) {
-        this.patchUi({
-          downloading: false,
-          message: '',
-          error: 'Allow installs from this app, then tap Update again.',
-        });
-        await ApkInstaller.openInstallSettings();
-        return;
-      }
-
+      // Single-tap flow: download first (no permission needed). If the install
+      // permission is missing, settings opens and installation resumes
+      // automatically when the user comes back — no second tap.
       const result = await ApkInstaller.downloadAndInstall({ url: apkUrl });
       if (result?.needsPermission) {
+        this.pendingInstall = true;
+        await this.attachResumeListener();
         this.patchUi({
           downloading: false,
-          message: '',
-          error: 'Allow installs from this app, then tap Update again.',
+          progress: 100,
+          message: 'Allow installs for KAPUNTER — install continues automatically.',
+          error: '',
         });
         await ApkInstaller.openInstallSettings();
         return;
@@ -174,6 +172,62 @@ export class AppUpdateService {
       });
     } finally {
       await progressHandle?.remove();
+    }
+  }
+
+  /** When the app returns from the permission settings screen, finish the install without another tap. */
+  private async attachResumeListener(): Promise<void> {
+    if (this.resumeListenerAttached) {
+      return;
+    }
+    this.resumeListenerAttached = true;
+
+    await App.addListener('appStateChange', (state) => {
+      if (!state.isActive || !this.pendingInstall) {
+        return;
+      }
+      void this.resumePendingInstall();
+    });
+  }
+
+  private async resumePendingInstall(): Promise<void> {
+    try {
+      const result = await ApkInstaller.installDownloaded();
+      if (result.started) {
+        this.pendingInstall = false;
+        this.patchUi({
+          downloading: false,
+          progress: 100,
+          message: 'Install screen opened. Confirm to update.',
+          error: '',
+        });
+        return;
+      }
+
+      if (!result.hasFile) {
+        // Download was cleared by the OS — restart the flow on next tap.
+        this.pendingInstall = false;
+        this.patchUi({
+          downloading: false,
+          progress: 0,
+          message: '',
+          error: 'Update file expired. Tap Update to try again.',
+        });
+        return;
+      }
+
+      // Permission still not granted — keep waiting; user may re-open settings.
+      this.patchUi({
+        message: 'Allow installs for KAPUNTER — install continues automatically.',
+      });
+    } catch {
+      this.pendingInstall = false;
+      this.patchUi({
+        downloading: false,
+        progress: 0,
+        message: '',
+        error: 'Unable to open the installer. Tap Update to try again.',
+      });
     }
   }
 

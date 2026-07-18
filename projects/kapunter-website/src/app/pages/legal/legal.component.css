@@ -1,0 +1,39 @@
+.kw-page-hero {
+  padding: 72px 0 20px;
+}
+
+.kw-legal {
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.kw-legal__block {
+  background: var(--kw-surface);
+  border: 1px solid var(--kw-border-soft);
+  border-radius: var(--kw-radius);
+  padding: 28px;
+}
+
+.kw-legal__block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+.kw-legal__block p,
+.kw-legal__block li {
+  color: var(--kw-text-dim);
+}
+
+.kw-legal__block ul {
+  margin-top: 14px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kw-legal__block a {
+  color: var(--kw-primary);
+}

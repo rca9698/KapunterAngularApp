@@ -1,0 +1,75 @@
+<section class="kw-page-hero">
+  <div class="kw-container kw-center">
+    <span class="kw-eyebrow">Product capabilities</span>
+    <h1 class="kw-section-title">Everything Kapunter does for you</h1>
+    <p class="kw-section-sub">
+      A complete ID and wallet toolkit — deposits, withdrawals, site accounts, bonuses,
+      referrals and support — engineered for everyday players.
+    </p>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-grid kw-grid--3">
+      <article class="kw-card" *ngFor="let f of features">
+        <div class="kw-card__icon" aria-hidden="true">{{ f.icon }}</div>
+        <h3>{{ f.title }}</h3>
+        <p>{{ f.description }}</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="kw-section kw-feature-bands">
+  <div class="kw-container">
+    <article class="kw-band">
+      <div>
+        <span class="kw-eyebrow">Wallet</span>
+        <h2>Coins that move when you need them</h2>
+        <p>
+          Deposit via UPI, bank or QR. Withdraw with a 45-minute guarantee. Track every rupee
+          in a clear passbook that covers wallet and ID activity.
+        </p>
+      </div>
+      <ul>
+        <li>Instant deposit confirmation</li>
+        <li>Bank / UPI / QR withdrawal details</li>
+        <li>Bonus wallet &amp; lossback credits</li>
+        <li>Request tracking &amp; notifications</li>
+      </ul>
+    </article>
+
+    <article class="kw-band">
+      <div>
+        <span class="kw-eyebrow">Gaming IDs</span>
+        <h2>One hub for every site account</h2>
+        <p>
+          Create IDs, transfer them, change passwords or close accounts — without juggling
+          chats or spreadsheets. Kapunter keeps credentials and history in one place.
+        </p>
+      </div>
+      <ul>
+        <li>Create ID requests</li>
+        <li>My IDs &amp; closed IDs</li>
+        <li>ID transfer history</li>
+        <li>Password change workflow</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-cta">
+      <div>
+        <h2>See Kapunter in action</h2>
+        <p>Log in to the app and experience the full wallet + ID workflow yourself.</p>
+      </div>
+      <div class="kw-cta__actions">
+        <a class="kw-btn kw-btn--primary" [href]="brand.appUrl" target="_blank" rel="noopener">Open App</a>
+        <a class="kw-btn kw-btn--ghost" routerLink="/contact">Ask a question</a>
+      </div>
+    </div>
+  </div>
+</section>

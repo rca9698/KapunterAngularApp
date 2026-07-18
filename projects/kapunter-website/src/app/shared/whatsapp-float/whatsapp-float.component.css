@@ -1,0 +1,51 @@
+.kw-wa-float {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #25d366;
+  color: #04240f;
+  font-family: var(--kw-font-display);
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 14px 18px 14px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  animation: kw-pulse-glow 2.8s ease-in-out infinite;
+  transition: transform 0.18s ease;
+}
+
+.kw-wa-float:hover {
+  transform: translateY(-3px) scale(1.03);
+  color: #04240f;
+}
+
+.kw-wa-float__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(4, 36, 15, 0.12);
+}
+
+@media (max-width: 560px) {
+  .kw-wa-float__label {
+    display: none;
+  }
+
+  .kw-wa-float {
+    padding: 14px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kw-wa-float {
+    animation: none;
+  }
+}

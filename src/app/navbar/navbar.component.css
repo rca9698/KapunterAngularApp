@@ -141,18 +141,22 @@
 
 .menu-toggle {
   flex: 0 0 auto;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
   border-radius: 12px;
   border: 1px solid rgba(255, 149, 31, 0.62);
   box-shadow: 0 0 12px rgba(255, 149, 31, 0.3);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  line-height: 1;
 }
 
 .menu-toggle i {
   font-size: 1.35rem;
+  line-height: 1;
+  display: block;
 }
 
 .navbar-brand-center {
@@ -585,6 +589,91 @@
   border: 1px solid rgba(255, 149, 31, 0.6);
   margin-bottom: 0 !important;
   white-space: nowrap;
+}
+
+/* Login / Signup CTA — the primary action for logged-out visitors */
+.nav-login-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  margin: 0 !important;
+  padding: 0.55rem 1.15rem !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(255, 200, 150, 0.55) !important;
+  background: linear-gradient(120deg, #ffb347 0%, var(--kp-accent, #ff9620) 45%, var(--kp-accent-2, #ff6300) 100%);
+  color: #1a1208 !important;
+  font-size: clamp(0.78rem, 2.6vw, 0.9rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow:
+    0 6px 18px rgba(255, 130, 20, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+}
+
+.nav-login-btn i {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.nav-login-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  line-height: 1;
+}
+
+.nav-login-text em {
+  font-style: normal;
+  font-weight: 400;
+  opacity: 0.55;
+}
+
+/* Soft shine sweeping across the button to draw the eye */
+.nav-login-btn::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -60%;
+  width: 38%;
+  height: 140%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: skewX(-20deg);
+  animation: nav-login-shine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes nav-login-shine {
+  0%, 55% { left: -60%; }
+  85%, 100% { left: 130%; }
+}
+
+.nav-login-btn:hover,
+.nav-login-btn:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow:
+    0 10px 26px rgba(255, 130, 20, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  outline: none;
+  color: #1a1208 !important;
+}
+
+.nav-login-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 360px) {
+  .nav-login-btn {
+    padding: 0.5rem 0.85rem !important;
+    gap: 0.35rem;
+  }
 }
 
 .nav-pill-tight {

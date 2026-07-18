@@ -1,0 +1,43 @@
+<section class="kw-page-hero">
+  <div class="kw-container kw-center">
+    <span class="kw-eyebrow">Customer stories</span>
+    <h1 class="kw-section-title">Satisfied players. Real feedback.</h1>
+    <p class="kw-section-sub">
+      From first deposit to late-night support chats — hear why Kapunter remains the preferred
+      wallet and ID platform for players across India.
+    </p>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-grid kw-grid--3">
+      <article class="kw-card kw-quote" *ngFor="let t of testimonials">
+        <div class="kw-quote__tag">{{ t.tag }}</div>
+        <div class="kw-quote__stars" [attr.aria-label]="t.rating + ' star rating'">
+          <span *ngFor="let s of stars(t.rating)">★</span>
+        </div>
+        <p class="kw-quote__text">“{{ t.quote }}”</p>
+        <div class="kw-quote__meta">
+          <strong>{{ t.name }}</strong>
+          <span>{{ t.city }}</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-cta">
+      <div>
+        <h2>Become our next success story</h2>
+        <p>Join Kapunter and experience the reliability that our players talk about.</p>
+      </div>
+      <div class="kw-cta__actions">
+        <a class="kw-btn kw-btn--primary" [href]="brand.appUrl" target="_blank" rel="noopener">Join now</a>
+        <a class="kw-btn kw-btn--ghost" routerLink="/faq">Read FAQ</a>
+      </div>
+    </div>
+  </div>
+</section>

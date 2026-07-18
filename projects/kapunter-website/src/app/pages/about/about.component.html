@@ -1,0 +1,79 @@
+<section class="kw-page-hero">
+  <div class="kw-container kw-center">
+    <span class="kw-eyebrow">About Kapunter</span>
+    <h1 class="kw-section-title">Serving players since {{ brand.foundedYear }}</h1>
+    <p class="kw-section-sub">
+      For {{ years }}+ years, Kapunter has been the bridge between players and trusted gaming sites —
+      delivering IDs, wallets and support with a reputation built on reliability.
+    </p>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container kw-about-story">
+    <div>
+      <h2>Who we are</h2>
+      <p>
+        Kapunter is a sports-gaming account and wallet management platform. We do not operate as a
+        game board ourselves. Instead, we help players create and manage IDs on external gaming sites,
+        move funds securely between their Kapunter wallet and those sites, and track every transaction
+        with complete clarity.
+      </p>
+      <p>
+        Since {{ brand.foundedYear }}, our focus has remained unchanged: make deposits instant, keep
+        withdrawals predictable, and put real human support within a WhatsApp message's reach —
+        morning, noon or midnight.
+      </p>
+      <p>
+        Today, Kapunter combines a polished web experience with an official Android APK, a bonus &amp;
+        lossback program, referral rewards, and an admin-grade operations backbone that keeps the
+        platform running smoothly for thousands of users.
+      </p>
+    </div>
+    <aside class="kw-about-panel">
+      <img src="assets/kapunter-logo.png" alt="Kapunter logo" />
+      <h3>www.kapunter.com</h3>
+      <p>Official web app &amp; Android APK distribution.</p>
+      <a class="kw-btn kw-btn--primary" [href]="brand.appUrl" target="_blank" rel="noopener">Visit the app</a>
+    </aside>
+  </div>
+</section>
+
+<section class="kw-section--tight">
+  <div class="kw-container kw-stats">
+    <div class="kw-stat" *ngFor="let s of stats">
+      <strong>{{ s.value }}</strong>
+      <span>{{ s.label }}</span>
+    </div>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-center" style="margin-bottom: 40px;">
+      <span class="kw-eyebrow">What we stand for</span>
+      <h2 class="kw-section-title">Values that shape every release</h2>
+    </div>
+    <div class="kw-grid kw-grid--2">
+      <article class="kw-card" *ngFor="let v of values">
+        <h3>{{ v.title }}</h3>
+        <p>{{ v.description }}</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-cta">
+      <div>
+        <h2>Want to know more?</h2>
+        <p>Browse features, read customer stories, or reach our support team directly.</p>
+      </div>
+      <div class="kw-cta__actions">
+        <a class="kw-btn kw-btn--primary" routerLink="/features">View features</a>
+        <a class="kw-btn kw-btn--ghost" routerLink="/contact">Contact us</a>
+      </div>
+    </div>
+  </div>
+</section>

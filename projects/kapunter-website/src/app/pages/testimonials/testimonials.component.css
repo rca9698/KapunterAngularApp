@@ -1,0 +1,66 @@
+.kw-page-hero {
+  padding: 72px 0 20px;
+}
+
+.kw-quote__tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kw-primary);
+  background: rgba(255, 138, 0, 0.1);
+  border: 1px solid var(--kw-border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-bottom: 14px;
+}
+
+.kw-quote__stars {
+  color: var(--kw-primary);
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.kw-quote__text {
+  color: var(--kw-text-muted) !important;
+  margin-bottom: 20px;
+}
+
+.kw-quote__meta strong {
+  display: block;
+  font-family: var(--kw-font-display);
+  color: var(--kw-text);
+}
+
+.kw-quote__meta span {
+  color: var(--kw-text-dim);
+  font-size: 0.85rem;
+}
+
+.kw-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+  background: linear-gradient(120deg, rgba(255, 138, 0, 0.16), rgba(255, 99, 0, 0.08));
+  border: 1px solid var(--kw-border);
+  border-radius: 28px;
+  padding: 40px 36px;
+}
+
+.kw-cta h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 8px;
+}
+
+.kw-cta p {
+  color: var(--kw-text-dim);
+}
+
+.kw-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}

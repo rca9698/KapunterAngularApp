@@ -17,7 +17,7 @@
 
   <div class="deployment-cover-card">
     <div class="deployment-cover-brand">
-      <img src="assets/kapunter-logo.jpeg" alt="Kapunter" width="48" height="48" class="deployment-cover-logo" />
+      <img src="assets/kapunter-logo.png" alt="Kapunter" width="48" height="48" class="deployment-cover-logo" />
       <div>
         <app-kp-wordmark size="md" align="start"></app-kp-wordmark>
         <span class="deployment-cover-live">
@@ -141,7 +141,7 @@
                     <header class="sidebar-ben-header" *ngIf="authService.isbenview()">
                         <div class="sidebar-ben-top">
                             <div class="sidebar-ben-brand">
-                                <img src="../assets/kapunter-logo.jpeg" alt="" width="42" height="42" class="sidebar-ben-logo" />
+                                <img src="../assets/kapunter-logo.png" alt="" width="46" height="46" class="sidebar-ben-logo" />
                                 <div class="sidebar-ben-brand-text">
                                     <app-kp-wordmark size="sm" align="start"></app-kp-wordmark>
                                     <span class="sidebar-ben-badge">Beneficiary</span>
@@ -153,15 +153,11 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- <div class="sidebar-ben-user-row" *ngIf="authService.displayUserNumber !== '—'">
-                            <span class="sidebar-ben-user-label">Your number</span>
-                            <strong class="sidebar-ben-user-number">{{ authService.displayUserNumber }}</strong>
-                        </div> -->
                     </header>
 
                     <div class="Burger-Menu-header-container sidebar-profile-card sidebar-admin-hero" *ngIf="this.authService.isadminview()">
                         <div class="sidebar-admin-banner">
-                            <img src="../assets/kapunter-logo.jpeg" alt="Kapunter" class="sidebar-admin-banner-img" />
+                            <img src="../assets/kapunter-logo.png" alt="Kapunter" class="sidebar-admin-banner-img" />
                             <div class="sidebar-admin-brand-text">
                                 <app-kp-wordmark size="sm" align="start"></app-kp-wordmark>
                                 <span class="sidebar-ben-badge">Admin</span>
@@ -301,17 +297,17 @@
                         </div>
 
                         <div class="nav-item-divider"></div>
-                        <div class="sidebar-admin-follow" aria-labelledby="admin-nav-social-heading">
+                        <div class="sidebar-admin-follow sidebar-follow-card" aria-labelledby="admin-nav-social-heading">
                             <span id="admin-nav-social-heading" class="sidebar-admin-account-heading">Follow us</span>
-                            <div class="social-icons-btn">
-                                <span class="icons instagram" href="#" style="font-size: 1.5em;">
-                                    <i class="bi bi-instagram"></i>
-                                </span>
-                                &nbsp;
-                                &nbsp;
-                                <span class="icons telegram" href="#" style="font-size: 1.5em;">
-                                    <i class="bi bi-telegram"></i>
-                                </span>
+                            <div class="sidebar-social-row">
+                                <a href="#" class="sidebar-social-btn sidebar-social-btn--instagram" aria-label="Instagram" (click)="$event.preventDefault()">
+                                    <i class="bi bi-instagram" aria-hidden="true"></i>
+                                    <span>Instagram</span>
+                                </a>
+                                <a href="#" class="sidebar-social-btn sidebar-social-btn--telegram" aria-label="Telegram" (click)="$event.preventDefault()">
+                                    <i class="bi bi-telegram" aria-hidden="true"></i>
+                                    <span>Telegram</span>
+                                </a>
                             </div>
                         </div>
 
@@ -480,14 +476,18 @@
                         </section>
 
                         <section class="sidebar-ben-section sidebar-ben-section--social" aria-labelledby="ben-nav-social-heading">
-                            <h2 id="ben-nav-social-heading" class="sidebar-ben-heading">Follow us</h2>
-                            <div class="sidebar-member-social sidebar-ben-social">
-                                <a href="#" class="icons instagram" aria-label="Instagram" (click)="$event.preventDefault()">
-                                    <i class="bi bi-instagram" aria-hidden="true"></i>
-                                </a>
-                                <a href="#" class="icons telegram" aria-label="Telegram" (click)="$event.preventDefault()">
-                                    <i class="bi bi-telegram" aria-hidden="true"></i>
-                                </a>
+                            <div class="sidebar-follow-card">
+                                <h2 id="ben-nav-social-heading" class="sidebar-ben-heading">Follow us</h2>
+                                <div class="sidebar-social-row">
+                                    <a href="#" class="sidebar-social-btn sidebar-social-btn--instagram" aria-label="Instagram" (click)="$event.preventDefault()">
+                                        <i class="bi bi-instagram" aria-hidden="true"></i>
+                                        <span>Instagram</span>
+                                    </a>
+                                    <a href="#" class="sidebar-social-btn sidebar-social-btn--telegram" aria-label="Telegram" (click)="$event.preventDefault()">
+                                        <i class="bi bi-telegram" aria-hidden="true"></i>
+                                        <span>Telegram</span>
+                                    </a>
+                                </div>
                             </div>
                         </section>
                     </nav>

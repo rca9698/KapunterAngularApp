@@ -46,8 +46,9 @@
         <span>Share</span>
       </button> -->
       <ng-container *ngIf="!(authservice.isLoggenIn | async)">
-        <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight" tabindex="0" (click)="loginPopup()">
-          Login &nbsp;|&nbsp; Signup
+        <button type="button" class="btn nav-login-btn" tabindex="0" (click)="loginPopup()">
+          <i class="bi bi-person-fill" aria-hidden="true"></i>
+          <span class="nav-login-text">Login<em>|</em>Signup</span>
         </button>
       </ng-container>
       <ng-container *ngIf="(authservice.isLoggenIn | async)">

@@ -54,6 +54,40 @@ public class ApkInstallerPlugin extends Plugin {
         }
     }
 
+    /**
+     * Installs a previously downloaded update APK (used to auto-resume the update
+     * after the user grants the install permission — no second "Update" tap needed).
+     */
+    @PluginMethod
+    public void installDownloaded(PluginCall call) {
+        JSObject result = new JSObject();
+        File apkFile = new File(getContext().getCacheDir(), "kapunter-update.apk");
+
+        if (!apkFile.exists() || apkFile.length() < 1024) {
+            result.put("started", false);
+            result.put("hasFile", false);
+            call.resolve(result);
+            return;
+        }
+
+        if (!canInstallPackages()) {
+            result.put("started", false);
+            result.put("hasFile", true);
+            result.put("needsPermission", true);
+            call.resolve(result);
+            return;
+        }
+
+        try {
+            launchInstaller(apkFile);
+            result.put("started", true);
+            result.put("hasFile", true);
+            call.resolve(result);
+        } catch (Exception e) {
+            call.reject("Unable to open installer: " + e.getMessage(), e);
+        }
+    }
+
     @PluginMethod
     public void downloadAndInstall(PluginCall call) {
         String apkUrl = call.getString("url");
@@ -62,13 +96,9 @@ public class ApkInstallerPlugin extends Plugin {
             return;
         }
 
-        if (!canInstallPackages()) {
-            JSObject result = new JSObject();
-            result.put("needsPermission", true);
-            call.resolve(result);
-            return;
-        }
-
+        // Download first — no permission needed for that. If the install permission
+        // is missing afterwards, the APK is kept so installation can resume
+        // automatically once permission is granted.
         executor.execute(() -> {
             HttpURLConnection connection = null;
             try {
@@ -119,10 +149,20 @@ public class ApkInstallerPlugin extends Plugin {
                     return;
                 }
 
+                JSObject result = new JSObject();
+                if (!canInstallPackages()) {
+                    // Keep the downloaded file; the app auto-resumes installation
+                    // after the user grants permission in settings.
+                    notifyProgress(100, "Waiting for install permission…");
+                    result.put("needsPermission", true);
+                    result.put("downloaded", true);
+                    call.resolve(result);
+                    return;
+                }
+
                 notifyProgress(100, "Installing update…");
                 launchInstaller(apkFile);
 
-                JSObject result = new JSObject();
                 result.put("needsPermission", false);
                 result.put("started", true);
                 call.resolve(result);

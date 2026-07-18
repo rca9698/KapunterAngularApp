@@ -40,7 +40,7 @@ export class BankAccountService {
       qrId: 2001,
       bankAccountDetailID: 2001,
       accountDisplayName: 'Payment QR',
-      qrImageUrl: 'assets/kapunter-logo.jpeg',
+      qrImageUrl: 'assets/kapunter-logo.png',
       isDefault: '1',
       isActive: 1
     }

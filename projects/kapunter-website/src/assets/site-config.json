@@ -1,0 +1,12 @@
+{
+  "appUrl": "https://kapunter.com/",
+  "apkUrl": "https://kapunter.com/assets/app/kapunter.apk",
+  "email": "support@kapunter.com",
+  "whatsapp": {
+    "enabled": true,
+    "phoneNumber": "",
+    "defaultMessage": "Hi Kapunter, I need help with my account."
+  },
+  "foundedYear": 2017,
+  "configApiUrl": ""
+}

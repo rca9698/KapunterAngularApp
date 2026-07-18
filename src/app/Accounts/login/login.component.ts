@@ -116,7 +116,7 @@ export class LoginComponent implements OnInit {
           const status = this.returnType['returnStatus'] ?? this.returnType['ReturnStatus'];
           const apiMessage = this.returnType['returnMessage'] ?? this.returnType['ReturnMessage'];
           if (status == 1) {
-            this.showOtpResultToast(apiMessage);
+            this.showOtpResultToast();
           } else {
             this.toasterService.warning(apiMessage || 'Unable to send OTP.');
           }
@@ -130,37 +130,12 @@ export class LoginComponent implements OnInit {
   }
  }
 
- /** On localhost/dev, prefer showing the OTP in a toastr instead of implying SMS was sent. */
- private showOtpResultToast(apiMessage: string | undefined): void {
-  if (this.isLocalDevHost()) {
-    const otp =
-      this.otp_Login_Modal?.otp ??
-      (this.returnType?.['returnVal']?.otp ?? this.returnType?.['ReturnVal']?.Otp ?? '');
-    if (otp) {
-      this.toasterService.success(`Local OTP: ${otp} (SMS not sent on localhost)`);
-      return;
-    }
-    if (apiMessage) {
-      this.toasterService.success(apiMessage);
-      return;
-    }
-    this.toasterService.success('OTP generated locally. Check API response for the code.');
-    return;
-  }
-
-  this.toasterService.success(apiMessage || 'OTP has been sent to your mobile number.');
- }
-
- private isLocalDevHost(): boolean {
-  if (environment.environment === 'dev' || !environment.production) {
-    return true;
-  }
-  try {
-    const host = (typeof window !== 'undefined' ? window.location.hostname : '') || '';
-    return host === 'localhost' || host === '127.0.0.1' || host === '[::1]';
-  } catch {
-    return false;
-  }
+ /**
+  * SECURITY: the OTP must never be shown in the UI (toastr or otherwise) in any
+  * environment. It is delivered only via SMS; on local dev, read it from the API log.
+  */
+ private showOtpResultToast(): void {
+  this.toasterService.success('OTP has been sent to your mobile number.');
  }
  
  LoadOTP(){
@@ -215,7 +190,7 @@ export class LoginComponent implements OnInit {
 
   this.authservice.logLoginDebug('LoginComponent — request', {
     userNumber: loginPayload.UserNumber,
-    otp: loginPayload.OTP,
+    hasOtp: !!loginPayload.OTP,
     hasPassword: !!loginPayload.Password,
     logintype: this.logintype,
     showPassword: this.showPassword,
