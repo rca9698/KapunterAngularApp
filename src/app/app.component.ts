@@ -13,10 +13,12 @@ import { ReferralService } from './Accounts/Profile/refer-earn/referral.service'
 import { apiService } from './api.service';
 import { DeploymentBannerService, DeploymentBannerState } from './deployment-banner.service';
 import { PassbookUnreadService } from './Shared/passbook-unread/passbook-unread.service';
+import { ActivitySnapshotService } from './Shared/activity-snapshot/activity-snapshot.service';
 import { ToastrService } from './toastr/toastr.service';
 import { getApkDownloadUrl, getPublicAppUrl, isNativeApp } from './Shared/platform/platform.util';
 import { AppUpdateService, AppUpdateUiState } from './Shared/platform/app-update.service';
 import { AppShareService, ShareSheetState, KAPUNTER_SHARE_TARGETS, ShareTarget } from './Shared/platform/app-share.service';
+import { NotificationCenterService } from './Shared/notification-center/notification-center.service';
 
 @Component({
   selector: 'app-root',
@@ -77,9 +79,12 @@ export class AppComponent implements OnInit, OnDestroy {
     private api: apiService,
     private deploymentBannerService: DeploymentBannerService,
     _passbookUnread: PassbookUnreadService,
+    // Eager-construct the shared poller (single SP) so tracker / passbook / visitor stats share one call.
+    _activitySnapshot: ActivitySnapshotService,
     private toasterService: ToastrService,
     private appUpdateService: AppUpdateService,
-    private appShareService: AppShareService
+    private appShareService: AppShareService,
+    public notifications: NotificationCenterService
   ) {
     this._sessionUser = authService.user.userId;
   }

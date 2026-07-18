@@ -1,0 +1,209 @@
+.activity-shell {
+  max-width: var(--kp-content-max, 1180px);
+  margin: 0 auto;
+  padding: 0.25rem 0 5.5rem;
+}
+
+.activity-card {
+  border-radius: var(--kp-radius-lg, 18px);
+  border: 1px solid var(--kp-border);
+  background: var(--kp-card-gradient);
+  box-shadow: var(--kp-elevation-card);
+  padding: 1.15rem 1.1rem 1.4rem;
+}
+
+.activity-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.activity-kpi {
+  border-radius: 12px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  padding: 0.7rem 0.85rem;
+}
+
+.activity-kpi span {
+  display: block;
+  color: var(--kp-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.activity-kpi strong {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.25rem;
+  color: var(--kp-text);
+}
+
+.activity-kpi-done strong { color: #4ade80; }
+.activity-kpi-failed strong { color: #f87171; }
+
+[data-kp-theme="light"] .activity-kpi-done strong { color: #15803d; }
+[data-kp-theme="light"] .activity-kpi-failed strong { color: #b91c1c; }
+
+.activity-status-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-top: 1rem;
+  padding: 0.3rem;
+  border-radius: 12px;
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+}
+
+.activity-status-tab {
+  border: 0;
+  background: transparent;
+  color: var(--kp-muted);
+  border-radius: 9px;
+  padding: 0.55rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.activity-status-tab.active {
+  background: linear-gradient(120deg, var(--kp-accent), var(--kp-accent-2));
+  color: #fff;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--kp-accent) 28%, transparent);
+}
+
+.activity-filters {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) 1fr auto auto;
+  gap: 0.5rem;
+  margin: 1rem 0 0.75rem;
+}
+
+.activity-filters .form-control,
+.activity-filters .form-select {
+  background: var(--kp-surface);
+  color: var(--kp-text);
+  border: 1px solid var(--kp-border);
+  border-radius: 10px;
+}
+
+.activity-refresh {
+  border: 1px solid var(--kp-border);
+  background: var(--kp-surface);
+  color: var(--kp-text);
+  border-radius: 10px;
+  min-width: 42px;
+}
+
+.activity-empty {
+  margin-top: 1rem;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--kp-muted);
+  border-radius: 14px;
+  border: 1px dashed var(--kp-border);
+  background: var(--kp-surface);
+}
+
+.activity-empty i {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.activity-table .activity-when {
+  display: block;
+  white-space: nowrap;
+}
+
+.activity-when-sub {
+  display: block;
+  color: var(--kp-muted);
+  font-size: 0.72rem;
+  margin-top: 0.15rem;
+}
+
+.activity-result {
+  max-width: 220px;
+  word-break: break-word;
+  font-size: 0.82rem;
+}
+
+.activity-trace {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  color: var(--kp-muted);
+}
+
+.activity-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.activity-status-progress {
+  background: color-mix(in srgb, #f59e0b 18%, transparent);
+  color: #fbbf24;
+  border: 1px solid color-mix(in srgb, #f59e0b 35%, transparent);
+}
+
+.activity-status-done {
+  background: color-mix(in srgb, #16a34a 16%, transparent);
+  color: #4ade80;
+  border: 1px solid color-mix(in srgb, #16a34a 32%, transparent);
+}
+
+.activity-status-failed {
+  background: color-mix(in srgb, #dc2626 16%, transparent);
+  color: #f87171;
+  border: 1px solid color-mix(in srgb, #dc2626 32%, transparent);
+}
+
+@media (max-width: 900px) {
+  .activity-status-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .activity-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .activity-filters .form-select {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .activity-filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+[data-kp-theme="light"] .activity-card {
+  background: #fff;
+}
+
+[data-kp-theme="light"] .activity-status-progress {
+  color: #b45309;
+}
+
+[data-kp-theme="light"] .activity-status-done {
+  color: #15803d;
+}
+
+[data-kp-theme="light"] .activity-status-failed {
+  color: #b91c1c;
+}

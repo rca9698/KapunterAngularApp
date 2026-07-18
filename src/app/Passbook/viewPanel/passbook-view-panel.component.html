@@ -7,6 +7,17 @@
       <h1>Passbook</h1>
       <p>Wallet and ID activity across your platforms</p>
     </div>
+    <button
+      type="button"
+      class="passbook-track-btn"
+      *ngIf="!isAdmin"
+      (click)="requestTracker.togglePanel()"
+      title="Track your requests"
+      [attr.aria-label]="'Track requests' + (requestTracker.pendingCount ? ', ' + requestTracker.pendingCount + ' waiting' : '')">
+      <i class="bi bi-radar" aria-hidden="true"></i>
+      <span>Track</span>
+      <em class="passbook-track-badge" *ngIf="requestTracker.pendingCount > 0">{{ requestTracker.pendingCount }}</em>
+    </button>
     <div class="passbook-hero-stat" *ngIf="!loading && passbooks.length">
       <span class="passbook-hero-stat-label">Records</span>
       <strong>{{ passbooks.length }}</strong>

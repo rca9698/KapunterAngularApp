@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subscription, interval, of } from 'rxjs';
-import { catchError, filter, take } from 'rxjs/operators';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth.service';
-import { PassbookService } from 'src/app/Passbook/passbook.service';
+import { ActivitySnapshot, ActivitySnapshotService } from 'src/app/Shared/activity-snapshot/activity-snapshot.service';
 import { Ipassbook_detail_model } from 'src/app/Shared/Modals/passbook_detail_model';
 import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
 import { formatPassbookAmount } from 'src/app/Shared/Utils/passbook-display.util';
@@ -10,19 +10,20 @@ import { formatPassbookAmount } from 'src/app/Shared/Utils/passbook-display.util
 @Injectable({ providedIn: 'root' })
 export class PassbookUnreadService implements OnDestroy {
   private readonly storagePrefix = 'kp_passbook_seen_';
-  private readonly pollMs = 45000;
   private readonly unreadSubject = new BehaviorSubject<number>(0);
+  private readonly unreadItemsSubject = new BehaviorSubject<Ipassbook_detail_model[]>([]);
   readonly unreadCount$ = this.unreadSubject.asObservable();
+  readonly unreadItems$ = this.unreadItemsSubject.asObservable();
 
   private authSub?: Subscription;
-  private pollSub?: Subscription;
+  private snapshotSub?: Subscription;
   private knownIds = new Set<string>();
   private seenIds = new Set<string>();
   private startedForUser: string | null = null;
 
   constructor(
     private auth: AuthService,
-    private passbookService: PassbookService,
+    private snapshots: ActivitySnapshotService,
     private toast: PassbookActivityToastService
   ) {
     this.authSub = this.auth.isLoggenIn.subscribe((loggedIn) => {
@@ -64,13 +65,24 @@ export class PassbookUnreadService implements OnDestroy {
     }
     this.persistSeen();
     this.unreadSubject.next(0);
+    this.unreadItemsSubject.next([]);
+  }
+
+  markAsRead(entry: Ipassbook_detail_model): void {
+    const id = this.idOf(entry);
+    if (!id) {
+      return;
+    }
+    this.seenIds.add(id);
+    this.knownIds.add(id);
+    this.persistSeen();
+    const remaining = this.unreadItemsSubject.value.filter((item) => this.idOf(item) !== id);
+    this.unreadItemsSubject.next(remaining);
+    this.unreadSubject.next(remaining.length);
   }
 
   refresh(): void {
-    if (!this.auth.isLoggedIn || !this.auth.isbenview()) {
-      return;
-    }
-    this.fetchOnce();
+    this.snapshots.refreshNow();
   }
 
   private startForCurrentUser(): void {
@@ -78,7 +90,7 @@ export class PassbookUnreadService implements OnDestroy {
     if (!userKey || userKey === '0') {
       return;
     }
-    if (this.startedForUser === userKey && this.pollSub) {
+    if (this.startedForUser === userKey && this.snapshotSub) {
       return;
     }
 
@@ -86,49 +98,21 @@ export class PassbookUnreadService implements OnDestroy {
     this.startedForUser = userKey;
     this.seenIds = this.loadSeen(userKey);
     this.knownIds = new Set(this.seenIds);
-    this.fetchOnce();
 
-    this.pollSub = interval(this.pollMs)
-      .pipe(filter(() => this.auth.isLoggedIn && this.auth.isbenview()))
-      .subscribe(() => this.fetchOnce());
+    // The shared snapshot service owns polling; we only consume its payloads.
+    this.snapshotSub = this.snapshots.snapshot$
+      .pipe(filter((snapshot): snapshot is ActivitySnapshot => !!snapshot))
+      .subscribe((snapshot) => this.applyList(snapshot.passbookHistory as Ipassbook_detail_model[]));
   }
 
   private stop(): void {
-    this.pollSub?.unsubscribe();
-    this.pollSub = undefined;
+    this.snapshotSub?.unsubscribe();
+    this.snapshotSub = undefined;
     this.startedForUser = null;
     this.knownIds = new Set();
     this.seenIds = new Set();
     this.unreadSubject.next(0);
-  }
-
-  private fetchOnce(): void {
-    const userId = this.auth.user?.userId;
-    if (!userId) {
-      return;
-    }
-
-    const obj = {
-      userId,
-      siteId: 1,
-      sessionUser: userId
-    };
-
-    this.passbookService
-      .passbookHistorylist(obj)
-      .pipe(
-        take(1),
-        catchError(() => of(null))
-      )
-      .subscribe((resp: any) => {
-        const status = resp?.returnStatus ?? resp?.ReturnStatus;
-        if (status != null && status !== 1) {
-          return;
-        }
-        const list: Ipassbook_detail_model[] =
-          resp?.returnList ?? resp?.ReturnList ?? [];
-        this.applyList(list);
-      });
+    this.unreadItemsSubject.next([]);
   }
 
   private applyList(list: Ipassbook_detail_model[]): void {
@@ -150,6 +134,7 @@ export class PassbookUnreadService implements OnDestroy {
       this.knownIds = new Set(currentIds);
       this.persistSeen();
       this.unreadSubject.next(0);
+      this.unreadItemsSubject.next([]);
       return;
     }
 
@@ -165,13 +150,12 @@ export class PassbookUnreadService implements OnDestroy {
       }
     }
 
-    let unread = 0;
-    for (const id of currentIds) {
-      if (!this.seenIds.has(id)) {
-        unread++;
-      }
-    }
-    this.unreadSubject.next(unread);
+    const unreadItems = list.filter((item) => {
+      const id = this.idOf(item);
+      return !!id && !this.seenIds.has(id);
+    });
+    this.unreadSubject.next(unreadItems.length);
+    this.unreadItemsSubject.next(unreadItems);
 
     for (const item of newlyDiscovered.slice(0, 2)) {
       this.toast.show({

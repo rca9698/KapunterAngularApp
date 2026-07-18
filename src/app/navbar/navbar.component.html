@@ -51,32 +51,105 @@
         </button>
       </ng-container>
       <ng-container *ngIf="(authservice.isLoggenIn | async)">
-        <button
-          type="button"
-          class="nav-track-btn"
-          *ngIf="authservice.isbenview()"
-          (click)="requestTracker.togglePanel()"
-          title="Track your requests"
-          [attr.aria-label]="'Track requests' + (requestTracker.pendingCount ? ', ' + requestTracker.pendingCount + ' waiting' : '')">
-          <i class="bi bi-radar" aria-hidden="true"></i>
-          <span>Track</span>
-          <em class="nav-track-badge" *ngIf="requestTracker.pendingCount > 0">{{ requestTracker.pendingCount }}</em>
-        </button>
-        <button
-          type="button"
-          class="nav-user-chip"
-          tabindex="0"
-          (click)="goToMyAccount()"
-          [attr.title]="'My Account · ' + authservice.displayUserNumber"
-          [attr.aria-label]="'My Account, user number ' + authservice.displayUserNumber"
-        >
-          <i class="bi bi-person-circle" aria-hidden="true"></i>
-          <span class="nav-user-chip-meta">
-            <span class="nav-user-chip-label">Account</span>
-            <strong class="nav-user-chip-number">{{ authservice.displayUserNumber }}</strong>
-          </span>
-        </button>
-        <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight nav-pill-logout" tabindex="0" (click)="logout()">Logout</button>
+        <div class="nav-notification-wrap" *ngIf="authservice.isbenview()">
+          <button
+            type="button"
+            class="nav-notification-btn"
+            [class.nav-notification-btn-open]="notificationMenuOpen"
+            (click)="toggleNotificationMenu($event)"
+            title="Notifications"
+            aria-haspopup="true"
+            [attr.aria-expanded]="notificationMenuOpen"
+            [attr.aria-label]="'Notifications, ' + (notifications.unreadCount$ | async) + ' unread'">
+            <i class="bi bi-bell-fill" aria-hidden="true"></i>
+            <em class="nav-notification-badge" *ngIf="(notifications.unreadCount$ | async) as unread">{{ unread }}</em>
+          </button>
+
+          <div class="nav-notification-pop" *ngIf="notificationMenuOpen" role="menu" aria-label="Notifications">
+            <header class="nav-notification-head">
+              <div>
+                <strong>Notifications</strong>
+                <span>Passbook, request and app updates</span>
+              </div>
+              <button
+                type="button"
+                *ngIf="notifications.unreadCount > 0"
+                (click)="markAllNotificationsRead($event)">
+                Mark all read
+              </button>
+            </header>
+
+            <ng-container *ngIf="notifications.items$ | async as notificationItems">
+              <div class="nav-notification-list" *ngIf="notificationItems.length; else noNotifications">
+                <button
+                  type="button"
+                  class="nav-notification-item"
+                  *ngFor="let item of notificationItems"
+                  [class.is-unread]="item.unread"
+                  (click)="openNotification(item)"
+                  role="menuitem">
+                  <span class="nav-notification-icon" [attr.data-source]="item.source" aria-hidden="true">
+                    <i class="bi" [ngClass]="notificationIcon(item)"></i>
+                  </span>
+                  <span class="nav-notification-copy">
+                    <strong>{{ item.title }}</strong>
+                    <small *ngIf="item.subtitle">{{ item.subtitle }}</small>
+                    <small *ngIf="item.detail">{{ item.detail }}</small>
+                    <em *ngIf="item.amountLabel">{{ item.amountLabel }}</em>
+                  </span>
+                  <span class="nav-notification-dot" *ngIf="item.unread" aria-label="Unread"></span>
+                </button>
+              </div>
+              <ng-template #noNotifications>
+                <div class="nav-notification-empty">
+                  <i class="bi bi-bell-slash" aria-hidden="true"></i>
+                  <span>You are all caught up</span>
+                </div>
+              </ng-template>
+            </ng-container>
+
+            <a
+              class="nav-notification-all"
+              routerLink="/notification/list-notification"
+              (click)="notificationMenuOpen = false">
+              View all notifications
+            </a>
+          </div>
+        </div>
+        <div class="nav-account-wrap">
+          <button
+            type="button"
+            class="nav-account-btn"
+            [class.nav-account-btn-open]="accountMenuOpen"
+            (click)="toggleAccountMenu($event)"
+            title="My Account"
+            aria-haspopup="true"
+            [attr.aria-expanded]="accountMenuOpen"
+            [attr.aria-label]="'My Account, user number ' + authservice.displayUserNumber">
+            <i class="bi bi-person-circle" aria-hidden="true"></i>
+          </button>
+
+          <div class="nav-account-pop" *ngIf="accountMenuOpen" role="menu" aria-label="Account">
+            <div class="nav-account-pop-head">
+              <span class="nav-account-pop-avatar" aria-hidden="true">
+                <i class="bi bi-person-fill"></i>
+              </span>
+              <div class="nav-account-pop-id">
+                <span class="nav-account-pop-label">Signed in as</span>
+                <strong class="nav-account-pop-number">{{ authservice.displayUserNumber }}</strong>
+              </div>
+            </div>
+            <button type="button" class="nav-account-pop-item" role="menuitem" (click)="goToMyAccount()">
+              <i class="bi bi-person-vcard" aria-hidden="true"></i>
+              <span>My Account</span>
+              <i class="bi bi-chevron-right nav-account-pop-go" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="nav-account-pop-item nav-account-pop-logout" role="menuitem" (click)="logout()">
+              <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
       </ng-container>
     </nav>
   </div>

@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { PassbookService } from '../passbook.service';
 import { PassbookUnreadService } from 'src/app/Shared/passbook-unread/passbook-unread.service';
 import { apiService } from 'src/app/api.service';
+import { RequestTrackerService } from 'src/app/Shared/request-tracker/request-tracker.service';
 import {
   formatPassbookAmount,
   isNonMonetaryPassbookActivity,
@@ -49,7 +50,8 @@ export class PassbookViewPanelComponent implements OnInit {
     private authservice: AuthService,
     private passbookservice: PassbookService,
     private passbookUnread: PassbookUnreadService,
-    private api: apiService
+    private api: apiService,
+    public requestTracker: RequestTrackerService
   ) {
     this.proofPath = environment.imagePath.proofPath;
     this.sitePath = environment.imagePath.sitePath;

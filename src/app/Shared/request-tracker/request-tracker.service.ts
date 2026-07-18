@@ -1,15 +1,14 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subscription, forkJoin, interval, of } from 'rxjs';
-import { catchError, filter, take } from 'rxjs/operators';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth.service';
-import { apiService } from 'src/app/api.service';
+import { ActivitySnapshot, ActivitySnapshotService } from 'src/app/Shared/activity-snapshot/activity-snapshot.service';
 import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
 import { TrackedRequest, TrackedRequestKind } from './request-tracker.models';
 
 @Injectable({ providedIn: 'root' })
 export class RequestTrackerService implements OnDestroy {
   private readonly storagePrefix = 'kp_request_track_';
-  private readonly pollMs = 20000;
   private readonly resolvedKeepMs = 36 * 60 * 60 * 1000;
 
   private readonly itemsSubject = new BehaviorSubject<TrackedRequest[]>([]);
@@ -19,7 +18,7 @@ export class RequestTrackerService implements OnDestroy {
   readonly panelOpen$ = this.panelOpenSubject.asObservable();
 
   private authSub?: Subscription;
-  private pollSub?: Subscription;
+  private snapshotSub?: Subscription;
   private startedForUser: string | null = null;
   private previousPendingKeys = new Set<string>();
   private resolved: TrackedRequest[] = [];
@@ -27,7 +26,7 @@ export class RequestTrackerService implements OnDestroy {
 
   constructor(
     private auth: AuthService,
-    private api: apiService,
+    private snapshots: ActivitySnapshotService,
     private toast: PassbookActivityToastService
   ) {
     this.authSub = this.auth.isLoggenIn.subscribe((loggedIn) => {
@@ -74,10 +73,7 @@ export class RequestTrackerService implements OnDestroy {
   }
 
   refresh(): void {
-    if (!this.auth.isLoggedIn || !this.auth.isbenview()) {
-      return;
-    }
-    this.fetchOnce();
+    this.snapshots.refreshNow();
   }
 
   dismissResolved(key: string): void {
@@ -91,23 +87,23 @@ export class RequestTrackerService implements OnDestroy {
     if (!userKey || userKey === '0') {
       return;
     }
-    if (this.startedForUser === userKey && this.pollSub) {
+    if (this.startedForUser === userKey && this.snapshotSub) {
       return;
     }
 
     this.stop();
     this.startedForUser = userKey;
     this.loadPersisted(userKey);
-    this.fetchOnce();
 
-    this.pollSub = interval(this.pollMs)
-      .pipe(filter(() => this.auth.isLoggedIn && this.auth.isbenview()))
-      .subscribe(() => this.fetchOnce());
+    // The shared snapshot service owns polling; we only consume its payloads.
+    this.snapshotSub = this.snapshots.snapshot$
+      .pipe(filter((snapshot): snapshot is ActivitySnapshot => !!snapshot))
+      .subscribe((snapshot) => this.applySnapshot(snapshot));
   }
 
   private stop(): void {
-    this.pollSub?.unsubscribe();
-    this.pollSub = undefined;
+    this.snapshotSub?.unsubscribe();
+    this.snapshotSub = undefined;
     this.startedForUser = null;
     this.previousPendingKeys = new Set();
     this.resolved = [];
@@ -116,66 +112,32 @@ export class RequestTrackerService implements OnDestroy {
     this.itemsSubject.next([]);
   }
 
-  private fetchOnce(): void {
-    const userId = this.auth.user?.userId;
-    if (!userId) {
-      return;
-    }
-
-    const userBody = { userId, sessionUser: userId, isDeleted: 0 };
-    const rejectedBody = { userId, sessionUser: userId };
-    const closeBody = { userId, sessionUser: userId };
-
-    const walletWithdrawBody = {
-      coinType: 0,
-      userId,
-      sessionUser: userId,
-    };
-
-    forkJoin({
-      createPending: this.api.listIdRequests(userBody).pipe(
-        take(1),
-        catchError(() => of(null))
-      ),
-      createRejected: this.api.RejectedRequestList(rejectedBody).pipe(
-        take(1),
-        catchError(() => of(null))
-      ),
-      // Match admin listing params currently used in production UI.
-      deposits: this.api.GetDepositeCoinstoSiteRequestList(1, userId).pipe(
-        take(1),
-        catchError(() => of(null))
-      ),
-      withdraws: this.api.GetWithdrawCoinstoSiteRequestList(0, userId).pipe(
-        take(1),
-        catchError(() => of(null))
-      ),
-      walletWithdraws: this.api.GetWithdrawCoinsRequestList(walletWithdrawBody).pipe(
-        take(1),
-        catchError(() => of(null))
-      ),
-      closes: this.api.ListIDCloseRequest(closeBody).pipe(
-        take(1),
-        catchError(() => of(null))
-      ),
-    }).subscribe((bundle) => {
-      this.applyBundle(bundle);
+  /** Split the consolidated snapshot into the buckets the tracker understands. */
+  private applySnapshot(snapshot: ActivitySnapshot): void {
+    const coinTypeOf = (row: any): number => Number(row?.coinType ?? row?.CoinType ?? -1);
+    this.applyBundle({
+      createPending: snapshot.pendingIdRequests,
+      createRejected: snapshot.rejectedIdRequests,
+      deposits: snapshot.siteCoinRequests.filter((row) => coinTypeOf(row) === 1),
+      withdraws: snapshot.siteCoinRequests.filter((row) => coinTypeOf(row) === 0),
+      walletWithdraws: snapshot.walletWithdrawRequests,
+      closes: snapshot.closeIdRequests,
     });
   }
 
   private applyBundle(bundle: {
-    createPending: unknown;
-    createRejected: unknown;
-    deposits: unknown;
-    withdraws: unknown;
-    walletWithdraws: unknown;
-    closes: unknown;
+    createPending: any[];
+    createRejected: any[];
+    deposits: any[];
+    withdraws: any[];
+    walletWithdraws: any[];
+    closes: any[];
   }): void {
     const pending: TrackedRequest[] = [];
     const now = Date.now();
     const userId = String(this.auth.user?.userId ?? '');
 
-    for (const row of this.asList(bundle.createPending)) {
+    for (const row of bundle.createPending) {
       if (!this.belongsToUser(row, userId)) {
         continue;
       }
@@ -195,7 +157,7 @@ export class RequestTrackerService implements OnDestroy {
       });
     }
 
-    for (const row of this.asList(bundle.deposits)) {
+    for (const row of bundle.deposits) {
       if (!this.belongsToUser(row, userId)) {
         continue;
       }
@@ -218,8 +180,8 @@ export class RequestTrackerService implements OnDestroy {
     }
 
     const withdrawRows = [
-      ...this.asList(bundle.withdraws),
-      ...this.asList(bundle.walletWithdraws),
+      ...bundle.withdraws,
+      ...bundle.walletWithdraws,
     ];
     for (const row of withdrawRows) {
       if (!this.belongsToUser(row, userId)) {
@@ -250,7 +212,7 @@ export class RequestTrackerService implements OnDestroy {
       });
     }
 
-    for (const row of this.asList(bundle.closes)) {
+    for (const row of bundle.closes) {
       if (!this.belongsToUser(row, userId)) {
         continue;
       }
@@ -271,7 +233,7 @@ export class RequestTrackerService implements OnDestroy {
     }
 
     const rejectedNow: TrackedRequest[] = [];
-    for (const row of this.asList(bundle.createRejected)) {
+    for (const row of bundle.createRejected) {
       if (!this.belongsToUser(row, userId)) {
         continue;
       }
@@ -405,19 +367,6 @@ export class RequestTrackerService implements OnDestroy {
     const rowUser = this.pickStr(row, ['userId', 'UserId']);
     // Coin-to-account listings are admin-scoped; never show another user's queue.
     return !!rowUser && rowUser === userId;
-  }
-
-  private asList(resp: unknown): any[] {
-    if (!resp || typeof resp !== 'object') {
-      return [];
-    }
-    const anyResp = resp as any;
-    const status = anyResp.returnStatus ?? anyResp.ReturnStatus;
-    if (status != null && status !== 1) {
-      return [];
-    }
-    const list = anyResp.returnList ?? anyResp.ReturnList ?? [];
-    return Array.isArray(list) ? list : [];
   }
 
   private pickId(row: any, keys: string[]): string {

@@ -480,7 +480,7 @@
   }
 
   .footer-bar {
-    max-width: 1080px;
+    max-width: 1160px;
     margin: 0 auto;
     background: transparent;
     border: 0;
@@ -539,13 +539,15 @@
 
   .footer-cluster,
   .footer-cluster--admin {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0.3rem;
-    width: auto;
+    width: 100%;
+    min-width: 0;
     padding: 0.2rem;
+    box-sizing: border-box;
     border-radius: 12px;
     background: color-mix(in srgb, var(--kp-bg, #09070e) 55%, transparent);
     border: 1px solid color-mix(in srgb, var(--kp-border, rgba(255, 141, 33, 0.34)) 40%, transparent);
@@ -554,9 +556,11 @@
   .footer-item {
     flex-direction: row;
     justify-content: center;
+    flex: 0 1 auto;
+    min-width: 0;
     gap: 0.4rem;
     min-height: 2.35rem;
-    padding: 0.4rem 0.75rem;
+    padding: 0.4rem clamp(0.45rem, 1.1vw, 0.75rem);
     border-radius: 10px;
     border: 1px solid transparent;
   }
@@ -598,9 +602,10 @@
 
   .footer-item--fab {
     min-height: 2.35rem;
-    padding: 0.35rem 0.8rem;
+    padding: 0.35rem clamp(0.5rem, 1.1vw, 0.8rem);
     margin: 0;
     gap: 0.4rem;
+    flex-shrink: 0;
     border-radius: 10px;
     background: linear-gradient(135deg, var(--kp-accent, #ff9620), var(--kp-accent-2, #ff6300));
     border: 1px solid color-mix(in srgb, #fff 22%, transparent);
@@ -649,9 +654,16 @@
 
   .footer-rail-cta {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
     gap: 0.45rem;
+  }
+
+  .footer-get-app {
+    padding: 0.4rem 0.7rem 0.4rem 0.5rem;
+    white-space: nowrap;
   }
 
   .footer-badge {
@@ -660,7 +672,8 @@
   }
 }
 
-@media (min-width: 992px) and (max-width: 1180px) {
+/* Mid-size desktop: hide the "Quick nav" label so the nav items never wrap */
+@media (min-width: 992px) and (max-width: 1280px) {
   .footer-rail-meta {
     display: none;
   }
@@ -668,5 +681,25 @@
   .footer-rail,
   .footer-bar--admin .footer-rail {
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+/* Narrow desktop: compact CTA buttons to icon-only so the rail stays on one line */
+@media (min-width: 992px) and (max-width: 1100px) {
+  .footer-get-app-copy em {
+    display: none;
+  }
+
+  .footer-get-app-copy strong {
+    font-size: 0.72rem;
+  }
+
+  .footer-item {
+    gap: 0.32rem;
+  }
+
+  .footer-item > .footer-label,
+  .footer-fab-text {
+    font-size: 0.72rem;
   }
 }

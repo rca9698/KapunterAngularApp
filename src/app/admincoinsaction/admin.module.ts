@@ -11,6 +11,7 @@ import { DeletedUserListComponent } from './User/deleted-user-list/deleted-user-
 import { UserSiteAccountsHistoryComponent } from './User/user-site-accounts-history/user-site-accounts-history.component';
 import { UtilitySettingsComponent } from './Utility/utility-settings/utility-settings.component';
 import { CoinPnlSummaryComponent } from './Utility/coin-pnl-summary/coin-pnl-summary.component';
+import { AdminActivityLogComponent } from './Utility/admin-activity-log/admin-activity-log.component';
 import { LoaderModule } from '../Shared/loader/loader.module';
 import { SingleClickModule } from '../Shared/single-click/single-click.module';
 
@@ -20,7 +21,8 @@ import { SingleClickModule } from '../Shared/single-click/single-click.module';
     DeletedUserListComponent,
     UserSiteAccountsHistoryComponent,
     UtilitySettingsComponent,
-    CoinPnlSummaryComponent
+    CoinPnlSummaryComponent,
+    AdminActivityLogComponent
   ],
   imports: [
     CommonModule,

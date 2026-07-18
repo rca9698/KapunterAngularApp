@@ -267,24 +267,51 @@
                             <a routerLink="/adminaction/coin-summary" routerLinkActive="router-link-active" class="dashboard-nav-dropdown-item">
                                 <i class="bi bi-graph-up-arrow"></i> Deposit / Withdraw P&amp;L
                             </a>
+                            <a routerLink="/adminaction/activity-log" routerLinkActive="router-link-active" class="dashboard-nav-dropdown-item">
+                                <i class="bi bi-journal-check"></i> Activity Log
+                            </a>
                         </div>
                     </div>
 
                     <div class="nav-item-divider"></div>
-                        <div class="social-icons-btn ms-5">
-                            <span class="icons instagram" href="#" style="font-size: 1.5em;">
-                                <i class="bi bi-instagram"></i>
-                            </span>
-                            &nbsp;
-                            &nbsp;
-                            <span class="icons telegram" href="#" style="font-size: 1.5em;">
-                                <i class="bi bi-telegram"></i>
-                            </span>
-                        </div>
                         <span routerLink="/setting/terms" class="dashboard-nav-item "><i class="bi bi-file-earmark-text-fill"></i> Terms </span>
                         <span routerLink="/setting/offers" class="dashboard-nav-item "><i class="bi bi-tag-fill"></i> Offers </span>
                         <span routerLink="/notification/list-notification" class="dashboard-nav-item "><i class="bi bi-bell-fill"></i> Notifications </span>
-                        <span routerLink="/notification/list-notification" class="dashboard-nav-item "><i class="bi bi-bell-fill"></i> Notifications </span>
+
+                        <div class="nav-item-divider"></div>
+                        <div class="sidebar-admin-account" aria-label="Account">
+                            <span class="sidebar-admin-account-heading">Account</span>
+                            <a routerLink="/account/profile-details" routerLinkActive="sidebar-admin-account-active" class="sidebar-admin-account-item closeMobileMenu">
+                                <i class="bi bi-person-circle" aria-hidden="true"></i>
+                                <span class="sidebar-admin-account-copy">
+                                    <strong>My Account</strong>
+                                    <small *ngIf="authService.displayUserNumber !== '—'">{{ authService.displayUserNumber }}</small>
+                                </span>
+                                <i class="bi bi-chevron-right sidebar-admin-account-go" aria-hidden="true"></i>
+                            </a>
+                            <button type="button" class="sidebar-admin-account-item sidebar-admin-account-logout closeMobileMenu" (click)="logoutSeesion()">
+                                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                                <span class="sidebar-admin-account-copy">
+                                    <strong>Logout</strong>
+                                    <small>End this session</small>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="nav-item-divider"></div>
+                        <div class="sidebar-admin-follow" aria-labelledby="admin-nav-social-heading">
+                            <span id="admin-nav-social-heading" class="sidebar-admin-account-heading">Follow us</span>
+                            <div class="social-icons-btn">
+                                <span class="icons instagram" href="#" style="font-size: 1.5em;">
+                                    <i class="bi bi-instagram"></i>
+                                </span>
+                                &nbsp;
+                                &nbsp;
+                                <span class="icons telegram" href="#" style="font-size: 1.5em;">
+                                    <i class="bi bi-telegram"></i>
+                                </span>
+                            </div>
+                        </div>
 
                     </nav>
 
@@ -411,18 +438,6 @@
 
                         <div class="sidebar-member-divider" role="presentation"></div>
 
-                        <section class="sidebar-ben-section sidebar-ben-section--social" aria-labelledby="ben-nav-social-heading">
-                            <h2 id="ben-nav-social-heading" class="sidebar-ben-heading">Follow us</h2>
-                            <div class="sidebar-member-social sidebar-ben-social">
-                                <a href="#" class="icons instagram" aria-label="Instagram" (click)="$event.preventDefault()">
-                                    <i class="bi bi-instagram" aria-hidden="true"></i>
-                                </a>
-                                <a href="#" class="icons telegram" aria-label="Telegram" (click)="$event.preventDefault()">
-                                    <i class="bi bi-telegram" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </section>
-
                         <section class="sidebar-ben-section" aria-labelledby="ben-nav-more-heading">
                             <h2 id="ben-nav-more-heading" class="sidebar-ben-heading">More</h2>
                             <ul class="sidebar-ben-list sidebar-ben-list--compact">
@@ -442,9 +457,36 @@
                                     <a routerLink="/notification/list-notification" routerLinkActive="sidebar-member-link-active" class="dashboard-nav-item sidebar-member-link-secondary">
                                         <i class="bi bi-bell" aria-hidden="true"></i>
                                         <span class="sidebar-member-text">Notifications</span>
+                                        <em class="sidebar-notification-badge" *ngIf="(notifications.unreadCount$ | async) as unread">{{ unread }}</em>
                                     </a>
                                 </li>
                             </ul>
+                        </section>
+
+                        <section class="sidebar-ben-section" aria-label="Session">
+                            <ul class="sidebar-ben-list sidebar-ben-list--compact">
+                                <li>
+                                    <button
+                                        type="button"
+                                        class="dashboard-nav-item sidebar-member-link sidebar-logout-link closeMobileMenu"
+                                        (click)="logoutSeesion()">
+                                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                                        <span class="sidebar-member-text">Logout</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section class="sidebar-ben-section sidebar-ben-section--social" aria-labelledby="ben-nav-social-heading">
+                            <h2 id="ben-nav-social-heading" class="sidebar-ben-heading">Follow us</h2>
+                            <div class="sidebar-member-social sidebar-ben-social">
+                                <a href="#" class="icons instagram" aria-label="Instagram" (click)="$event.preventDefault()">
+                                    <i class="bi bi-instagram" aria-hidden="true"></i>
+                                </a>
+                                <a href="#" class="icons telegram" aria-label="Telegram" (click)="$event.preventDefault()">
+                                    <i class="bi bi-telegram" aria-hidden="true"></i>
+                                </a>
+                            </div>
                         </section>
                     </nav>
 
@@ -472,9 +514,6 @@
                             </button>
                           </div>
                         </div>
-                        <button type="button" class="Burger-Menu-footer-container-LogSignin-btn siteBtnbackground closeMobileMenu" *ngIf="(authService.isLoggenIn | async)" (click)="logoutSeesion()">
-                            Logout
-                        </button>
                         <button class="Burger-Menu-footer-container-LogSignin-btn siteBtnbackground closeMobileMenu" *ngIf="!(authService.isLoggenIn | async)" (click)="loginPopup()">
                             Login | Signup
                         </button>

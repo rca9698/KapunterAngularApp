@@ -1,7 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { login } from './Shared/Modals/login';
 import { environment } from 'src/environments/environment';
+import { SKIP_GLOBAL_LOADER, SUPPRESS_ERROR_TOAST } from './Shared/loader/loader.tokens';
+
+/** Background polling requests: no overlay loader, no error toast. */
+const silentPollContext = () =>
+  new HttpContext().set(SKIP_GLOBAL_LOADER, true).set(SUPPRESS_ERROR_TOAST, true);
 
 @Injectable({
   providedIn: 'root'
@@ -178,6 +183,16 @@ export class apiService {
     const q = params.length ? `?${params.join('&')}` : '';
     return this.http.get(`${environment.apiUrl}/api/Bonus/GetAdminCoinPnL${q}`);
   }
+
+  getAdminActivities(options?: { status?: string; actionType?: string; search?: string; top?: number }) {
+    const params: string[] = [];
+    if (options?.status) params.push(`status=${encodeURIComponent(options.status)}`);
+    if (options?.actionType) params.push(`actionType=${encodeURIComponent(options.actionType)}`);
+    if (options?.search) params.push(`search=${encodeURIComponent(options.search)}`);
+    if (options?.top != null) params.push(`top=${options.top}`);
+    const q = params.length ? `?${params.join('&')}` : '';
+    return this.http.get(`${environment.apiUrl}/api/AdminActivity/ListAdminActivities${q}`);
+  }
   // Profile Related APIs End
 
   //PassbookHistory Related APIs Start
@@ -283,7 +298,20 @@ export class apiService {
 
   GetVisitorStats(recentCount = 0){
     return this.http.get(`${environment.apiUrl}/api/Home/GetVisitorStats`, {
-      params: { recentCount: String(recentCount) }
+      params: { recentCount: String(recentCount) },
+      context: silentPollContext()
+    });
+  }
+
+  /**
+   * Consolidated poll (single SP round trip): visitor/login counters plus the
+   * logged-in user's pending/rejected ID requests, coin requests, close-ID
+   * requests and recent passbook history.
+   */
+  GetUserActivitySnapshot(includeVisitorStats = true){
+    return this.http.get(`${environment.apiUrl}/api/Home/GetUserActivitySnapshot`, {
+      params: { includeVisitorStats: String(includeVisitorStats) },
+      context: silentPollContext()
     });
   }
 

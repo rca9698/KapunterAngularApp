@@ -59,6 +59,76 @@
   margin-left: auto;
 }
 
+/* Live request tracking — same panel as the header Track icon */
+.passbook-track-btn {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  min-height: 2.35rem;
+  padding: 0.42rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 180, 84, 0.5);
+  background: rgba(255, 180, 84, 0.14);
+  color: #ffb454;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.15s ease, color 0.18s ease;
+}
+
+.passbook-track-btn i {
+  font-size: 1rem;
+}
+
+.passbook-track-btn:hover,
+.passbook-track-btn:focus-visible {
+  background: #ffb454;
+  border-color: transparent;
+  color: #2a1a08;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.passbook-track-badge {
+  position: absolute;
+  top: -0.4rem;
+  right: -0.3rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.28rem;
+  border-radius: 999px;
+  background: #ff6b3d;
+  color: #fff;
+  font-size: 0.64rem;
+  font-style: normal;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.passbook-track-btn + .passbook-hero-stat {
+  margin-left: 0;
+}
+
+:host-context([data-kp-theme="light"]) .passbook-track-btn {
+  border-color: #f59e0b;
+  background: #fef3c7;
+  color: #92400e;
+}
+
+:host-context([data-kp-theme="light"]) .passbook-track-btn:hover,
+:host-context([data-kp-theme="light"]) .passbook-track-btn:focus-visible {
+  background: #f59e0b;
+  color: #fff;
+}
+
 .passbook-hero-stat-label {
   display: block;
   font-size: 0.62rem;

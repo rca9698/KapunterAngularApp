@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { AccountsService } from '../Accounts/accounts.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -8,7 +8,10 @@ import { Subscription } from 'rxjs';
 import { VisitorStats } from '../Shared/Modals/visitor-stats';
 import { getApkDownloadUrl, isNativeApp } from '../Shared/platform/platform.util';
 import { AppShareService } from '../Shared/platform/app-share.service';
-import { RequestTrackerService } from '../Shared/request-tracker/request-tracker.service';
+import {
+  NotificationCenterItem,
+  NotificationCenterService
+} from '../Shared/notification-center/notification-center.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,6 +22,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   displayTotal = 0;
   stats: VisitorStats = { totalVisits: 0, todayVisits: 0, weekVisits: 0, activeSessions: 0 };
   readonly isNativeApp = isNativeApp();
+  accountMenuOpen = false;
+  notificationMenuOpen = false;
   private statsSub?: Subscription;
   private animationFrame: number | null = null;
 
@@ -29,7 +34,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public visitorCountService: VisitorCountService,
     public themeService: ThemeService,
     private appShareService: AppShareService,
-    public requestTracker: RequestTrackerService
+    public notifications: NotificationCenterService,
+    private elementRef: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit(): void {
@@ -55,10 +61,44 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   goToMyAccount() {
+    this.accountMenuOpen = false;
     this.router.navigate(['/account/profile-details']);
   }
 
+  toggleAccountMenu(event: Event): void {
+    event.stopPropagation();
+    this.notificationMenuOpen = false;
+    this.accountMenuOpen = !this.accountMenuOpen;
+  }
+
+  toggleNotificationMenu(event: Event): void {
+    event.stopPropagation();
+    this.accountMenuOpen = false;
+    this.notificationMenuOpen = !this.notificationMenuOpen;
+    if (this.notificationMenuOpen) {
+      this.notifications.refresh();
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (!this.accountMenuOpen && !this.notificationMenuOpen) {
+      return;
+    }
+    if (!this.elementRef.nativeElement.contains(event.target as Node)) {
+      this.accountMenuOpen = false;
+      this.notificationMenuOpen = false;
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.accountMenuOpen = false;
+    this.notificationMenuOpen = false;
+  }
+
   logout(): void {
+    this.accountMenuOpen = false;
     this.authservice.logout();
   }
 
@@ -75,6 +115,29 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   shareApp(): void {
     void this.appShareService.shareKapunterApp();
+  }
+
+  openNotification(item: NotificationCenterItem): void {
+    this.notifications.markAsRead(item);
+    this.notificationMenuOpen = false;
+    if (item.source === 'passbook') {
+      this.router.navigate(['/passbook/passbook-view-panel']);
+    } else if (item.source === 'app-update') {
+      this.notifications.startAppUpdate();
+    } else {
+      this.router.navigate(['/notification/list-notification']);
+    }
+  }
+
+  markAllNotificationsRead(event: Event): void {
+    event.stopPropagation();
+    this.notifications.markAllAsRead();
+  }
+
+  notificationIcon(item: NotificationCenterItem): string {
+    if (item.source === 'app-update') return 'bi-phone';
+    if (item.source === 'request') return 'bi-file-earmark-check';
+    return 'bi-journal-text';
   }
 
   formatCount(value: number): string {

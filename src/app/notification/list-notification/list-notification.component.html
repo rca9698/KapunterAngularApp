@@ -1,30 +1,50 @@
 <section class="kp-content-shell notification-shell">
   <div class="kp-content-card">
-    <h1>Notifications</h1>
-    <p class="kp-content-lead">Recent account updates and transaction alerts.</p>
+    <header class="notification-header">
+      <div>
+        <h1>Notifications</h1>
+        <p class="kp-content-lead">Passbook activity, request decisions, and mobile app updates.</p>
+      </div>
+      <button
+        type="button"
+        class="notification-read-all"
+        *ngIf="notifications.unreadCount > 0"
+        (click)="notifications.markAllAsRead()">
+        Mark all read
+      </button>
+    </header>
 
-    <div class="notification-timeline">
-      <article class="notification-item">
-        <span class="notification-dot" aria-hidden="true"></span>
-        <div>
-          <h2>Wallet credited</h2>
-          <p>Your latest deposit was approved successfully.</p>
+    <ng-container *ngIf="notifications.items$ | async as items">
+      <div class="notification-timeline" *ngIf="items.length; else emptyNotifications">
+        <button
+          type="button"
+          class="notification-item"
+          *ngFor="let item of items"
+          [class.is-unread]="item.unread"
+          [attr.data-source]="item.source"
+          (click)="open(item)">
+          <span class="notification-icon" aria-hidden="true">
+            <i [class]="'bi ' + icon(item)"></i>
+          </span>
+          <span class="notification-content">
+            <span class="notification-title-row">
+              <strong>{{ item.title }}</strong>
+              <em *ngIf="item.unread">New</em>
+            </span>
+            <small *ngIf="item.subtitle">{{ item.subtitle }}</small>
+            <span *ngIf="item.detail">{{ item.detail }}</span>
+            <b *ngIf="item.amountLabel">{{ item.amountLabel }}</b>
+          </span>
+          <i class="bi bi-chevron-right notification-go" aria-hidden="true"></i>
+        </button>
+      </div>
+      <ng-template #emptyNotifications>
+        <div class="notification-empty">
+          <i class="bi bi-bell-check" aria-hidden="true"></i>
+          <h2>You are all caught up</h2>
+          <p>New passbook and application updates will appear here.</p>
         </div>
-      </article>
-      <article class="notification-item">
-        <span class="notification-dot" aria-hidden="true"></span>
-        <div>
-          <h2>Site action</h2>
-          <p>Create ID request status and activity updates appear in this section.</p>
-        </div>
-      </article>
-      <article class="notification-item">
-        <span class="notification-dot" aria-hidden="true"></span>
-        <div>
-          <h2>Security alert</h2>
-          <p>Password and access notifications are highlighted for quick action.</p>
-        </div>
-      </article>
-    </div>
+      </ng-template>
+    </ng-container>
   </div>
 </section>

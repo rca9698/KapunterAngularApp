@@ -1,0 +1,102 @@
+<section class="activity-shell kp-page-shell">
+  <div class="activity-card">
+    <header class="activity-head kp-page-head">
+      <div class="activity-head-icon kp-page-head-icon" aria-hidden="true">
+        <i class="bi bi-journal-check"></i>
+      </div>
+      <div class="activity-head-copy kp-page-head-copy">
+        <p class="activity-eyebrow kp-page-eyebrow">Admin console</p>
+        <h2>Activity log</h2>
+        <p>Who performed account creation / user deletion, their claim at action time, and when it completed.</p>
+      </div>
+    </header>
+
+    <div class="activity-kpis" *ngIf="!loading && statusFilter === 'All'">
+      <article class="activity-kpi">
+        <span>In progress</span>
+        <strong>{{ counts.inProgress }}</strong>
+      </article>
+      <article class="activity-kpi activity-kpi-done">
+        <span>Completed</span>
+        <strong>{{ counts.completed }}</strong>
+      </article>
+      <article class="activity-kpi activity-kpi-failed">
+        <span>Failed</span>
+        <strong>{{ counts.failed }}</strong>
+      </article>
+    </div>
+
+    <div class="activity-status-tabs" role="tablist" aria-label="Filter by status">
+      <button
+        type="button"
+        class="activity-status-tab"
+        *ngFor="let tab of statusTabs"
+        [class.active]="statusFilter === tab.key"
+        (click)="setStatusFilter(tab.key)">
+        {{ tab.label }}
+      </button>
+    </div>
+
+    <div class="activity-filters">
+      <select class="form-select" [(ngModel)]="actionFilter" (change)="load()" aria-label="Filter by action">
+        <option *ngFor="let opt of actionOptions" [ngValue]="opt.key">{{ opt.label }}</option>
+      </select>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="search"
+        placeholder="Search target, actor, trace…"
+        (keyup.enter)="load()"
+        aria-label="Search activity log" />
+      <button type="button" class="btn siteBtnbackground" (click)="load()">Search</button>
+      <button type="button" class="btn activity-refresh" (click)="load()" aria-label="Refresh activity log">
+        <i class="bi bi-arrow-clockwise"></i>
+      </button>
+    </div>
+
+    <div class="utility-loading" *ngIf="loading">
+      <app-kapunter-loader message="Loading activity log…"></app-kapunter-loader>
+    </div>
+
+    <div class="activity-empty" *ngIf="!loading && rows.length === 0">
+      <i class="bi bi-inbox"></i>
+      <span>No activity records match your filters.</span>
+    </div>
+
+    <div class="table-responsive request-table-wrap admin-list-table" *ngIf="!loading && rows.length > 0">
+      <table class="table customtable admin-list-table activity-table">
+        <thead>
+          <tr class="tableHeaderClass">
+            <th>When</th>
+            <th>Action</th>
+            <th>Target</th>
+            <th>Actor</th>
+            <th>Claim / role</th>
+            <th>Auth</th>
+            <th>Status</th>
+            <th>Result</th>
+            <th>Trace</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows">
+            <td data-label="When">
+              <span class="activity-when">{{ row.startedAtUtc || '—' }}</span>
+              <small class="activity-when-sub" *ngIf="row.completedAtUtc">Done {{ row.completedAtUtc }}</small>
+            </td>
+            <td data-label="Action">{{ friendlyAction(row.actionType) }}</td>
+            <td data-label="Target">{{ targetDisplay(row) }}</td>
+            <td data-label="Actor">#{{ row.actorUserId || '—' }}</td>
+            <td data-label="Claim / role">{{ row.actorRoleSnapshot || '—' }}</td>
+            <td data-label="Auth">{{ row.authMethod || '—' }}</td>
+            <td data-label="Status">
+              <span [ngClass]="statusClass(row.status)">{{ row.status || '—' }}</span>
+            </td>
+            <td class="activity-result" data-label="Result">{{ row.resultMessage || '—' }}</td>
+            <td class="activity-trace" data-label="Trace" [title]="row.traceId">{{ row.traceId || '—' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

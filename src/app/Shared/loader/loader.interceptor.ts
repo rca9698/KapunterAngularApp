@@ -14,6 +14,7 @@ import { LoaderService } from './loader.service';
 
 const SILENT_API_PATHS = [
   '/api/Home/GetVisitorStats',
+  '/api/Home/GetUserActivitySnapshot',
   '/api/User/GetUserById',
   '/api/Home/GetDashboardImages',
   '/api/Account/IDRequestList',
@@ -21,6 +22,7 @@ const SILENT_API_PATHS = [
   '/api/Account/ListIDCloseRequest',
   '/api/Coin/GetCoinsToAccountRequest',
   '/api/Coin/GetCoinsRequest',
+  '/api/Passbook/GetPassbookHistory',
 ];
 
 @Injectable()
