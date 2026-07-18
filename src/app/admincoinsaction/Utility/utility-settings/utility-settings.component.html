@@ -7,7 +7,7 @@
       <div class="utility-head-copy kp-page-head-copy">
         <p class="utility-eyebrow kp-page-eyebrow">Admin console</p>
         <h2>Utility settings</h2>
-        <p>Configure WhatsApp support and user bonus credits. Every change is stored with an audit trail.</p>
+        <p>Configure WhatsApp support, site marquee, and user bonus credits. Every change is stored with an audit trail.</p>
       </div>
     </header>
 
@@ -15,12 +15,15 @@
       <button type="button" class="utility-tab" [class.active]="activeTab === 'whatsapp'" (click)="setTab('whatsapp')">
         <i class="bi bi-whatsapp"></i> WhatsApp
       </button>
+      <button type="button" class="utility-tab" [class.active]="activeTab === 'marquee'" (click)="setTab('marquee')">
+        <i class="bi bi-megaphone"></i> Marquee
+      </button>
       <button type="button" class="utility-tab" [class.active]="activeTab === 'bonus'" (click)="setTab('bonus')">
         <i class="bi bi-gift"></i> Bonus
       </button>
     </div>
 
-    <div class="utility-loading" *ngIf="activeTab === 'whatsapp' && loading">
+    <div class="utility-loading" *ngIf="(activeTab === 'whatsapp' || activeTab === 'marquee') && loading">
       <app-kapunter-loader message="Loading utility settings…"></app-kapunter-loader>
     </div>
 
@@ -132,6 +135,98 @@
               <option value="WhatsApp_DefaultMessage">Message</option>
             </select>
             <button type="button" class="btn utility-refresh" (click)="loadHistory()" aria-label="Refresh history">
+              <i class="bi bi-arrow-clockwise"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="utility-loading utility-loading-inline" *ngIf="loadingHistory">
+          <app-kapunter-loader message="Loading history…"></app-kapunter-loader>
+        </div>
+
+        <div class="utility-empty" *ngIf="!loadingHistory && history.length === 0">
+          <i class="bi bi-inbox"></i>
+          <span>No changes yet.</span>
+        </div>
+        <div class="table-responsive" *ngIf="!loadingHistory && history.length > 0">
+          <table class="table customtable admin-list-table utility-history-table">
+            <thead>
+              <tr><th>When</th><th>Field</th><th>Old</th><th>New</th><th>By</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of history">
+                <td data-label="When">{{ row.updatedDate }}</td>
+                <td data-label="Field">{{ friendlyKey(row.settingKey) }}</td>
+                <td class="utility-value" data-label="Old">{{ row.oldValue }}</td>
+                <td class="utility-value" data-label="New">{{ row.newValue }}</td>
+                <td data-label="By">{{ row.updatedBy }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="activeTab === 'marquee' && !loading">
+      <div class="utility-panel">
+        <div class="utility-panel-title-row">
+          <h3><i class="bi bi-broadcast"></i> Site marquee</h3>
+          <span class="utility-status" [class.on]="marqueeEnabled" [class.off]="!marqueeEnabled">
+            {{ marqueeEnabled ? 'Live' : 'Off' }}
+          </span>
+        </div>
+        <p class="utility-panel-hint">
+          Shown under the top navbar for everyone — logged in or not. Keep it short so it scrolls cleanly on mobile.
+        </p>
+
+        <div class="utility-field utility-toggle-row">
+          <label class="utility-switch" for="marqueeEnabled">
+            <input id="marqueeEnabled" type="checkbox" [(ngModel)]="marqueeEnabled" />
+            <span class="utility-switch-ui" aria-hidden="true"></span>
+            <span class="utility-switch-label">{{ marqueeEnabled ? 'Marquee enabled' : 'Marquee disabled' }}</span>
+          </label>
+        </div>
+
+        <div class="utility-field">
+          <label for="marqueeText">Announcement text</label>
+          <textarea
+            id="marqueeText"
+            class="form-control"
+            rows="3"
+            [(ngModel)]="marqueeText"
+            maxlength="300"
+            placeholder="Enter the public announcement text"></textarea>
+          <span class="utility-char">{{ (marqueeText || '').length }}/300</span>
+        </div>
+
+        <div class="utility-preview" *ngIf="(marqueeText || '').trim()">
+          <div class="utility-preview-top">
+            <span class="utility-preview-label">Preview</span>
+          </div>
+          <p class="utility-preview-msg">{{ marqueeText }}</p>
+        </div>
+
+        <div class="utility-actions">
+          <button type="button" class="btn siteBtnbackground" appSingleClick [disabled]="savingMarquee" (click)="saveMarquee()">
+            {{ savingMarquee ? 'Saving…' : 'Save Marquee' }}
+          </button>
+        </div>
+
+        <p class="utility-audit" *ngIf="marqueeLastUpdatedDate">
+          Last updated <strong *ngIf="marqueeLastUpdatedBy">by user {{ marqueeLastUpdatedBy }}</strong> on {{ marqueeLastUpdatedDate }}
+        </p>
+      </div>
+
+      <div class="utility-history">
+        <div class="utility-history-head">
+          <h3><i class="bi bi-clock-history"></i> Marquee change history</h3>
+          <div class="utility-history-filters">
+            <select class="form-select" [(ngModel)]="marqueeHistoryFilter" (change)="loadMarqueeHistory()">
+              <option value="">All fields</option>
+              <option value="Marquee_Enabled">Enabled</option>
+              <option value="Marquee_Text">Text</option>
+            </select>
+            <button type="button" class="btn utility-refresh" (click)="loadMarqueeHistory()" aria-label="Refresh history">
               <i class="bi bi-arrow-clockwise"></i>
             </button>
           </div>

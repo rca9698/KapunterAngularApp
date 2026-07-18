@@ -23,6 +23,11 @@ export interface RuntimeWhatsapp {
   numbers?: RuntimeWhatsappNumber[];
 }
 
+export interface RuntimeMarquee {
+  enabled?: boolean;
+  text?: string;
+}
+
 /** Deploy-time settings from assets/app-config.json (edit without rebuild). */
 export interface RuntimeAppConfig {
   environment?: string;
@@ -32,6 +37,7 @@ export interface RuntimeAppConfig {
   ueserKey?: string;
   imagePath?: RuntimeImagePath;
   whatsapp?: RuntimeWhatsapp;
+  marquee?: RuntimeMarquee;
 }
 
 interface PublicConfigApiResponse {
@@ -44,12 +50,16 @@ interface PublicConfigApiResponse {
 /**
  * Loads config before bootstrap:
  * 1) assets/app-config.json — apiUrl / isAdminSite / deploy overrides (and imagePath fallbacks)
- * 2) GET /api/Config/GetPublicConfig — imagePath + whatsapp from AppSetting (Admin → Utility)
+ * 2) GET /api/Config/GetPublicConfig — imagePath + whatsapp + marquee from AppSetting (Admin → Utility)
  * Compile-time environment.ts values are used only when a field is missing/empty.
  */
 @Injectable({ providedIn: 'root' })
 export class AppConfigService {
   private loaded = false;
+  private marqueeConfig: Required<RuntimeMarquee> = {
+    enabled: false,
+    text: ''
+  };
 
   constructor(private http: HttpClient) {}
 
@@ -63,6 +73,17 @@ export class AppConfigService {
 
   get apiUrl(): string {
     return environment.apiUrl;
+  }
+
+  get marquee(): Readonly<Required<RuntimeMarquee>> {
+    return this.marqueeConfig;
+  }
+
+  setMarquee(config: RuntimeMarquee): void {
+    this.marqueeConfig = {
+      enabled: config.enabled === true,
+      text: typeof config.text === 'string' ? config.text.trim() : ''
+    };
   }
 
   async load(): Promise<void> {
@@ -110,7 +131,7 @@ export class AppConfigService {
       const status = response?.returnStatus ?? response?.ReturnStatus;
       const payload = response?.returnVal ?? response?.ReturnVal;
       if (status === 1 && payload) {
-        this.applyImageAndWhatsapp(payload);
+        this.applyPublicRuntimeSettings(payload, true);
       } else {
         console.warn('[AppConfig] GetPublicConfig returned no usable settings — keeping file/environment fallbacks.');
       }
@@ -146,10 +167,10 @@ export class AppConfigService {
       env['ueserKey'] = config.ueserKey.trim();
     }
 
-    this.applyImageAndWhatsapp(config);
+    this.applyPublicRuntimeSettings(config, false);
   }
 
-  private applyImageAndWhatsapp(config: RuntimeAppConfig): void {
+  private applyPublicRuntimeSettings(config: RuntimeAppConfig, includeBackendOnlySettings: boolean): void {
     this.ensureRuntimeBuckets();
 
     if (config.imagePath && typeof config.imagePath === 'object') {
@@ -186,6 +207,10 @@ export class AppConfigService {
           active: true
         }];
       }
+    }
+
+    if (includeBackendOnlySettings && config.marquee && typeof config.marquee === 'object') {
+      this.setMarquee(config.marquee);
     }
   }
 

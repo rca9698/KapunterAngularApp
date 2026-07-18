@@ -80,7 +80,7 @@
 
 .utility-tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.35rem;
   margin-top: 1rem;
   padding: 0.3rem;
@@ -511,6 +511,10 @@
 }
 
 @media (max-width: 720px) {
+  .utility-tabs {
+    grid-template-columns: 1fr;
+  }
+
   .utility-bonus-credit {
     grid-template-columns: 1fr;
   }

@@ -2,6 +2,6 @@
   "environment": "prod",
   "isAdminSite": false,
   "appUrl": "https://kapunter.com/",
-  "apiUrl": "https://api.kapunter.com",
+  "apiUrl": "https://localhost:7236",
   "ueserKey": "kapunterUser"
 }

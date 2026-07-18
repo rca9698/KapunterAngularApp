@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { apiService } from 'src/app/api.service';
 import { AuthService } from 'src/app/auth.service';
+import { AppConfigService } from 'src/app/app-config.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { environment } from 'src/environments/environment';
 
@@ -16,10 +17,11 @@ interface WhatsappNumberRow {
   styleUrls: ['./utility-settings.component.css']
 })
 export class UtilitySettingsComponent implements OnInit {
-  activeTab: 'whatsapp' | 'bonus' = 'whatsapp';
+  activeTab: 'whatsapp' | 'marquee' | 'bonus' = 'whatsapp';
 
   loading = true;
   saving = false;
+  savingMarquee = false;
   loadingHistory = false;
 
   enabled = true;
@@ -27,6 +29,11 @@ export class UtilitySettingsComponent implements OnInit {
   defaultMessage = '';
   lastUpdatedBy = '';
   lastUpdatedDate = '';
+
+  marqueeEnabled = true;
+  marqueeText = '';
+  marqueeLastUpdatedBy = '';
+  marqueeLastUpdatedDate = '';
 
   history: Array<{
     historyId: number;
@@ -37,6 +44,7 @@ export class UtilitySettingsComponent implements OnInit {
     updatedDate: string;
   }> = [];
   historyFilter = '';
+  marqueeHistoryFilter = '';
 
   bonusSearch = '';
   bonusLoading = false;
@@ -64,6 +72,7 @@ export class UtilitySettingsComponent implements OnInit {
   constructor(
     private api: apiService,
     private authService: AuthService,
+    private appConfig: AppConfigService,
     private toaster: ToastrService
   ) {}
 
@@ -73,10 +82,14 @@ export class UtilitySettingsComponent implements OnInit {
     this.loadBonusUsers();
   }
 
-  setTab(tab: 'whatsapp' | 'bonus'): void {
+  setTab(tab: 'whatsapp' | 'marquee' | 'bonus'): void {
     this.activeTab = tab;
     if (tab === 'bonus') {
       this.loadBonusUsers();
+    } else if (tab === 'marquee') {
+      this.loadMarqueeHistory();
+    } else {
+      this.loadHistory();
     }
   }
 
@@ -92,6 +105,7 @@ export class UtilitySettingsComponent implements OnInit {
         }
 
         let latestDate = '';
+        let marqueeLatestDate = '';
         let legacyPhone = '';
         let numbersJson = '';
 
@@ -109,12 +123,22 @@ export class UtilitySettingsComponent implements OnInit {
             this.defaultMessage = value;
           } else if (key === 'WhatsApp_Numbers') {
             numbersJson = value;
+          } else if (key === 'Marquee_Enabled') {
+            this.marqueeEnabled = value.toLowerCase() === 'true' || value === '1';
+          } else if (key === 'Marquee_Text') {
+            this.marqueeText = value;
           }
 
-          if (updatedDate && updatedDate > latestDate) {
+          if (key.startsWith('WhatsApp_') && updatedDate && updatedDate > latestDate) {
             latestDate = updatedDate;
             this.lastUpdatedBy = updatedBy;
             this.lastUpdatedDate = updatedDate;
+          }
+
+          if (key.startsWith('Marquee_') && updatedDate && updatedDate > marqueeLatestDate) {
+            marqueeLatestDate = updatedDate;
+            this.marqueeLastUpdatedBy = updatedBy;
+            this.marqueeLastUpdatedDate = updatedDate;
           }
         }
 
@@ -171,7 +195,7 @@ export class UtilitySettingsComponent implements OnInit {
       next: (resp: any) => {
         this.loadingHistory = false;
         const list = resp?.returnList ?? resp?.ReturnList ?? [];
-        this.history = (Array.isArray(list) ? list : []).map((row: any) => ({
+        const mapped = (Array.isArray(list) ? list : []).map((row: any) => ({
           historyId: Number(row.historyId ?? row.HistoryId ?? 0),
           settingKey: String(row.settingKey ?? row.SettingKey ?? ''),
           oldValue: String(row.oldValue ?? row.OldValue ?? '—'),
@@ -179,10 +203,79 @@ export class UtilitySettingsComponent implements OnInit {
           updatedBy: String(row.updatedBy ?? row.UpdatedBy ?? '—'),
           updatedDate: String(row.updatedDate ?? row.UpdatedDate ?? '')
         }));
+        // When "All fields" is selected on WhatsApp tab, hide marquee rows.
+        this.history = key
+          ? mapped
+          : mapped.filter((row) => row.settingKey.startsWith('WhatsApp_'));
       },
       error: () => {
         this.loadingHistory = false;
         this.history = [];
+      }
+    });
+  }
+
+  loadMarqueeHistory(): void {
+    this.loadingHistory = true;
+    const key = this.marqueeHistoryFilter?.trim() || undefined;
+    this.api.getUtilitySettingHistory(key, 50).subscribe({
+      next: (resp: any) => {
+        this.loadingHistory = false;
+        const list = resp?.returnList ?? resp?.ReturnList ?? [];
+        const mapped = (Array.isArray(list) ? list : []).map((row: any) => ({
+          historyId: Number(row.historyId ?? row.HistoryId ?? 0),
+          settingKey: String(row.settingKey ?? row.SettingKey ?? ''),
+          oldValue: String(row.oldValue ?? row.OldValue ?? '—'),
+          newValue: String(row.newValue ?? row.NewValue ?? ''),
+          updatedBy: String(row.updatedBy ?? row.UpdatedBy ?? '—'),
+          updatedDate: String(row.updatedDate ?? row.UpdatedDate ?? '')
+        }));
+        this.history = key
+          ? mapped
+          : mapped.filter((row) => row.settingKey.startsWith('Marquee_'));
+      },
+      error: () => {
+        this.loadingHistory = false;
+        this.history = [];
+      }
+    });
+  }
+
+  saveMarquee(): void {
+    const text = (this.marqueeText || '').trim();
+    if (!text) {
+      this.toaster.warning('Enter marquee text.');
+      return;
+    }
+    if (text.length > 300) {
+      this.toaster.warning('Marquee text cannot exceed 300 characters.');
+      return;
+    }
+
+    this.savingMarquee = true;
+    this.api.setMarqueeSettings({
+      enabled: this.marqueeEnabled,
+      text,
+      sessionUser: this.authService.user.userId
+    }).subscribe({
+      next: (resp: any) => {
+        this.savingMarquee = false;
+        if ((resp?.returnStatus ?? resp?.ReturnStatus) === 1) {
+          this.appConfig.setMarquee({
+            enabled: this.marqueeEnabled,
+            text
+          });
+          this.marqueeText = text;
+          this.toaster.success(resp?.returnMessage ?? 'Marquee settings saved.');
+          this.loadSettings();
+          this.loadMarqueeHistory();
+        } else {
+          this.toaster.warning(resp?.returnMessage ?? 'Unable to save marquee settings.');
+        }
+      },
+      error: () => {
+        this.savingMarquee = false;
+        this.toaster.warning('Unable to save marquee settings.');
       }
     });
   }
@@ -386,6 +479,8 @@ export class UtilitySettingsComponent implements OnInit {
       case 'WhatsApp_PhoneNumber': return 'Primary phone';
       case 'WhatsApp_DefaultMessage': return 'Default message';
       case 'WhatsApp_Numbers': return 'Numbers list';
+      case 'Marquee_Enabled': return 'Marquee enabled';
+      case 'Marquee_Text': return 'Marquee text';
       default: return key;
     }
   }

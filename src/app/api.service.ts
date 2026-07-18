@@ -129,6 +129,14 @@ export class apiService {
     return this.http.post(`${environment.apiUrl}/api/Config/SetUtilitySettings`, obj);
   }
 
+  setMarqueeSettings(obj: {
+    enabled: boolean;
+    text: string;
+    sessionUser: number | bigint;
+  }) {
+    return this.http.post(`${environment.apiUrl}/api/Config/SetMarqueeSettings`, obj);
+  }
+
   getUtilitySettingHistory(settingKey?: string, top = 50) {
     const params: string[] = [`top=${top}`];
     if (settingKey) {

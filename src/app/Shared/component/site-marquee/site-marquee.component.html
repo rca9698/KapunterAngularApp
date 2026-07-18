@@ -1,0 +1,6 @@
+<div class="site-marquee" *ngIf="visible" role="region" aria-label="Site announcement">
+  <div class="site-marquee-track" [attr.aria-label]="text">
+    <span class="site-marquee-item">{{ text }}</span>
+    <span class="site-marquee-item" aria-hidden="true">{{ text }}</span>
+  </div>
+</div>

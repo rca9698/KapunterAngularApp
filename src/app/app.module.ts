@@ -27,6 +27,7 @@ import { DeleteModuleComponent } from './Shared/Modules/delete-module/delete-mod
 import { MakeDefaultModuleComponent } from './Shared/Modules/make-default-module/make-default-module.component';
 import { ViewImageModuleComponent } from './Shared/Modules/view-image-module/view-image-module.component';
 import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsapp-float.component';
+import { SiteMarqueeComponent } from './Shared/component/site-marquee/site-marquee.component';
 import { PassbookActivityToastComponent } from './Shared/passbook-activity-toast/passbook-activity-toast.component';
 import { RequestTrackerPanelComponent } from './Shared/request-tracker/request-tracker-panel.component';
 import { AppConfigService, appConfigInitializer } from './app-config.service';
@@ -50,6 +51,7 @@ import { WhatsappLinksComponent } from './whatsapp-links/whatsapp-links.componen
     MakeDefaultModuleComponent,
     ViewImageModuleComponent,
     WhatsappFloatComponent,
+    SiteMarqueeComponent,
     PassbookActivityToastComponent,
     RequestTrackerPanelComponent,
     WhatsappLinksComponent,
