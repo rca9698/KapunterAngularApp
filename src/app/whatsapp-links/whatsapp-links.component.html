@@ -1,0 +1,58 @@
+<main class="contact-page">
+  <section class="contact-card" aria-labelledby="contactTitle">
+    <div class="contact-glow contact-glow-one" aria-hidden="true"></div>
+    <div class="contact-glow contact-glow-two" aria-hidden="true"></div>
+
+    <button
+      type="button"
+      class="share-button"
+      (click)="sharePage()"
+      [attr.aria-label]="copied ? 'Link copied' : 'Share this contact page'">
+      <i class="bi" [ngClass]="copied ? 'bi-check-lg' : 'bi-share-fill'" aria-hidden="true"></i>
+      <span>{{ copied ? 'Copied' : 'Share' }}</span>
+    </button>
+
+    <div class="brand-mark" aria-hidden="true">
+      <i class="bi bi-chat-heart-fill"></i>
+      <span class="online-dot"></span>
+    </div>
+
+    <app-kp-wordmark size="nav"></app-kp-wordmark>
+    <h1 id="contactTitle">Connect with Kapunter</h1>
+    <p class="contact-intro">Choose a WhatsApp line below and start a conversation with our team.</p>
+
+    <div class="contact-links" *ngIf="links.length; else noContacts">
+      <a
+        *ngFor="let link of links; trackBy: trackByPhone"
+        class="contact-link"
+        [href]="buildWhatsappUrl(link.phoneNumber)"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.aria-label]="'Chat with ' + link.label + ' on WhatsApp'">
+        <span class="whatsapp-icon" aria-hidden="true">
+          <i class="bi bi-whatsapp"></i>
+        </span>
+        <span class="link-copy">
+          <strong>{{ link.label }}</strong>
+          <small>{{ displayNumber(link.phoneNumber) }}</small>
+        </span>
+        <span class="link-arrow" aria-hidden="true">
+          <i class="bi bi-arrow-up-right"></i>
+        </span>
+      </a>
+    </div>
+
+    <ng-template #noContacts>
+      <div class="empty-state" role="status">
+        <i class="bi bi-clock-history" aria-hidden="true"></i>
+        <strong>WhatsApp contacts are coming soon</strong>
+        <span>Please check back later.</span>
+      </div>
+    </ng-template>
+
+    <p class="privacy-note">
+      <i class="bi bi-shield-check" aria-hidden="true"></i>
+      Your conversation opens securely in WhatsApp.
+    </p>
+  </section>
+</main>

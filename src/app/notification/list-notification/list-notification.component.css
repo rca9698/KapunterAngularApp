@@ -74,6 +74,11 @@
   background: rgba(74, 222, 128, 0.14);
 }
 
+.notification-item[data-source='custom'] .notification-icon {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.16);
+}
+
 .notification-content {
   min-width: 0;
   display: flex;
@@ -103,10 +108,19 @@
 }
 
 .notification-content small,
-.notification-content > span {
+.notification-content > span,
+.notification-detail {
   color: var(--kp-muted, #b9acba);
   font-size: 0.78rem;
   line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.notification-when {
+  color: var(--kp-muted, #a8a0ad);
+  font-size: 0.7rem;
+  font-style: normal;
 }
 
 .notification-content b {

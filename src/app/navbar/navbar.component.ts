@@ -137,6 +137,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   notificationIcon(item: NotificationCenterItem): string {
     if (item.source === 'app-update') return 'bi-phone';
     if (item.source === 'request') return 'bi-file-earmark-check';
+    if (item.source === 'custom') return 'bi-megaphone-fill';
     return 'bi-journal-text';
   }
 

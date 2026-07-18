@@ -12,6 +12,7 @@ import { UserSiteAccountsHistoryComponent } from './User/user-site-accounts-hist
 import { UtilitySettingsComponent } from './Utility/utility-settings/utility-settings.component';
 import { CoinPnlSummaryComponent } from './Utility/coin-pnl-summary/coin-pnl-summary.component';
 import { AdminActivityLogComponent } from './Utility/admin-activity-log/admin-activity-log.component';
+import { AdminScheduleNotificationsComponent } from './Utility/admin-schedule-notifications/admin-schedule-notifications.component';
 import { LoaderModule } from '../Shared/loader/loader.module';
 import { SingleClickModule } from '../Shared/single-click/single-click.module';
 
@@ -22,7 +23,8 @@ import { SingleClickModule } from '../Shared/single-click/single-click.module';
     UserSiteAccountsHistoryComponent,
     UtilitySettingsComponent,
     CoinPnlSummaryComponent,
-    AdminActivityLogComponent
+    AdminActivityLogComponent,
+    AdminScheduleNotificationsComponent
   ],
   imports: [
     CommonModule,

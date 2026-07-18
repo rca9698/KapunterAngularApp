@@ -31,6 +31,7 @@ import { PassbookActivityToastComponent } from './Shared/passbook-activity-toast
 import { RequestTrackerPanelComponent } from './Shared/request-tracker/request-tracker-panel.component';
 import { AppConfigService, appConfigInitializer } from './app-config.service';
 import { BrandModule } from './Shared/brand/brand.module';
+import { WhatsappLinksComponent } from './whatsapp-links/whatsapp-links.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { BrandModule } from './Shared/brand/brand.module';
     WhatsappFloatComponent,
     PassbookActivityToastComponent,
     RequestTrackerPanelComponent,
+    WhatsappLinksComponent,
   ],
   imports: [
     BrowserModule,

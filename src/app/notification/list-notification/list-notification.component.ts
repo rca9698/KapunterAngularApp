@@ -24,12 +24,15 @@ export class ListNotificationComponent {
       this.router.navigate(['/passbook/passbook-view-panel']);
     } else if (item.source === 'app-update') {
       this.notifications.startAppUpdate();
+    } else if (item.source === 'custom' || item.source === 'request') {
+      // Stay on list after mark-read; custom/request detail is already shown here.
     }
   }
 
   icon(item: NotificationCenterItem): string {
     if (item.source === 'app-update') return 'bi-phone';
     if (item.source === 'request') return 'bi-file-earmark-check';
+    if (item.source === 'custom') return 'bi-megaphone-fill';
     return 'bi-journal-text';
   }
 }

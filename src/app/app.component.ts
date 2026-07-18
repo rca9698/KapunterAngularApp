@@ -19,6 +19,7 @@ import { getApkDownloadUrl, getPublicAppUrl, isNativeApp } from './Shared/platfo
 import { AppUpdateService, AppUpdateUiState } from './Shared/platform/app-update.service';
 import { AppShareService, ShareSheetState, KAPUNTER_SHARE_TARGETS, ShareTarget } from './Shared/platform/app-share.service';
 import { NotificationCenterService } from './Shared/notification-center/notification-center.service';
+import { PushNotificationService } from './Shared/platform/push-notification.service';
 
 @Component({
   selector: 'app-root',
@@ -84,12 +85,14 @@ export class AppComponent implements OnInit, OnDestroy {
     private toasterService: ToastrService,
     private appUpdateService: AppUpdateService,
     private appShareService: AppShareService,
-    public notifications: NotificationCenterService
+    public notifications: NotificationCenterService,
+    private pushNotifications: PushNotificationService
   ) {
     this._sessionUser = authService.user.userId;
   }
 
   ngOnInit(): void {
+    this.pushNotifications.initialize();
     this.deploymentBannerService.start();
     this.bannerSub = this.deploymentBannerService.state$.subscribe((state) => {
       this.deploymentBanner = state;

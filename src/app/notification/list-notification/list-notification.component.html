@@ -3,7 +3,7 @@
     <header class="notification-header">
       <div>
         <h1>Notifications</h1>
-        <p class="kp-content-lead">Passbook activity, request decisions, and mobile app updates.</p>
+        <p class="kp-content-lead">Passbook activity, request decisions, announcements, and mobile app updates.</p>
       </div>
       <button
         type="button"
@@ -32,17 +32,21 @@
               <em *ngIf="item.unread">New</em>
             </span>
             <small *ngIf="item.subtitle">{{ item.subtitle }}</small>
-            <span *ngIf="item.detail">{{ item.detail }}</span>
+            <span *ngIf="item.detail" class="notification-detail">{{ item.detail }}</span>
+            <time *ngIf="item.whenLabel" class="notification-when">{{ item.whenLabel }}</time>
             <b *ngIf="item.amountLabel">{{ item.amountLabel }}</b>
           </span>
-          <i class="bi bi-chevron-right notification-go" aria-hidden="true"></i>
+          <i
+            class="bi bi-chevron-right notification-go"
+            *ngIf="item.source === 'passbook' || item.source === 'app-update'"
+            aria-hidden="true"></i>
         </button>
       </div>
       <ng-template #emptyNotifications>
         <div class="notification-empty">
           <i class="bi bi-bell-check" aria-hidden="true"></i>
           <h2>You are all caught up</h2>
-          <p>New passbook and application updates will appear here.</p>
+          <p>New passbook updates, announcements, and application notices will appear here.</p>
         </div>
       </ng-template>
     </ng-container>

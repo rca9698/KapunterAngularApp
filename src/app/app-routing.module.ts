@@ -5,9 +5,11 @@ import { NotFoundComponent } from './Shared/component/error/not-found/not-found.
 import { ValidationMessageComponent } from './Shared/component/error/validation-message/validation-message.component';
 import { IsAuthenticatedGuard } from './is-authenticated.guard';
 import { HasRoleGuard } from './has-role.guard';
+import { WhatsappLinksComponent } from './whatsapp-links/whatsapp-links.component';
 
 const routes: Routes = [
   {path:"", component:HomeComponent}, //, canActivate: [IsAuthenticatedGuard]
+  {path:"contact", component:WhatsappLinksComponent},
   
   //import lazy loading by following formatclear
   {path:"account", loadChildren: () => import('./Accounts/accounts.module').then(module => module.AccountsModule)

@@ -477,6 +477,16 @@
   background: rgba(74, 222, 128, 0.14);
 }
 
+.nav-notification-icon[data-source='custom'] {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.16);
+}
+
+.nav-notification-when {
+  opacity: 0.85;
+  font-size: 0.68rem !important;
+}
+
 .nav-notification-copy strong {
   font-size: 0.78rem;
   line-height: 1.3;

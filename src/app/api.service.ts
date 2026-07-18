@@ -530,5 +530,37 @@ export class apiService {
   SetDefaultUserQr(obj: any){
     return this.http.get(`${environment.apiUrl}/api/BankAccount/SetDefaultUserQr/${obj.sessionUser}/${obj.qrId}/${obj.userId}`)
   }
- 
+
+  // Notification APIs
+  scheduleNotification(obj: { title: string; message: string; scheduledAtUtc: string }) {
+    return this.http.post(`${environment.apiUrl}/api/Notification/ScheduleNotification`, obj);
+  }
+
+  getNotifications(obj: Record<string, unknown> = {}) {
+    return this.http.post(`${environment.apiUrl}/api/Notification/GetNotifications`, obj, {
+      context: silentPollContext()
+    });
+  }
+
+  markNotificationRead(obj: { notificationId: number }) {
+    return this.http.post(`${environment.apiUrl}/api/Notification/MarkNotificationRead`, obj, {
+      context: silentPollContext()
+    });
+  }
+
+  registerDevice(obj: { token: string; platform: string }) {
+    return this.http.post(`${environment.apiUrl}/api/Notification/RegisterDevice`, obj, {
+      context: silentPollContext()
+    });
+  }
+
+  unregisterDevice(obj: { token: string }) {
+    return this.http.post(`${environment.apiUrl}/api/Notification/UnregisterDevice`, obj, {
+      context: silentPollContext()
+    });
+  }
+
+  getScheduledNotifications() {
+    return this.http.get(`${environment.apiUrl}/api/Notification/GetScheduledNotifications`);
+  }
 }

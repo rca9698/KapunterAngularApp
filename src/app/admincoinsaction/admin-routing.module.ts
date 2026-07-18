@@ -7,6 +7,7 @@ import { UserSiteAccountsHistoryComponent } from './User/user-site-accounts-hist
 import { UtilitySettingsComponent } from './Utility/utility-settings/utility-settings.component';
 import { CoinPnlSummaryComponent } from './Utility/coin-pnl-summary/coin-pnl-summary.component';
 import { AdminActivityLogComponent } from './Utility/admin-activity-log/admin-activity-log.component';
+import { AdminScheduleNotificationsComponent } from './Utility/admin-schedule-notifications/admin-schedule-notifications.component';
 import { IsAuthenticatedGuard } from '../is-authenticated.guard';
 import { HasRoleGuard } from '../has-role.guard';
 
@@ -31,6 +32,12 @@ const routes: Routes = [
   {
     path: 'activity-log',
     component: AdminActivityLogComponent,
+    canActivate: [IsAuthenticatedGuard, HasRoleGuard],
+    data: { role: 'admin' }
+  },
+  {
+    path: 'notifications',
+    component: AdminScheduleNotificationsComponent,
     canActivate: [IsAuthenticatedGuard, HasRoleGuard],
     data: { role: 'admin' }
   },
