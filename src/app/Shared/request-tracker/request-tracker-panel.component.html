@@ -1,0 +1,70 @@
+<ng-container *ngIf="tracker.panelOpen$ | async">
+  <div class="rt-backdrop" (click)="tracker.closePanel()" aria-hidden="true"></div>
+
+  <aside
+    class="rt-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="rtPanelTitle">
+    <header class="rt-header">
+      <div class="rt-header-copy">
+        <span class="rt-live">
+          <span class="rt-live-dot" aria-hidden="true"></span>
+          Live tracking
+        </span>
+        <h2 id="rtPanelTitle">My requests</h2>
+        <p>Track create ID, deposit, withdrawal and close-ID until admin action.</p>
+      </div>
+      <button type="button" class="rt-close kp-modal-close" (click)="tracker.closePanel()" aria-label="Close">
+        <i class="bi bi-x-lg" aria-hidden="true"></i>
+      </button>
+    </header>
+
+    <div class="rt-toolbar">
+      <button type="button" class="rt-refresh" (click)="tracker.refresh()">
+        <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
+        Refresh
+      </button>
+      <span class="rt-count" *ngIf="tracker.pendingCount > 0">
+        {{ tracker.pendingCount }} waiting
+      </span>
+    </div>
+
+    <div class="rt-body" *ngIf="tracker.items$ | async as items">
+      <div class="rt-empty" *ngIf="!items.length">
+        <i class="bi bi-check2-circle" aria-hidden="true"></i>
+        <strong>No open requests</strong>
+        <p>When you submit create ID, deposit or withdrawal, status appears here automatically.</p>
+      </div>
+
+      <article
+        class="rt-card"
+        *ngFor="let item of items; trackBy: trackByKey"
+        [attr.data-status]="item.status">
+        <div class="rt-card-icon" aria-hidden="true">
+          <i class="bi" [ngClass]="kindIcon(item.kind)"></i>
+        </div>
+        <div class="rt-card-main">
+          <div class="rt-card-top">
+            <h3>{{ item.title }}</h3>
+            <span class="rt-status">{{ statusLabel(item.status) }}</span>
+          </div>
+          <p class="rt-subtitle" *ngIf="item.subtitle">{{ item.subtitle }}</p>
+          <p class="rt-detail" *ngIf="item.detail">{{ item.detail }}</p>
+          <div class="rt-meta">
+            <span *ngIf="item.amountLabel">{{ item.amountLabel }}</span>
+            <span *ngIf="item.createdDate">{{ item.createdDate }}</span>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="rt-dismiss"
+          *ngIf="item.status !== 'pending'"
+          (click)="tracker.dismissResolved(item.key)"
+          aria-label="Dismiss">
+          <i class="bi bi-x" aria-hidden="true"></i>
+        </button>
+      </article>
+    </div>
+  </aside>
+</ng-container>

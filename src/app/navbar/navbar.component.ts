@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { VisitorStats } from '../Shared/Modals/visitor-stats';
 import { getApkDownloadUrl, isNativeApp } from '../Shared/platform/platform.util';
 import { AppShareService } from '../Shared/platform/app-share.service';
+import { RequestTrackerService } from '../Shared/request-tracker/request-tracker.service';
 
 @Component({
   selector: 'app-navbar',
@@ -27,7 +28,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     public visitorCountService: VisitorCountService,
     public themeService: ThemeService,
-    private appShareService: AppShareService
+    private appShareService: AppShareService,
+    public requestTracker: RequestTrackerService
   ) {}
 
   ngOnInit(): void {

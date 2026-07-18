@@ -22,11 +22,13 @@ import { LoaderInterceptorProvider } from './Shared/loader/loader.interceptor';
 import { LoaderModule } from './Shared/loader/loader.module';
 import { SingleClickActivityInterceptorProvider } from './Shared/single-click/single-click-activity.interceptor';
 import { SingleClickModule } from './Shared/single-click/single-click.module';
+import { NativeFormDataInterceptorProvider } from './Shared/platform/native-formdata.interceptor';
 import { DeleteModuleComponent } from './Shared/Modules/delete-module/delete-module.component';
 import { MakeDefaultModuleComponent } from './Shared/Modules/make-default-module/make-default-module.component';
 import { ViewImageModuleComponent } from './Shared/Modules/view-image-module/view-image-module.component';
 import { WhatsappFloatComponent } from './Shared/component/whatsapp-float/whatsapp-float.component';
 import { PassbookActivityToastComponent } from './Shared/passbook-activity-toast/passbook-activity-toast.component';
+import { RequestTrackerPanelComponent } from './Shared/request-tracker/request-tracker-panel.component';
 import { AppConfigService, appConfigInitializer } from './app-config.service';
 import { BrandModule } from './Shared/brand/brand.module';
 
@@ -47,6 +49,7 @@ import { BrandModule } from './Shared/brand/brand.module';
     ViewImageModuleComponent,
     WhatsappFloatComponent,
     PassbookActivityToastComponent,
+    RequestTrackerPanelComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +68,8 @@ import { BrandModule } from './Shared/brand/brand.module';
     AuthInterceptorProvider,
     SingleClickActivityInterceptorProvider,
     LoaderInterceptorProvider,
+    // Must stay after auth so Authorization is present; short-circuits FormData on native.
+    NativeFormDataInterceptorProvider,
     {
       provide: APP_INITIALIZER,
       useFactory: appConfigInitializer,

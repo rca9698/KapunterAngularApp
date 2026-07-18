@@ -8,6 +8,7 @@ import { AddIDRequest, IAddIDRequest } from 'src/app/Shared/Modals/Ids/add-ids-r
 import { AuthService } from 'src/app/auth.service';
 import { environment } from 'src/environments/environment';
 import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
+import { RequestTrackerService } from 'src/app/Shared/request-tracker/request-tracker.service';
 
 @Component({
   selector: 'app-create-ids',
@@ -26,7 +27,8 @@ export class CreateIdsComponent {
   constructor(public bsModalRef:BsModalRef, private formBuilder:FormBuilder, 
     private router:Router, private useridsservice: UserIdsService, 
     private toasterService: ToastrService, private authservice: AuthService,
-    private passbookToast: PassbookActivityToastService){
+    private passbookToast: PassbookActivityToastService,
+    private requestTracker: RequestTrackerService){
       this._sessionUser = authservice.user.userId;
       this.AddIdsFrom = this.formBuilder.group({
         username: ['', [Validators.required]]
@@ -57,9 +59,10 @@ export class CreateIdsComponent {
             kind: 'create',
             title: 'ID request submitted',
             subtitle: this.obj?.siteName || 'Platform',
-            detail: `Username: ${this.addIDRequest.userName}`,
+            detail: `Username: ${this.addIDRequest.userName}. Open Track for live status.`,
           });
           this.toasterService.success(response?.returnMessage ?? 'ID request submitted.');
+          this.requestTracker.refresh();
           this.router.navigate(['/site/app-get-user-list-site-by-id'], { queryParams: { view: 'active' } });
         } else {
           this.toasterService.warning(response?.returnMessage ?? response?.ReturnMessage ?? 'Unable to create ID request.');

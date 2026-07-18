@@ -12,6 +12,7 @@ import { CommonService } from 'src/app/common.service';
 import { BankAccountService } from 'src/app/BankAccount/bank-account.service';
 import { add_bank_account } from 'src/app/Shared/Modals/BankAccount/add_bank_account';
 import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
+import { RequestTrackerService } from 'src/app/Shared/request-tracker/request-tracker.service';
 
 @Component({
   selector: 'app-withdraw-coins-request',
@@ -40,7 +41,8 @@ export class WithdrawCoinsRequestComponent {
     public authservice: AuthService,
     private commonService: CommonService,
     private bankAccountService: BankAccountService,
-    private passbookToast: PassbookActivityToastService
+    private passbookToast: PassbookActivityToastService,
+    private requestTracker: RequestTrackerService
   ) {
     this._sessionUser = authservice.user.userId;
     this.withdrawCoinRequestFrom = this.formBuilder.group({
@@ -108,8 +110,9 @@ export class WithdrawCoinsRequestComponent {
             title: 'Withdraw request submitted',
             subtitle: this.site?.siteName || this.site?.userName || 'Wallet',
             amountLabel: `₹${this.withdrawcoinrequestmodalobj.coins}`,
-            detail: 'Track status in Passbook after processing.'
+            detail: 'Open Track in the top bar for live status.'
           });
+          this.requestTracker.refresh();
           this.bsModalRef.hide();
         }
       },

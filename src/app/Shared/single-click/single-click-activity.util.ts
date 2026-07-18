@@ -18,6 +18,10 @@ export function isActivityMutationRequest(req: HttpRequest<unknown>): boolean {
   if (/^(Get|List|View)/i.test(action)) {
     return false;
   }
+  // Pending/history listing endpoints used by live request tracking.
+  if (/RequestList$/i.test(action) || /List$/i.test(action)) {
+    return false;
+  }
   if (/GetToken/i.test(action)) {
     return false;
   }

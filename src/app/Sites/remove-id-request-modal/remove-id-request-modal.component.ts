@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/auth.service';
 import { IdsService } from 'src/app/admincoinsaction/Ids/ids.service';
 import { ToastrService } from 'src/app/toastr/toastr.service';
 import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
+import { RequestTrackerService } from 'src/app/Shared/request-tracker/request-tracker.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -27,7 +28,8 @@ export class RemoveIdRequestModalComponent implements OnInit {
     private authService: AuthService,
     private idsService: IdsService,
     private toasterService: ToastrService,
-    private passbookToast: PassbookActivityToastService
+    private passbookToast: PassbookActivityToastService,
+    private requestTracker: RequestTrackerService
   ) {
     this.sitePath = environment.imagePath?.sitePath || '';
   }
@@ -65,10 +67,11 @@ export class RemoveIdRequestModalComponent implements OnInit {
             kind: 'close',
             title: 'Remove request submitted',
             subtitle: this.accountName,
-            detail: 'Admin will review. After approval it appears in Closed and Passbook.',
+            detail: 'Open Track in the top bar for live status.',
             amountLabel: undefined
           });
           this.toasterService.success(resp?.returnMessage ?? 'Remove request submitted for admin approval.');
+          this.requestTracker.refresh();
           this.onSubmitted?.();
           this.bsModalRef.hide();
         } else {

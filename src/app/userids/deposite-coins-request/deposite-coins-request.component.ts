@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/auth.service';
 import { Ibank_details, bank_details } from 'src/app/Shared/Modals/BankAccount/bank_details';
 import { environment } from 'src/environments/environment';
 import { PassbookActivityToastService } from 'src/app/Shared/passbook-activity-toast/passbook-activity-toast.service';
+import { RequestTrackerService } from 'src/app/Shared/request-tracker/request-tracker.service';
 import {
   buildLegacyQrBlobUrl,
   buildQrImageUrlFromDetail,
@@ -55,7 +56,8 @@ export class DepositeCoinsRequestComponent {
   constructor(public bsModalRef:BsModalRef, private formBuilder:FormBuilder, 
     private router:Router, private coinsservice: CoinsService, 
     private toasterService: ToastrService, public authservice: AuthService,
-    private passbookToast: PassbookActivityToastService) {
+    private passbookToast: PassbookActivityToastService,
+    private requestTracker: RequestTrackerService) {
       this.depositeCoinRequestFrom = this.formBuilder.group({
         coins: ['', [Validators.required, Validators.min(this.minDepositCoins)]]
        },
@@ -87,12 +89,16 @@ export class DepositeCoinsRequestComponent {
   }
 
   DepositCoinsRequest(){
-    if(this.depositeCoinRequestFrom.invalid || !this.file) {
+    if(this.depositeCoinRequestFrom.invalid) {
+      return;
+    }
+    if (!this.file) {
+      this.toasterService.warning('Please choose a payment proof screenshot before submitting.');
       return;
     }
 
-    let formParams = new FormData();
-    formParams.append('File', this.file);
+    const formParams = new FormData();
+    formParams.append('File', this.file, this.file.name || 'payment-proof.jpg');
     formParams.append('coins', this.depositeCoinRequestFrom.value["coins"]);
     formParams.append('userid', this._sessionUser.toString());
     formParams.append('sessionuser', this._sessionUser.toString());
@@ -110,17 +116,22 @@ export class DepositeCoinsRequestComponent {
            title: 'Deposit request submitted',
            subtitle: this.site?.siteName || this.site?.userName || 'Account',
            amountLabel: coins != null ? `₹${coins}` : undefined,
-           detail: 'Track status in Passbook after processing.'
+           detail: 'Open Track in the top bar for live status.'
          });
          this.toasterService.success(resp?.returnMessage ?? 'Deposit request submitted.');
+         this.requestTracker.refresh();
+         this.bsModalRef.hide();
        } else {
          this.toasterService.warning(resp?.returnMessage ?? 'Unable to submit deposit.');
        }
-       this.bsModalRef.hide();
       },
       error:error => {
         console.log(error);
-        this.toasterService.warning('Unable to submit deposit.');
+        const msg =
+          error?.error?.returnMessage ??
+          error?.error?.ReturnMessage ??
+          'Unable to submit deposit.';
+        this.toasterService.warning(msg);
       }
     });
   }

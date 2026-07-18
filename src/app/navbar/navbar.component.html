@@ -4,7 +4,7 @@
       <a class="menu-toggle" role="button" tabindex="0" aria-label="Open menu">
         <i class="bi bi-list"></i>
       </a>
-      <button
+     <!-- <button
         type="button"
         class="theme-toggle-btn"
         (click)="toggleTheme()"
@@ -12,7 +12,7 @@
         [attr.title]="themeService.current === 'dark' ? 'Light mode' : 'Dark mode'"
       >
         <i class="bi" [ngClass]="themeService.current === 'dark' ? 'bi-sun-fill' : 'bi-moon-stars-fill'"></i>
-      </button>
+      </button> -->
     </div>
 
     <div class="navbar-brand-center">
@@ -26,7 +26,7 @@
     </div>
 
     <nav class="navbar-auth-cluster" aria-label="Account actions">
-      <button
+      <!--<button
         type="button"
         class="nav-get-app-btn"
         *ngIf="!isNativeApp"
@@ -44,13 +44,24 @@
         aria-label="Share Kapunter with other apps">
         <i class="bi bi-share-fill" aria-hidden="true"></i>
         <span>Share</span>
-      </button>
+      </button> -->
       <ng-container *ngIf="!(authservice.isLoggenIn | async)">
         <button type="button" class="btn siteBtnbackground nav-pill-btn nav-pill-tight" tabindex="0" (click)="loginPopup()">
           Login &nbsp;|&nbsp; Signup
         </button>
       </ng-container>
       <ng-container *ngIf="(authservice.isLoggenIn | async)">
+        <button
+          type="button"
+          class="nav-track-btn"
+          *ngIf="authservice.isbenview()"
+          (click)="requestTracker.togglePanel()"
+          title="Track your requests"
+          [attr.aria-label]="'Track requests' + (requestTracker.pendingCount ? ', ' + requestTracker.pendingCount + ' waiting' : '')">
+          <i class="bi bi-radar" aria-hidden="true"></i>
+          <span>Track</span>
+          <em class="nav-track-badge" *ngIf="requestTracker.pendingCount > 0">{{ requestTracker.pendingCount }}</em>
+        </button>
         <button
           type="button"
           class="nav-user-chip"

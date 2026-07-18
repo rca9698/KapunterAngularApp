@@ -16,6 +16,11 @@ const SILENT_API_PATHS = [
   '/api/Home/GetVisitorStats',
   '/api/User/GetUserById',
   '/api/Home/GetDashboardImages',
+  '/api/Account/IDRequestList',
+  '/api/Account/RejectedRequestList',
+  '/api/Account/ListIDCloseRequest',
+  '/api/Coin/GetCoinsToAccountRequest',
+  '/api/Coin/GetCoinsRequest',
 ];
 
 @Injectable()
