@@ -201,7 +201,7 @@ export class DeleteModuleComponent {
   }
 
   UserQRDelete(){
-    this.bankAccountService.Delete_User_QR(this.obj.qrId).subscribe(resp => {
+    this.bankAccountService.Delete_User_QR(this.obj.qrId ?? this.obj.bankAccountDetailID).subscribe(resp => {
       this.returnType = resp;
       this.toastrMessages();
     });
@@ -225,7 +225,8 @@ export class DeleteModuleComponent {
   }
 
   AdminQRDelete(){
-    this.apiservices.DeleteAdminqrAccount(this.authService.user.userId, this.obj.bankAccountDetailID).subscribe(resp=>{
+    const qrId = this.obj.qrId ?? this.obj.bankAccountDetailID;
+    this.apiservices.DeleteAdminqrAccount(this.authService.user.userId, qrId).subscribe(resp=>{
       this.returnType = resp;
       this.toastrMessages();
     });

@@ -16,6 +16,7 @@ import { AdminVendorSitesListComponent } from './admin_bank_account/admin-vendor
 import { ViewAdminSitePaymentComponent } from './admin_bank_account/view-admin-site-payment/view-admin-site-payment.component';
 import { AddAdminSitePaymentComponent } from './admin_bank_account/add-admin-site-payment/add-admin-site-payment.component';
 import { ISiteDetailModal } from '../Shared/Modals/site-detail-modal';
+import { AuthService } from '../auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +46,8 @@ export class BankAccountService {
     }
   ];
 
-  constructor(private bsModalService:BsModalService,private http: HttpClient, private apiService:apiService) { }
+  constructor(private bsModalService:BsModalService,private http: HttpClient, private apiService:apiService
+    , private authService: AuthService) { }
 
 OpenUserBankAccountPopup(isupdate: boolean, obj: Iadd_bank_account, redirectAfterSave: boolean = true){
   const initalstate: ModalOptions = {
@@ -148,16 +150,16 @@ list_admin_upi_accounts(siteId: number | string){
   return this.apiService.GetAdminUpiAccounts(siteId);
 }
 
-list_User_Upi_Accounts(obj: any){
-    return this.apiService.GetUserUpiAccounts(obj);
+list_User_Upi_Accounts(){
+    return this.apiService.GetUserUpiAccounts({ userId: this.authService.user.userId });
 }
 
 list_admin_QR_accounts(siteId: number | string){
   return this.apiService.GetAdminQRCode(siteId);
 }
 
-list_User_QR_Accounts(obj: any){
-  return this.apiService.GetUserQRCode(obj);
+list_User_QR_Accounts(){
+  return this.apiService.GetUserQRCode(Number(this.authService.user.userId));
 }
 
 Add_Admin_Bank_Account(obj: any){
@@ -181,28 +183,25 @@ add_User_qr(obj: any){
   return this.apiService.AddUserQRCode(obj);
 }
 
-list_User_upi_accounts(siteId: number | string = 0){
-  return this.apiService.GetAdminUpiAccounts(siteId);
-}
-
-list_User_QR_accounts(siteId: number | string = 0){
-  return this.apiService.GetAdminQRCode(siteId);
-}
-
 Delete_User_Upi(upiId: bigint | number) {
-  return this.apiService.GetAdminQRCode(0);
+  return this.apiService.DeleteUserUpiAccount(this.buildUserPaymentParams({ upiId }));
 }
 
 Delete_User_QR(qrId: bigint | number) {
-return this.apiService.DeleteUserQRCode(qrId); 
+  return this.apiService.DeleteUserQRCode(this.buildUserPaymentParams({ qrId }));
 }
 
 Set_Default_User_Upi(upiId: bigint | number) {
-return this.apiService.SetDefaultUserUpiAccount(upiId);
+  return this.apiService.SetDefaultUserUpiAccount(this.buildUserPaymentParams({ upiId }));
 }
 
 Set_Default_User_QR(qrId: bigint | number) {
-return this.apiService.SetDefaultUserQr(qrId);
+  return this.apiService.SetDefaultUserQr(this.buildUserPaymentParams({ qrId }));
+}
+
+private buildUserPaymentParams(extra: Record<string, unknown>) {
+  const userId = this.authService.user.userId;
+  return { sessionUser: userId, userId, ...extra };
 }
 
 }

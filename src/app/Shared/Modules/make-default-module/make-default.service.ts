@@ -13,12 +13,11 @@ export class MakeDefaultService {
 OpenMakeDefaultPopup(defaultType: string, title: string, obj: any){
   const initalstate: ModalOptions = {
     initialState:{
-      defaultType,
+      makeDefaultType: defaultType,
       title,
       obj 
     }
   }
-  console.log(defaultType);
   this.bsmodalRef?.hide();
   this.bsmodalRef = this.bsModalService.show(MakeDefaultModuleComponent,initalstate);
 }

@@ -51,7 +51,7 @@
             </div>
           </div>
           <div class="payment-card-actions">
-            <button type="button" class="icon-action" title="Make default" appSingleClick *ngIf="bank.isDefault !== '1' && isActive" (click)="MakeBankDetailDefault(bank)">
+            <button type="button" class="icon-action" title="Make default" appSingleClick *ngIf="!isDefaultFlag(bank.isDefault) && isActive" (click)="MakeBankDetailDefault(bank)">
               <i class="bi bi-patch-plus-fill"></i>
             </button>
             <button type="button" class="icon-action danger" title="Delete" *ngIf="isActive" (click)="DeleteBankAccountPopup(bank)">
@@ -90,7 +90,7 @@
             </div>
           </div>
           <div class="payment-card-actions">
-            <button type="button" class="icon-action" title="Make default" *ngIf="upi.isDefault !== '1'" (click)="MakeUpiDetailDefault(upi)">
+            <button type="button" class="icon-action" title="Make default" *ngIf="!isDefaultFlag(upi.isDefault)" (click)="MakeUpiDetailDefault(upi)">
               <i class="bi bi-patch-plus-fill"></i>
             </button>
             <button type="button" class="icon-action danger" title="Delete" (click)="DeleteUpiDetailPopup(upi)">
@@ -119,9 +119,12 @@
         <div class="payment-card-header">
           <div class="payment-card-title">
             <span class="payment-icon qr"><i class="bi bi-qr-code"></i></span>
+            <div>
+              <h3>{{ qr.accountDisplayName }}</h3>
+            </div>
           </div>
           <div class="payment-card-actions">
-            <button type="button" class="icon-action" title="Make default" *ngIf="qr.isDefault !== '1'" (click)="MakeQRDetailDefault(qr)">
+            <button type="button" class="icon-action" title="Make default" *ngIf="!isDefaultFlag(qr.isDefault)" (click)="MakeQRDetailDefault(qr)">
               <i class="bi bi-patch-plus-fill"></i>
             </button>
             <button type="button" class="icon-action danger" title="Delete" (click)="DeleteQRDetailPopup(qr)">

@@ -7,7 +7,7 @@
         <strong class="footer-rail-title">Workspace</strong>
       </div>
 
-      <div class="footer-cluster">
+      <div class="footer-cluster footer-cluster--bene">
         <button type="button" class="footer-item" (click)="RedirectToHome()" [class.is-active]="isHomeActive()" aria-label="Home">
           <i class="bi bi-house-door-fill" aria-hidden="true"></i>
           <span class="footer-label footer-label--short">Home</span>
@@ -16,21 +16,21 @@
 
         <button type="button" class="footer-item" (click)="listIds()" [class.is-active]="isIdsActive()" aria-label="My IDs">
           <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
-          <span class="footer-label footer-label--short">My IDs</span>
-          <span class="footer-label footer-label--long">My IDs</span>
+          <span class="footer-label footer-label--short">My ID's</span>
+          <span class="footer-label footer-label--long">My ID's</span>
         </button>
 
-        <button type="button" class="footer-item footer-item--fab" (click)="createId()" aria-label="Create ID">
+        <button type="button" class="footer-item footer-item--fab" (click)="createId()" aria-label="Created IDs">
           <span class="footer-fab">
-            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            <i class="bi bi-person-plus-fill" aria-hidden="true"></i>
+            <span class="footer-fab-label footer-label--short">Created IDs</span>
           </span>
-          <span class="footer-fab-text footer-label--short">Create</span>
-          <span class="footer-fab-text footer-label--long">Create ID</span>
+          <span class="footer-fab-text footer-label--long">Created IDs</span>
         </button>
 
         <button type="button" class="footer-item" (click)="viewShareBonus()" [class.is-active]="isShareActive()" aria-label="Refer and Earn">
           <i class="bi bi-gift-fill" aria-hidden="true"></i>
-          <span class="footer-label footer-label--short">Invite</span>
+          <span class="footer-label footer-label--short">Refer &amp; Earn</span>
           <span class="footer-label footer-label--long">Refer &amp; Earn</span>
         </button>
 

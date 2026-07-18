@@ -48,22 +48,27 @@ export class AddUserQrComponent {
       return;
     }
 
-    let formParams = new FormData();
-      formParams.append('File', this.file);
-      formParams.append('userName',  this.qrName);
-      formParams.append('userId',  this.authservice.user.userId.toString());
-      formParams.append('sessionUser', this.authservice.user.userId.toString());
- 
-    this.bankAccountService.add_User_qr(formParams).subscribe(resp => {
-      this.returnType = resp;
-      if (this.returnType['returnStatus'] == 1) {
-        this.toasterService.success(this.returnType.returnMessage);
-        this.bsModalRef.hide();
-        if (this.redirectAfterSave) {
-          this.router.navigate(['/bankAccount/list-user-bank-account']);
+    const formParams = new FormData();
+    formParams.append('File', this.file);
+    formParams.append('userName', this.addUserQrForm.value.QRName);
+    formParams.append('userId', this.authservice.user.userId.toString());
+    formParams.append('sessionUser', this.authservice.user.userId.toString());
+
+    this.bankAccountService.add_User_qr(formParams).subscribe({
+      next: (resp) => {
+        this.returnType = resp;
+        if (this.returnType['returnStatus'] == 1) {
+          this.toasterService.success(this.returnType.returnMessage);
+          this.bsModalRef.hide();
+          if (this.redirectAfterSave) {
+            this.router.navigate(['/bankAccount/list-user-bank-account']);
+          }
+        } else {
+          this.toasterService.warning(this.returnType.returnMessage || 'Unable to save QR code.');
         }
-      } else {
-        this.toasterService.warning(this.returnType.returnMessage);
+      },
+      error: () => {
+        this.toasterService.error('Unable to save QR code.');
       }
     });
   }

@@ -39,7 +39,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   referralReward = 200;
   private referralSubs: Subscription[] = [];
 
+  /** One standard for every dashboard slider: 5s per slide, smooth 0.6s animation. */
+  private static readonly SLIDE_INTERVAL_MS = 5000;
+
+  @ViewChild('bannerCarousel') bannerCarousel?: ElementRef<HTMLElement>;
   @ViewChild('accountCarousel') accountCarousel?: ElementRef<HTMLElement>;
+  private bannerCarouselInstance?: { dispose: () => void; cycle: () => void };
   private accountCarouselInstance?: { dispose: () => void; cycle: () => void };
 
   constructor(private homeService:HomeService, private coinsservice: CoinsService
@@ -78,6 +83,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.images = Array.isArray(list) ? list : [];
         this.bannerSlides = this.images.filter((img) => this.isValidBanner(img));
         this.showslider = this.bannerSlides.length > 0;
+        if (this.bannerSlides.length > 1) {
+          setTimeout(() => this.initBannerCarousel(), 50);
+        }
       },
       error: () => {
         this.bannersLoading = false;
@@ -96,6 +104,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.referralSubs.forEach((s) => s.unsubscribe());
+    this.disposeBannerCarousel();
     this.disposeAccountCarousel();
   }
 
@@ -137,23 +146,37 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initAccountCarousel(): void {
+  private createCarousel(element: HTMLElement | undefined): { dispose: () => void; cycle: () => void } | undefined {
     const bootstrapApi = (window as { bootstrap?: { Carousel: new (el: HTMLElement, options?: object) => { dispose: () => void; cycle: () => void } } }).bootstrap;
-    const element = this.accountCarousel?.nativeElement;
-
     if (!bootstrapApi?.Carousel || !element) {
-      return;
+      return undefined;
     }
 
-    this.disposeAccountCarousel();
-    this.accountCarouselInstance = new bootstrapApi.Carousel(element, {
-      interval: 10000,
+    const instance = new bootstrapApi.Carousel(element, {
+      interval: HomeComponent.SLIDE_INTERVAL_MS,
       ride: false,
       wrap: true,
       touch: true,
       keyboard: true,
+      pause: 'hover',
     });
-    this.accountCarouselInstance.cycle();
+    instance.cycle();
+    return instance;
+  }
+
+  private initBannerCarousel(): void {
+    this.disposeBannerCarousel();
+    this.bannerCarouselInstance = this.createCarousel(this.bannerCarousel?.nativeElement);
+  }
+
+  private initAccountCarousel(): void {
+    this.disposeAccountCarousel();
+    this.accountCarouselInstance = this.createCarousel(this.accountCarousel?.nativeElement);
+  }
+
+  private disposeBannerCarousel(): void {
+    this.bannerCarouselInstance?.dispose();
+    this.bannerCarouselInstance = undefined;
   }
 
   private disposeAccountCarousel(): void {

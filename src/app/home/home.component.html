@@ -19,12 +19,11 @@
   </div>
 
   <div class="home-hero-banner" *ngIf="showslider && bannerSlides.length">
-    <div id="DashboardImageSlides" class="carousel slide home-carousel" data-bs-ride="carousel">
+    <div #bannerCarousel id="DashboardImageSlides" class="carousel slide home-carousel">
       <div class="carousel-inner">
         <div
           class="carousel-item"
           [ngClass]="{ active: i === 0 }"
-          data-bs-interval="10000"
           *ngFor="let image of bannerSlides; let i = index">
           <div class="home-carousel-slide-frame">
             <img
@@ -56,8 +55,6 @@
       #accountCarousel
       id="DashboardAccountSlides"
       class="carousel slide home-account-carousel"
-      data-bs-interval="10000"
-      data-bs-pause="hover"
       *ngIf="!sitesLoading && sites.length > 0">
       <div class="carousel-indicators home-account-indicators" *ngIf="sites.length > 1">
         <button

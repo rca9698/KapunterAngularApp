@@ -463,15 +463,19 @@ export class apiService {
   }
 
   SetDefaultUserUpiAccount(obj: any){
-    return this.http.get(`${environment.apiUrl}/api/BankAccount/SetDefaultAdminUpiAccount/${obj.sessionUser}/${obj.upiId}`)
+    return this.http.get(`${environment.apiUrl}/api/BankAccount/SetDefaultUserUpiAccount/${obj.sessionUser}/${obj.upiId}/${obj.userId}`)
+  }
+
+  DeleteUserUpiAccount(obj: any){
+    return this.http.get(`${environment.apiUrl}/api/BankAccount/DeleteUserUpiAccount/${obj.sessionUser}/${obj.upiId}/${obj.userId}`)
   }
 
   GetAdminQRCode(siteId: number | string){
     return this.http.get(`${environment.apiUrl}/api/BankAccount/GetAdminQRCode?siteId=${siteId}`)
   }
 
-   GetUserQRCode(obj: any){
-    return this.http.post(`${environment.apiUrl}/api/BankAccount/GetUserQRCode`, obj);
+   GetUserQRCode(userId: number | string){
+    return this.http.get(`${environment.apiUrl}/api/BankAccount/GetUserQRCode/${userId}`);
   }
 
   AddAdminQRCode(obj: any){
@@ -483,7 +487,7 @@ export class apiService {
   }
   
   DeleteUserQRCode(obj: any){
-    return this.http.post(`${environment.apiUrl}/api/BankAccount/DeleteUserQrAccount`,obj)
+    return this.http.get(`${environment.apiUrl}/api/BankAccount/DeleteUserQrAccount/${obj.sessionUser}/${obj.qrId}/${obj.userId}`)
   }
 
   AddUserUpiAccount(obj: any){
@@ -496,7 +500,7 @@ export class apiService {
   }
 
   SetDefaultUserQr(obj: any){
-    return this.http.get(`${environment.apiUrl}/api/BankAccount/SetDefaultUserQr/${obj.sessionUser}/${obj.qrId}`)
+    return this.http.get(`${environment.apiUrl}/api/BankAccount/SetDefaultUserQr/${obj.sessionUser}/${obj.qrId}/${obj.userId}`)
   }
  
 }

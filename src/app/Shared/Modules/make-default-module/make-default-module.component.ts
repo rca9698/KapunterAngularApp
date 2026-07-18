@@ -50,43 +50,50 @@ export class MakeDefaultModuleComponent {
     }
   }
 
+  private get sessionUser() {
+    return this.authService.user.userId;
+  }
+
   make_admin_bank_account_default(){
-    this.apiservices.SetDefaultAdminBankAccount(this.obj).subscribe(resp=>{
+    const payload = { sessionUser: this.sessionUser, bankDetailID: this.obj?.bankAccountDetailID };
+    this.apiservices.SetDefaultAdminBankAccount(payload).subscribe(resp=>{
       this.returnType = resp;
       this.toastrMessages();
     });
   }
 
   make_admin_upi_default(){
-    this.apiservices.SetDefaultAdminUpiAccount(this.obj).subscribe(resp=>{
+    const payload = { sessionUser: this.sessionUser, upiId: this.obj?.bankAccountDetailID };
+    this.apiservices.SetDefaultAdminUpiAccount(payload).subscribe(resp=>{
       this.returnType = resp;
       this.toastrMessages();
     });
   }
 
   make_admin_qr_default(){
-    this.apiservices.SetDefaultAdminQr(this.obj).subscribe(resp=>{
+    const payload = { sessionUser: this.sessionUser, qrId: this.obj?.qrId ?? this.obj?.bankAccountDetailID };
+    this.apiservices.SetDefaultAdminQr(payload).subscribe(resp=>{
       this.returnType = resp;
       this.toastrMessages();
     });
   }
 
   make_user_bank_account_default(){
-    this.apiservices.SetDefaultBankAccount(this.authService.user.userId, this.obj.bankAccountDetailID).subscribe(resp=>{
+    this.apiservices.SetDefaultBankAccount(this.sessionUser, this.obj?.bankAccountDetailID).subscribe(resp=>{
       this.returnType = resp;
       this.toastrMessages();
     });
   }
 
   make_user_upi_default(){
-    this.bankAccountService.Set_Default_User_Upi(this.obj.bankAccountDetailID).subscribe(resp => {
+    this.bankAccountService.Set_Default_User_Upi(this.obj?.bankAccountDetailID).subscribe(resp => {
       this.returnType = resp;
       this.toastrMessages();
     });
   }
 
   make_user_qr_default(){
-    this.bankAccountService.Set_Default_User_QR(this.obj.qrId).subscribe(resp => {
+    this.bankAccountService.Set_Default_User_QR(this.obj?.qrId ?? this.obj?.bankAccountDetailID).subscribe(resp => {
       this.returnType = resp;
       this.toastrMessages();
     });

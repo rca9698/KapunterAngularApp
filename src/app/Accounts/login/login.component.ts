@@ -78,11 +78,8 @@ export class LoginComponent implements OnInit {
     this.accountService.sendOtp(this.SendOtpForm.value["userNumber"]).subscribe({
       next:(response) =>{
         this.returnType = response;
-        this.otp_Login_Modal = this.returnType['returnVal'];
+        this.otp_Login_Modal = this.returnType['returnVal'] ?? this.returnType['ReturnVal'];
         this.returnTypeClient = Object.create(null);
-        if(environment.environment == 'dev') {
-        this.returnTypeClient.returnMessage = `OTP sent to your Mobile Number - ${this.otp_Login_Modal?.otp}!!"`;
-        }
 
         const isAdminUser = this.otp_Login_Modal?.role === 'admin';
 
@@ -116,17 +113,53 @@ export class LoginComponent implements OnInit {
           this.submitted = false;
           this.backButtonVisibility = true;
 
-          if(this.returnType["returnStatus"] == 1){
-            this.toasterService.success(this.returnType["returnMessage"]);
-          }else{
-            this.toasterService.warning(this.returnType["returnMessage"]);
+          const status = this.returnType['returnStatus'] ?? this.returnType['ReturnStatus'];
+          const apiMessage = this.returnType['returnMessage'] ?? this.returnType['ReturnMessage'];
+          if (status == 1) {
+            this.showOtpResultToast(apiMessage);
+          } else {
+            this.toasterService.warning(apiMessage || 'Unable to send OTP.');
           }
         }
       },
       error:(error: any) => {
         console.log(error);
+        this.toasterService.warning('Unable to send OTP. Please try again.');
       }
     })
+  }
+ }
+
+ /** On localhost/dev, prefer showing the OTP in a toastr instead of implying SMS was sent. */
+ private showOtpResultToast(apiMessage: string | undefined): void {
+  if (this.isLocalDevHost()) {
+    const otp =
+      this.otp_Login_Modal?.otp ??
+      (this.returnType?.['returnVal']?.otp ?? this.returnType?.['ReturnVal']?.Otp ?? '');
+    if (otp) {
+      this.toasterService.success(`Local OTP: ${otp} (SMS not sent on localhost)`);
+      return;
+    }
+    if (apiMessage) {
+      this.toasterService.success(apiMessage);
+      return;
+    }
+    this.toasterService.success('OTP generated locally. Check API response for the code.');
+    return;
+  }
+
+  this.toasterService.success(apiMessage || 'OTP has been sent to your mobile number.');
+ }
+
+ private isLocalDevHost(): boolean {
+  if (environment.environment === 'dev' || !environment.production) {
+    return true;
+  }
+  try {
+    const host = (typeof window !== 'undefined' ? window.location.hostname : '') || '';
+    return host === 'localhost' || host === '127.0.0.1' || host === '[::1]';
+  } catch {
+    return false;
   }
  }
  

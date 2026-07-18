@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/auth.service';
 import { DeleteService } from 'src/app/Shared/Modules/delete-module/delete.service';
 import { MakeDefaultService } from 'src/app/Shared/Modules/make-default-module/make-default.service';
 import { Iadd_bank_account, add_bank_account } from 'src/app/Shared/Modals/BankAccount/add_bank_account';
+import { buildQrImageUrlFromDetail, isDefaultPayment } from 'src/app/Shared/Utils/qr-image.util';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-list-user-bank-account',
@@ -139,8 +141,8 @@ export class ListUserBankAccountComponent implements OnInit {
     this.bankaccount.bsmodalRef?.onHide?.subscribe(() => refresh());
   }
 
-  list_User_Upi_Accounts(isActive: number = 1) {
-    this.bankaccount.list_User_Upi_Accounts({ isActive }).subscribe({
+  list_User_Upi_Accounts() {
+    this.bankaccount.list_User_Upi_Accounts().subscribe({
       next: (response) => {
         this.returnType = response;
         this.Iuser_upi_details = this.returnType['returnList'];
@@ -151,16 +153,25 @@ export class ListUserBankAccountComponent implements OnInit {
     });
   }
 
-  list_User_QR_Accounts(isActive: number = 1) {
-    this.bankaccount.list_User_QR_Accounts({ isActive }).subscribe({
+  list_User_QR_Accounts() {
+    this.bankaccount.list_User_QR_Accounts().subscribe({
       next: (response) => {
         this.returnType = response;
-        this.Iuser_qr_details = this.returnType['returnList'];
+        const list = (this.returnType?.['returnList'] as any[]) || [];
+        const qrBase = environment.imagePath.QR;
+        this.Iuser_qr_details = list.map((qr) => ({
+          ...qr,
+          qrImageUrl: qr.qrImageUrl || buildQrImageUrlFromDetail(qrBase, qr)
+        }));
       },
       error: (error) => {
         console.log(error);
       }
     });
+  }
+
+  isDefaultFlag(value: unknown): boolean {
+    return isDefaultPayment(value);
   }
 
   MakeUpiDetailDefault(obj: any) {
