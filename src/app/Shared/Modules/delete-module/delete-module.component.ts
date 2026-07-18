@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/auth.service';
 import { DeleteBankAccount } from '../../Modals/BankAccount/delete_bank_account';
 import { BankAccountService } from 'src/app/BankAccount/bank-account.service';
 import { resolveAccountRequestId } from 'src/app/admincoinsaction/shared/id-request.util';
+import { PageRefreshService } from 'src/app/Shared/Utils/page-refresh.service';
 
 @Component({
   selector: 'app-delete-module',
@@ -29,7 +30,8 @@ export class DeleteModuleComponent {
 
   constructor(public bsModalRef:BsModalRef, 
     private router:Router, private toasterService: ToastrService, private apiservices:apiService
-  , private authService: AuthService, private bankAccountService: BankAccountService){
+  , private authService: AuthService, private bankAccountService: BankAccountService
+  , private pageRefresh: PageRefreshService){
       
   }
 
@@ -249,7 +251,7 @@ export class DeleteModuleComponent {
     }
     this.bsModalRef.hide();
 
-    window.location.reload();
+    this.pageRefresh.refreshCurrentRoute();
   }
 
 }

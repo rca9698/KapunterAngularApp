@@ -8,6 +8,7 @@ import { ToastrService } from 'src/app/toastr/toastr.service';
 import { AuthService } from 'src/app/auth.service';
 import { environment } from 'src/environments/environment';
 import { resolveAccountRequestId } from '../../shared/id-request.util';
+import { PageRefreshService } from 'src/app/Shared/Utils/page-refresh.service';
 
 @Component({
   selector: 'app-admin-create-id',
@@ -26,7 +27,8 @@ export class AdminCreateIdComponent {
   private readonly _sessionUser: bigint;
   constructor(public bsModalRef:BsModalRef, private formBuilder: FormBuilder,
     private router:Router, private idsservice: IdsService
-    , private toasterService: ToastrService, private authservice: AuthService){
+    , private toasterService: ToastrService, private authservice: AuthService
+    , private pageRefresh: PageRefreshService){
       this.AdminCreateIdForm = this.formBuilder.group({
         userName: ['', [Validators.required]],
         password: ['', [Validators.required]],
@@ -49,15 +51,19 @@ export class AdminCreateIdComponent {
     this.admin_add_id.accountRequestId = BigInt(
       resolveAccountRequestId(this.obj as Record<string, unknown>) || 0
     ) as unknown as bigint;
-    this.idsservice.AdminAddID(this.admin_add_id).subscribe(resp => {
-      console.log(resp);
-      this.returnType = resp;
-      if(this.returnType['returnStatus'] == 1){
-        this.toasterService.success(this.returnType.returnMessage);
-        this.bsModalRef.hide();
-        window.location.reload();
-      }else{
-        this.toasterService.warning(this.returnType.returnMessage);
+    this.idsservice.AdminAddID(this.admin_add_id).subscribe({
+      next: (resp) => {
+        this.returnType = resp;
+        if(this.returnType['returnStatus'] == 1){
+          this.toasterService.success(this.returnType.returnMessage);
+          this.bsModalRef.hide();
+          this.pageRefresh.refreshCurrentRoute();
+        }else{
+          this.toasterService.warning(this.returnType.returnMessage);
+        }
+      },
+      error: () => {
+        this.toasterService.error('Could not create the ID. Please try again.');
       }
     })
 
