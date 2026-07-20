@@ -85,6 +85,14 @@
   color: #c9b8a8;
 }
 
+.transfer-meta-chip--approved {
+  color: #86efac;
+}
+
+.transfer-meta-chip--rejected {
+  color: #fca5a5;
+}
+
 .transfer-route {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -205,6 +213,11 @@
 .transfer-amount-badge--done {
   background: linear-gradient(120deg, #1a9d5c, #0f7a45);
   border-color: rgba(157, 255, 190, 0.25);
+}
+
+.transfer-amount-badge--rejected {
+  background: linear-gradient(120deg, #b91c1c, #7f1d1d);
+  border-color: rgba(252, 165, 165, 0.35);
 }
 
 .transfer-card-footer .btn {

@@ -1,0 +1,11 @@
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/02-bank-details/000-intro.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/02-bank-details/001-add-btn.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/02-bank-details/002-filled.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/02-bank-details/003-save.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/02-bank-details/004-done.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/02-bank-details/004-done.png'

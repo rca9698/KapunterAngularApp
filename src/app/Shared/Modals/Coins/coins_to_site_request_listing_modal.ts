@@ -24,7 +24,9 @@ export interface Icoins_to_site_request_listing_modal{
     updatedDate: string,
     totalCount: number,
     paginationCount: number,
-    bankId: bigint
+    bankId: bigint,
+    requestStatus?: number,
+    statusLabel?: string
 }
 
 

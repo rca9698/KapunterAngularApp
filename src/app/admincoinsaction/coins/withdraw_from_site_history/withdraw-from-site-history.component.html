@@ -1,0 +1,70 @@
+<div class="col-12 text-center listtypeview coins-list-header">
+  <p class="text-uppercase mb-1">Withdraw From ID — History</p>
+  <p class="list-subtitle">Approved and rejected withdraw requests</p>
+</div>
+
+<div class="mt-4">
+  <div class="customtable coins-list-table">
+    <table class="table table-hover scrollbar" id="withdrawFromIdHistory">
+      <thead>
+        <tr class="tableHeaderClass">
+          <th scope="col"><p>User</p></th>
+          <th scope="col"><p>Application</p></th>
+          <th scope="col"><p>Account ID</p></th>
+          <th scope="col"><p>Coins</p></th>
+          <th scope="col"><p>Request Date</p></th>
+          <th scope="col"><p>Processed</p></th>
+          <th scope="col"><p>Status</p></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!requestList?.length">
+          <td colspan="7" class="coins-list-empty">
+            <i class="bi bi-inbox"></i>
+            <p class="mb-0">No approved or rejected withdraw requests.</p>
+          </td>
+        </tr>
+        <tr *ngFor="let request of requestList">
+          <th scope="row" data-label="User">
+            <span class="list-cell-user">{{ request.userNumber }}</span>
+            <small *ngIf="request.userName" class="d-block text-muted">{{ request.userName }}</small>
+          </th>
+          <td data-label="Application">
+            <div class="site-cell">
+              <div class="site-logo-frame" [class.site-logo-frame-empty]="!request.documentDetailId">
+                <img
+                  *ngIf="request.documentDetailId"
+                  class="site-logo-img"
+                  [src]="sitePath + request.documentDetailId + request.fileExtenstion"
+                  [alt]="request.siteName"
+                  loading="lazy"
+                  decoding="async" />
+                <i *ngIf="!request.documentDetailId" class="bi bi-globe2 site-logo-fallback" aria-hidden="true"></i>
+              </div>
+              <div class="site-meta">
+                <p>{{ request.siteName }}</p>
+                <p class="site-url">{{ request.siteURL }}</p>
+              </div>
+            </div>
+          </td>
+          <td data-label="Account ID">
+            <span class="account-id-badge" [title]="'Account #' + getAccountId(request)">
+              {{ getAccountLabel(request) }}
+            </span>
+          </td>
+          <td data-label="Coins"><span class="coins-amount"><i class="bi bi-currency-rupee"></i>{{ request.coins }}</span></td>
+          <td data-label="Request Date"><span class="list-cell-date">{{ request.createdDate }}</span></td>
+          <td data-label="Processed"><span class="list-cell-date">{{ request.updatedDate || '—' }}</span></td>
+          <td data-label="Status">
+            <span
+              class="request-status-chip"
+              [class.request-status-chip--approved]="isApproved(request)"
+              [class.request-status-chip--rejected]="!isApproved(request)">
+              {{ statusLabel(request) }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

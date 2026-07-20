@@ -1,0 +1,143 @@
+<section class="kw-page-hero">
+  <div class="kw-container kw-center">
+    <span class="kw-eyebrow">Customer video guides</span>
+    <h1 class="kw-section-title">Learn Kapunter module by module</h1>
+    <p class="kw-section-sub">
+      Watch each customer flow on this website — create ID, bank details, deposits &amp; withdrawals,
+      password, passbook with live trace, and notifications. No YouTube. No app redirect required.
+    </p>
+  </div>
+</section>
+
+<section class="kw-section kw-guides">
+  <div class="kw-container kw-guides__layout">
+    <!-- Module list -->
+    <aside class="kw-guides__list" aria-label="Guide modules">
+      <p class="kw-guides__list-label">Customer modules</p>
+      <button
+        type="button"
+        class="kw-guides__item"
+        *ngFor="let mod of modules"
+        [class.kw-guides__item--active]="mod.id === active.id"
+        (click)="selectModule(mod)">
+        <span class="kw-guides__item-num">{{ mod.number }}</span>
+        <span class="kw-guides__item-body">
+          <strong>{{ mod.title }}</strong>
+          <span>{{ mod.durationLabel }} · {{ mod.scenes.length }} steps</span>
+        </span>
+        <span class="kw-guides__item-icon" aria-hidden="true">{{ mod.icon }}</span>
+      </button>
+    </aside>
+
+    <!-- Player -->
+    <div class="kw-guides__stage">
+      <div class="kw-guides__meta">
+        <span class="kw-eyebrow">Module {{ active.number }}</span>
+        <h2>{{ active.title }}</h2>
+        <p>{{ active.summary }}</p>
+        <div class="kw-guides__langs" role="group" aria-label="Audio language">
+          <span class="kw-guides__langs-label">Audio</span>
+          <button
+            type="button"
+            *ngFor="let l of languages"
+            class="kw-guides__lang"
+            [class.kw-guides__lang--active]="lang === l.code"
+            (click)="setLang(l.code)">
+            {{ l.label }}
+          </button>
+        </div>
+      </div>
+
+      <div class="kw-guides__player">
+        <!-- Local MP4 when present in assets/videos -->
+        <div class="kw-guides__video-wrap" *ngIf="currentVideoSrc" [hidden]="!videoAvailable">
+          <video
+            #videoEl
+            class="kw-guides__video"
+            [src]="currentVideoSrc"
+            controls
+            playsinline
+            preload="metadata"
+            (loadeddata)="onVideoReady()"
+            (error)="onVideoError()"
+            (play)="onVideoPlay()"
+            (pause)="onVideoPause()"
+            (ended)="onVideoEnded()">
+            Your browser does not support embedded video.
+          </video>
+        </div>
+
+        <!-- On-site animated walkthrough (always available; primary when no MP4) -->
+        <div class="kw-guides__walk" *ngIf="!videoAvailable" [attr.aria-live]="'polite'">
+          <div class="kw-guides__phone" [class.kw-guides__phone--playing]="playing">
+            <div class="kw-guides__phone-bar">
+              <span>Kapunter</span>
+              <span class="kw-guides__phone-status">{{ scene.status }}</span>
+            </div>
+            <div class="kw-guides__phone-screen">
+              <h3>{{ scene.screenTitle }}</h3>
+              <ul>
+                <li *ngFor="let line of scene.screenLines">{{ line }}</li>
+              </ul>
+            </div>
+            <div class="kw-guides__phone-caption">
+              <strong>{{ scene.title }}</strong>
+              <p>{{ scene.narration }}</p>
+            </div>
+          </div>
+
+          <div class="kw-guides__controls">
+            <button type="button" class="kw-guides__ctrl" (click)="prevScene()" aria-label="Previous step">‹</button>
+            <button type="button" class="kw-btn kw-btn--primary kw-guides__play" (click)="togglePlay()">
+              {{ playing ? 'Pause guide' : 'Play guide' }}
+            </button>
+            <button type="button" class="kw-guides__ctrl" (click)="nextScene()" aria-label="Next step">›</button>
+          </div>
+
+          <div class="kw-guides__progress" aria-hidden="true">
+            <div class="kw-guides__progress-fill" [style.width.%]="progress"></div>
+          </div>
+
+          <div class="kw-guides__dots" role="tablist" aria-label="Guide steps">
+            <button
+              type="button"
+              *ngFor="let s of active.scenes; let i = index"
+              class="kw-guides__dot"
+              [class.kw-guides__dot--active]="i === sceneIndex"
+              [attr.aria-label]="'Step ' + (i + 1) + ': ' + s.title"
+              [attr.aria-selected]="i === sceneIndex"
+              (click)="goToScene(i)">
+            </button>
+          </div>
+
+          <p class="kw-guides__hint">
+            Playing on Kapunter.com — when you add an MP4 under
+            <code>assets/videos/</code>, that file will play here automatically.
+          </p>
+        </div>
+      </div>
+
+      <ol class="kw-guides__steps">
+        <li
+          *ngFor="let s of active.scenes; let i = index"
+          [class.kw-guides__steps-item--active]="!videoAvailable && i === sceneIndex"
+          (click)="goToScene(i)">
+          <span>{{ i + 1 }}</span>
+          <div>
+            <strong>{{ s.title }}</strong>
+            <p>{{ s.narration }}</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<kw-cta-band
+  title="Ready to try it yourself?"
+  subtitle="Open the Kapunter app and follow the same customer flows — create ID, bank details, wallet actions and more."
+  primaryLabel="Open Kapunter App"
+  [primaryHref]="brand.appUrl"
+  secondaryLabel="Contact support"
+  secondaryRouterLink="/contact">
+</kw-cta-band>

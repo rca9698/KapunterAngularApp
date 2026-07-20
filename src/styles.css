@@ -178,7 +178,8 @@ h1, .h1 {
     top: var(--kp-toolbar-height, 84px);
     bottom: calc(var(--kp-footer-bar-height, 128px) + env(safe-area-inset-bottom, 0px));
     overflow: hidden;
-    z-index: 1020;
+    /* Above fixed toolbar (1050) so drawer / close controls are never clipped under header */
+    z-index: 1100;
 }
 
 .dashboard-compact .dashboard-nav {
@@ -459,17 +460,19 @@ h1, .h1 {
     .dashboard-nav {
         display: none;
         position: fixed;
-        top: var(--kp-toolbar-height, 84px);
+        top: 0;
         left: 0;
-        bottom: calc(var(--kp-footer-bar-height, 128px) + env(safe-area-inset-bottom, 0px));
+        bottom: 0;
         right: auto;
         width: min(92vw, 380px);
         max-width: 100%;
-        /* Below toolbar; footer (1030) stacks above sidebar in z-order when needed */
-        z-index: 1020;
+        /* Above toolbar / footer so mobile drawer is never hidden under header */
+        z-index: 1100;
         flex-direction: column;
         overflow: hidden;
         box-shadow: none;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
         .dashboard-nav.mobile-show {
@@ -486,14 +489,23 @@ body.sidebar-drawer-open {
     body.sidebar-drawer-open::after {
         content: "";
         position: fixed;
-        top: var(--kp-toolbar-height, 84px);
+        top: 0;
         left: 0;
         right: 0;
-        bottom: calc(var(--kp-footer-bar-height, 128px) + env(safe-area-inset-bottom, 0px));
+        bottom: 0;
         background: rgba(0, 0, 0, 0.45);
-        z-index: 1010;
+        z-index: 1090;
         pointer-events: auto;
     }
+}
+
+/* Modals / popups above toolbar, sidebar, and footer */
+.modal-backdrop {
+    z-index: 11900 !important;
+}
+
+.modal {
+    z-index: 12000 !important;
 }
 
 @media (max-width: 992px) {

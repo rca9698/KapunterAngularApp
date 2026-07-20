@@ -1,0 +1,4 @@
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/04-change-password/build-hi/narr-0.wav'
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/04-change-password/build-hi/narr-1.wav'
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/04-change-password/build-hi/narr-2.wav'
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/04-change-password/build-hi/narr-3.wav'

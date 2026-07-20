@@ -261,6 +261,23 @@ export class apiService {
     return this.http.post(`${environment.apiUrl}/api/Account/RejectedRequestList`, obj);
   }
 
+  /** Dedicated Account Handling lists (new SPs – leave legacy GetIDs / IDRequestList alone) */
+  ListCreatedAccounts(obj: any){
+    return this.http.post(`${environment.apiUrl}/api/Account/ListCreatedAccounts`, obj);
+  }
+
+  ListDeletedAccounts(obj: any){
+    return this.http.post(`${environment.apiUrl}/api/Account/ListDeletedAccounts`, obj);
+  }
+
+  ListAccountRequestsSent(obj: any){
+    return this.http.post(`${environment.apiUrl}/api/Account/ListAccountRequestsSent`, obj);
+  }
+
+  ListRejectedAccounts(obj: any){
+    return this.http.post(`${environment.apiUrl}/api/Account/ListRejectedAccounts`, obj);
+  }
+
   AddChangeIDPassword(obj: any){
     return this.http.post(`${environment.apiUrl}/api/Account/AddChangeIDPassword`,obj);
   }
@@ -287,6 +304,11 @@ export class apiService {
 
   ListTransferIDHistory(obj: any){
     return this.http.post(`${environment.apiUrl}/api/Account/ListTransferIDHistory`, obj);
+  }
+
+  /** Approved + rejected transfer history */
+  ListTransferIDHistoryProcessed(obj: any){
+    return this.http.post(`${environment.apiUrl}/api/Account/ListTransferIDHistoryProcessed`, obj);
   }
 
   ConfirmTransferIDRequest(obj: any){
@@ -374,7 +396,13 @@ export class apiService {
   GetWithdrawCoinstoSiteRequestList(coinType: number, sessionUser: bigint){
     return this.http.get(`${environment.apiUrl}/api/Coin/GetCoinsToAccountRequest/${coinType}/${sessionUser}`);
   }
-  
+
+  /** Approved + rejected deposit/withdraw-to-ID history (CoinType 1=deposit, 0=withdraw) */
+  GetCoinsToAccountRequestHistory(coinType: number, sessionUser: bigint){
+    const user = Number(sessionUser);
+    return this.http.get(`${environment.apiUrl}/api/Coin/GetCoinsToAccountRequestHistory/${coinType}/${user}`);
+  }
+
   DepositeCoinRequestInsert(obj: any){
     return this.http.post(`${environment.apiUrl}/api/Coin/AddCoinsRequestDetail`, obj);
   }

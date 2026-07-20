@@ -1,0 +1,9 @@
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/04-change-password/000-intro.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/04-change-password/001-btn.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/04-change-password/002-filled.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/04-change-password/003-save.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/04-change-password/003-save.png'

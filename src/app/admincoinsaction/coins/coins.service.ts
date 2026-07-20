@@ -140,6 +140,14 @@ export class CoinsService {
     return this.apiservice.GetWithdrawCoinstoSiteRequestList(coinType, sessionUser);
   }
 
+  deposit_to_site_history(coinType: number, sessionUser: bigint){
+    return this.apiservice.GetCoinsToAccountRequestHistory(coinType, sessionUser);
+  }
+
+  withdraw_from_site_history(coinType: number, sessionUser: bigint){
+    return this.apiservice.GetCoinsToAccountRequestHistory(coinType, sessionUser);
+  }
+
   deposite_coin_request_insert(obj: any){
     return this.apiservice.DepositeCoinRequestInsert(obj);
   }

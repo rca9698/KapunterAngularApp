@@ -1,0 +1,4 @@
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/06-notifications/build-en/narr-0.wav'
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/06-notifications/build-en/narr-1.wav'
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/06-notifications/build-en/narr-2.wav'
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/06-notifications/build-en/narr-3.wav'

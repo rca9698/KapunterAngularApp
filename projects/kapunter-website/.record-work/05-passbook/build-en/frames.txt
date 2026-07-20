@@ -1,0 +1,11 @@
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/05-passbook/000-intro.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/05-passbook/001-home.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/05-passbook/002-track-btn.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/05-passbook/003-track-panel.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/05-passbook/004-done.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/05-passbook/004-done.png'

@@ -12,15 +12,15 @@ export class IdsService {
   constructor(private bsModalService: BsModalService, private apiservice: apiService) { }
 
   listIdRequests(obj: any) {
-    return this.apiservice.listIdRequests(obj);
+    return this.apiservice.ListAccountRequestsSent(obj);
   }
 
-  /** GET /ids/list-ids → POST /api/Account/GetIDs */
+  /** GET /ids/list-ids → POST /api/Account/ListCreatedAccounts */
   listIds(obj: any) {
-    return this.apiservice.GetIDs(obj);
+    return this.apiservice.ListCreatedAccounts(obj);
   }
 
-  /** GET /ids/list-ids → POST /api/Account/GetIDs */
+  /** GET /ids/list-ids → POST /api/Account/GetIDsByUserSite */
   listIdsByUserSite(obj: any) {
     return this.apiservice.GetIDsByUserSite(obj);
   }
@@ -35,9 +35,9 @@ export class IdsService {
     return this.apiservice.ListIDCloseRequest(obj);
   }
 
-  /** GET /ids/rejected-id-requests → POST /api/Account/RejectedRequestList */
+  /** GET /ids/rejected-id-requests → POST /api/Account/ListRejectedAccounts */
   listRejectedIdRequests(obj: any) {
-    return this.apiservice.RejectedRequestList(obj);
+    return this.apiservice.ListRejectedAccounts(obj);
   }
 
   idRequestDetails(accountRequestId: bigint) {
@@ -75,7 +75,7 @@ export class IdsService {
   }
 
   deletedIds(obj: any) {
-    return this.apiservice.GetIDs({ ...obj, isDeleted: 1 });
+    return this.apiservice.ListDeletedAccounts(obj);
   }
 
   addTransferIDRequest(obj: any) {
@@ -87,7 +87,7 @@ export class IdsService {
   }
 
   listTransferIDHistory(obj: any) {
-    return this.apiservice.ListTransferIDHistory(obj);
+    return this.apiservice.ListTransferIDHistoryProcessed(obj);
   }
 
   confirmTransferIDRequest(obj: any) {

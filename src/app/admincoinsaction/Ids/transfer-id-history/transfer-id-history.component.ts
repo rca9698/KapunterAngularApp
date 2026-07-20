@@ -68,6 +68,19 @@ export class TransferIdHistoryComponent implements OnInit {
     return (item as any).approvedDate ?? item.approvedDate ?? '—';
   }
 
+  statusLabel(item: ITransferIDRequestDetail): string {
+    return item.statusLabel
+      || (this.isApproved(item) ? 'Approved' : this.isRejected(item) ? 'Rejected' : 'Processed');
+  }
+
+  isApproved(item: ITransferIDRequestDetail): boolean {
+    return item.isApproved === true || Number((item as any).isApproved) === 1;
+  }
+
+  isRejected(item: ITransferIDRequestDetail): boolean {
+    return item.isRejected === true || Number((item as any).isRejected) === 1;
+  }
+
   siteLogoUrl(documentDetailId?: string, fileExtenstion?: string): string | null {
     return buildSiteLogoUrl(this.sitePath, documentDetailId, fileExtenstion);
   }

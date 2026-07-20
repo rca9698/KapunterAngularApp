@@ -12,6 +12,11 @@ export const APP_ROUTES: Routes = [
     title: 'Features — Kapunter'
   },
   {
+    path: 'guides',
+    loadComponent: () => import('./pages/guides/guides.component').then(m => m.GuidesComponent),
+    title: 'Customer Guides — Kapunter'
+  },
+  {
     path: 'about',
     loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent),
     title: 'About Us — Kapunter'

@@ -18,6 +18,7 @@ export class HeaderComponent extends BrandAwareComponent {
   readonly links = [
     { path: '/', label: 'Home', exact: true },
     { path: '/features', label: 'Features', exact: false },
+    { path: '/guides', label: 'Guides', exact: false },
     { path: '/about', label: 'About', exact: false },
     { path: '/testimonials', label: 'Reviews', exact: false },
     { path: '/faq', label: 'FAQ', exact: false },

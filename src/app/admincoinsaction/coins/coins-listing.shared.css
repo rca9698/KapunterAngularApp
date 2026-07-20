@@ -8,6 +8,41 @@
   font-size: 0.85em;
 }
 
+.request-status-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+}
+
+.request-status-chip--approved {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.45);
+  color: #86efac;
+}
+
+.request-status-chip--rejected {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.45);
+  color: #fca5a5;
+}
+
+[data-kp-theme="light"] .request-status-chip--approved {
+  background: #ecfdf3;
+  border-color: #86efac;
+  color: #166534;
+}
+
+[data-kp-theme="light"] .request-status-chip--rejected {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
 [data-kp-theme="light"] .coins-list-table .coins-amount {
   background: #ecfdf3;
   border-color: #86efac;

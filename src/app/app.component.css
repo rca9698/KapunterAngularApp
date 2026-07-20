@@ -1305,6 +1305,7 @@
         pointer-events: auto;
         border-right: 1px solid rgba(255, 141, 33, 0.35);
         box-shadow: 12px 0 40px rgba(0, 0, 0, 0.5);
+        z-index: 1100;
     }
 
     .sidebar-shell.sidebar-shell--beneficiary.mobile-show {

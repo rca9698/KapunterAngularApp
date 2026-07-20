@@ -17,7 +17,10 @@
     "android:publish-apk": "node scripts/publish-apk.js",
     "website:start": "ng serve kapunter-website --configuration=development",
     "website:build": "ng build kapunter-website --configuration=production",
-    "website:watch": "ng build kapunter-website --watch --configuration=development"
+    "website:watch": "ng build kapunter-website --watch --configuration=development",
+    "website:videos": "node scripts/generate-guide-videos.mjs",
+    "website:record-create-id": "npx @playwright/test test scripts/record-create-id-client.spec.cjs --workers=1 --reporter=line --timeout=180000",
+    "website:record-all": "npx @playwright/test test scripts/record-all-modules.spec.cjs --workers=1 --reporter=line --timeout=600000"
   },
   "private": true,
   "dependencies": {

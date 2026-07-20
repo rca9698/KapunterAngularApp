@@ -1,12 +1,12 @@
 <section class="transfer-list-shell">
   <header class="transfer-list-header">
     <h2>Transfer ID History</h2>
-    <p>Completed transfers with recorded amounts</p>
+    <p>Approved and rejected transfers</p>
   </header>
 
   <div class="transfer-empty" *ngIf="!historyList.length">
     <i class="bi bi-inbox" aria-hidden="true"></i>
-    <p class="mb-0">No completed transfers found.</p>
+    <p class="mb-0">No processed transfers found.</p>
   </div>
 
   <div class="transfer-list-stack" *ngIf="historyList.length">
@@ -16,9 +16,12 @@
           <i class="bi bi-person-fill" aria-hidden="true"></i>
           {{ item.userNumber }}
         </span>
-        <span class="transfer-meta-chip">
-          <i class="bi bi-check2-circle" aria-hidden="true"></i>
-          Approved {{ approvedDate(item) }}
+        <span
+          class="transfer-meta-chip"
+          [class.transfer-meta-chip--approved]="isApproved(item)"
+          [class.transfer-meta-chip--rejected]="isRejected(item)">
+          <i class="bi" [class.bi-check2-circle]="isApproved(item)" [class.bi-x-circle]="isRejected(item)" aria-hidden="true"></i>
+          {{ statusLabel(item) }} {{ approvedDate(item) }}
         </span>
       </div>
 
@@ -70,10 +73,14 @@
       </div>
 
       <div class="transfer-card-footer">
-        <span class="transfer-amount-badge transfer-amount-badge--done">
+        <span
+          class="transfer-amount-badge"
+          [class.transfer-amount-badge--done]="isApproved(item)"
+          [class.transfer-amount-badge--rejected]="isRejected(item)">
           <i class="bi bi-currency-rupee"></i>{{ transferAmount(item) }}
         </span>
-        <span class="transfer-meta-chip">Transfer completed</span>
+        <span class="transfer-meta-chip">{{ statusLabel(item) }}</span>
+        <span class="transfer-meta-chip" *ngIf="isRejected(item) && item.rejectionReason">{{ item.rejectionReason }}</span>
       </div>
     </article>
   </div>

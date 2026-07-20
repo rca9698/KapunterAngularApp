@@ -30,6 +30,10 @@ export interface ITransferIDRequestDetail {
   transferAmount: number;
   createdDate: string;
   approvedDate?: string;
+  isApproved?: boolean;
+  isRejected?: boolean;
+  rejectionReason?: string;
+  statusLabel?: string;
 }
 
 export interface IAddTransferIDRequest {

@@ -8,8 +8,9 @@ Built as a standalone Angular application inside the existing `KapunterAngularAp
 
 | Route | Purpose |
 |-------|---------|
-| `/` | Home — hero, stats, features, how-it-works, testimonials, CTA |
+| `/` | Home — hero, stats, features, how-it-works, guides teaser, testimonials, CTA |
 | `/features` | Full product capability breakdown |
+| `/guides` | Customer module video guides (on-site; no YouTube) |
 | `/about` | Company story since 2017 + values |
 | `/testimonials` | Satisfied customer stories |
 | `/faq` | Accordion FAQ |
@@ -107,7 +108,13 @@ Remember to allow the website origin (e.g. `https://website.kapunter.com`) in th
 
 ## Other notes
 
-Static marketing content (features, testimonials, FAQs) lives in `src/app/shared/content.ts`.
+Static marketing content (features, testimonials, FAQs, customer guides) lives in `src/app/shared/content.ts`.
+
+### Customer video guides (`/guides`)
+
+Module walkthroughs play **on the website itself** (HTML5 `<video>` or the built-in animated guide).
+Drop AI-generated MP4s into `src/assets/videos/` using the filenames listed in that folder’s README.
+Until a file exists, visitors still get a playable step-by-step guide for that module.
 
 The contact form is intentionally front-end only today — replace `ContactComponent.submit()`
 with an `HttpClient` call when the API is ready.

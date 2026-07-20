@@ -6,6 +6,7 @@ import { BrandAwareComponent } from '../../shared/brand-aware';
 import { SiteConfigService } from '../../shared/site-config.service';
 import { CtaBandComponent } from '../../shared/cta-band/cta-band.component';
 import {
+  GUIDE_MODULES,
   HIGHLIGHTS,
   HOW_IT_WORKS,
   STATS,
@@ -24,6 +25,7 @@ export class HomeComponent extends BrandAwareComponent {
   readonly highlights = HIGHLIGHTS;
   readonly steps = HOW_IT_WORKS;
   readonly testimonials = TESTIMONIALS.slice(0, 3);
+  readonly guideTeasers = GUIDE_MODULES.slice(0, 3);
 
   constructor(siteConfig: SiteConfigService) {
     super(siteConfig);

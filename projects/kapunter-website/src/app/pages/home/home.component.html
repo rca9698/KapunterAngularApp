@@ -102,6 +102,33 @@
         <p>{{ step.description }}</p>
       </article>
     </div>
+    <div class="kw-center" style="margin-top: 40px;">
+      <a routerLink="/guides" class="kw-btn kw-btn--primary">Watch customer video guides</a>
+    </div>
+  </div>
+</section>
+
+<!-- GUIDES TEASER -->
+<section class="kw-section">
+  <div class="kw-container">
+    <div class="kw-center" style="margin-bottom: 48px;">
+      <span class="kw-eyebrow">On-site video guides</span>
+      <h2 class="kw-section-title">Learn every customer module here</h2>
+      <p class="kw-section-sub">
+        Create ID, bank details, deposits &amp; withdrawals, password, passbook with live trace,
+        and notifications — explained on this website, without leaving Kapunter.
+      </p>
+    </div>
+    <div class="kw-grid kw-grid--3">
+      <article class="kw-card" *ngFor="let g of guideTeasers">
+        <div class="kw-card__icon" aria-hidden="true">{{ g.icon }}</div>
+        <h3>{{ g.title }}</h3>
+        <p>{{ g.summary }}</p>
+      </article>
+    </div>
+    <div class="kw-center" style="margin-top: 40px;">
+      <a routerLink="/guides" class="kw-btn kw-btn--ghost">Open all guides</a>
+    </div>
   </div>
 </section>
 

@@ -1,0 +1,9 @@
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/06-notifications/000-intro.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/06-notifications/001-list.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/06-notifications/002-opened.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/06-notifications/003-done.png'
+duration 6
+file 'C:/WorkSpace/Kapunter/KapunterAngularApp/projects/kapunter-website/.record-work/06-notifications/003-done.png'

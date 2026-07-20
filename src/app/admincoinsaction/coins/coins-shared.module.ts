@@ -21,6 +21,7 @@ import { ViewAdminBankDetailsComponent } from './view_admin_bank_details/view-ad
 /**
  * Coin UI + modals without routes.
  * Imported by AdminModule (for user-list modals) and by CoinsModule (lazy routed pages).
+ * History list pages live in CoinsModule (lazy), not here.
  */
 @NgModule({
   declarations: [
